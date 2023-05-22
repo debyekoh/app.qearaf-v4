@@ -29,7 +29,24 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 $routes->get('/', 'Home::index');
+
+/* --------------------------------------------------------------------
+ * Route AdminControlpage
+ */
+$routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
+$routes->get('/delivery', 'AdminControlpage\Delivery\Delivery::index');
+$routes->get('/finance', 'AdminControlpage\Finance\Finance::index');
+$routes->get('/invoice', 'AdminControlpage\Invoice\Invoice::index');
+$routes->get('/products', 'AdminControlpage\Products\Products::index');
+$routes->get('/purchase', 'AdminControlpage\Purchase\Purchase::index');
+$routes->get('/sales', 'AdminControlpage\Sales\Sales::index');
+$routes->get('/warehouse', 'AdminControlpage\Warehouse\Warehouse::index');
+/*
+ * --------------------------------------------------------------------
+ */
+
 
 /*
  * --------------------------------------------------------------------
