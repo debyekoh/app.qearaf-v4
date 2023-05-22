@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Qearaf Admin | TESTPage</title>
+    <title>Qearaf Admin | <?= ucfirst($titlepage) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Page For Admin" name="description" />
     <meta content="Qearaf.COM" name="author" />
@@ -62,7 +62,7 @@
 
                     <!-- start page title -->
                     <div class="page-title-box align-self-center d-none d-md-block">
-                        <h4 class="page-title mb-0">TESTPage</h4>
+                        <h4 class="page-title mb-0"><?= ucfirst($titlepage) ?></h4>
                         <!-- <h4 class="page-title mb-0">Starter Page</h4> -->
                     </div>
                     <!-- end page title -->

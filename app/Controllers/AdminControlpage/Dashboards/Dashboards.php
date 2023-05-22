@@ -8,6 +8,9 @@ class Dashboards extends BaseController
 {
     public function index()
     {
-        return view('adm_dashboard');
+        $datapage = array(
+            'titlepage' => 'Dashboards'
+        );
+        return view('pages_admin/adm_dashboard', $datapage);
     }
 }

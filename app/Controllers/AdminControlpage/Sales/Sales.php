@@ -8,6 +8,9 @@ class Sales extends BaseController
 {
     public function index()
     {
-        echo "ini Page Sales";
+        $datapage = array(
+            'titlepage' => 'Sales'
+        );
+        return view('pages_admin/adm_sales', $datapage);
     }
 }

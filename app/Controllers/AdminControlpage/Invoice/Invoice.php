@@ -8,6 +8,9 @@ class Invoice extends BaseController
 {
     public function index()
     {
-        echo "ini Page Invoice";
+        $datapage = array(
+            'titlepage' => 'Invoice'
+        );
+        return view('pages_admin/adm_invoice', $datapage);
     }
 }

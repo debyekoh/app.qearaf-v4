@@ -8,6 +8,9 @@ class Products extends BaseController
 {
     public function index()
     {
-        echo "ini Page Products";
+        $datapage = array(
+            'titlepage' => 'Products'
+        );
+        return view('pages_admin/adm_products', $datapage);
     }
 }

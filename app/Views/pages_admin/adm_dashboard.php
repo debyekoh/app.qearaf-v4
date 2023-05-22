@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h4 class="mt-5">TESTPage page is coming soon</h4>
+                        <h4 class="mt-5"><?= ucfirst($titlepage) ?> page is coming soon</h4>
                         <p class="text-muted">Look forward to its presence, and in the meantime visit another page.</p>
 
                         <div class="row justify-content-center mt-5">

@@ -8,6 +8,9 @@ class Delivery extends BaseController
 {
     public function index()
     {
-        echo "ini Page Delivery";
+        $datapage = array(
+            'titlepage' => 'Delivery'
+        );
+        return view('pages_admin/adm_delivery', $datapage);
     }
 }

@@ -8,6 +8,9 @@ class Finance extends BaseController
 {
     public function index()
     {
-        echo "ini Page Finance";
+        $datapage = array(
+            'titlepage' => 'Finance'
+        );
+        return view('pages_admin/adm_finance', $datapage);
     }
 }

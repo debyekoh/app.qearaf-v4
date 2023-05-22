@@ -8,6 +8,9 @@ class Warehouse extends BaseController
 {
     public function index()
     {
-        echo "ini Page Warehouse";
+        $datapage = array(
+            'titlepage' => 'Warehouse'
+        );
+        return view('pages_admin/adm_warehouse', $datapage);
     }
 }

@@ -8,6 +8,9 @@ class Purchase extends BaseController
 {
     public function index()
     {
-        echo "ini Page Purchase";
+        $datapage = array(
+            'titlepage' => 'Purchase'
+        );
+        return view('pages_admin/adm_purchase', $datapage);
     }
 }
