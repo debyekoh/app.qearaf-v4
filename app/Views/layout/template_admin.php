@@ -36,7 +36,7 @@
             <div class="navbar-header">
                 <div class="d-flex">
                     <!-- LOGO -->
-                    <div class="navbar-brand-box">
+                    <!-- <div class="navbar-brand-box">
                         <a href="<?= base_url() ?>dashboards" class="logo logo-dark">
                             <span class="logo-sm">
                                 <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
@@ -54,7 +54,7 @@
                                 <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
                             </span>
                         </a>
-                    </div>
+                    </div> -->
 
                     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
                         <i class="bx bx-menu align-middle"></i>
@@ -273,13 +273,30 @@
                             </a>
                         </li>
 
-                        <li class="menu-title" data-key="t-menu">Home</li>
+                        <li class="menu-title" data-key="t-shopmenu">Shop</li>
 
                         <li>
+                            <a href="<?= base_url() ?>myshop">
+                                <i class="bx bxs-store icon nav-icon"></i>
+                                <span class="menu-item" data-key="t-myshop">MyShop</span>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="javascript: void(0);" class="has-arrow">
+                                <i class="bx bxs-store icon nav-icon"></i>
+                                <span class="menu-item" data-key="t-myshop">MyShop</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="<?= base_url() ?>all_shop" data-key="t-allshop">All Shop</a></li>
+                            </ul>
+                        </li> -->
+
+                        <!-- <li>
                             <a href="javascript: void(0);" class="has-arrow">
                                 <i class="bx bxs-home icon nav-icon"></i>
                                 <span class="menu-item" data-key="t-home">Home</span>
-                                <!-- <span class="badge rounded-pill bg-primary">2</span> -->
+                                <span class="badge rounded-pill bg-primary">2</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="<?= base_url() ?>lazadaqea" data-key="t-lazada">Lazada QEA</a></li>
@@ -293,7 +310,7 @@
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
 
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">
@@ -302,16 +319,18 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="<?= base_url() ?>myproducts" data-key="t-myproducts">MyProducts</a></li>
-                                <li><a href="<?= base_url() ?>addnewproducts" data-key="t-addnewproduct">Add New Product</a></li>
+                                <li><a href="<?= base_url() ?>createproduct" data-key="t-createproduct">Create Product</a></li>
                             </ul>
                         </li>
 
 
                         <li class="menu-title" data-key="t-applications">Applications</li>
 
+
+
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">
-                                <i class="bx bxs-store icon nav-icon"></i>
+                                <i class="bx bxs-analyse icon nav-icon"></i>
                                 <span class="menu-item" data-key="t-ecommerce">Ecommerce</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
@@ -323,9 +342,10 @@
                             </ul>
                         </li>
 
+
                         <li>
                             <a href="<?= base_url() ?>delivery">
-                                <i class="bx bxs-factory icon nav-icon"></i>
+                                <i class="bx bxs-truck icon nav-icon"></i>
                                 <span class="menu-item" data-key="t-delivery">Delivery</span>
                             </a>
                         </li>
@@ -333,7 +353,7 @@
 
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">
-                                <i class="bx bxs-truck icon nav-icon"></i>
+                                <i class="bx bxs-factory icon nav-icon"></i>
                                 <span class="menu-item" data-key="t-ecommerce">Warehouse</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">

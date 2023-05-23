@@ -35,14 +35,38 @@ $routes->get('/', 'Home::index');
 /* --------------------------------------------------------------------
  * Route AdminControlpage
  */
+// Dashboards
 $routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
+
+// Shop
+$routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
+
+// Products
+$routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
+$routes->get('/createproduct', 'AdminControlpage\Products\Products::create');
+
+// Ecommerce
+$routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
+$routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create');
+$routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
+$routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create');
+$routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
+
+//Delivery
 $routes->get('/delivery', 'AdminControlpage\Delivery\Delivery::index');
-$routes->get('/finance', 'AdminControlpage\Finance\Finance::index');
-$routes->get('/invoice', 'AdminControlpage\Invoice\Invoice::index');
-$routes->get('/products', 'AdminControlpage\Products\Products::index');
-$routes->get('/purchase', 'AdminControlpage\Purchase\Purchase::index');
-$routes->get('/sales', 'AdminControlpage\Sales\Sales::index');
-$routes->get('/warehouse', 'AdminControlpage\Warehouse\Warehouse::index');
+
+//Warehouse
+$routes->get('/stock', 'AdminControlpage\Warehouse\Stock::index');
+$routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index');
+
+//Finance
+$routes->get('/summaryfinance', 'AdminControlpage\Finance\SummaryFinance::index');
+$routes->get('/balance', 'AdminControlpage\Finance\Balance::index');
+$routes->get('/ewallet', 'AdminControlpage\Finance\Ewallet::index');
+$routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');
+$routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
+$routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');
+
 /*
  * --------------------------------------------------------------------
  */

@@ -13,4 +13,12 @@ class Products extends BaseController
         );
         return view('pages_admin/adm_products', $datapage);
     }
+
+    public function create()
+    {
+        $datapage = array(
+            'titlepage' => 'Create'
+        );
+        return view('pages_admin/adm_products', $datapage);
+    }
 }

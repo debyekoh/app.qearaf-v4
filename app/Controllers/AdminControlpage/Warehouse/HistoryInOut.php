@@ -4,12 +4,12 @@ namespace App\Controllers\AdminControlpage\Warehouse;
 
 use App\Controllers\BaseController;
 
-class Warehouse extends BaseController
+class HistoryInOut extends BaseController
 {
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Warehouse'
+            'titlepage' => 'History InOut'
         );
         return view('pages_admin/adm_warehouse', $datapage);
     }
