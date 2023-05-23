@@ -6,6 +6,9 @@ class Home extends BaseController
 {
     public function index()
     {
-        return view('welcome_message');
+        $datapage = array(
+            'titlepage' => 'Registration'
+        );
+        return view('auth/app_registration', $datapage);
     }
 }
