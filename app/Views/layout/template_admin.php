@@ -9,15 +9,15 @@
     <meta content="Page For Admin" name="description" />
     <meta content="Qearaf.COM" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/qearaf_32px.webp">
+    <link rel="shortcut icon" href="<?= base_url() ?>assets/images/qearaf_32px.webp">
 
 
     <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url() ?>assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 
 
 
@@ -73,33 +73,33 @@
 
                     <div class="dropdown d-inline-block language-switch ms-2">
                         <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" hidden>
-                            <img class="header-lang-img" src="assets/images/flags/us.jpg" alt="Header Language" height="18">
+                            <img class="header-lang-img" src="<?= base_url() ?>assets/images/flags/us.jpg" alt="Header Language" height="18">
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="eng">
-                                <img src="assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
+                                <img src="<?= base_url() ?>assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                                <img src="assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
+                                <img src="<?= base_url() ?>assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                                <img src="assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
+                                <img src="<?= base_url() ?>assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                                <img src="assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
+                                <img src="<?= base_url() ?>assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                                <img src="assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
+                                <img src="<?= base_url() ?>assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
                             </a>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
                                 <a href="#!" class="text-reset notification-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 me-3">
-                                            <img src="assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                            <img src="<?= base_url() ?>assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         </div>
                                         <div class="flex-grow-1">
                                             <p class="text-muted font-size-13 mb-0 float-end">1 hour ago</p>
@@ -188,7 +188,7 @@
                                 <a href="#!" class="text-reset notification-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 me-3">
-                                            <img src="assets/images/users/avatar-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                            <img src="<?= base_url() ?>assets/images/users/avatar-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         </div>
                                         <div class="flex-grow-1">
                                             <p class="text-muted font-size-13 mb-0 float-end">1 hour ago</p>
@@ -210,7 +210,7 @@
 
                     <div class="dropdown d-inline-block">
                         <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown-v" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/Avatar.webp" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="<?= base_url() ?>assets/images/users/Avatar.webp" alt="Header Avatar">
                             <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">TESTPage</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end pt-0">
@@ -237,19 +237,19 @@
             <div class="navbar-brand-box" style="background-color: #503b3b00;">
                 <a href="<?= base_url() ?>dashboards" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
+                        <img src="<?= base_url() ?>assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
                     </span>
                     <span class="logo-lg">
-                        <img src="assets/images/Logo Admin Dark.webp" alt="Logo Admin Dark" height="26">
+                        <img src="<?= base_url() ?>assets/images/Logo Admin Dark.webp" alt="Logo Admin Dark" height="26">
                     </span>
                 </a>
 
                 <a href="<?= base_url() ?>dashboards" class="logo logo-light">
                     <span class="logo-lg">
-                        <img src="assets/images/Logo Admin Light.webp" alt="Logo Admin Light" height="26">
+                        <img src="<?= base_url() ?>assets/images/Logo Admin Light.webp" alt="Logo Admin Light" height="26">
                     </span>
                     <span class="logo-sm">
-                        <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
+                        <img src="<?= base_url() ?>assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
                     </span>
                 </a>
             </div>
@@ -404,19 +404,19 @@
                     <div class="navbar-brand-box">
                         <a href="<?= base_url() ?>dashboards" class="logo logo-dark">
                             <span class="logo-sm">
-                                <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
+                                <img src="<?= base_url() ?>assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
                             </span>
                             <span class="logo-lg">
-                                <img src="assets/images/Logo Admin Dark.webp" alt="Logo Admin Dark" height="26">
+                                <img src="<?= base_url() ?>assets/images/Logo Admin Dark.webp" alt="Logo Admin Dark" height="26">
                             </span>
                         </a>
 
                         <a href="<?= base_url() ?>dashboards" class="logo logo-light">
                             <span class="logo-sm">
-                                <img src="assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
+                                <img src="<?= base_url() ?>assets/images/qearaf_32px.webp" alt="qearaf_32px" height="26">
                             </span>
                             <span class="logo-lg">
-                                <img src="assets/images/Logo Admin Light.webp" alt="Logo Admin Light" height="26">
+                                <img src="<?= base_url() ?>assets/images/Logo Admin Light.webp" alt="Logo Admin Light" height="26">
                             </span>
                         </a>
                     </div>
@@ -437,33 +437,33 @@
 
                     <div class="dropdown d-inline-block language-switch ms-2 ms-xl-3">
                         <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" hidden>
-                            <img class="header-lang-img" src="assets/images/flags/us.jpg" alt="Header Language" height="18">
+                            <img class="header-lang-img" src="<?= base_url() ?>assets/images/flags/us.jpg" alt="Header Language" height="18">
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="eng">
-                                <img src="assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
+                                <img src="<?= base_url() ?>assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                                <img src="assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
+                                <img src="<?= base_url() ?>assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                                <img src="assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
+                                <img src="<?= base_url() ?>assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                                <img src="assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
+                                <img src="<?= base_url() ?>assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                                <img src="assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
+                                <img src="<?= base_url() ?>assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
                             </a>
                         </div>
                     </div>
@@ -504,7 +504,7 @@
                                 <a href="#!" class="text-reset notification-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 me-3">
-                                            <img src="assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                            <img src="<?= base_url() ?>assets/images/users/avatar-3.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">James Lemire</h6>
@@ -551,7 +551,7 @@
                                 <a href="#!" class="text-reset notification-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 me-3">
-                                            <img src="assets/images/users/avatar-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                                            <img src="<?= base_url() ?>assets/images/users/avatar-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">Salena Layfield</h6>
@@ -573,7 +573,7 @@
 
                     <div class="dropdown d-inline-block">
                         <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-3.jpg" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="<?= base_url() ?>assets/images/users/avatar-3.jpg" alt="Header Avatar">
                             <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">Martin Gurley</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end pt-0">
@@ -1046,10 +1046,10 @@
     $someVar = 1;
     ?>
 
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/metismenujs/metismenujs.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/eva-icons/eva.min.js"></script>
+    <script src="<?= base_url() ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>assets/libs/metismenujs/metismenujs.min.js"></script>
+    <script src="<?= base_url() ?>assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="<?= base_url() ?>assets/libs/eva-icons/eva.min.js"></script>
 
     <?php
     if (isset($js_page)) {
@@ -1057,7 +1057,7 @@
     }
     ?>
 
-    <script src="assets/js/app_qearaf.js"></script>
+    <script src="<?= base_url() ?>assets/js/app_qearaf.js"></script>
 
 
 

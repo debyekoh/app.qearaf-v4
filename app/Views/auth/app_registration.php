@@ -52,13 +52,13 @@
                                     <form action="<?= url_to('register') ?>" method="post">
                                         <?= csrf_field() ?>
 
-                                        <!-- <div class="mb-3">
-                                            <label class="form-label" for="username">UserID</label>
+                                        <div class="mb-3" hidden>
+                                            <label class="form-label" for="id">UserID</label>
                                             <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter username">
+                                                <input type="text" class="form-control" id="new_id" name="member_id" placeholder="ID">
                                                 <span class="bx bx-user"></span>
                                             </div>
-                                        </div> -->
+                                        </div>
 
                                         <div class="mb-3">
                                             <label class="form-label" for="email"><?= lang('Auth.email') ?></label>
@@ -197,7 +197,7 @@
         var onClick = function() {
             // document.getElementById('new_user_id').textContent = generateUUID().replace("-","").substring(0,8);
             // document.getElementById('new_user_id').val(generateUUID().replace("-","").substring(0,8));
-            $('#user_id').val(generateUUID().replace("-", "").substring(0, 8));
+            $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
             // $('#new_image_name_user').val(data.file_name);
         }
         onClick();

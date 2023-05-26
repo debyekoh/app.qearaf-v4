@@ -13,7 +13,7 @@
                         <div class="row justify-content-center mt-5">
                             <div class="col-sm-6">
                                 <div class="maintenance-img">
-                                    <img src="assets/images/coming-soon.png" alt="" class="img-fluid mx-auto d-block">
+                                    <img src="<?= base_url() ?>assets/images/coming-soon.png" alt="" class="img-fluid mx-auto d-block">
                                 </div>
                             </div>
                         </div>
