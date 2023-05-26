@@ -319,7 +319,9 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="<?= base_url() ?>myproducts" data-key="t-myproducts">MyProducts</a></li>
-                                <li><a href="<?= base_url() ?>createproduct" data-key="t-createproduct">Create Product</a></li>
+                                <?php if (in_groups('Admin')) : ?>
+                                    <li><a href="<?= base_url() ?>createproduct" data-key="t-createproduct">Create Product</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
 
@@ -377,18 +379,23 @@
                             </ul>
                         </li>
 
-                        <li class="menu-title" data-key="t-admin">Administrator Page</li>
+                        <?php if (in_groups('SuAdmin')) : ?>
 
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="bx bxs-group icon nav-icon"></i>
-                                <span class="menu-item" data-key="t-contacts">Users</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="<?= base_url() ?>addnewuser" data-key="t-user-list">Add New User</a></li>
-                                <li><a href="<?= base_url() ?>userslist" data-key="t-user-list">Users List</a></li>
-                            </ul>
-                        </li>
+                            <li class="menu-title" data-key="t-admin">Administrator Page</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="bx bxs-group icon nav-icon"></i>
+                                    <span class="menu-item" data-key="t-contacts">Users</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="<?= base_url() ?>addnewuser" data-key="t-user-list">Add New User</a></li>
+                                    <li><a href="<?= base_url() ?>userslist" data-key="t-user-list">Users List</a></li>
+                                </ul>
+                            </li>
+
+                        <?php endif; ?>
+
 
 
                     </ul>

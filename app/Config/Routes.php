@@ -44,7 +44,7 @@ $routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
 
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
-$routes->get('/createproduct', 'AdminControlpage\Products\Products::create');
+$routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'role:Create']);
 
 // Ecommerce
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
