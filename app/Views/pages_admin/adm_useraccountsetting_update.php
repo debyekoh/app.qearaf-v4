@@ -43,14 +43,14 @@
                                         <div class="mb-3">
                                             <label for="basicpill-firstname-input" class="form-label">User
                                                 Name</label>
-                                            <input type="text" class="form-control" value="<?= user()->username; ?>" placeholder="Enter User Name" id="basicpill-username-input">
+                                            <input type="text" class="form-control" name="username" value="<?= user()->username; ?>" placeholder="Enter User Name" id="basicpill-username-input">
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-lastname-input" class="form-label">Full
                                                 Name</label>
-                                            <input type="text" class="form-control" value="<?= user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
+                                            <input type="text" class="form-control" name="fullname" value="<?= user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->
@@ -59,13 +59,13 @@
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-phoneno-input" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" value="<?= user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phoneno-input">
+                                            <input type="text" class="form-control" name="phone" value="<?= user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phoneno-input">
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-email-input" class="form-label">Email</label>
-                                            <input type="email" class="form-control" value="<?= user()->email; ?>" placeholder="Enter Email" id="basicpill-email-input">
+                                            <input type="email" class="form-control" name="email" value="<?= user()->email; ?>" placeholder="Enter Email" id="basicpill-email-input">
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->
@@ -73,7 +73,7 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="basicpill-address-input" class="form-label">Address</label>
-                                            <textarea id="basicpill-address-input" class="form-control" value="<?= user()->address; ?>" placeholder="Enter Address" rows="2"></textarea>
+                                            <textarea id="basicpill-address-input" class="form-control" name="address" value="<?= user()->address; ?>" placeholder="Enter Address" rows="2"></textarea>
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->

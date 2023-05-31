@@ -51,5 +51,6 @@ class UsersAccountSetting extends BaseController
 
     public function update()
     {
+        dd($this->request->getVar());
     }
 }
