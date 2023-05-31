@@ -44,13 +44,13 @@ $routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
 
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
-$routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'role:Create']);
+$routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'permission:Create']);
 
 // Ecommerce
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
-$routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create');
+$routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
-$routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create');
+$routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'permission:Create']);
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
 
 //Delivery
@@ -67,6 +67,13 @@ $routes->get('/ewallet', 'AdminControlpage\Finance\Ewallet::index');
 $routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');
 $routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
 $routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');
+
+//Users
+$routes->get('/userslist', 'AdminControlpage\Users\UsersList::index', ['filter' => 'role:SuAdmin']);
+$routes->get('/userview/(:any)', 'AdminControlpage\Users\UsersList::detail/$1', ['filter' => 'role:SuAdmin']);
+$routes->get('/setting_account', 'AdminControlpage\Users\UsersAccountSetting::index');
+$routes->get('/setting_account/change', 'AdminControlpage\Users\UsersAccountSetting::edit');
+$routes->get('/setting_account/update', 'AdminControlpage\Users\UsersAccountSetting::update');
 
 /*
  * --------------------------------------------------------------------
