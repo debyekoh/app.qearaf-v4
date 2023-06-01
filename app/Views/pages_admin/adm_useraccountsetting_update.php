@@ -11,7 +11,12 @@
                     <h4 class="card-title mb-0">Forms Steps</h4>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <form action="<?= base_url() ?>setting_account/update" methode="post">
+                    <?php if (session('failed')) : ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= session('failed'); ?>
+                        </div>
+                    <?php endif; ?>
+                    <form action="<?= base_url() ?>setting_account/update" method="post">
                         <?= csrf_field(); ?>
                         <ul class="wizard-nav mb-5">
                             <li class="wizard-list-item">
@@ -41,16 +46,21 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="basicpill-firstname-input" class="form-label">User
+                                            <label for="basicpill-username-input" class="form-label">User
                                                 Name</label>
                                             <input type="text" class="form-control" name="username" value="<?= user()->username; ?>" placeholder="Enter User Name" id="basicpill-username-input">
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="basicpill-lastname-input" class="form-label">Full
+                                            <label for="basicpill-fullname-input" class="form-label">Full
                                                 Name</label>
-                                            <input type="text" class="form-control" name="fullname" value="<?= user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
+                                            <input type="text" class="form-control  <?= session('failed') ? 'is-invalid' : '' ?>" name="fullname" value="<?= (old('fullname')) ? old('fullname') : user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
+                                            <?php if (session('failed')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= session('_ci_validation_errors')['fullname']; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->
@@ -58,8 +68,8 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label for="basicpill-phoneno-input" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" name="phone" value="<?= user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phoneno-input">
+                                            <label for="basicpill-phone-input" class="form-label">Phone</label>
+                                            <input type="text" class="form-control" name="phone" value="<?= user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phone-input">
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">

@@ -4,9 +4,11 @@ namespace App\Controllers\AdminControlpage\Users;
 
 use App\Controllers\BaseController;
 
+
 class UsersAccountSetting extends BaseController
 {
     protected $db, $builder;
+    protected $helpers = ['form'];
 
     public function __construct()
     {
@@ -26,8 +28,9 @@ class UsersAccountSetting extends BaseController
 
     public function edit()
     {
+        helper(['form', 'text']);
+        $session = session();
         $query = $this->builder->get();
-        session();
         $head_page =
             '
                 <!--+++ DataTables css -->
@@ -37,14 +40,13 @@ class UsersAccountSetting extends BaseController
 
         $js_page =
             '
-                <script src="..\assets/libs/flatpickr/flatpickr.min.js"></script>
                 <script src="..\assets/js/pages/form-update-account.init.js"></script>
             ';
         $datapage = array(
             'titlepage' => 'Update Account',
-            'validation' => \Config\Services::validation(),
             // 'head_page' => $head_page,
-            // 'js_page' => $js_page
+            'js_page' => $js_page,
+            'validation' => \Config\Services::validation()
             // 'datausers' => $query->getResult()
         );
         return view('pages_admin/adm_useraccountsetting_update', $datapage);
@@ -52,13 +54,26 @@ class UsersAccountSetting extends BaseController
 
     public function update()
     {
-        if (!$this->validate([
-            'fullname' => 'required'
-        ])) {
-            $validation = \Config\Services::validation();
+        // $rules = $this->validate([
+        //     'fullname' => 'required'
+        // ]);
+        session();
+        $rules = [
+            'fullname' => 'required|min_length[5]'
+        ];
+
+        // if (!$rules) {
+        //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+        //     return redirect()->back()->withInput();
+        // }
+
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+            // $validation = \Config\Services::validation();
             // return redirect()->to('setting_account/change')->withInput()->with('validation', $validation);
             return redirect()->back()->withInput();
         }
-        // dd($this->request->getVar());
+        // // dd($this->request->getVar());
     }
 }
