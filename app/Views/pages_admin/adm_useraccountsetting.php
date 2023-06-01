@@ -32,17 +32,17 @@
                     <div class="p-4 pt-0">
 
                         <div class="mt-n5 position-relative text-center border-bottom pb-3">
-                            <img src="assets/images/users/avatar-3.jpg" alt="" class="avatar-xl rounded-circle img-thumbnail">
+                            <img src="<?= base_url() ?>assets/images/users/<?= user()->user_image; ?>" alt="avatar.<?= user()->username; ?>" class="avatar-xl rounded-circle img-thumbnail">
 
                             <div class="mt-3">
-                                <h5 class="mb-1">Martin Gurley</h5>
-                                <p class="text-muted mb-0">
+                                <h5 class="mb-1"><?= user()->fullname; ?></h5>
+                                <!-- <p class="text-muted mb-0">
                                     <i class="bx bxs-star text-warning font-size-14"></i>
                                     <i class="bx bxs-star text-warning font-size-14"></i>
                                     <i class="bx bxs-star text-warning font-size-14"></i>
                                     <i class="bx bxs-star text-warning font-size-14"></i>
                                     <i class="bx bxs-star-half text-warning font-size-14"></i>
-                                </p>
+                                </p> -->
                             </div>
 
                         </div>
@@ -52,46 +52,46 @@
                                 <tbody>
                                     <tr>
                                         <th class="fw-bold">
-                                            City :</th>
-                                        <td class="text-muted">New Your City</td>
+                                            Account ID</th>
+                                        <th class="fw-bold">:</th>
+                                        <td class="text-muted"><?= user()->member_id; ?></td>
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
                                         <th class="fw-bold">
-                                            State :</th>
-                                        <td class="text-muted">New Your</td>
+                                            Username :</th>
+                                        <th class="fw-bold">:</th>
+                                        <td class="text-muted"><?= user()->username; ?></td>
                                     </tr>
                                     <!-- end tr -->
                                     <tr>
                                         <th class="fw-bold">
-                                            Country :</th>
-                                        <td class="text-muted">USA</td>
+                                            Email :</th>
+                                        <th class="fw-bold">:</th>
+                                        <td class="text-muted"><?= user()->email; ?></td>
                                     </tr>
                                     <!-- end tr -->
-                                    <tr>
-                                        <th class="fw-bold">Pin Code :</th>
-                                        <td class="text-muted">0005485</td>
-                                    </tr>
-                                    <!-- end tr -->
-
                                     <tr>
                                         <th class="fw-bold">Phone :</th>
-                                        <td class="text-muted">+214 5632564</td>
+                                        <th class="fw-bold">:</th>
+                                        <td class="text-muted"><?= user()->phone; ?></td>
                                     </tr>
                                     <!-- end tr -->
 
                                     <tr>
-                                        <th class="fw-bold">Email :</th>
-                                        <td class="text-muted">martingurley52@gmail.com</td>
+                                        <th class="fw-bold">Address :</th>
+                                        <th class="fw-bold">:</th>
+                                        <td class="text-muted"><?= user()->address; ?></td>
                                     </tr>
                                     <!-- end tr -->
+
                                 </tbody><!-- end tbody -->
                             </table>
                         </div>
 
 
 
-                        <div class="p-3 mt-3">
+                        <!-- <div class="p-3 mt-3">
                             <div class="row text-center">
                                 <div class="col-6 border-end">
                                     <div class="p-1">
@@ -106,13 +106,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="pt-2 text-center border-bottom pb-4">
+                        <!-- <div class="pt-2 text-center border-bottom pb-4">
                             <a href="" class="btn btn-primary waves-effect waves-light btn-sm">Send Message <i class="bx bx-send ms-1 align-middle"></i></a>
-                        </div>
+                        </div> -->
 
-                        <div class="mt-3 pt-1 text-center">
+                        <!-- <div class="mt-3 pt-1 text-center">
                             <ul class="list-inline mb-0">
                                 <li class="list-inline-item">
                                     <a href="javascript:void()" class="social-list-item bg-primary text-white border-primary">
@@ -130,7 +130,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

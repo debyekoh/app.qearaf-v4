@@ -27,7 +27,7 @@ class UsersAccountSetting extends BaseController
     public function edit()
     {
         $query = $this->builder->get();
-
+        session();
         $head_page =
             '
                 <!--+++ DataTables css -->
@@ -42,15 +42,23 @@ class UsersAccountSetting extends BaseController
             ';
         $datapage = array(
             'titlepage' => 'Update Account',
+            'validation' => \Config\Services::validation(),
             // 'head_page' => $head_page,
-            'js_page' => $js_page,
-            'datausers' => $query->getResult()
+            // 'js_page' => $js_page
+            // 'datausers' => $query->getResult()
         );
         return view('pages_admin/adm_useraccountsetting_update', $datapage);
     }
 
     public function update()
     {
-        dd($this->request->getVar());
+        if (!$this->validate([
+            'fullname' => 'required'
+        ])) {
+            $validation = \Config\Services::validation();
+            // return redirect()->to('setting_account/change')->withInput()->with('validation', $validation);
+            return redirect()->back()->withInput();
+        }
+        // dd($this->request->getVar());
     }
 }
