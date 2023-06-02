@@ -73,7 +73,7 @@ $routes->get('/userslist', 'AdminControlpage\Users\UsersList::index', ['filter' 
 $routes->get('/userview/(:any)', 'AdminControlpage\Users\UsersList::detail/$1', ['filter' => 'role:SuAdmin']);
 $routes->get('/setting_account', 'AdminControlpage\Users\UsersAccountSetting::index');
 $routes->get('/setting_account/change', 'AdminControlpage\Users\UsersAccountSetting::edit');
-$routes->post('/setting_account/update', 'AdminControlpage\Users\UsersAccountSetting::update');
+$routes->post('/setting_account/update/(:any)/(:any)', 'AdminControlpage\Users\UsersAccountSetting::update/$1/$2');
 
 /*
  * --------------------------------------------------------------------

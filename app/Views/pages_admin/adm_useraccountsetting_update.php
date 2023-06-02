@@ -11,14 +11,9 @@
                     <h4 class="card-title mb-0">Forms Steps</h4>
                 </div><!-- end card header -->
                 <div class="card-body">
-                    <?php if (session('failed')) : ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?= session('failed'); ?>
-                        </div>
-                    <?php endif; ?>
-                    <form action="<?= base_url() ?>setting_account/update" method="post">
+                    <form action="<?= base_url() ?>setting_account/update/<?= user()->id; ?>/<?= user()->member_id; ?>" method="post">
                         <?= csrf_field(); ?>
-                        <ul class="wizard-nav mb-5">
+                        <ul class="wizard-nav">
                             <li class="wizard-list-item">
                                 <div class="list-item active">
                                     <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Account Information">
@@ -41,6 +36,8 @@
                             <div class="text-center mb-4">
                                 <h5>Account Information</h5>
                                 <p class="card-title-desc">Fill all information below</p>
+                                <input type="hidden" class="form-control" name="user_id" value="<?= user()->id; ?>">
+                                <input type="hidden" class="form-control" name="member_id" value="<?= user()->member_id; ?>">
                             </div>
                             <div>
                                 <div class="row">
@@ -48,17 +45,22 @@
                                         <div class="mb-3">
                                             <label for="basicpill-username-input" class="form-label">User
                                                 Name</label>
-                                            <input type="text" class="form-control" name="username" value="<?= user()->username; ?>" placeholder="Enter User Name" id="basicpill-username-input">
+                                            <input type="text" class="form-control <?= isset(session('_ci_validation_errors')['username']) ? 'is-invalid' : '' ?>" name="username" value="<?= (old('username')) ? old('username') : user()->username; ?>" placeholder="Enter User Name" id="basicpill-username-input">
+                                            <?php if (session('failed')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= isset(session('_ci_validation_errors')['username']) ? session('_ci_validation_errors')['username'] : null; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-fullname-input" class="form-label">Full
                                                 Name</label>
-                                            <input type="text" class="form-control  <?= session('failed') ? 'is-invalid' : '' ?>" name="fullname" value="<?= (old('fullname')) ? old('fullname') : user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
+                                            <input type="text" class="form-control  <?= isset(session('_ci_validation_errors')['fullname']) ? 'is-invalid' : '' ?>" name="fullname" value="<?= (old('fullname')) ? old('fullname') : user()->fullname; ?>" placeholder="Enter Full Name" id="basicpill-fullname-input">
                                             <?php if (session('failed')) : ?>
                                                 <div class="invalid-feedback">
-                                                    <?= session('_ci_validation_errors')['fullname']; ?>
+                                                    <?= isset(session('_ci_validation_errors')['fullname']) ? session('_ci_validation_errors')['fullname'] : null; ?>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
@@ -69,13 +71,23 @@
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-phone-input" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" name="phone" value="<?= user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phone-input">
+                                            <input type="text" class="form-control <?= isset(session('_ci_validation_errors')['phone']) ? 'is-invalid' : '' ?>" name="phone" value="<?= (old('phone')) ? old('phone') : user()->phone; ?>" placeholder="Enter Phone" id="basicpill-phone-input">
+                                            <?php if (session('failed')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= isset(session('_ci_validation_errors')['phone']) ? session('_ci_validation_errors')['phone'] : null; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div><!-- end col -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="basicpill-email-input" class="form-label">Email</label>
-                                            <input type="email" class="form-control" name="email" value="<?= user()->email; ?>" placeholder="Enter Email" id="basicpill-email-input">
+                                            <input type="email" class="form-control <?= isset(session('_ci_validation_errors')['email']) ? 'is-invalid' : '' ?>" name="email" value="<?= (old('email')) ? old('email') : user()->email; ?>" placeholder="Enter Email" id="basicpill-email-input">
+                                            <?php if (session('failed')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= isset(session('_ci_validation_errors')['email']) ? session('_ci_validation_errors')['email'] : null; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->
@@ -83,7 +95,12 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label for="basicpill-address-input" class="form-label">Address</label>
-                                            <textarea id="basicpill-address-input" class="form-control" name="address" value="<?= user()->address; ?>" placeholder="Enter Address" rows="2"></textarea>
+                                            <input type="text" id="basicpill-address-input" class="form-control <?= isset(session('_ci_validation_errors')['address']) ? 'is-invalid' : '' ?>" name="address" value="<?= (old('address')) ? old('address') : user()->address; ?>" placeholder="Enter Address"></input>
+                                            <?php if (session('failed')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= isset(session('_ci_validation_errors')['address']) ? session('_ci_validation_errors')['address'] : null; ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div><!-- end col -->
                                 </div><!-- end row -->

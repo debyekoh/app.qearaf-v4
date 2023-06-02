@@ -52,28 +52,45 @@ class UsersAccountSetting extends BaseController
         return view('pages_admin/adm_useraccountsetting_update', $datapage);
     }
 
-    public function update()
+    public function update($id, $member_id)
     {
-        // $rules = $this->validate([
-        //     'fullname' => 'required'
-        // ]);
         session();
+        $id_form_hidden = $this->request->getVar('user_id');
+        $member_id_form_hidden = $this->request->getVar('member_id');
+        if ($id != $id_form_hidden && $member_id != $member_id_form_hidden) {
+            return redirect()->to('/dashboards');
+        }
         $rules = [
-            'fullname' => 'required|min_length[5]'
+            'username' => 'required|min_length[8]',
+            'fullname' => 'required|min_length[5]',
+            'phone' => 'required|min_length[10]',
+            'email' => 'valid_email',
+            'address' => 'required|min_length[10]',
         ];
-
-        // if (!$rules) {
-        //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
-        //     return redirect()->back()->withInput();
-        // }
-
 
         if (!$this->validate($rules)) {
             session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
-            // $validation = \Config\Services::validation();
-            // return redirect()->to('setting_account/change')->withInput()->with('validation', $validation);
             return redirect()->back()->withInput();
         }
-        // // dd($this->request->getVar());
+        // d($id_form_hidden);
+        // d($member_id_form_hidden);
+        // d($this->request->getVar());
+
+        $data = array(
+            'username'  => $this->request->getVar('username'),
+            'fullname'  => $this->request->getVar('fullname'),
+            'phone'     => $this->request->getVar('phone'),
+            'email'     => $this->request->getVar('email'),
+            'address'   => $this->request->getVar('address'),
+        );
+
+        $this->builder->where('member_id', $member_id);
+        $this->builder->update($data);
+
+        if ($this->db->affectedRows() > 0) {
+            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+        }
+        session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
+        return redirect()->to('/setting_account');
     }
 }

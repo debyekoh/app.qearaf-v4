@@ -251,7 +251,12 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
+
                 <!-- container-fluid -->
+                <div class="container-fluid">
+                    <?= $this->include('messages'); ?>
+                    <?= $this->include('messages_alert'); ?>
+                </div>
                 <?= $this->renderSection('contents'); ?>
                 <!-- container-fluid -->
             </div>
