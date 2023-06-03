@@ -3,6 +3,7 @@
 namespace App\Controllers\AdminControlpage\Users;
 
 use App\Controllers\BaseController;
+use App\Models\ShopModel;
 
 
 class UsersAccountSetting extends BaseController
@@ -15,8 +16,6 @@ class UsersAccountSetting extends BaseController
         $this->db      = \Config\Database::connect();
         $this->builder = $this->db->table('users');
     }
-
-
 
     public function index()
     {
@@ -92,5 +91,45 @@ class UsersAccountSetting extends BaseController
         }
         session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
         return redirect()->to('/setting_account');
+    }
+
+    public function addshop($member_id)
+    {
+        session();
+        $member_id_form_hidden = $this->request->getVar('member_id');
+        if ($member_id != $member_id_form_hidden) {
+            session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
+            return redirect()->to('/setting_account');
+        }
+        if ($this->request->getVar('marketpace') == "Select Marketplace") {
+            session()->setFlashdata('error', 'Gagal Menambahkan Toko, Pastikan memilih Marketplace yang di inginkan..');
+            return redirect()->to('/setting_account');
+        }
+
+        $data = array(
+            'id_shop'  => $this->request->getVar('id_shop'),
+            'name_shop'  => $this->request->getVar('name_shop'),
+            'marketpace'     => $this->request->getVar('marketpace'),
+            'phone'     => $this->request->getVar('phone'),
+            'address'   => $this->request->getVar('address'),
+        );
+
+        // dd($this->request->getVar());
+
+        $shopModel = new ShopModel();
+        $shopModel->save($data);
+        if ($this->db->affectedRows() > 0) {
+            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+        }
+        return redirect()->to('/setting_account');
+
+        // $this->builder->where('member_id', $member_id);
+        // $this->builder->update($data);
+
+        // if ($this->db->affectedRows() > 0) {
+        //     session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+        // }
+        // session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
+        // return redirect()->to('/setting_account');
     }
 }

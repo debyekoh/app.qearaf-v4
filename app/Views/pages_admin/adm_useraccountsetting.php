@@ -89,48 +89,6 @@
                             </table>
                         </div>
 
-
-
-                        <!-- <div class="p-3 mt-3">
-                            <div class="row text-center">
-                                <div class="col-6 border-end">
-                                    <div class="p-1">
-                                        <h5 class="mb-1">1,269</h5>
-                                        <p class="text-muted mb-0">Products</p>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="p-1">
-                                        <h5 class="mb-1">5.2k</h5>
-                                        <p class="text-muted mb-0">Followers</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <!-- <div class="pt-2 text-center border-bottom pb-4">
-                            <a href="" class="btn btn-primary waves-effect waves-light btn-sm">Send Message <i class="bx bx-send ms-1 align-middle"></i></a>
-                        </div> -->
-
-                        <!-- <div class="mt-3 pt-1 text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <a href="javascript:void()" class="social-list-item bg-primary text-white border-primary">
-                                        <i class="bx bxl-facebook"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-                                        <i class="bx bxl-linkedin"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-                                        <i class="bx bxl-google"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -165,37 +123,20 @@
                 <div class="tab-pane active" id="overview" role="tabpanel">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="font-size-16 mb-3">Summary</h5>
-                            <div class="mt-3">
-                                <p class="font-size-15 mb-1">Hi my name is Jennifer Bennett.</p>
-                                <p class="font-size-15">I'm the Co-founder and Head of Design at Company agency.</p>
-
-                                <p class="text-muted">Been the industry's standard dummy text To an English person.
-                                    Our team collaborators and clients to achieve cupidatat non proident, sunt in culpa
-                                    qui officia deserunt mollit anim id est some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences debitis aut rerum necessitatibus saepe eveniet ut et voluptates laborum growth.</p>
-
-                                <h5 class="font-size-15">Experience :</h5>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <ul class="list-unstyled mb-0 pt-1">
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Donec vitae libero venenatis faucibus</li>
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Quisque rutrum aenean imperdiet</li>
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Integer ante a consectetuer eget</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col">
-                                        <ul class="list-unstyled mb-0 pt-1">
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Donec vitae libero venenatis faucibus</li>
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Quisque rutrum aenean imperdiet</li>
-                                            <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Integer ante a consectetuer eget</li>
-                                        </ul>
-                                    </div>
+                            <!-- <div class="d-flex align-self-end">
+                                <div class="mt-3 mt-md-0 mb-3">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addInvoiceModal"><i class="mdi mdi-plus me-1"></i> Add Invoice</button>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="d-flex align-items-start">
+                                    <h5 class="font-size-16">MyShop Summary</h5>
+                                    <button type="button" class="btn btn-success btn-sm w-sm ms-auto waves-effect waves-light" onclick="onClick()" data-bs-toggle="modal" data-bs-target=".add-new"><i class="mdi mdi-plus me-1"></i> Add New Shop</button>
+                                    <!-- <button type="button" class="btn btn-secondary btn-sm ms-auto waves-effect waves-light">Small button</button> -->
                                 </div>
                             </div>
 
                             <div class="mt-4">
-                                <h5 class="font-size-16 mb-4">Projects</h5>
                                 <div class="table-responsive">
                                     <table class="table table-nowrap table-hover mb-1">
                                         <thead class="bg-light">
@@ -595,6 +536,64 @@
     </div>
     <!-- end row -->
 
+    <!--  Extra Large modal example -->
+    <div class="modal fade add-new" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <form action="<?= base_url() ?>setting_account/addshop/<?= user()->member_id; ?>" method="post">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myExtraLargeModalLabel">Add New Shop</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <input type="hidden" class="form-control" id="new_id" name="id_shop">
+                                    <input type="hidden" class="form-control" name="member_id" value="<?= user()->member_id; ?>">
+                                    <label class="form-label">Shop Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter Shop Name" name="name_shop">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Marketplace</label>
+                                    <select class="form-select" name="marketpace">
+                                        <option selected>Select Marketplace</option>
+                                        <option>Lazada</option>
+                                        <option>Shopee</option>
+                                        <option>Tokopedia</option>
+                                        <option>Dropshiper</option>
+                                        <option>Reseller</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" placeholder="Enter Phone" name="phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Address Shop</label>
+                                    <input type="text" class="form-control" placeholder="Enter Address" id="address">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal"><i class="bx bx-x me-1 align-middle"></i> Cancel</button>
+                                <button type="submit" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Submit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </form>
+    </div><!-- /.modal -->
 
 
 
@@ -602,5 +601,33 @@
 
 
 </div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+
+<script>
+    function generateUUID() { // Public Domain/MIT
+        var d = new Date().getTime(); //Timestamp
+        var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0; //Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16; //random number between 0 and 16
+            if (d > 0) { //Use timestamp until depleted
+                r = (d + r) % 16 | 0;
+                d = Math.floor(d / 16);
+            } else { //Use microseconds since page-load if supported
+                r = (d2 + r) % 16 | 0;
+                d2 = Math.floor(d2 / 16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    var onClick = function() {
+        // document.getElementById('new_user_id').textContent = generateUUID().replace("-","").substring(0,8);
+        // document.getElementById('new_user_id').val(generateUUID().replace("-","").substring(0,8));
+        $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
+        // $('#new_image_name_user').val(data.file_name);
+    }
+    // onClick();
+</script>
 
 <?= $this->endSection(); ?>
