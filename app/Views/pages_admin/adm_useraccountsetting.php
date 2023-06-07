@@ -142,92 +142,44 @@
                                         <thead class="bg-light">
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Projects</th>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Budget</th>
+                                                <th scope="col">Shop</th>
+                                                <th scope="col">Marketplace</th>
+                                                <th scope="col">Address</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col" style="width: 120px;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">01</th>
-                                                <td><a href="#" class="text-dark">Brand Logo Design</a></td>
-                                                <td>
-                                                    18 Jun, 2021
-                                                </td>
-                                                <td>
-                                                    $523
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-soft-primary font-size-12">Open</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a class="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </a>
-
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" href="#">Action</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else here</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">02</th>
-                                                <td><a href="#" class="text-dark">Chat app Design</a></td>
-                                                <td>
-                                                    28 May, 2021
-                                                </td>
-                                                <td>
-                                                    $356
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-soft-success font-size-12">Complete</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a class="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </a>
-
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" href="#">Action</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else here</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">03</th>
-                                                <td><a href="#" class="text-dark">Minible Landing</a></td>
-                                                <td>
-                                                    13 May, 2021
-                                                </td>
-                                                <td>
-                                                    $425
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-soft-success font-size-12">Complete</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a class="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </a>
-
-                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                            <a class="dropdown-item" href="#">Action</a>
-                                                            <a class="dropdown-item" href="#">Another action</a>
-                                                            <a class="dropdown-item" href="#">Something else here</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <?php $i = 1; ?>
+                                            <?php foreach ($datashop as $shop) : ?>
+                                                <tr>
+                                                    <th scope="row"><?= $i++; ?></th>
+                                                    <td><a href="#" class="text-dark"><?= $shop['name_shop']; ?></a></td>
+                                                    <td>
+                                                        <?= $shop['marketplace']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= $shop['address_shop']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($shop['name_shop'] == 1) { ?>
+                                                            <span class="badge badge-soft-primary font-size-12">Active</span>
+                                                        <?php } else { ?>
+                                                            <span class="badge badge-soft-danger font-size-12">Off</span>
+                                                        <?php } ?>
+                                                    </td>
+                                                    <td>
+                                                        <ul class="list-inline mb-0">
+                                                            <li class="list-inline-item">
+                                                                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-primary" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-pencil font-size-18"></i></a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>

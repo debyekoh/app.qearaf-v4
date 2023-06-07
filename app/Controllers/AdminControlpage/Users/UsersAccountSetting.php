@@ -3,24 +3,33 @@
 namespace App\Controllers\AdminControlpage\Users;
 
 use App\Controllers\BaseController;
+// use App\Models\UserModel;
+use App\Models\UserProfileModel;
 use App\Models\ShopModel;
 
 
 class UsersAccountSetting extends BaseController
 {
-    protected $db, $builder;
+    // protected $userModel;
+    // protected $db, $builder;
     protected $helpers = ['form'];
+    protected $userProfileModel;
+    protected $shopModel;
 
     public function __construct()
     {
-        $this->db      = \Config\Database::connect();
-        $this->builder = $this->db->table('users');
+        // $this->db      = \Config\Database::connect();
+        // $this->builder = $this->db->table('users');
+        // $this->userModel = new UserModel();
+        $this->userProfileModel = new userProfileModel();
+        $this->shopModel = new ShopModel();
     }
 
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Account Setting'
+            'titlepage' => 'Account Setting',
+            'datashop' => $this->shopModel->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);
     }
@@ -28,14 +37,14 @@ class UsersAccountSetting extends BaseController
     public function edit()
     {
         helper(['form', 'text']);
-        $session = session();
-        $query = $this->builder->get();
-        $head_page =
-            '
-                <!--+++ DataTables css -->
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-                <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
-            ';
+        // $session = session();
+        // $query = $this->builder->get();
+        // $head_page =
+        //     '
+        //         <!--+++ DataTables css -->
+        //         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        //         <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+        //     ';
 
         $js_page =
             '
@@ -46,6 +55,7 @@ class UsersAccountSetting extends BaseController
             // 'head_page' => $head_page,
             'js_page' => $js_page,
             'validation' => \Config\Services::validation()
+
             // 'datausers' => $query->getResult()
         );
         return view('pages_admin/adm_useraccountsetting_update', $datapage);
@@ -76,17 +86,20 @@ class UsersAccountSetting extends BaseController
         // d($this->request->getVar());
 
         $data = array(
+            // 'member_id' => $this->request->getVar('member_id'),
             'username'  => $this->request->getVar('username'),
             'fullname'  => $this->request->getVar('fullname'),
             'phone'     => $this->request->getVar('phone'),
             'email'     => $this->request->getVar('email'),
             'address'   => $this->request->getVar('address'),
+            'updated_at' => date('Y-m-d H:i:s')
         );
 
-        $this->builder->where('member_id', $member_id);
-        $this->builder->update($data);
+        // $this->builder->where('member_id', $member_id);
+        // $this->builder->update($data);
+        $this->userProfileModel->update(['member_id' => $member_id], $data);
 
-        if ($this->db->affectedRows() > 0) {
+        if ($this->userProfileModel->affectedRows() > 0) {
             session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
         }
         session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
@@ -95,7 +108,7 @@ class UsersAccountSetting extends BaseController
 
     public function addshop($member_id)
     {
-        session();
+
         $member_id_form_hidden = $this->request->getVar('member_id');
         if ($member_id != $member_id_form_hidden) {
             session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
@@ -105,19 +118,10 @@ class UsersAccountSetting extends BaseController
             session()->setFlashdata('error', 'Gagal Menambahkan Toko, Pastikan memilih Marketplace yang di inginkan..');
             return redirect()->to('/setting_account');
         }
-
-        $rules = [
-            'id_shop' => 'required|min_length[20]',
-            'member_id' => 'required|min_length[10]',
-            'name_shop' => 'required|min_length[10]',
-            'marketplace' => 'required|min_length[10]',
-            'phone' => 'required|min_length[10]',
-            'address_shop' => 'required|min_length[10]',
-        ];
-
-        if (!$this->validate($rules)) {
-            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
-            return redirect()->to('/setting_account')->withInput();
+        if ($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find() != null) {
+            $msg = $this->request->getVar('name_shop') . ' Sudah Digunakan, Silahkan ganti yang Lain..';
+            session()->setFlashdata('error', $msg);
+            return redirect()->to('/setting_account');
         }
 
         $data = array(
@@ -129,17 +133,15 @@ class UsersAccountSetting extends BaseController
             'address_shop'  => $this->request->getVar('address_shop'),
         );
 
-        // dd($data);
+        // dd($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find());
 
-        $shopModel = new ShopModel();
-        $shopModel->insert($data);
-        if ($this->db->affectedRows() > 0) {
-            $msg = $this->request->getVar('name_shop') . ' Berhasil di Simpan';
+
+        $this->shopModel->insert($data);
+        if ($this->shopModel->affectedRows() > 0) {
+            $msg = $this->request->getVar('name_shop') . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
             return redirect()->to('/setting_account');
         }
-        session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
-        return redirect()->to('/setting_account');
 
         // $this->builder->where('member_id', $member_id);
         // $this->builder->update($data);
