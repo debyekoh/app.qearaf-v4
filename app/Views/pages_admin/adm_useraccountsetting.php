@@ -552,13 +552,13 @@
                                     <input type="hidden" class="form-control" id="new_id" name="id_shop">
                                     <input type="hidden" class="form-control" name="member_id" value="<?= user()->member_id; ?>">
                                     <label class="form-label">Shop Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Shop Name" name="name_shop">
+                                    <input type="text" class="form-control" placeholder="Enter Shop Name" name="name_shop" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Marketplace</label>
-                                    <select class="form-select" name="marketpace">
+                                    <select class="form-select" name="marketplace">
                                         <option selected>Select Marketplace</option>
                                         <option>Lazada</option>
                                         <option>Shopee</option>
@@ -572,13 +572,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" placeholder="Enter Phone" name="phone">
+                                    <input type="text" class="form-control" placeholder="Enter Phone" name="phone" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Address Shop</label>
-                                    <input type="text" class="form-control" placeholder="Enter Address" id="address">
+                                    <input type="text" class="form-control" placeholder="Enter Address" name="address_shop" required>
                                 </div>
                             </div>
                         </div>

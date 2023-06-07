@@ -26,7 +26,6 @@ class Shop extends Migration
 
         // Membuat Unique key
         $this->forge->addUniqueKey('id_shop');
-        $this->forge->addUniqueKey('member_id');
         $this->forge->addUniqueKey('name_shop');
 
         // Membuat tabel news

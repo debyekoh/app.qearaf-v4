@@ -106,21 +106,39 @@ class UsersAccountSetting extends BaseController
             return redirect()->to('/setting_account');
         }
 
+        $rules = [
+            'id_shop' => 'required|min_length[20]',
+            'member_id' => 'required|min_length[10]',
+            'name_shop' => 'required|min_length[10]',
+            'marketplace' => 'required|min_length[10]',
+            'phone' => 'required|min_length[10]',
+            'address_shop' => 'required|min_length[10]',
+        ];
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+            return redirect()->to('/setting_account')->withInput();
+        }
+
         $data = array(
-            'id_shop'  => $this->request->getVar('id_shop'),
-            'name_shop'  => $this->request->getVar('name_shop'),
-            'marketpace'     => $this->request->getVar('marketpace'),
-            'phone'     => $this->request->getVar('phone'),
-            'address'   => $this->request->getVar('address'),
+            'id_shop'       => $this->request->getVar('id_shop'),
+            'member_id'     => $this->request->getVar('member_id'),
+            'name_shop'     => $this->request->getVar('name_shop'),
+            'marketplace'   => $this->request->getVar('marketplace'),
+            'phone'         => $this->request->getVar('phone'),
+            'address_shop'  => $this->request->getVar('address_shop'),
         );
 
-        // dd($this->request->getVar());
+        // dd($data);
 
         $shopModel = new ShopModel();
-        $shopModel->save($data);
+        $shopModel->insert($data);
         if ($this->db->affectedRows() > 0) {
-            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+            $msg = $this->request->getVar('name_shop') . ' Berhasil di Simpan';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/setting_account');
         }
+        session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
         return redirect()->to('/setting_account');
 
         // $this->builder->where('member_id', $member_id);
