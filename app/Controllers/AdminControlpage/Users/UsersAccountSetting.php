@@ -5,7 +5,7 @@ namespace App\Controllers\AdminControlpage\Users;
 use App\Controllers\BaseController;
 // use App\Models\UserModel;
 use App\Models\UserProfileModel;
-use App\Models\ShopModel;
+// use App\Models\ShopModel;
 
 
 class UsersAccountSetting extends BaseController
@@ -14,7 +14,7 @@ class UsersAccountSetting extends BaseController
     // protected $db, $builder;
     protected $helpers = ['form'];
     protected $userProfileModel;
-    protected $shopModel;
+    // protected $shopModel;
 
     public function __construct()
     {
@@ -22,13 +22,14 @@ class UsersAccountSetting extends BaseController
         // $this->builder = $this->db->table('users');
         // $this->userModel = new UserModel();
         $this->userProfileModel = new userProfileModel();
-        $this->shopModel = new ShopModel();
+        // $this->shopModel = new ShopModel();
     }
 
     public function index()
     {
         $datapage = array(
             'titlepage' => 'Account Setting',
+            'tabshop' => $this->tabshop,
             'datashop' => $this->shopModel->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);

@@ -119,7 +119,6 @@
             </button>
 
             <div data-simplebar class="sidebar-menu-scroll">
-
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <!-- Left Menu Start -->
@@ -134,13 +133,26 @@
                         </li>
 
                         <li class="menu-title" data-key="t-shopmenu">Shop</li>
-
-                        <li>
-                            <a href="<?= base_url() ?>myshop">
-                                <i class="bx bxs-store icon nav-icon"></i>
-                                <span class="menu-item" data-key="t-myshop">MyShop</span>
-                            </a>
-                        </li>
+                        <?php if ($tabshop == null) { ?>
+                            <li>
+                                <a href="<?= base_url() ?>myshop">
+                                    <i class="bx bxs-store icon nav-icon"></i>
+                                    <span class="menu-item" data-key="t-myshop">MyShop</span>
+                                </a>
+                            </li>
+                        <?php } else { ?>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="bx bxs-cuboid icon nav-icon"></i>
+                                    <span class="menu-item" data-key="t-myshop">MyShop</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <?php foreach ($tabshop as $shop) : ?>
+                                        <li><a href="<?= base_url() ?>myshop" data-key="t-myshop-<?= $shop['name_shop'] ?>"><?= $shop['name_shop'] ?></a></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
+                        <?php } ?>
 
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">

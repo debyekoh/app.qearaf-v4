@@ -35,7 +35,10 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['auth'];
+    protected $helpers = ['auth', 'form'];
+    protected $shopModel;
+    protected $tabshop;
+    protected $session;
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -54,6 +57,8 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
-        $shopModel = new \App\Models\ShopModel();
+        $this->session = \Config\Services::session();
+        $this->shopModel = new \App\Models\ShopModel();
+        $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->findAll();
     }
 }
