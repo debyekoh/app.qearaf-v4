@@ -11,10 +11,10 @@ class Shop extends Migration
         $this->forge->addField([
             'id_shop'          => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
             'member_id'        => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
-            'name_shop'        => ['type' => 'varchar', 'constraint' => 255],
-            'marketplace'      => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
+            'name_shop'        => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
+            'marketplace'      => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'phone'            => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'address_shop'     => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'address_shop'     => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'active'           => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
             'created_at'       => ['type' => 'datetime', 'null' => true],
             'updated_at'       => ['type' => 'datetime', 'null' => true],
@@ -26,7 +26,6 @@ class Shop extends Migration
 
         // Membuat Unique key
         $this->forge->addUniqueKey('id_shop');
-        $this->forge->addUniqueKey('name_shop');
 
         // Membuat tabel news
         $this->forge->createTable('shop', TRUE);
