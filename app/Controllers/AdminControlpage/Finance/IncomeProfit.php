@@ -9,7 +9,8 @@ class IncomeProfit extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Income & Profit'
+            'titlepage' => 'Income & Profit',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_finance', $datapage);
     }

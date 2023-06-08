@@ -75,6 +75,7 @@ $routes->get('/setting_account', 'AdminControlpage\Users\UsersAccountSetting::in
 $routes->get('/setting_account/change', 'AdminControlpage\Users\UsersAccountSetting::edit');
 $routes->post('/setting_account/update/(:any)/(:any)', 'AdminControlpage\Users\UsersAccountSetting::update/$1/$2');
 $routes->post('/setting_account/addshop/(:any)', 'AdminControlpage\Users\UsersAccountSetting::addshop/$1');
+$routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus');
 
 /*
  * --------------------------------------------------------------------

@@ -9,7 +9,8 @@ class InventoryValue extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Inventory Value'
+            'titlepage' => 'Inventory Value',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_finance', $datapage);
     }

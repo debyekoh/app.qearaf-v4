@@ -153,4 +153,19 @@ class UsersAccountSetting extends BaseController
         // session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
         // return redirect()->to('/setting_account');
     }
+
+    public function changeshopstatus()
+    {
+        // user()->member_id
+        $id_shop = $this->request->getPost('d');
+        $new_status = $this->request->getPost('ss');
+        $data = array(
+            'active' => $new_status,
+        );
+        $this->shopModel->update(['id_shop' => $id_shop], $data);
+        if ($this->shopModel->affectedRows() > 0) {
+            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+            echo json_encode(array("status" => TRUE));
+        }
+    }
 }

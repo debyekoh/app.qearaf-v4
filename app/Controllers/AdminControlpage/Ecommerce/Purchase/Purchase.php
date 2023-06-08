@@ -9,7 +9,8 @@ class Purchase extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Purchase'
+            'titlepage' => 'Purchase',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_purchase', $datapage);
     }
@@ -17,7 +18,8 @@ class Purchase extends BaseController
     public function create()
     {
         $datapage = array(
-            'titlepage' => 'Add New Purchase'
+            'titlepage' => 'Add New Purchase',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_purchase', $datapage);
     }

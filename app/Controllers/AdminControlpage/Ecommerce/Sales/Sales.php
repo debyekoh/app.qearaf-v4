@@ -9,7 +9,8 @@ class Sales extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Sales'
+            'titlepage' => 'Sales',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_sales', $datapage);
     }
@@ -17,7 +18,8 @@ class Sales extends BaseController
     public function create()
     {
         $datapage = array(
-            'titlepage' => 'Add New Sales'
+            'titlepage' => 'Add New Sales',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_sales', $datapage);
     }

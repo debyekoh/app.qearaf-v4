@@ -9,7 +9,8 @@ class Stock extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Stock'
+            'titlepage' => 'Stock',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_warehouse', $datapage);
     }

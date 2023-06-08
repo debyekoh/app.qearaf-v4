@@ -9,7 +9,8 @@ class Balance extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Balance'
+            'titlepage' => 'Balance',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_finance', $datapage);
     }

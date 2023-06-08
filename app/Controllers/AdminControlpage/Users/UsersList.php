@@ -38,6 +38,7 @@ class UsersList extends BaseController
             ';
         $datapage = array(
             'titlepage' => 'User List',
+            'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
             'datausers' => $query->getResult()

@@ -9,7 +9,8 @@ class Delivery extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Delivery'
+            'titlepage' => 'Delivery',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_delivery', $datapage);
     }

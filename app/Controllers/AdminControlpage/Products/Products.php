@@ -9,7 +9,8 @@ class Products extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'Products'
+            'titlepage' => 'Products',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_products', $datapage);
     }
@@ -17,7 +18,8 @@ class Products extends BaseController
     public function create()
     {
         $datapage = array(
-            'titlepage' => 'Create'
+            'titlepage' => 'Create',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_products', $datapage);
     }

@@ -9,7 +9,8 @@ class HistoryInOut extends BaseController
     public function index()
     {
         $datapage = array(
-            'titlepage' => 'History InOut'
+            'titlepage' => 'History InOut',
+            'tabshop' => $this->tabshop,
         );
         return view('pages_admin/adm_warehouse', $datapage);
     }

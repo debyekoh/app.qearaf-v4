@@ -135,10 +135,11 @@
                             <div class="mt-4">
                                 <?php if ($datashop != null) { ?>
                                     <div class="table-responsive">
-                                        <table class="table table-nowrap table-hover mb-1">
+                                        <table class="table table-nowrap table-hover mb-1" id="table_content">
                                             <thead class="bg-light">
                                                 <tr>
                                                     <th scope="col">#</th>
+                                                    <th scope="col" style="display:none;">ID</th>
                                                     <th scope="col">Shop</th>
                                                     <th scope="col">Marketplace</th>
                                                     <th scope="col">Address</th>
@@ -147,12 +148,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <form action="<?= base_url() ?>setting_account/change_status_shop/<?= user()->member_id; ?>" method="post">
+                                                <form>
+                                                    <?= csrf_field(); ?>
                                                     <?php $i = 1; ?>
                                                     <?php foreach ($datashop as $shop) : ?>
                                                         <tr>
                                                             <th scope="row"><?= $i++; ?></th>
-                                                            <td><a href="#" class="text-dark"><?= $shop['name_shop']; ?></a></td>
+                                                            <td style="display:none;">
+                                                                <p class="d"><?= $shop['id_shop']; ?></p>
+                                                            </td>
+                                                            <td>
+                                                                <?= $shop['name_shop']; ?>
+                                                            </td>
                                                             <td>
                                                                 <?= $shop['marketplace']; ?>
                                                             </td>
@@ -161,12 +168,9 @@
                                                             </td>
                                                             <td>
                                                                 <div class="d-flex flex-wrap gap-2">
-                                                                    <form action="<?= base_url() ?>setting_account/change_status_shop/<?= $shop['id_shop']; ?>" method="post">
-                                                                        <?= csrf_field(); ?>
-                                                                        <input type="checkbox" id="switch<?= $shop['id_shop']; ?>" switch="bool" <?= $shop['active'] == 1 ? 'checked' : null ?> value="<?= $shop['active']; ?>">
-                                                                        <label for="switch<?= $shop['id_shop']; ?>" data-on-label="ON" data-off-label="OFF"></label>
-                                                                        <button type="submit" id="swts<?= $shop['id_shop']; ?>" class="btn btn-success" style="display: none;"><i class=" bx bx-check me-1 align-middle"></i></button>
-                                                                    </form>
+                                                                    <input type="checkbox" class="switch" id="switch<?= $shop['id_shop']; ?>" switch="bool" <?= $shop['active'] == 1 ? 'checked' : null ?> value="<?= $shop['active']; ?>">
+                                                                    <label for="switch<?= $shop['id_shop']; ?>" data-on-label="ON" data-off-label="OFF"></label>
+
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -424,16 +428,57 @@
         $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
     }
 
-    $('#switch3').click(function() {
-        var check = $("#switch3").prop("checked")
-        var check = $(this).val();
-        if (check == 0) {
-            $("#switch3").val(1);
-            console.log('Ganti 1')
+    // var cSt = function() {
+    // $('#switch3').click(function() {
+    // var check = $("#switch3").prop("checked")
+    // var check = $(this).val();
+    // if (check == 0) {
+    //     $("#switch3").val(1);
+    // console.log('Ganti 1')
+    // } else {
+    //     $("#switch3").val(0);
+    //     console.log('Ganti 0')
+    // }
+    // };
+    // $('#table_content tr td:nth-child(5)').click(function() {
+    //     // var check = $(this).val();
+    //     var currentRow = $(this).closest("td");
+    //     var col1 = currentRow.find(".switch").html();
+    //     console.log(col1);
+    //     //your code
+    // });
+
+
+    // $('#table_content tr').click(function() {
+    //     if (!this.rowIndex) return; // skip first row
+    //     var customerId = this.cells[4].val;
+    //     console.log(customerId);
+    // });
+
+    $("#table_content").on('click', '.switch', function() {
+        // get the current row
+        var currentRow = $(this).closest("tr");
+        var s = currentRow.find(".switch").val();
+        if (s != 0) {
+            var ss = 0;
         } else {
-            $("#switch3").val(0);
-            console.log('Ganti 0')
+            var ss = 1;
         }
+        var d = currentRow.find(".d").text();
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url() ?>setting_account/csp",
+            data: {
+                d: d,
+                ss: ss,
+            },
+            success: function(data) {
+                location.reload();
+            }
+        });
+
+
+        // alert(ss);
     });
 </script>
 
