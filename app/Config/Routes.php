@@ -41,6 +41,7 @@ $routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
 
 // Shop
 $routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
+$routes->get('/myshops/(:any)', 'AdminControlpage\Shop\Myshop\Myshop::shops/$1');
 
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');

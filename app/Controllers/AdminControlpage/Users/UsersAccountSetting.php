@@ -10,19 +10,12 @@ use App\Models\UserProfileModel;
 
 class UsersAccountSetting extends BaseController
 {
-    // protected $userModel;
-    // protected $db, $builder;
     protected $helpers = ['form'];
     protected $userProfileModel;
-    // protected $shopModel;
 
     public function __construct()
     {
-        // $this->db      = \Config\Database::connect();
-        // $this->builder = $this->db->table('users');
-        // $this->userModel = new UserModel();
         $this->userProfileModel = new userProfileModel();
-        // $this->shopModel = new ShopModel();
     }
 
     public function index()
@@ -30,7 +23,7 @@ class UsersAccountSetting extends BaseController
         $datapage = array(
             'titlepage' => 'Account Setting',
             'tabshop' => $this->tabshop,
-            'datashop' => $this->shopModel->findAll(),
+            'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);
     }
@@ -53,6 +46,7 @@ class UsersAccountSetting extends BaseController
             ';
         $datapage = array(
             'titlepage' => 'Update Account',
+            'tabshop' => $this->tabshop,
             // 'head_page' => $head_page,
             'js_page' => $js_page,
             'validation' => \Config\Services::validation()
