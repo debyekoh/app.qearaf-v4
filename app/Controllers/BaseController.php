@@ -59,6 +59,6 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
         $this->shopModel = new \App\Models\ShopModel();
-        $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->findAll();
+        $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll();
     }
 }

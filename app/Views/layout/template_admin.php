@@ -148,7 +148,7 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
                                     <?php foreach ($tabshop as $shop) : ?>
-                                        <li><a href="<?= base_url() ?>myshops/<?= $shop['id_shop'] ?>" data-key="t-myshop-<?= $shop['name_shop'] ?>"><?= $shop['name_shop'] ?></a></li>
+                                        <li><a href="<?= base_url() ?>myshops/<?= $shop['id_shop'] ?>" data-key="t-myshop-<?= $shop['marketplace'] ?>-<?= $shop['name_shop'] ?>"><?= $shop['marketplace'] ?> <?= $shop['name_shop'] ?></a></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </li>

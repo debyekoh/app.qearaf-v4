@@ -176,7 +176,7 @@
                                                             <td>
                                                                 <ul class="list-inline mb-0">
                                                                     <li class="list-inline-item">
-                                                                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-primary" data-bs-toggle="modal" data-bs-target=".add-edit" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-pencil font-size-18"></i></a>
+                                                                        <a href="javascript:void(0);" id="btnEdit" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-primary" data-bs-toggle="modal" data-bs-target=".add-edit" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-pencil font-size-18"></i></a>
                                                                     </li>
                                                                     <li class="list-inline-item">
                                                                         <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
@@ -339,8 +339,8 @@
             </div><!-- /.modal-dialog -->
         </form>
     </div><!-- /.modal -->
-    <div class="modal fade add-edit" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-        <form action="<?= base_url() ?>setting_account/changeshop/<?= user()->member_id; ?>" method="post">
+    <div class="modal fade add-edit" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <form action="<?= base_url() ?>setting_account/uds" method="post">
             <?= csrf_field(); ?>
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
@@ -352,17 +352,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <input type="hidden" class="form-control" id="new_id" name="id_shop">
+                                    <input type="hidden" class="form-control" id="id_shop" name="id_shop" value="" required>
                                     <input type="hidden" class="form-control" name="member_id" value="<?= user()->member_id; ?>">
                                     <label class="form-label">Shop Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Shop Name" name="name_shop" required>
+                                    <input type="text" class="form-control" id="name_shop" name="name_shop" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Marketplace</label>
-                                    <select class="form-select" name="marketplace">
-                                        <option selected>Select Marketplace</option>
+                                    <select class="form-select" id="marketplace" name="marketplace">
                                         <option>Lazada</option>
                                         <option>Shopee</option>
                                         <option>Tokopedia</option>
@@ -375,13 +374,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" placeholder="Enter Phone" name="phone" required>
+                                    <input type="text" class="form-control" id="phone" name="phone" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Address Shop</label>
-                                    <input type="text" class="form-control" placeholder="Enter Address" name="address_shop" required>
+                                    <input type="text" class="form-control" id="address_shop" name="address_shop" required>
                                 </div>
                             </div>
                         </div>
@@ -428,33 +427,6 @@
         $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
     }
 
-    // var cSt = function() {
-    // $('#switch3').click(function() {
-    // var check = $("#switch3").prop("checked")
-    // var check = $(this).val();
-    // if (check == 0) {
-    //     $("#switch3").val(1);
-    // console.log('Ganti 1')
-    // } else {
-    //     $("#switch3").val(0);
-    //     console.log('Ganti 0')
-    // }
-    // };
-    // $('#table_content tr td:nth-child(5)').click(function() {
-    //     // var check = $(this).val();
-    //     var currentRow = $(this).closest("td");
-    //     var col1 = currentRow.find(".switch").html();
-    //     console.log(col1);
-    //     //your code
-    // });
-
-
-    // $('#table_content tr').click(function() {
-    //     if (!this.rowIndex) return; // skip first row
-    //     var customerId = this.cells[4].val;
-    //     console.log(customerId);
-    // });
-
     $("#table_content").on('click', '.switch', function() {
         // get the current row
         var currentRow = $(this).closest("tr");
@@ -476,9 +448,30 @@
                 location.reload();
             }
         });
+    });
 
-
-        // alert(ss);
+    $("#table_content").on('click', '#btnEdit', function() {
+        $('#modalEdit').modal('show');
+        var currentRow = $(this).closest("tr");
+        var d = currentRow.find(".d").text();
+        console.log(d);
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url() ?>setting_account/eds",
+            dataType: "JSON",
+            data: {
+                d: d,
+            },
+            success: function(data) {
+                // console.log(data.data.id_shop);
+                $('#id_shop').val(data.data.id_shop);
+                $('#name_shop').val(data.data.name_shop);
+                $('#marketplace').val(data.data.marketplace);
+                $('#phone').val(data.data.phone);
+                $('#address_shop').val(data.data.address_shop);
+                // location.reload();
+            }
+        });
     });
 </script>
 

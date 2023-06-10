@@ -23,7 +23,7 @@ class UsersAccountSetting extends BaseController
         $datapage = array(
             'titlepage' => 'Account Setting',
             'tabshop' => $this->tabshop,
-            'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->findAll(),
+            'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);
     }
@@ -89,8 +89,6 @@ class UsersAccountSetting extends BaseController
             'updated_at' => date('Y-m-d H:i:s')
         );
 
-        // $this->builder->where('member_id', $member_id);
-        // $this->builder->update($data);
         $this->userProfileModel->update(['member_id' => $member_id], $data);
 
         if ($this->userProfileModel->affectedRows() > 0) {
@@ -112,11 +110,6 @@ class UsersAccountSetting extends BaseController
             session()->setFlashdata('error', 'Gagal Menambahkan Toko, Pastikan memilih Marketplace yang di inginkan..');
             return redirect()->to('/setting_account');
         }
-        // if ($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find() != null) {
-        //     $msg = $this->request->getVar('name_shop') . ' Sudah Digunakan, Silahkan ganti yang Lain..';
-        //     session()->setFlashdata('error', $msg);
-        //     return redirect()->to('/setting_account');
-        // }
 
         $data = array(
             'id_shop'       => $this->request->getVar('id_shop'),
@@ -127,24 +120,12 @@ class UsersAccountSetting extends BaseController
             'address_shop'  => $this->request->getVar('address_shop'),
         );
 
-        // dd($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find());
-
-
         $this->shopModel->insert($data);
         if ($this->shopModel->affectedRows() > 0) {
             $msg = $this->request->getVar('name_shop') . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
             return redirect()->to('/setting_account');
         }
-
-        // $this->builder->where('member_id', $member_id);
-        // $this->builder->update($data);
-
-        // if ($this->db->affectedRows() > 0) {
-        //     session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
-        // }
-        // session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
-        // return redirect()->to('/setting_account');
     }
 
     public function editshop()
@@ -166,11 +147,26 @@ class UsersAccountSetting extends BaseController
 
     public function updateshop()
     {
+        $id_shop = $this->request->getVar('id_shop');
+        $data = array(
+            // 'id_shop'       => $this->request->getVar('id_shop'),
+            'name_shop'     => $this->request->getVar('name_shop'),
+            'marketplace'   => $this->request->getVar('marketplace'),
+            'phone'         => $this->request->getVar('phone'),
+            'address_shop'  => $this->request->getVar('address_shop'),
+        );
+
+        $this->shopModel->update(['id_shop' => $id_shop], $data);
+
+        if ($this->shopModel->affectedRows() > 0) {
+            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+        }
+        session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
+        return redirect()->to('/setting_account');
     }
 
     public function changeshopstatus()
     {
-        // user()->member_id
         $id_shop = $this->request->getPost('d');
         $new_status = $this->request->getPost('ss');
         if ($new_status == 1) {
