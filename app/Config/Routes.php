@@ -76,7 +76,9 @@ $routes->get('/setting_account', 'AdminControlpage\Users\UsersAccountSetting::in
 $routes->get('/setting_account/change', 'AdminControlpage\Users\UsersAccountSetting::edit');
 $routes->post('/setting_account/update/(:any)/(:any)', 'AdminControlpage\Users\UsersAccountSetting::update/$1/$2');
 $routes->post('/setting_account/addshop/(:any)', 'AdminControlpage\Users\UsersAccountSetting::addshop/$1');
-$routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus');
+$routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus'); //AjaxModal
+$routes->match(['get', 'post'], '/setting_account/eds', 'AdminControlpage\Users\UsersAccountSetting::editshop'); //AjaxModal
+$routes->post('/setting_account/uds', 'AdminControlpage\Users\UsersAccountSetting::updateshop');
 
 /*
  * --------------------------------------------------------------------

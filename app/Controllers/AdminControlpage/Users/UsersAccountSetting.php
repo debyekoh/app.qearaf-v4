@@ -30,7 +30,7 @@ class UsersAccountSetting extends BaseController
 
     public function edit()
     {
-        helper(['form', 'text']);
+        // helper(['form', 'text']);
         // $session = session();
         // $query = $this->builder->get();
         // $head_page =
@@ -58,7 +58,6 @@ class UsersAccountSetting extends BaseController
 
     public function update($id, $member_id)
     {
-        session();
         $id_form_hidden = $this->request->getVar('user_id');
         $member_id_form_hidden = $this->request->getVar('member_id');
         if ($id != $id_form_hidden && $member_id != $member_id_form_hidden) {
@@ -113,11 +112,11 @@ class UsersAccountSetting extends BaseController
             session()->setFlashdata('error', 'Gagal Menambahkan Toko, Pastikan memilih Marketplace yang di inginkan..');
             return redirect()->to('/setting_account');
         }
-        if ($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find() != null) {
-            $msg = $this->request->getVar('name_shop') . ' Sudah Digunakan, Silahkan ganti yang Lain..';
-            session()->setFlashdata('error', $msg);
-            return redirect()->to('/setting_account');
-        }
+        // if ($this->shopModel->asObject()->where('name_shop', $this->request->getVar('name_shop'))->find() != null) {
+        //     $msg = $this->request->getVar('name_shop') . ' Sudah Digunakan, Silahkan ganti yang Lain..';
+        //     session()->setFlashdata('error', $msg);
+        //     return redirect()->to('/setting_account');
+        // }
 
         $data = array(
             'id_shop'       => $this->request->getVar('id_shop'),
@@ -148,17 +147,43 @@ class UsersAccountSetting extends BaseController
         // return redirect()->to('/setting_account');
     }
 
+    public function editshop()
+    {
+        $id_shop = $this->request->getPost('d');
+        $data = array(
+            'id_shop'       => $this->request->getPost('d'),
+            'name_shop'     => $this->shopModel->find($id_shop)['name_shop'],
+            'marketplace'   => $this->shopModel->find($id_shop)['marketplace'],
+            'phone'         => $this->shopModel->find($id_shop)['phone'],
+            'address_shop'  => $this->shopModel->find($id_shop)['address_shop'],
+        );
+        $response = array(
+            'status'        => 'success',
+            'data'          => $data,
+        );
+        echo json_encode($response);
+    }
+
+    public function updateshop()
+    {
+    }
+
     public function changeshopstatus()
     {
         // user()->member_id
         $id_shop = $this->request->getPost('d');
         $new_status = $this->request->getPost('ss');
+        if ($new_status == 1) {
+            $msg = $this->request->getVar('ns') . ' Berhasil di Aktifkan';
+        } else {
+            $msg = $this->request->getVar('ns') . ' Berhasil di Non Aktifkan';
+        }
         $data = array(
             'active' => $new_status,
         );
         $this->shopModel->update(['id_shop' => $id_shop], $data);
         if ($this->shopModel->affectedRows() > 0) {
-            session()->setFlashdata('success', 'Perubahan Berhasil di Simpan');
+            session()->setFlashdata('info', $msg);
             echo json_encode(array("status" => TRUE));
         }
     }
