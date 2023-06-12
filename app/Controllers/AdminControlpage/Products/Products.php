@@ -3,9 +3,23 @@
 namespace App\Controllers\AdminControlpage\Products;
 
 use App\Controllers\BaseController;
+use App\Models\ProductsCategoryModel;
+use App\Models\ProductsGroupModel;
+use App\Models\ProductsShowModel;
 
 class Products extends BaseController
 {
+    protected $productscategoryModel;
+    protected $productsgroupModel;
+    protected $productsshowModel;
+
+    public function __construct()
+    {
+        $this->productscategoryModel = new ProductsCategoryModel();
+        $this->productsgroupModel = new ProductsGroupModel();
+        $this->productsshowModel = new ProductsShowModel();
+    }
+
     public function index()
     {
         $datapage = array(
@@ -19,15 +33,14 @@ class Products extends BaseController
     {
         $head_page =
             '
-            <link href="assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+            <link href="assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
 
 		
             ';
         $js_page =
             '
-            <script src="assets/js/pages/form-fileuploads.init.js"></script>
-            <script src="assets/libs/dropzone/min/dropzone.min.js"></script>
             <script src="assets/js/pages/ecommerce-choices.init.js"></script>
+            <script src="assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
             
             ';
         $datapage = array(
@@ -35,6 +48,9 @@ class Products extends BaseController
             'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
+            'ProductsCategory' => $this->productscategoryModel->findAll(),
+            'ProductsGroup' => $this->productsgroupModel->findAll(),
+            'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
         );
         return view('pages_admin/adm_products_create', $datapage);
     }

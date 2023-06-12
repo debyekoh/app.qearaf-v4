@@ -3,9 +3,7 @@
 namespace App\Controllers\AdminControlpage\Users;
 
 use App\Controllers\BaseController;
-// use App\Models\UserModel;
 use App\Models\UserProfileModel;
-// use App\Models\ShopModel;
 
 
 class UsersAccountSetting extends BaseController

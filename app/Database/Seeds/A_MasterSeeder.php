@@ -9,6 +9,6 @@ class A_MasterSeeder extends Seeder
     public function run()
     {
         $this->call('TabelUser');
-        // $this->call('AuthPermissions');
+        $this->call('TabelProducts');
     }
 }
