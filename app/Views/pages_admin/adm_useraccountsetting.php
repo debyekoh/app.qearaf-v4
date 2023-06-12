@@ -179,7 +179,7 @@
                                                                         <a href="javascript:void(0);" id="btnEdit" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-primary" data-bs-toggle="modal" data-bs-target=".add-edit" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-pencil font-size-18"></i></a>
                                                                     </li>
                                                                     <li class="list-inline-item">
-                                                                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                                                        <a href="javascript:void(0);" id="btnDel" data-bs-toggle="tooltip" data-bs-placement="top" title="" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>
                                                                     </li>
                                                                 </ul>
                                                             </td>
@@ -472,6 +472,76 @@
                 // location.reload();
             }
         });
+    });
+
+    $("#table_content").on('click', '#btnDel', function() {
+        var currentRow = $(this).closest("tr");
+        var d = currentRow.find(".d").text();
+        $.ajax({
+            type: "GET",
+            url: "<?= base_url() ?>setting_account/dds",
+            dataType: "JSON",
+            data: {
+                d: d,
+            },
+            success: function(data) {
+                var ns = data.name_shop;
+                if (data.respone == "success") {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        html: "Do you want to Remove <u><b>" + data.name_shop + "</b></u> ?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "POST",
+                                url: "<?= base_url() ?>setting_account/dds",
+                                dataType: "JSON",
+                                data: {
+                                    d: d,
+                                    getResp: data.respone,
+                                },
+                                success: function(data) {
+                                    if (data.respone == "deleted") {
+                                        Swal.fire({
+                                            // position: 'top-end',
+                                            icon: 'success',
+                                            title: 'Your work has been saved',
+                                            showConfirmButton: false,
+                                            timer: 5000
+                                        })
+                                        // location.reload();
+                                        // Swal.fire(
+                                        //     'Deleted!',
+                                        //     '<u><b>' + data.name_shop + '</b></u> was successfully removed.',
+                                        //     'success', {
+                                        //         showConfirmButton: false,
+                                        //     }
+                                        // )
+                                        setTimeout(function() {
+                                            window.location.reload();
+                                        }, 4000);
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: 'Something went wrong!',
+                                            showConfirmButton: false,
+                                        })
+                                    }
+                                }
+                            });
+                        }
+                    })
+                }
+
+            }
+        });
+
     });
 </script>
 

@@ -13,6 +13,7 @@ class CreateProducts extends Migration
             'pro_part_no'       => ['type' => 'varchar', 'constraint' => 35, 'null' => false],
             'pro_name'          => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
             'pro_model'         => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
+            'pro_group'         => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
             'pro_kategori'      => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
             'pro_role'          => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
             'pro_active'        => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
@@ -38,6 +39,7 @@ class CreateProducts extends Migration
         ]);
         $this->forge->addKey('pro_id_image', TRUE);
         $this->forge->addUniqueKey('pro_id_image');
+        $this->forge->addForeignKey('pro_id', 'products', 'pro_id', '', 'CASCADE');
         $this->forge->createTable('products_image', TRUE);
 
         $this->forge->addField([
@@ -53,6 +55,7 @@ class CreateProducts extends Migration
         ]);
         $this->forge->addKey('pro_id_price', TRUE);
         $this->forge->addUniqueKey('pro_id_price');
+        $this->forge->addForeignKey('pro_id', 'products', 'pro_id', '', 'CASCADE');
         $this->forge->createTable('products_price', TRUE);
 
         $this->forge->addField([
@@ -67,6 +70,7 @@ class CreateProducts extends Migration
         ]);
         $this->forge->addKey('pro_id_stock', TRUE);
         $this->forge->addUniqueKey('pro_id_stock');
+        $this->forge->addForeignKey('pro_id', 'products', 'pro_id', '', 'CASCADE');
         $this->forge->createTable('products_stock', TRUE);
     }
 

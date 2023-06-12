@@ -42,6 +42,11 @@ $routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
 // Shop
 $routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
 $routes->get('/myshops/(:any)', 'AdminControlpage\Shop\Myshop\Myshop::shops/$1');
+$routes->post('/setting_account/addshop/(:any)', 'AdminControlpage\Users\UsersAccountSetting::addshop/$1');
+$routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus'); //AjaxModal
+$routes->match(['get', 'post'], '/setting_account/eds', 'AdminControlpage\Users\UsersAccountSetting::editshop'); //AjaxModal
+$routes->post('/setting_account/uds', 'AdminControlpage\Users\UsersAccountSetting::updateshop');
+$routes->match(['get', 'post'], '/setting_account/dds', 'AdminControlpage\Users\UsersAccountSetting::deleteshop'); //AjaxModal
 
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
@@ -75,10 +80,7 @@ $routes->get('/userview/(:any)', 'AdminControlpage\Users\UsersList::detail/$1', 
 $routes->get('/setting_account', 'AdminControlpage\Users\UsersAccountSetting::index');
 $routes->get('/setting_account/change', 'AdminControlpage\Users\UsersAccountSetting::edit');
 $routes->post('/setting_account/update/(:any)/(:any)', 'AdminControlpage\Users\UsersAccountSetting::update/$1/$2');
-$routes->post('/setting_account/addshop/(:any)', 'AdminControlpage\Users\UsersAccountSetting::addshop/$1');
-$routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus'); //AjaxModal
-$routes->match(['get', 'post'], '/setting_account/eds', 'AdminControlpage\Users\UsersAccountSetting::editshop'); //AjaxModal
-$routes->post('/setting_account/uds', 'AdminControlpage\Users\UsersAccountSetting::updateshop');
+
 
 /*
  * --------------------------------------------------------------------

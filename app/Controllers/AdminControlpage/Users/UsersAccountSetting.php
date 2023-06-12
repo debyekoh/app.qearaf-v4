@@ -20,9 +20,20 @@ class UsersAccountSetting extends BaseController
 
     public function index()
     {
+        $head_page =
+            '
+            <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
+            ';
+        $js_page =
+            '
+            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            ';
+
         $datapage = array(
             'titlepage' => 'Account Setting',
             'tabshop' => $this->tabshop,
+            'head_page' => $head_page,
+            'js_page' => $js_page,
             'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);
@@ -163,6 +174,30 @@ class UsersAccountSetting extends BaseController
         }
         session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
         return redirect()->to('/setting_account');
+    }
+
+    public function deleteshop()
+    {
+
+        $id_shop = $this->request->getVar('d');
+        $PostresponeGET = $this->request->getVar('getResp');
+        $responeGET = array(
+            'name_shop'   => $this->shopModel->find($id_shop)['marketplace'] . ' ' . $this->shopModel->find($id_shop)['name_shop'],
+            'respone'     => 'success',
+        );
+        $responePOST = array(
+            'name_shop'   => $this->shopModel->find($id_shop)['marketplace'] . ' ' . $this->shopModel->find($id_shop)['name_shop'],
+            'respone'     => 'deleted',
+        );
+        if ($id_shop != null && $PostresponeGET == null) {
+            echo json_encode($responeGET);
+        }
+        if ($id_shop != null && $PostresponeGET != null) {
+            $this->shopModel->delete($id_shop);
+            if ($this->shopModel->affectedRows() > 0) {
+                echo json_encode($responePOST);
+            }
+        }
     }
 
     public function changeshopstatus()
