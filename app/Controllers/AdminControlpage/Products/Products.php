@@ -54,4 +54,34 @@ class Products extends BaseController
         );
         return view('pages_admin/adm_products_create', $datapage);
     }
+
+    public function save()
+    {
+        $name_product = $this->request->getVar();
+        $data = array(
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_name'          => $this->request->getVar('productname'),
+            'pro_model'         => $this->request->getVar('productmodel'),
+            'pro_part_no'       => $this->request->getVar('skunumber'),
+            'pro_group'         => $this->request->getVar('choicesproductgroup'),
+            'pro_category'      => $this->request->getVar('choicesproductcategory'),
+            'pro_show'          => $this->request->getVar('choicesproductshow'),
+            'pro_current_stock' => $this->request->getVar('currentstock'),
+            'pro_min_stock'     => $this->request->getVar('minstock'),
+            'pro_max_stock'     => $this->request->getVar('maxstock'),
+            'pro_price_basic'   => $this->request->getVar('basicprice'),
+            'pro_price_reseler' => $this->request->getVar('resellerprice'),
+            'pro_price_seller'  => $this->request->getVar('sellingprice'),
+            'pro_brand'         => $this->request->getVar('brandproduct'),
+            'pro_spec'          => $this->request->getVar('spesification'),
+            'pro_bundling'      => $this->request->getVar('bundingproduct'),
+            'pro_description'   => $this->request->getVar('productdesc'),
+        );
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success create data ' . $name_product['pro_id'],
+            'data' => $data,
+        ]);
+    }
 }

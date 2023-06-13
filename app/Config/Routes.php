@@ -51,6 +51,7 @@ $routes->match(['get', 'post'], '/setting_account/dds', 'AdminControlpage\Users\
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
 $routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'permission:Create']);
+$routes->post('/saveproduct', 'AdminControlpage\Products\Products::save', ['filter' => 'permission:Create']);
 
 // Ecommerce
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');

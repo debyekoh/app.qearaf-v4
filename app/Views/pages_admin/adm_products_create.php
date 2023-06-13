@@ -34,7 +34,8 @@
 
                     <div id="addproduct-productinfo-collapse" class="collapse show" data-bs-parent="#addproduct-accordion">
                         <div class="p-4 border-top">
-                            <form>
+                            <form id="productinfo">
+                                <?= csrf_field(); ?>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-3">
@@ -59,8 +60,8 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="choices-single-group" class="form-label">Product Group</label>
-                                            <select class="form-control" data-trigger name="choices-single-group" id="choices-single-group">
+                                            <label for="choicesproductgroup" class="form-label">Product Group</label>
+                                            <select class="form-control" data-trigger name="choicesproductgroup" id="choicesproductgroup">
                                                 <option value="">Select</option>
                                                 <?php foreach ($ProductsGroup as $Group) { ?>
                                                     <option value="<?= $Group['pro_name_group']; ?>"><?= $Group['pro_name_group']; ?> </option>
@@ -70,8 +71,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="choices-single-category" class="form-label">Product Category</label>
-                                            <select class="form-control" data-trigger name="choices-single-category" id="choices-single-category">
+                                            <label for="choicesproductcategory" class="form-label">Product Category</label>
+                                            <select class="form-control" data-trigger name="choicesproductcategory" id="choicesproductcategory">
                                                 <option value="">Select</option>
                                                 <?php foreach ($ProductsCategory as $Category) { ?>
                                                     <option value="<?= $Category['pro_name_category']; ?>"><?= $Category['pro_name_category']; ?> </option>
@@ -81,8 +82,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="choices-single-show" class="form-label">Product Show</label>
-                                            <select class="form-control" data-trigger name="choices-single-show" id="choices-single-show">
+                                            <label for="choicesproductshow" class="form-label">Product Show</label>
+                                            <select class="form-control" data-trigger name="choicesproductshow" id="choicesproductshow">
                                                 <option value="">Select</option>
                                                 <?php foreach ($ProductsShow as $Show) { ?>
                                                     <option value="<?= $Show['pro_id_show']; ?>"><?= $Show['pro_name_show']; ?> </option>
@@ -150,7 +151,7 @@
                                         <label class="form-label" for="price">Bundling Product</label>
                                         <div class="mt-2">
                                             <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                            <input class="form-control" type="checkbox" class="switch form-control" id="switch" switch="bool" value="">
+                                            <input class="form-control" type="checkbox" class="switch form-control" id="switch" name="bundingproduct" switch="bool" value="">
                                             <label for="switch" data-on-label="ON" data-off-label="OFF"></label>
                                         </div>
                                     </div>
@@ -159,7 +160,7 @@
 
                                 <div class="mb-0">
                                     <label class="form-label" for="productdesc">Product Description</label>
-                                    <textarea class="form-control" id="productdesc" placeholder="Enter Description" rows="4"></textarea>
+                                    <textarea class="form-control" id="productdesc" name="productdesc" placeholder="Enter Description" rows="4"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -269,8 +270,10 @@
 
     <div class="row mb-4">
         <div class="col text-end">
-            <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
-            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#success-btn"> <i class=" bx bx-file me-1"></i> Save </a>
+            <!-- <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a> -->
+            <!-- <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#success-btn"> <i class=" bx bx-file me-1"></i> Save </a> -->
+            <!-- <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal"><i class="bx bx-x me-1 align-middle"></i> Cancel</button> -->
+            <button type="submit" id="submit" onclick="return formSubmit();" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Submit</button>
         </div> <!-- end col -->
     </div> <!-- end row-->
 
@@ -299,6 +302,46 @@
     $(document).ready(function() {
         $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
     });
+
+    // $("#submit").on('click', '#productinfo', function() {
+    //     console.log('submit');
+    // })
+
+    function formSubmit() {
+        // console.log($("#productinfo").html(data));
+        // $("#productinfo").serialize() // returns all the data in your form
+        $.ajax({
+            url: '<?= base_url() ?>saveproduct',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data: $("#productinfo").serialize(),
+            success: function(data, textStatus, jqXHR) {
+                console.info(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                var errorMessage = jqXHR.responseText;
+                if (errorMessage.length > 0) {
+                    alert(errorMessage);
+                }
+            }
+        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: 'your url',
+        //     data: $("#registerSubmit").serialize(),
+        //     success: function() {
+        //         //success message mybe...
+        //     }
+        // });
+
+    }
+
+
+
+    // $("productinfo").on("submit", function(event) {
+    //     event.preventDefault();
+    //     console.log($(this).serialize());
+    // });
 </script>
 
 <?= $this->endSection(); ?>

@@ -52,7 +52,7 @@ class CreateProducts extends Migration
             'pro_model'         => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
             'pro_brand'         => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
             'pro_spec'          => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
-            'pro_kategori'      => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
+            'pro_category'      => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
             'pro_group'         => ['type' => 'varchar', 'constraint' => 25, 'null' => true],
             'pro_show'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
             'pro_active'        => ['type' => 'tinyint', 'constraint' => 1, 'null' => 0, 'default' => 0],
@@ -65,7 +65,7 @@ class CreateProducts extends Migration
         $this->forge->addKey('pro_id', TRUE);
         $this->forge->addUniqueKey('pro_id');
         $this->forge->addUniqueKey('pro_part_no');
-        $this->forge->addForeignKey('pro_kategori', 'products_category', 'pro_name_category', '', 'CASCADE');
+        $this->forge->addForeignKey('pro_category', 'products_category', 'pro_name_category', '', 'CASCADE');
         $this->forge->addForeignKey('pro_group', 'products_group', 'pro_name_group', '', 'CASCADE');
         $this->forge->addForeignKey('pro_show', 'auth_groups', 'id', '', 'CASCADE');
         $this->forge->createTable('products', TRUE);
@@ -105,7 +105,7 @@ class CreateProducts extends Migration
             'pro_id'            => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
             'pro_current_stock' => ['type' => 'int', 'null' => true],
             'pro_min_stock'     => ['type' => 'float', 'null' => true],
-            'pro_mmax_stock'    => ['type' => 'float', 'null' => true],
+            'pro_max_stock'    => ['type' => 'float', 'null' => true],
             'created_at'        => ['type' => 'datetime', 'null' => true],
             'updated_at'        => ['type' => 'datetime', 'null' => true],
             'deleted_at'        => ['type' => 'datetime', 'null' => true],
