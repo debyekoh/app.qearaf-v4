@@ -34,13 +34,14 @@ class Products extends BaseController
         $head_page =
             '
             <link href="assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
-
-		
+	
             ';
         $js_page =
             '
             <script src="assets/js/pages/ecommerce-choices.init.js"></script>
             <script src="assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
             
             ';
         $datapage = array(
@@ -51,12 +52,34 @@ class Products extends BaseController
             'ProductsCategory' => $this->productscategoryModel->findAll(),
             'ProductsGroup' => $this->productsgroupModel->findAll(),
             'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
+            'validation' => \Config\Services::validation()
         );
         return view('pages_admin/adm_products_create', $datapage);
     }
 
+
     public function save()
     {
+
+        $rules = [
+            'pro_id' => 'required|min_length[8]',
+            'productname' => 'required|min_length[5]',
+            'productmodel' => 'required|min_length[10]',
+            'skunumber' => 'required|min_length[10]',
+            'choicesproductgroup' => 'required|min_length[10]',
+            'choicesproductcategory' => 'required|min_length[10]',
+            'choicesproductshow' => 'required|min_length[10]',
+            'basicprice' => 'required|min_length[10]',
+            'resellerprice' => 'required|min_length[10]',
+            'sellingprice' => 'required|min_length[10]',
+        ];
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+            return redirect()->back()->withInput();
+        }
+
+
         $name_product = $this->request->getVar();
         $data = array(
             'pro_id'            => $this->request->getVar('pro_id'),
