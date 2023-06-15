@@ -77,52 +77,64 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="<?= isset(session('_ci_validation_errors')['productname']) ? '' : 'mb-3 ' ?>">
                                             <label for="choicesproductgroup" class="form-label">Product Group</label>
-                                            <select class="form-control <?= isset(session('_ci_validation_errors')['choicesproductgroup']) ? 'is-invalid' : '' ?>" value="<?= (old('choicesproductgroup')); ?>" data-trigger name="choicesproductgroup" id="choicesproductgroup">
-                                                <option value="">Select</option>
+                                            <select class="form-control" data-trigger name="choicesproductgroup" id="choicesproductgroup">
+                                                <?php if (session('failed')) { ?>
+                                                    <option selected value="<?= (old('choicesproductgroup')); ?>"><?= (old('choicesproductgroup')); ?></option>
+                                                <?php } else { ?>
+                                                    <option selected disabled value="">Choose...</option>
+                                                <?php }  ?>
                                                 <?php foreach ($ProductsGroup as $Group) { ?>
                                                     <option value="<?= $Group['pro_name_group']; ?>"><?= $Group['pro_name_group']; ?> </option>
                                                 <?php } ?>
                                             </select>
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['choicesproductgroup']) ? session('_ci_validation_errors')['choicesproductgroup'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
                                         </div>
+                                        <?php if (session('failed')) : ?>
+                                            <div class="mb-3" style="width: 100%;margin-top: 0.25rem;font-size: 87.5%;color: #ed5555;">
+                                                <?= isset(session('_ci_validation_errors')['choicesproductgroup']) ? session('_ci_validation_errors')['choicesproductgroup'] : null; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="<?= isset(session('_ci_validation_errors')['choicesproductcategory']) ? '' : 'mb-3 ' ?>">
                                             <label for="choicesproductcategory" class="form-label">Product Category</label>
-                                            <select class="form-control <?= isset(session('_ci_validation_errors')['choicesproductcategory']) ? 'is-invalid' : '' ?>" value="<?= (old('choicesproductcategory')); ?>" data-trigger name="choicesproductcategory" id="choicesproductcategory">
-                                                <option value="">Select</option>
+                                            <select class="form-control" data-trigger name="choicesproductcategory" id="choicesproductcategory">
+                                                <?php if (session('failed')) { ?>
+                                                    <option selected value="<?= (old('choicesproductcategory')); ?>"><?= (old('choicesproductcategory')); ?></option>
+                                                <?php } else { ?>
+                                                    <option selected disabled value="">Choose...</option>
+                                                <?php }  ?>
                                                 <?php foreach ($ProductsCategory as $Category) { ?>
                                                     <option value="<?= $Category['pro_name_category']; ?>"><?= $Category['pro_name_category']; ?> </option>
                                                 <?php } ?>
                                             </select>
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['choicesproductcategory']) ? session('_ci_validation_errors')['choicesproductcategory'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
                                         </div>
+                                        <?php if (session('failed')) : ?>
+                                            <div class="mb-3" style="width: 100%;margin-top: 0.25rem;font-size: 87.5%;color: #ed5555;">
+                                                <?= isset(session('_ci_validation_errors')['choicesproductcategory']) ? session('_ci_validation_errors')['choicesproductcategory'] : null; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="<?= isset(session('_ci_validation_errors')['choicesproductshow']) ? '' : 'mb-3 ' ?>">
                                             <label for="choicesproductshow" class="form-label">Product Show</label>
-                                            <select class="form-control <?= isset(session('_ci_validation_errors')['choicesproductshow']) ? 'is-invalid' : '' ?>" value="<?= (old('choicesproductshow')); ?>" data-trigger name="choicesproductshow" id="choicesproductshow">
-                                                <option value="">Select</option>
+                                            <select class="form-control" data-trigger name="choicesproductshow" id="choicesproductshow">
+                                                <?php if (session('failed')) { ?>
+                                                    <option selected value="<?= (old('choicesproductshow')); ?>"><?= (old('choicesproductshow')); ?></option>
+                                                <?php } else { ?>
+                                                    <option selected disabled value="">Choose...</option>
+                                                <?php }  ?>
                                                 <?php foreach ($ProductsShow as $Show) { ?>
                                                     <option value="<?= $Show['pro_id_show']; ?>"><?= $Show['pro_name_show']; ?> </option>
                                                 <?php } ?>
                                             </select>
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['choicesproductshow']) ? session('_ci_validation_errors')['choicesproductshow'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
                                         </div>
+                                        <?php if (session('failed')) : ?>
+                                            <div class="mb-3" style="width: 100%;margin-top: 0.25rem;font-size: 87.5%;color: #ed5555;">
+                                                <?= isset(session('_ci_validation_errors')['choicesproductshow']) ? session('_ci_validation_errors')['choicesproductshow'] : null; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="row">

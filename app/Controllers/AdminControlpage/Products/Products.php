@@ -62,17 +62,72 @@ class Products extends BaseController
     {
 
         $rules = [
-            'pro_id' => 'required|min_length[8]',
-            'productname' => 'required|min_length[5]',
-            'productmodel' => 'required|min_length[10]',
-            'skunumber' => 'required|min_length[10]',
-            'choicesproductgroup' => 'required|min_length[10]',
-            'choicesproductcategory' => 'required|min_length[10]',
-            'choicesproductshow' => 'required|min_length[10]',
-            'basicprice' => 'required|min_length[10]',
-            'resellerprice' => 'required|min_length[10]',
-            'sellingprice' => 'required|min_length[10]',
+            'pro_id' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Reload This Page',
+                ],
+            ],
+            'productname' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Name.',
+                ],
+            ],
+            'productmodel' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Model.',
+                ],
+            ],
+            'skunumber' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a SKU No.',
+                ],
+            ],
+            'choicesproductgroup' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Group.',
+                ],
+            ],
+            'choicesproductcategory' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Category.',
+                ],
+            ],
+            'choicesproductshow' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Show.',
+                ],
+            ],
+            'basicprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Basic Price.',
+                ],
+            ],
+            'resellerprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Reseller Price.',
+                ],
+            ],
+            'sellingprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a You must fill a Selling Price.',
+                ],
+            ]
         ];
+
+        // if (!$this->request->getVar('bundingproduct')) {
+        //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+        //     return redirect()->back()->withInput();
+        // }
 
         if (!$this->validate($rules)) {
             session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
