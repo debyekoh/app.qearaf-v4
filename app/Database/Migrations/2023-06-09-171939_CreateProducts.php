@@ -103,9 +103,9 @@ class CreateProducts extends Migration
         $this->forge->addField([
             'pro_id_stock'      => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
             'pro_id'            => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
-            'pro_current_stock' => ['type' => 'int', 'null' => true],
-            'pro_min_stock'     => ['type' => 'float', 'null' => true],
-            'pro_max_stock'    => ['type' => 'float', 'null' => true],
+            'pro_current_stock' => ['type' => 'int', 'constraint' => 20, 'null' => true],
+            'pro_min_stock'     => ['type' => 'int', 'constraint' => 20, 'null' => true],
+            'pro_max_stock'    => ['type' => 'int', 'constraint' => 20, 'null' => true],
             'created_at'        => ['type' => 'datetime', 'null' => true],
             'updated_at'        => ['type' => 'datetime', 'null' => true],
             'deleted_at'        => ['type' => 'datetime', 'null' => true],

@@ -75,6 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="<?= isset(session('_ci_validation_errors')['productname']) ? '' : 'mb-3 ' ?>">
@@ -211,8 +212,8 @@
                                         <label class="form-label" for="price">Bundling Product</label>
                                         <div class="mt-2">
                                             <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                            <input class="form-control" type="checkbox" class="switch form-control" id="switch" name="bundingproduct" switch="bool" value="">
-                                            <label for="switch" data-on-label="ON" data-off-label="OFF"></label>
+                                            <input type="checkbox" id="switch" name="bundingproduct" switch="bool" checked value="1" />
+                                            <label for="switch" data-on-label="Yes" data-off-label="No"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -361,7 +362,8 @@
     }
 
     $(document).ready(function() {
-        $('#new_id').val(generateUUID().replace("-", "").substring(0, 8));
+        var string = generateUUID().replace("-", "").substring(0, 8);
+        $('#new_id').val(string.toUpperCase());
     });
 
     // $("#submit").on('click', '#productinfo', function() {

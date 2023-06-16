@@ -23,10 +23,36 @@
                         <div class="row justify-content-center mt-5">
                             <div class="col-md-9">
                                 <div id="countdown" class="countdownlist"></div>
-                            </div> <!-- end col-->
-                        </div> <!-- end row-->
+                            </div>
+                        </div>
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">My<?= ucfirst($titlepage) ?></h4>
+                </div>
+                <div class="card-body">
+                    <div id="table-gridjs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">My<?= ucfirst($titlepage) ?></h4>
+                </div>
+                <div class="card-body">
+                    <div id="table-gridjss"></div>
                 </div>
             </div>
         </div>

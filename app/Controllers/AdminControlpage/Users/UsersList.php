@@ -64,6 +64,7 @@ class UsersList extends BaseController
         $datapage = array(
             'titlepage' => 'User View',
             // 'head_page' => $head_page,
+            'tabshop' => $this->tabshop,
             'datauser' => $query->getRow()
         );
 
