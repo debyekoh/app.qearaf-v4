@@ -1,42 +1,33 @@
 
+// function myFunction() {
+//     alert("I am an alert box!");
+//   }
 
-new gridjs.Grid({
-    columns: ['Product Name', 'Director', 'Producer'],
-    pagination: {
-        limit: 5
-    },
-    sort: !0,
-    search: !0,
-    server: {
-            url: 'http://localhost/app.qearaf-v4/public/myproducts/show',
-            then: data => data.results.map(product => [product.name, product.model, product.image])
-          } 
-}).render(document.getElementById("table-gridjss"));
-
-// const grid = new Grid({
-//   search: true,
-//   columns: ['Title', 'Director', 'Producer'],
-//   server: {
-//     url: 'https://swapi.dev/api/films/',
-//     then: data => data.results.map(movie => [movie.title, movie.director, movie.producer])
-//   } 
-// });
+// $(function () {
+//     $('[data-toggle="tooltip"]').tooltip()
+// })
 
 new gridjs.Grid({
     columns: [{
-        name: "#",
+        name: "Product",
         sort: {
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<div class="form-check font-size-16"><input class="form-check-input" type="checkbox" id="orderidcheck01"><label class="form-check-label" for="orderidcheck01"></label></div>')
+            return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-lg rounded p-1">')
+            // return gridjs.html('<div class="form-check font-size-16"><input class="form-check-input" type="checkbox" id="orderidcheck01"><label class="form-check-label" for="orderidcheck01"></label></div>')
         }
     }, {
         name: "Product Name",
         formatter: function(e) {
             return gridjs.html('<span class="fw-semibold">' + e + "</span>")
         }
-    }, "Model", "Price", {
+    },{
+        name: "SKU N0",
+        formatter: function(e) {
+            return gridjs.html('<span class="skuno">' + e + "</span>")
+        }
+    }, "Price", {
         name: "Status",
         formatter: function(e) {
             switch (e) {
@@ -52,7 +43,22 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<div class="dropdown"><button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-horizontal-rounded"></i></button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="#">Edit</a></li><li><a class="dropdown-item" href="#">Print</a></li><li><a class="dropdown-item" href="#">Delete</a></li></ul></div>')
+            return gridjs.html(
+                    '<li class="list-inline-item">' +
+                        '<form action="editproduct" method="POST">'+
+                            '<input name="_var" value="'+ e +'" hidden>'+
+                            '<button type="submit" class="btn btn-soft-primary btn-rounded waves-effect waves-dark" title="Edit"><i class="far fa-edit font-size-12 align-middle"></i></button>'+
+                        '</form>'+
+                        // '<a href="editproduct/'+ e +'" id="btnEdit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-2 text-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="far fa-edit font-size-18"></i></a>'+
+                    '</li>' +
+                    '<li class="list-inline-item">' +
+                        '<button type="button" class="btn btn-soft-warning btn-rounded waves-effect waves-dark" title="Duplicate"><i class="far fa-edit font-size-16 align-middle"></i></button>'+
+                        // '<a href="duplicateproduct/'+ e +'"  id="btnCop"  data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate" class="px-2 text-primary" data-bs-original-title="Duplicate" aria-label="Duplicate"><i class="far fa-copy font-size-18"></i></a>' +
+                    '</li>'+
+                    '<li class="list-inline-item">' +
+                        '<a href="javascript:void(0);" class="btn btn-soft-primary btn-rounded waves-effect waves-dark" id="btnDel"  data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>' +
+                    '</li>'
+                )
         }
     }],
     pagination: {
@@ -61,31 +67,102 @@ new gridjs.Grid({
     sort: !0,
     search: !0,
     server: {
-        url: 'http://localhost/app.qearaf-v4/public/myproducts/show',
-        then: data => data.results.map(product => [product.no, product.name, product.model, product.price, product.statusproduct])
+        url: './myproducts/show',
+        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price, product.statusproduct , product.skuno])
       } 
-}).render(document.getElementById("table-gridjs")),
-flatpickr("#datepicker-range", {
-    mode: "range"
-}),
-flatpickr("#datepicker-invoice");
-var currentTab = 0;
-function showTab(e) {
-    var t = document.getElementsByClassName("wizard-tab");
-    t[e].style.display = "block",
-    document.getElementById("prevBtn").style.display = 0 == e ? "none" : "inline",
-    e == t.length - 1 ? document.getElementById("nextBtn").innerHTML = "Add" : document.getElementById("nextBtn").innerHTML = "Next",
-    fixStepIndicator(e)
-}
-function nextPrev(e) {
-    var t = document.getElementsByClassName("wizard-tab");
-    t[currentTab].style.display = "none",
-    (currentTab += e) >= t.length && (t[currentTab -= e].style.display = "block"),
-    showTab(currentTab)
-}
-function fixStepIndicator(e) {
-    for (var t = document.getElementsByClassName("list-item"), a = 0; a < t.length; a++)
-        t[a].className = t[a].className.replace(" active", "");
-    t[e].className += " active"
-}
-showTab(currentTab);
+}).render(document.getElementById("table-gridjs"));
+
+
+// $("#table-gridjs").on('click', '#btnEdit', function() {
+//     $('#modalEdit').modal('show');
+//     var currentRow = $(this).closest("tr");
+//     var d = currentRow.find(".fw-semibold").text();
+//     console.log(d);
+//     // $.ajax({
+//     //     type: "POST",
+//     //     url: "<?= base_url() ?>setting_account/eds",
+//     //     dataType: "JSON",
+//     //     data: {
+//     //         d: d,
+//     //     },
+//     //     success: function(data) {
+//     //         // console.log(data.data.id_shop);
+//     //         $('#id_shop').val(data.data.id_shop);
+//     //         $('#name_shop').val(data.data.name_shop);
+//     //         $('#marketplace').val(data.data.marketplace);
+//     //         $('#phone').val(data.data.phone);
+//     //         $('#address_shop').val(data.data.address_shop);
+//     //         // location.reload();
+//     //     }
+//     // });
+// });
+
+$("#table-gridjs").on('click', '#btnDel', function() {
+    var currentRow = $(this).closest("tr");
+    var d = currentRow.find(".skuno").text();
+    $.ajax({
+        type: "GET",
+        url: "./deleteproduct",
+        dataType: "JSON",
+        data: {
+            d: d,
+        },
+        success: function(data) {
+            var ns = data.name_shop;
+            if (data.respone == "success") {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    html: "Do you want to Remove <u><b>" + data.name_shop + "</b></u> ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "./deleteproduct",
+                            dataType: "JSON",
+                            data: {
+                                d: d,
+                                getResp: data.respone,
+                            },
+                            success: function(data) {
+                                if (data.respone == "deleted") {
+                                    Swal.fire({
+                                        // position: 'top-end',
+                                        icon: 'success',
+                                        title: data.name_shop+' has been successfully remove',
+                                        showConfirmButton: false,
+                                        timer: 1000
+                                    })
+                                    // location.reload();
+                                    // Swal.fire(
+                                    //     'Deleted!',
+                                    //     '<u><b>' + data.name_shop + '</b></u> was successfully removed.',
+                                    //     'success', {
+                                    //         showConfirmButton: false,
+                                    //     }
+                                    // )
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 1000);
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Something went wrong!',
+                                        showConfirmButton: false,
+                                    })
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+
+        }
+    });
+
+});

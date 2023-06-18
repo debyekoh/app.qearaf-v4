@@ -71,7 +71,7 @@ class CreateProducts extends Migration
         $this->forge->createTable('products', TRUE);
 
         $this->forge->addField([
-            'pro_id_image'      => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
+            'pro_id_image'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'pro_id'            => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
             'pro_image_no'      => ['type' => 'varchar', 'constraint' => 20, 'null' => false],
             'pro_image_name'    => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
