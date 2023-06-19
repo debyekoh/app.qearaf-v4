@@ -256,6 +256,8 @@ class Products extends BaseController
             'pro_max_stock'     => $this->request->getVar('maxstock'),
         );
 
+
+
         // dd($dataStock);
 
         $this->productsModel->insert($dataProduct);
@@ -274,10 +276,11 @@ class Products extends BaseController
         // ]);
     }
 
-    public function edit()
+    public function edit($e)
     {
-        $skuno = $this->request->getVar('_var');
-        $proid = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        // $skuno = $this->request->getVar('_var');
+        $skuno = $e;
+
         if ($this->productsModel->where('pro_part_no', $skuno)->find() == null) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         } else {
@@ -295,45 +298,50 @@ class Products extends BaseController
 
             ';
 
-            $test = $this->productsModel->get();
+            // $test = $this->productsModel->get();
+            $proid = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
             $dataProduct = array(
                 'pro_id'            => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
-                'pro_name'          => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_name'],
-                'pro_model'         => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_model'],
-                'pro_part_no'       => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_part_no'],
-                'pro_group'         => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_group'],
-                'pro_category'      => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_category'],
-                'pro_show'          => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_show'],
+                'pro_name'          => $this->productsModel->find($proid)['pro_name'],
+                'pro_model'         => $this->productsModel->find($proid)['pro_model'],
+                'pro_part_no'       => $this->productsModel->find($proid)['pro_part_no'],
+                'pro_group'         => $this->productsModel->find($proid)['pro_group'],
+                'pro_category'      => $this->productsModel->find($proid)['pro_category'],
+                'pro_show'          => $this->productsModel->find($proid)['pro_show'],
                 'pro_name_show'     => $this->productsshowModel->find($this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_show'])['pro_name_show'],
-                'pro_brand'         => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_brand'],
-                'pro_spec'          => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_spec'],
-                'pro_bundling'      => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_bundling'],
-                'pro_description'   => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_description'],
+                'pro_brand'         => $this->productsModel->find($proid)['pro_brand'],
+                'pro_spec'          => $this->productsModel->find($proid)['pro_spec'],
+                'pro_bundling'      => $this->productsModel->find($proid)['pro_bundling'],
+                'pro_description'   => $this->productsModel->find($proid)['pro_description'],
             );
+            $proidprice = $this->productspriceModel->where('pro_id', $proid)->find()[0]['pro_id_price'];
             $dataPrice = array(
-                'pro_id_price'      => $this->request->getVar('pro_id') . '-P-' . str_replace(' ', '', $this->request->getVar('skunumber')),
-                'pro_id'            => $this->request->getVar('pro_id'),
-                'pro_price_basic'   => $this->request->getVar('basicprice'),
-                'pro_price_reseler' => $this->request->getVar('resellerprice'),
-                'pro_price_seller'  => $this->request->getVar('sellingprice'),
+                // 'pro_id_price'      => $this->productspriceModel->where('pro_id', $proid)->find()[0]['pro_id_price'],
+                'pro_id'            => $this->productspriceModel->find($proid)['pro_id'],
+                'pro_price_basic'   => $this->productspriceModel->find($proid)['pro_price_basic'],
+                'pro_price_reseler' => $this->productspriceModel->find($proid)['pro_price_reseler'],
+                'pro_price_seller'  => $this->productspriceModel->find($proid)['pro_price_seller'],
             );
+            $proidstock = $this->productsstockModel->where('pro_id', $proid)->find()[0]['pro_id_stock'];
             $dataStock = array(
-                'pro_id_stock'      => $this->request->getVar('pro_id') . '-S-' . str_replace(' ', '', $this->request->getVar('skunumber')),
-                'pro_id'            => $this->request->getVar('pro_id'),
-                'pro_current_stock' => $this->request->getVar('currentstock'),
-                'pro_min_stock'     => $this->request->getVar('minstock'),
-                'pro_max_stock'     => $this->request->getVar('maxstock'),
+                // 'pro_id_stock'      => $this->productsstockModel->where('pro_id', $proid)->find()[0]['pro_id_stock'],
+                'pro_id'            => $this->productsstockModel->find($proid)['pro_id'],
+                'pro_current_stock' => $this->productsstockModel->find($proid)['pro_current_stock'],
+                'pro_min_stock'     => $this->productsstockModel->find($proid)['pro_min_stock'],
+                'pro_max_stock'     => $this->productsstockModel->find($proid)['pro_max_stock'],
             );
 
-
+            $dataCurrent = array_merge($dataProduct, $dataPrice, $dataStock);
 
             $datapage = array(
                 'titlepage' => 'Edit',
                 'tabshop' => $this->tabshop,
                 'head_page' => $head_page,
                 'js_page' => $js_page,
-                'DataEdit' => $test,
+                'DataCurrent' => $dataCurrent,
                 'DataProduct' => $dataProduct,
+                'DataPrice' => $dataPrice,
+                'DataStock' => $dataStock,
                 'ProductsCategory' => $this->productscategoryModel->findAll(),
                 'ProductsGroup' => $this->productsgroupModel->findAll(),
                 'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
@@ -343,32 +351,460 @@ class Products extends BaseController
         }
     }
 
-    public function copy($skuno)
+    public function update($e)
     {
-        $head_page =
-            '
+
+        $rules = [
+            'pro_id' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Reload This Page',
+                ],
+            ],
+            'productname' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Name.',
+                ],
+            ],
+            'productmodel' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Model.',
+                ],
+            ],
+            'skunumber' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required'  => 'You must fill a SKU No.',
+                ],
+            ],
+            'choicesproductgroup' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Group.',
+                ],
+            ],
+            'choicesproductcategory' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Category.',
+                ],
+            ],
+            'choicesproductshow' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Show.',
+                ],
+            ],
+            'basicprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Basic Price.',
+                ],
+            ],
+            'resellerprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Reseller Price.',
+                ],
+            ],
+            'sellingprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a You must fill a Selling Price.',
+                ],
+            ]
+        ];
+
+        // if (!$this->request->getVar('bundingproduct')) {
+        //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+        //     return redirect()->back()->withInput();
+        // }
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+            // return redirect()->back()->withInput();
+            return redirect()->to('editproduct/' . $e)->withInput();
+        }
+
+
+        // $name_product = $this->request->getVar();
+        $dataProduct = array(
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_name'          => $this->request->getGetPost('productname'),
+            'pro_model'         => $this->request->getVar('productmodel'),
+            'pro_part_no'       => $this->request->getVar('skunumber'),
+            'pro_group'         => $this->request->getVar('choicesproductgroup'),
+            'pro_category'      => $this->request->getVar('choicesproductcategory'),
+            'pro_show'          => $this->request->getVar('choicesproductshow'),
+            'pro_brand'         => $this->request->getVar('brandproduct'),
+            'pro_spec'          => $this->request->getVar('spesification'),
+            'pro_bundling'      => $this->request->getGetPost('bundingproduct'),
+            'pro_description'   => $this->request->getVar('productdesc'),
+        );
+        $dataPrice = array(
+            // 'pro_id_price'      => $this->request->getVar('pro_id') . '-P-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_price_basic'   => $this->request->getVar('basicprice'),
+            'pro_price_reseler' => $this->request->getVar('resellerprice'),
+            'pro_price_seller'  => $this->request->getVar('sellingprice'),
+        );
+        $dataStock = array(
+            // 'pro_id_stock'      => $this->request->getVar('pro_id') . '-S-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_current_stock' => $this->request->getVar('currentstock'),
+            'pro_min_stock'     => $this->request->getVar('minstock'),
+            'pro_max_stock'     => $this->request->getVar('maxstock'),
+        );
+
+
+
+        $this->productsModel->update(['pro_id' => $this->request->getVar('pro_id')], $dataProduct);
+        $this->productspriceModel->update(['pro_id' => $this->request->getVar('pro_id')], $dataPrice);
+        $this->productsstockModel->update(['pro_id' => $this->request->getVar('pro_id')], $dataStock);
+        if ($this->productsModel->affectedRows() > 0 || $this->productspriceModel->affectedRows() || $this->productsstockModel->affectedRows()) {
+            $msg = $this->request->getVar('productname') . ' Berhasil di Perbarui';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/myproducts');
+        }
+        // if ($this->productsModel->affectedRows() > 0) {
+        //     $msg = $this->request->getVar('productname') . ' Berhasil di Perbarui';
+        //     session()->setFlashdata('success', $msg);
+        //     return redirect()->to('/myproducts');
+        // }
+        session()->setFlashdata('info', 'Tidak Ada Perubahan yang di Simpan');
+        return redirect()->to('/myproducts');
+
+        // return $this->response->setJSON([
+        //     'status' => true,
+        //     'response' => 'Success create data ' . $name_product['pro_id'],
+        //     'data' => $data,
+        // ]);
+    }
+
+    public function copy($e)
+    {
+        // $skuno = $this->request->getVar('_var');
+        $skuno = $e;
+
+        if ($this->productsModel->where('pro_part_no', $skuno)->find() == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            $head_page =
+                '
             <link href="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
-	
+
             ';
-        $js_page =
-            '
+            $js_page =
+                '
             <script src="http://localhost/app.qearaf-v4/public/assets/js/pages/form-createproduct.init.js"></script>
             <script src="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
-            
+
             ';
-        $datapage = array(
-            'titlepage' => 'Duplicate',
-            'tabshop' => $this->tabshop,
-            'head_page' => $head_page,
-            'js_page' => $js_page,
-            'ProductsCategory' => $this->productscategoryModel->findAll(),
-            'ProductsGroup' => $this->productsgroupModel->findAll(),
-            'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
-            'validation' => \Config\Services::validation()
+
+            // $test = $this->productsModel->get();
+            $proid = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+            $dataProduct = array(
+                // 'pro_id'            => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
+                'pro_name'          => $this->productsModel->find($proid)['pro_name'],
+                'pro_model'         => $this->productsModel->find($proid)['pro_model'],
+                'pro_part_no'       => $this->productsModel->find($proid)['pro_part_no'],
+                'pro_group'         => $this->productsModel->find($proid)['pro_group'],
+                'pro_category'      => $this->productsModel->find($proid)['pro_category'],
+                'pro_show'          => $this->productsModel->find($proid)['pro_show'],
+                'pro_name_show'     => $this->productsshowModel->find($this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_show'])['pro_name_show'],
+                'pro_brand'         => $this->productsModel->find($proid)['pro_brand'],
+                'pro_spec'          => $this->productsModel->find($proid)['pro_spec'],
+                'pro_bundling'      => $this->productsModel->find($proid)['pro_bundling'],
+                'pro_description'   => $this->productsModel->find($proid)['pro_description'],
+            );
+            $dataPrice = array(
+                // 'pro_id_price'      => $this->productspriceModel->where('pro_id', $proid)->find()[0]['pro_id_price'],
+                // 'pro_id'            => $this->productspriceModel->find($proid)['pro_id'],
+                'pro_price_basic'   => $this->productspriceModel->find($proid)['pro_price_basic'],
+                'pro_price_reseler' => $this->productspriceModel->find($proid)['pro_price_reseler'],
+                'pro_price_seller'  => $this->productspriceModel->find($proid)['pro_price_seller'],
+            );
+            $dataStock = array(
+                // 'pro_id_stock'      => $this->productsstockModel->where('pro_id', $proid)->find()[0]['pro_id_stock'],
+                // 'pro_id'            => $this->productsstockModel->find($proid)['pro_id'],
+                'pro_current_stock' => $this->productsstockModel->find($proid)['pro_current_stock'],
+                'pro_min_stock'     => $this->productsstockModel->find($proid)['pro_min_stock'],
+                'pro_max_stock'     => $this->productsstockModel->find($proid)['pro_max_stock'],
+            );
+
+
+            $datapage = array(
+                'titlepage' => 'Edit',
+                'tabshop' => $this->tabshop,
+                'head_page' => $head_page,
+                'js_page' => $js_page,
+                'DataProduct' => $dataProduct,
+                'DataPrice' => $dataPrice,
+                'DataStock' => $dataStock,
+                'ProductsCategory' => $this->productscategoryModel->findAll(),
+                'ProductsGroup' => $this->productsgroupModel->findAll(),
+                'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
+                'validation' => \Config\Services::validation()
+            );
+            return view('pages_admin/adm_products_copy', $datapage);
+        }
+    }
+
+    // public function savecopy($e)
+    // {
+    //     // dd($this->request->getVar());
+    //     $rules = [
+    //         'pro_id' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'Reload This Page',
+    //             ],
+    //         ],
+    //         'productname' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must fill a Product Name.',
+    //             ],
+    //         ],
+    //         'productmodel' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must fill a Product Model.',
+    //             ],
+    //         ],
+    //         'skunumber' => [
+    //             'rules'  => 'required|is_unique[products.pro_part_no]',
+    //             'errors' => [
+    //                 'required'  => 'You must fill a SKU No.',
+    //                 'is_unique' => 'SKU No. Already Exist',
+    //             ],
+    //         ],
+    //         'choicesproductgroup' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must choose a Product Group.',
+    //             ],
+    //         ],
+    //         'choicesproductcategory' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must choose a Product Category.',
+    //             ],
+    //         ],
+    //         'choicesproductshow' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must choose a Product Show.',
+    //             ],
+    //         ],
+    //         'basicprice' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must fill a Basic Price.',
+    //             ],
+    //         ],
+    //         'resellerprice' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must fill a Reseller Price.',
+    //             ],
+    //         ],
+    //         'sellingprice' => [
+    //             'rules'  => 'required',
+    //             'errors' => [
+    //                 'required' => 'You must choose a You must fill a Selling Price.',
+    //             ],
+    //         ]
+    //     ];
+
+    //     // if (!$this->request->getVar('bundingproduct')) {
+    //     //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+    //     //     return redirect()->back()->withInput();
+    //     // }
+
+    //     if (!$this->validate($rules)) {
+    //         session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+    //         return redirect()->to('duplicateproduct/TW19REH-0')->withInput();
+    //     }
+
+
+    //     // $name_product = $this->request->getVar();
+    //     $dataProduct = array(
+    //         'pro_id'            => $this->request->getVar('pro_id'),
+    //         'pro_name'          => $this->request->getGetPost('productname'),
+    //         'pro_model'         => $this->request->getVar('productmodel'),
+    //         'pro_part_no'       => $this->request->getVar('skunumber'),
+    //         'pro_group'         => $this->request->getVar('choicesproductgroup'),
+    //         'pro_category'      => $this->request->getVar('choicesproductcategory'),
+    //         'pro_show'          => $this->request->getVar('choicesproductshow'),
+    //         'pro_brand'         => $this->request->getVar('brandproduct'),
+    //         'pro_spec'          => $this->request->getVar('spesification'),
+    //         'pro_bundling'      => $this->request->getGetPost('bundingproduct'),
+    //         'pro_description'   => $this->request->getVar('productdesc'),
+    //     );
+    //     $dataPrice = array(
+    //         'pro_id_price'      => $this->request->getVar('pro_id') . '-P-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+    //         'pro_id'            => $this->request->getVar('pro_id'),
+    //         'pro_price_basic'   => $this->request->getVar('basicprice'),
+    //         'pro_price_reseler' => $this->request->getVar('resellerprice'),
+    //         'pro_price_seller'  => $this->request->getVar('sellingprice'),
+    //     );
+    //     $dataStock = array(
+    //         'pro_id_stock'      => $this->request->getVar('pro_id') . '-S-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+    //         'pro_id'            => $this->request->getVar('pro_id'),
+    //         'pro_current_stock' => $this->request->getVar('currentstock'),
+    //         'pro_min_stock'     => $this->request->getVar('minstock'),
+    //         'pro_max_stock'     => $this->request->getVar('maxstock'),
+    //     );
+
+
+
+    //     // dd($dataStock);
+
+    //     $this->productsModel->insert($dataProduct);
+    //     $this->productspriceModel->insert($dataPrice);
+    //     $this->productsstockModel->insert($dataStock);
+    //     if ($this->shopModel->affectedRows() > 0 && $this->productspriceModel->affectedRows()) {
+    //         $msg = $this->request->getVar('productname') . ' Berhasil di Tambahkan';
+    //         session()->setFlashdata('success', $msg);
+    //         return redirect()->to('/myproducts');
+    //     }
+
+    //     // return $this->response->setJSON([
+    //     //     'status' => true,
+    //     //     'response' => 'Success create data ' . $name_product['pro_id'],
+    //     //     'data' => $data,
+    //     // ]);
+    // }
+    public function savecopy()
+    {
+
+        $rules = [
+            'pro_id' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'Reload This Page',
+                ],
+            ],
+            'productname' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Name.',
+                ],
+            ],
+            'productmodel' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Product Model.',
+                ],
+            ],
+            'skunumber' => [
+                'rules'  => 'required|is_unique[products.pro_part_no]',
+                'errors' => [
+                    'required'  => 'You must fill a SKU No.',
+                    'is_unique' => 'SKU No. Already Exist',
+                ],
+            ],
+            'choicesproductgroup' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Group.',
+                ],
+            ],
+            'choicesproductcategory' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Category.',
+                ],
+            ],
+            'choicesproductshow' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Product Show.',
+                ],
+            ],
+            'basicprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Basic Price.',
+                ],
+            ],
+            'resellerprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must fill a Reseller Price.',
+                ],
+            ],
+            'sellingprice' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a You must fill a Selling Price.',
+                ],
+            ]
+        ];
+
+        // if (!$this->request->getVar('bundingproduct')) {
+        //     session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+        //     return redirect()->back()->withInput();
+        // }
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('failed', 'Perubahan Tidak Berhasil di Simpan..!!!');
+            return redirect()->back()->withInput();
+        }
+
+
+        // $name_product = $this->request->getVar();
+        $dataProduct = array(
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_name'          => $this->request->getGetPost('productname'),
+            'pro_model'         => $this->request->getVar('productmodel'),
+            'pro_part_no'       => $this->request->getVar('skunumber'),
+            'pro_group'         => $this->request->getVar('choicesproductgroup'),
+            'pro_category'      => $this->request->getVar('choicesproductcategory'),
+            'pro_show'          => $this->request->getVar('choicesproductshow'),
+            'pro_brand'         => $this->request->getVar('brandproduct'),
+            'pro_spec'          => $this->request->getVar('spesification'),
+            'pro_bundling'      => $this->request->getGetPost('bundingproduct'),
+            'pro_description'   => $this->request->getVar('productdesc'),
         );
-        return view('pages_admin/adm_products_copy', $datapage);
+        $dataPrice = array(
+            'pro_id_price'      => $this->request->getVar('pro_id') . '-P-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_price_basic'   => $this->request->getVar('basicprice'),
+            'pro_price_reseler' => $this->request->getVar('resellerprice'),
+            'pro_price_seller'  => $this->request->getVar('sellingprice'),
+        );
+        $dataStock = array(
+            'pro_id_stock'      => $this->request->getVar('pro_id') . '-S-' . str_replace(' ', '', $this->request->getVar('skunumber')),
+            'pro_id'            => $this->request->getVar('pro_id'),
+            'pro_current_stock' => $this->request->getVar('currentstock'),
+            'pro_min_stock'     => $this->request->getVar('minstock'),
+            'pro_max_stock'     => $this->request->getVar('maxstock'),
+        );
+
+
+
+        // dd($dataStock);
+
+        $this->productsModel->insert($dataProduct);
+        $this->productspriceModel->insert($dataPrice);
+        $this->productsstockModel->insert($dataStock);
+        if ($this->shopModel->affectedRows() > 0 && $this->productspriceModel->affectedRows()) {
+            $msg = $this->request->getVar('productname') . ' Berhasil di Tambahkan';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/myproducts');
+        }
+
+        // return $this->response->setJSON([
+        //     'status' => true,
+        //     'response' => 'Success create data ' . $name_product['pro_id'],
+        //     'data' => $data,
+        // ]);
     }
 
     public function delete()
