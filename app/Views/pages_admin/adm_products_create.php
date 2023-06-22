@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-    <form id="productinfo" action="<?= base_url() ?>saveproduct" method="POST">
+    <form id="productinfo" action="<?= base_url() ?>saveproduct" method="POST" enctype="multipart/form-data">
         <?= csrf_field(); ?>
 
         <div class="row">
@@ -256,7 +256,7 @@
                         <div id="addproduct-img-collapse" class="collapse" data-bs-parent="#addproduct-accordion">
                             <div class="p-4 border-top">
                                 <!-- <form action="#" class="dropzone"> -->
-                                <div class="fallback">
+                                <!-- <div class="fallback">
                                     <input name="file" type="file" multiple="multiple">
                                 </div>
                                 <div class="dz-message needsclick">
@@ -265,8 +265,12 @@
                                     </div>
 
                                     <h4>Drop files here or click to upload.</h4>
-                                </div>
+                                </div> -->
                                 <!-- </form> -->
+                                <div class="mb-3">
+                                    <label for="propic1" class="form-label">Cover Image</label>
+                                    <input class="form-control" type="file" id="propic1" name="propic1">
+                                </div>
                             </div>
                         </div>
                     </div>
