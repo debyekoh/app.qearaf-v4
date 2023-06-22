@@ -45,18 +45,22 @@ new gridjs.Grid({
         formatter: function(e) {
             return gridjs.html(
                     '<li class="list-inline-item">' +
-                        '<form action="editproduct" method="POST">'+
-                            '<input name="_var" value="'+ e +'" hidden>'+
-                            '<button type="submit" class="btn btn-soft-primary btn-rounded waves-effect waves-dark" title="Edit"><i class="far fa-edit font-size-12 align-middle"></i></button>'+
-                        '</form>'+
-                        // '<a href="editproduct/'+ e +'" id="btnEdit" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-2 text-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="far fa-edit font-size-18"></i></a>'+
+                        // '<form action="editproduct/'+ e +'" method="GET">'+
+                        //     '<input name="_var" value="'+ e +'" hidden>'+
+                        //     '<button type="submit" class="btn btn-soft-primary btn-rounded waves-effect waves-dark" title="Edit"><i class="far fa-edit font-size-12 align-middle"></i></button>'+
+                        // '</form>'+
+                        '<a href="editproduct/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
                     '</li>' +
                     '<li class="list-inline-item">' +
-                        '<button type="button" class="btn btn-soft-warning btn-rounded waves-effect waves-dark" title="Duplicate"><i class="far fa-edit font-size-16 align-middle"></i></button>'+
-                        // '<a href="duplicateproduct/'+ e +'"  id="btnCop"  data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate" class="px-2 text-primary" data-bs-original-title="Duplicate" aria-label="Duplicate"><i class="far fa-copy font-size-18"></i></a>' +
+                        // '<form action="duplicateproduct/'+ e +'" method="GET">'+
+                        //     '<input name="_var" value="'+ e +'" hidden>'+
+                        //     '<button type="submit" class="btn btn-soft-warning btn-rounded waves-effect waves-dark" title="Duplicate"><i class="far fa-copy font-size-12 align-middle"></i></button>'+
+                        // '</form>'+
+                        // '<button type="button" class="btn btn-soft-warning btn-rounded waves-effect waves-dark" title="Duplicate"><i class="far fa-edit font-size-16 align-middle"></i></button>'+
+                        '<a href="duplicateproduct/'+ e +'"  id="btnCop" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate" class="px-3 btn btn-sm btn-soft-warning btn-rounded waves-effect waves-dark" data-bs-original-title="Duplicate" aria-label="Duplicate"><i class="far fa-copy font-size-12"></i></a>' +
                     '</li>'+
                     '<li class="list-inline-item">' +
-                        '<a href="javascript:void(0);" class="btn btn-soft-primary btn-rounded waves-effect waves-dark" id="btnDel"  data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger" data-bs-original-title="Delete" aria-label="Delete"><i class="bx bx-trash-alt font-size-18"></i></a>' +
+                        '<a href="javascript:void(0);" id="btnDel" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-3 btn btn-sm btn-soft-danger btn-rounded waves-effect waves-dark" data-bs-original-title="Delete" aria-label="Delete"><i class="far fa-trash-alt font-size-12"></i></a>' +
                     '</li>'
                 )
         }

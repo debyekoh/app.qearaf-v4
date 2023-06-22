@@ -52,9 +52,11 @@ $routes->match(['get', 'post'], '/setting_account/dds', 'AdminControlpage\Users\
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
 $routes->get('/myproducts/show', 'AdminControlpage\Products\Products::show');
 $routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'permission:Create']);
-$routes->post('/editproduct', 'AdminControlpage\Products\Products::edit', ['filter' => 'permission:Update']);
-$routes->post('/duplicateproduct/(:any)', 'AdminControlpage\Products\Products::copy/$1', ['filter' => 'permission:Create']);
 $routes->post('/saveproduct', 'AdminControlpage\Products\Products::save', ['filter' => 'permission:Create']);
+$routes->get('/editproduct/(:any)', 'AdminControlpage\Products\Products::edit/$1', ['filter' => 'permission:Update']);
+$routes->post('/updateproduct/(:any)', 'AdminControlpage\Products\Products::update/$1', ['filter' => 'permission:Update']);
+$routes->get('/duplicateproduct/(:any)', 'AdminControlpage\Products\Products::copy/$1', ['filter' => 'permission:Create']);
+$routes->post('/copyproduct/(:any)', 'AdminControlpage\Products\Products::savecopy/$1', ['filter' => 'permission:Create']);
 $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Products::delete', ['filter' => 'permission:Create']);
 
 // Ecommerce
