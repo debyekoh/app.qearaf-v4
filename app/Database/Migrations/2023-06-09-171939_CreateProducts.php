@@ -79,9 +79,7 @@ class CreateProducts extends Migration
             'updated_at'        => ['type' => 'datetime', 'null' => true],
             'deleted_at'        => ['type' => 'datetime', 'null' => true],
         ]);
-        $this->forge->addKey('pro_id_image', TRUE);
         $this->forge->addUniqueKey('pro_id_image');
-        $this->forge->addForeignKey('pro_id', 'products', 'pro_id', '', 'CASCADE');
         $this->forge->createTable('products_image', TRUE);
 
         $this->forge->addField([

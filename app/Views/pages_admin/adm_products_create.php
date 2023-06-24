@@ -267,10 +267,73 @@
                                     <h4>Drop files here or click to upload.</h4>
                                 </div> -->
                                 <!-- </form> -->
-                                <div class="mb-3">
-                                    <label for="propic1" class="form-label">Cover Image</label>
-                                    <input class="form-control" type="file" id="propic1" name="propic1">
+
+
+                                <div class="row row-cols-1 row-cols-md-5">
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body h-100">
+                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic1" alt="">
+                                            </div>
+                                            <div class="card-footer" style="padding: 2px;">
+                                                <label for="propic1" class="form-label">Cover Image</label>
+                                                <input class="form-control form-control-sm" type="file" id="propic1" name="propic[]" onchange="previewImage('propic1')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body h-100">
+                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic2" alt="">
+                                            </div>
+                                            <div class="card-footer" style="padding: 2px;">
+                                                <label for="propic2" class="form-label">Cover Image</label>
+                                                <input class="form-control file-control-sm" type="file" id="propic2" name="propic[]" onchange="previewImage('propic2')">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body h-100">
+                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic3" alt="">
+                                            </div>
+                                            <div class="card-footer" style="padding: 2px;">
+                                                <label for="propic3" class="form-label">Cover Image</label>
+                                                <input class="form-control file-control-sm" type="file" id="propic3" name="propic[]" onchange="previewImage('propic3')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body h-100">
+                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic4" alt="">
+                                            </div>
+                                            <div class="card-footer" style="padding: 2px;">
+                                                <label for="propic4" class="form-label">Cover Image</label>
+                                                <input class="form-control file-control-sm" type="file" id="propic4" name="propic[]" onchange="previewImage('propic4')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body h-100">
+                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic5" alt="">
+                                            </div>
+                                            <div class="card-footer" style="padding: 2px;">
+                                                <label for="propic5" class="form-label">Cover Image</label>
+                                                <input class="form-control file-control-sm" type="file" id="propic5" name="propic[]" onchange="previewImage('propic5')">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- <div>
+                                    <label for="propic1" class="form-label">Cover Image</label>
+                                    <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="img-thumbnail image-preview-propic1" alt="" style="width: 100px; height: 100px;">
+                                    <div class="col-sm-10">
+                                        <input class="form-control file-input mt-3" type="file" id="propic1" name="propic[]" onchange="previewImage('propic1')" multiple>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -349,6 +412,22 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 <script>
+    function previewImage(event) {
+        console.log(event);
+        const image = document.querySelector('#' + event + '');
+        const imageLabel = document.querySelector('.' + event + '');
+        const imgPreview = document.querySelector('.image-preview-' + event + '');
+
+        // imageLabel.textContent = image.files[0].name
+
+        const fileimg = new FileReader();
+        fileimg.readAsDataURL(image.files[0]);
+
+        fileimg.onload = function(e) {
+            imgPreview.src = e.target.result;
+        }
+    }
+
     function generateUUID() {
         var d = new Date().getTime();
         var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
