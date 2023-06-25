@@ -255,85 +255,26 @@
 
                         <div id="addproduct-img-collapse" class="collapse" data-bs-parent="#addproduct-accordion">
                             <div class="p-4 border-top">
-                                <!-- <form action="#" class="dropzone"> -->
-                                <!-- <div class="fallback">
-                                    <input name="file" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted mdi mdi-cloud-upload"></i>
-                                    </div>
+                                <div class="row row-cols-1 row-cols-md-5 imagegroup">
 
-                                    <h4>Drop files here or click to upload.</h4>
-                                </div> -->
-                                <!-- </form> -->
-
-
-                                <div class="row row-cols-1 row-cols-md-5">
-                                    <div class="col">
-                                        <div class="card h-100">
-                                            <div class="card-body h-100">
-                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic1" alt="">
-                                            </div>
-                                            <div class="card-footer" style="padding: 2px;">
-                                                <label for="propic1" class="form-label">Cover Image</label>
-                                                <input class="form-control form-control-sm" type="file" id="propic1" name="propic[]" onchange="previewImage('propic1')">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card h-100">
-                                            <div class="card-body h-100">
-                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic2" alt="">
-                                            </div>
-                                            <div class="card-footer" style="padding: 2px;">
-                                                <label for="propic2" class="form-label">Cover Image</label>
-                                                <input class="form-control file-control-sm" type="file" id="propic2" name="propic[]" onchange="previewImage('propic2')">
-                                            </div>
+                                    <div class="col imagecover">
+                                        <div class="card h-100 text-center p-0 imagecard">
+                                            <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image1 p-2" alt="" onclick=" clickImage('1')">
+                                            <small class="mt-2"><label for="image1" class="form-label">Cover Picture</label></small>
+                                            <input class="form-control form-control-sm" type="file" id="image1" name="image[]" onchange="previewImage('image1')" style="display:none;">
                                         </div>
                                     </div>
 
-                                    <div class="col">
-                                        <div class="card h-100">
-                                            <div class="card-body h-100">
-                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic3" alt="">
-                                            </div>
-                                            <div class="card-footer" style="padding: 2px;">
-                                                <label for="propic3" class="form-label">Cover Image</label>
-                                                <input class="form-control file-control-sm" type="file" id="propic3" name="propic[]" onchange="previewImage('propic3')">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card h-100">
-                                            <div class="card-body h-100">
-                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic4" alt="">
-                                            </div>
-                                            <div class="card-footer" style="padding: 2px;">
-                                                <label for="propic4" class="form-label">Cover Image</label>
-                                                <input class="form-control file-control-sm" type="file" id="propic4" name="propic[]" onchange="previewImage('propic4')">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card h-100">
-                                            <div class="card-body h-100">
-                                                <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-propic5" alt="">
-                                            </div>
-                                            <div class="card-footer" style="padding: 2px;">
-                                                <label for="propic5" class="form-label">Cover Image</label>
-                                                <input class="form-control file-control-sm" type="file" id="propic5" name="propic[]" onchange="previewImage('propic5')">
+                                    <div class="col lastcol">
+                                        <div class="card h-100 text-center p-0">
+                                            <div class="card-body">
+                                                <!-- <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image2 p-2" alt="" onclick=" clickImage('2')"> -->
+                                                <button type="button" style="font-size:6rem" onclick="addCard()" class="btn btn-lg btn-outline-light waves-effect waves-light"><i class="bx bx-plus-medical font-size-100 align-middle"></i></button>
+                                                <!-- <small class="mt-2"><strong>Add More...</strong></small> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div>
-                                    <label for="propic1" class="form-label">Cover Image</label>
-                                    <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="img-thumbnail image-preview-propic1" alt="" style="width: 100px; height: 100px;">
-                                    <div class="col-sm-10">
-                                        <input class="form-control file-input mt-3" type="file" id="propic1" name="propic[]" onchange="previewImage('propic1')" multiple>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -398,7 +339,7 @@
 
         <div class="row mb-4">
             <div class="col text-end">
-                <!-- <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a> -->
+                <a href="<?= base_url() ?>myproducts" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                 <!-- <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#success-btn"> <i class=" bx bx-file me-1"></i> Save </a> -->
                 <!-- <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal"><i class="bx bx-x me-1 align-middle"></i> Cancel</button> -->
                 <button type="submit" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Submit</button>
@@ -412,16 +353,38 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 <script>
+    function addCard() {
+        const card = document.querySelectorAll('.imagecard').length + 1;
+        var image = "'image" + card + "'";
+
+
+        $(".lastcol").before(
+            '<div class="col">' +
+            '<div class="card h-100 text-center p-0 imagecard">' +
+            '<img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image' + card + ' p-2" alt="" onclick=" clickImage(' + card + ')">' +
+            '<small class="mt-2"><label for="image' + card + '" class="form-label ">Picture Product ' + card + '</label></small>' +
+            '<input class="form-control form-control-sm" type="file" id="image' + card + '" name="image[]" onchange="previewImage(' + image + ')" style="display:none;">' +
+            '</div>' +
+            '</div>'
+        );
+        console.log(image);
+
+    }
+
+    function clickImage(e) {
+        console.log(e);
+        $('#image' + e + '').trigger('click');
+    }
+
     function previewImage(event) {
         console.log(event);
         const image = document.querySelector('#' + event + '');
         const imageLabel = document.querySelector('.' + event + '');
         const imgPreview = document.querySelector('.image-preview-' + event + '');
 
-        // imageLabel.textContent = image.files[0].name
-
         const fileimg = new FileReader();
         fileimg.readAsDataURL(image.files[0]);
+        console.log(fileimg)
 
         fileimg.onload = function(e) {
             imgPreview.src = e.target.result;

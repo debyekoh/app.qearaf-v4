@@ -255,18 +255,39 @@
 
                         <div id="addproduct-img-collapse" class="collapse" data-bs-parent="#addproduct-accordion">
                             <div class="p-4 border-top">
-                                <!-- <form action="#" class="dropzone"> -->
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple="multiple">
-                                </div>
-                                <div class="dz-message needsclick">
-                                    <div class="mb-3">
-                                        <i class="display-4 text-muted mdi mdi-cloud-upload"></i>
-                                    </div>
+                                <div class="row row-cols-1 row-cols-md-5 imagegroup">
 
-                                    <h4>Drop files here or click to upload.</h4>
+                                    <!-- <div class="col imagecover">
+                                        <div class="card h-100 text-center p-0 imagecard">
+                                            <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image1 p-2" alt="" onclick=" clickImage('1')">
+                                            <small class="mt-2"><label for="image1" class="form-label">Cover Picture</label></small>
+                                            <input class="form-control form-control-sm" type="file" id="image1" name="image[]" onchange="previewImage('image1')" style="display:none;">
+                                        </div>
+                                    </div> -->
+                                    <?php if ($DataImage != null) {
+                                        $a = 1;
+                                        foreach ($DataImage as $img) {
+                                            $i = $a++; ?>
+                                            <div class="col imagecover">
+                                                <div class="card h-100 text-center p-0 imagecard">
+                                                    <img src="<?= base_url() ?>assets/images/product/<?= $img['pro_image_name']; ?>" class="card-img-top image-preview-image<?= $i; ?> p-2" alt="" onclick=" clickImage('<?= $i; ?>')">
+                                                    <small class="mt-2"><label for="image<?= $i; ?>" class="form-label">Picture Product <?= $i; ?></label></small>
+                                                    <input class="form-control form-control-sm" type="file" id="image<?= $i; ?>" name="image[]" onchange="previewImage('image<?= $i; ?>')" style="display:none;">
+                                                </div>
+                                            </div>
+                                    <?php }
+                                    } ?>
+
+                                    <div class="col lastcol">
+                                        <div class="card h-100 text-center p-0">
+                                            <div class="card-body">
+                                                <!-- <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image2 p-2" alt="" onclick=" clickImage('2')"> -->
+                                                <button type="button" style="font-size:6rem" onclick="addCard()" class="btn btn-lg btn-outline-light waves-effect waves-light"><i class="bx bx-plus-medical font-size-100 align-middle"></i></button>
+                                                <!-- <small class="mt-2"><strong>Add More...</strong></small> -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- </form> -->
                             </div>
                         </div>
                     </div>
@@ -331,7 +352,7 @@
 
         <div class="row mb-4">
             <div class="col text-end">
-                <a href="#" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
+                <a href="<?= base_url() ?>myproducts" class="btn btn-danger"> <i class="bx bx-x me-1"></i> Cancel </a>
                 <!-- <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#success-btn"> <i class=" bx bx-file me-1"></i> Save </a> -->
                 <!-- <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal"><i class="bx bx-x me-1 align-middle"></i> Cancel</button> -->
                 <button type="submit" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Submit</button>
@@ -344,5 +365,43 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+<script>
+    function addCard() {
+        const card = document.querySelectorAll('.imagecard').length + 1;
+        var image = "'image" + card + "'";
 
+
+        $(".lastcol").before(
+            '<div class="col">' +
+            '<div class="card h-100 text-center p-0 imagecard">' +
+            '<img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image' + card + ' p-2" alt="" onclick=" clickImage(' + card + ')">' +
+            '<small class="mt-2"><label for="image' + card + '" class="form-label ">Picture Product ' + card + '</label></small>' +
+            '<input class="form-control form-control-sm" type="file" id="image' + card + '" name="image[]" onchange="previewImage(' + image + ')" style="display:none;">' +
+            '</div>' +
+            '</div>'
+        );
+        console.log(image);
+
+    }
+
+    function clickImage(e) {
+        console.log(e);
+        $('#image' + e + '').trigger('click');
+    }
+
+    function previewImage(event) {
+        console.log(event);
+        const image = document.querySelector('#' + event + '');
+        const imageLabel = document.querySelector('.' + event + '');
+        const imgPreview = document.querySelector('.image-preview-' + event + '');
+
+        const fileimg = new FileReader();
+        fileimg.readAsDataURL(image.files[0]);
+        console.log(fileimg)
+
+        fileimg.onload = function(e) {
+            imgPreview.src = e.target.result;
+        }
+    }
+</script>
 <?= $this->endSection(); ?>
