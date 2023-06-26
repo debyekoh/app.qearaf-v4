@@ -625,7 +625,7 @@ class Products extends BaseController
             helper('filesystem');
             foreach ($image as $img) {
                 $target = base_url() . 'assets/images/product/' . $img['pro_image_name'];
-                unlink($target);
+                unlink(FCPATH . 'assets/images/product/' . $img['pro_image_name']);
                 // unlink(base_url() . 'assets/images/product/' . $img['pro_image_name']);
                 // delete_files(base_url() . 'assets/images/product/' . $img['pro_image_name'], true);
             }
