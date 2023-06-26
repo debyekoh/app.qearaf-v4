@@ -52,12 +52,12 @@ $routes->match(['get', 'post'], '/setting_account/dds', 'AdminControlpage\Users\
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
 $routes->get('/myproducts/show', 'AdminControlpage\Products\Products::show');
 $routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'role:SuAdmin']);
-$routes->get('/product/(:any)', 'AdminControlpage\Products\Products::detail/$1');
+$routes->get('/product/(:any)', 'AdminControlpage\Products\Products::detail/$1', ['filter' => 'role:SuAdmin']);
 $routes->post('/saveproduct', 'AdminControlpage\Products\Products::save', ['filter' => 'role:SuAdmin']);
-$routes->get('/editproduct/(:any)', 'AdminControlpage\Products\Products::edit/$1', ['filter' => 'role:SuAdmin']);
-$routes->post('/updateproduct/(:any)', 'AdminControlpage\Products\Products::update/$1', ['filter' => 'role:SuAdmin']);
-$routes->get('/duplicateproduct/(:any)', 'AdminControlpage\Products\Products::copy/$1', ['filter' => 'role:SuAdmin']);
-$routes->post('/copyproduct/(:any)', 'AdminControlpage\Products\Products::savecopy/$1', ['filter' => 'role:SuAdmin']);
+$routes->get('/editproduct/(:any)', 'AdminControlpage\Products\Products::edit/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/updateproduct/(:any)', 'AdminControlpage\Products\Products::update/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/duplicateproduct/(:any)', 'AdminControlpage\Products\Products::copy/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/copyproduct/(:any)', 'AdminControlpage\Products\Products::savecopy/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Products::delete', ['filter' => 'role:SuAdmin']);
 
 // Ecommerce

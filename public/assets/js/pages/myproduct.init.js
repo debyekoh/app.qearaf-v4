@@ -44,7 +44,7 @@ new gridjs.Grid({
         },
         formatter: function(e) {
             console.log(e);
-            if(e[1]==true){
+            if(e[1]==true && e[2]==true){
             return gridjs.html(
                     '<li class="list-inline-item">' +
                         '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
@@ -59,7 +59,16 @@ new gridjs.Grid({
                         '<a href="javascript:void(0);" id="btnDel" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-3 btn btn-sm btn-soft-danger btn-rounded waves-effect waves-dark" data-bs-original-title="Delete" aria-label="Delete"><i class="far fa-trash-alt font-size-12"></i></a>' +
                     '</li>'
                 )
-            } else{
+            } else if(e[1]==true){
+                return gridjs.html(
+                    '<li class="list-inline-item">' +
+                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                    '</li>' +
+                    '<li class="list-inline-item">' +
+                        '<a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
+                    '</li>'
+                )
+            }else{
                 return gridjs.html(
                     '<li class="list-inline-item">' +
                         '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Detail" aria-label="Detail"><i class="bx bxs-detail font-size-12"></i></a>'+
@@ -75,7 +84,7 @@ new gridjs.Grid({
     search: !0,
     server: {
         url: './myproducts/show',
-        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price, product.statusproduct , [product.skuno,product.editable]])
+        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price, product.statusproduct , [product.skuno,product.editable,product.deletable]])
       },
       style: {
         table: {

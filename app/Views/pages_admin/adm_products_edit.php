@@ -158,41 +158,43 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="basicprice">Basic Price</label>
-                                            <input id="basicprice" name="basicprice" placeholder="Enter Basic Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['basicprice']) ? 'is-invalid' : '' ?>" value="<?= (old('basicprice')) ? (old('basicprice')) : $DataPrice['pro_price_basic']; ?>">
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['basicprice']) ? session('_ci_validation_errors')['basicprice'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
+                                <?php if (in_groups('1') == true) : ?>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basicprice">Basic Price</label>
+                                                <input id="basicprice" name="basicprice" placeholder="Enter Basic Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['basicprice']) ? 'is-invalid' : '' ?>" value="<?= (old('basicprice')) ? (old('basicprice')) : $DataPrice['pro_price_basic']; ?>">
+                                                <?php if (session('failed')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= isset(session('_ci_validation_errors')['basicprice']) ? session('_ci_validation_errors')['basicprice'] : null; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="resellerprice">Reseller Price</label>
+                                                <input id="resellerprice" name="resellerprice" placeholder="Enter Reseller Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['resellerprice']) ? 'is-invalid' : '' ?>" value="<?= (old('resellerprice')) ? (old('resellerprice')) : $DataPrice['pro_price_reseler']; ?>">
+                                                <?php if (session('failed')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= isset(session('_ci_validation_errors')['resellerprice']) ? session('_ci_validation_errors')['resellerprice'] : null; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="sellingprice">Selling Price</label>
+                                                <input id="sellingprice" name="sellingprice" placeholder="Enter Selling Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['sellingprice']) ? 'is-invalid' : '' ?>" value="<?= (old('sellingprice')) ? (old('sellingprice')) : $DataPrice['pro_price_seller']; ?>">
+                                                <?php if (session('failed')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= isset(session('_ci_validation_errors')['sellingprice']) ? session('_ci_validation_errors')['sellingprice'] : null; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="resellerprice">Reseller Price</label>
-                                            <input id="resellerprice" name="resellerprice" placeholder="Enter Reseller Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['resellerprice']) ? 'is-invalid' : '' ?>" value="<?= (old('resellerprice')) ? (old('resellerprice')) : $DataPrice['pro_price_reseler']; ?>">
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['resellerprice']) ? session('_ci_validation_errors')['resellerprice'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="sellingprice">Selling Price</label>
-                                            <input id="sellingprice" name="sellingprice" placeholder="Enter Selling Price" type="number" class="form-control <?= isset(session('_ci_validation_errors')['sellingprice']) ? 'is-invalid' : '' ?>" value="<?= (old('sellingprice')) ? (old('sellingprice')) : $DataPrice['pro_price_seller']; ?>">
-                                            <?php if (session('failed')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= isset(session('_ci_validation_errors')['sellingprice']) ? session('_ci_validation_errors')['sellingprice'] : null; ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php endif; ?>
                                 <div class="row">
                                     <div class="col-lg-4">
 
@@ -208,14 +210,16 @@
                                             <input id="spesification" name="spesification" placeholder="Enter Spesification" type="text" class="form-control" value="<?= (old('spesification')) ? (old('spesification')) : $DataProduct['pro_spec']; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="price">Bundling Product</label>
-                                        <div class="mt-2">
-                                            <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                            <input type="checkbox" id="switch" name="bundingproduct" switch="bool" checked value="1" />
-                                            <label for="switch" data-on-label="Yes" data-off-label="No"></label>
+                                    <?php if (in_groups('1') == true) : ?>
+                                        <div class="col-lg-4">
+                                            <label class="form-label" for="price">Bundling Product</label>
+                                            <div class="mt-2">
+                                                <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
+                                                <input type="checkbox" id="switch" name="bundingproduct" switch="bool" checked value="1" />
+                                                <label for="switch" data-on-label="Yes" data-off-label="No"></label>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
 
 

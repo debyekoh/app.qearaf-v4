@@ -83,6 +83,17 @@ class Products extends BaseController
             'productname' => $this->productsModel->findAll(),
         );
 
+        if (in_groups('1') == true || in_groups('2') == true) {
+            $editable = true;
+        } else {
+            $editable = false;
+        }
+        if (in_groups('1') == true) {
+            $deletable = true;
+        } else {
+            $deletable = false;
+        }
+
         $data = array();
         $row = array();
         $no = 0;
@@ -96,6 +107,8 @@ class Products extends BaseController
                 "skuno" => $i->pro_part_no,
                 "price" => $i->pro_price_seller,
                 "statusproduct" => $i->pro_active,
+                "editable" => $editable,
+                "deletable" => $deletable,
                 "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
             ];
             $data[] = $row;
@@ -120,10 +133,6 @@ class Products extends BaseController
             'results' => $data,
         ]);
     }
-
-
-
-
 
 
     public function save()
@@ -601,6 +610,8 @@ class Products extends BaseController
         $responeGET = array(
             'name_shop'   => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
             'respone'     => 'success',
+            'image'     => $this->productsimageModel->where('pro_id', $pro_id)->findAll(),
+
         );
         $responePOST = array(
             'name_shop'   => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
@@ -610,7 +621,18 @@ class Products extends BaseController
             echo json_encode($responeGET);
         }
         if ($pro_id != null && $PostresponeGET != null) {
+            $image = $this->productsimageModel->where('pro_id', $pro_id)->findAll();
+            helper('filesystem');
+            foreach ($image as $img) {
+                $target = base_url() . 'assets/images/product/' . $img['pro_image_name'];
+                unlink($target);
+                // unlink(base_url() . 'assets/images/product/' . $img['pro_image_name']);
+                // delete_files(base_url() . 'assets/images/product/' . $img['pro_image_name'], true);
+            }
+            // dd($target);
+            $this->productsimageModel->delete($pro_id);
             $this->productsModel->delete($pro_id);
+
             if ($this->productsModel->affectedRows() > 0) {
                 echo json_encode($responePOST);
             }
