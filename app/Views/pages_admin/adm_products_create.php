@@ -255,23 +255,30 @@
 
                         <div id="addproduct-img-collapse" class="collapse" data-bs-parent="#addproduct-accordion">
                             <div class="p-4 border-top">
-                                <div class="row row-cols-1 row-cols-md-5 imagegroup">
+                                <div class="row row-cols-1 row-cols-md-6 imagegroup">
 
-                                    <div class="col imagecover">
-                                        <div class="card h-100 text-center p-0 imagecard">
-                                            <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image1 p-2" alt="" onclick=" clickImage('1')">
-                                            <small class="mt-2"><label for="image1" class="form-label">Cover Picture</label></small>
+                                    <div class="col imagecover p-1">
+                                        <div class="card border-secondary h-100 text-center p-0 imagecard containerprd" style="border: dotted; margin:0px;">
+                                            <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="img-fluid rounded imageprd image-preview-image1 p-2 " style="aspect-ratio: 1/1;" alt="">
+                                            <small class="mt-2" hidden><label for="image1" class="form-label">Cover Picture</label></small>
                                             <input class="form-control form-control-sm" type="file" id="image1" name="image[]" onchange="previewImage('image1')" style="display:none;">
+
+                                            <div class="middle">
+                                                <button type="button" onclick=" clickImage('1')" class="btn btn-lg btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Change Picture">
+                                                    <i class="bx bx-edit font-size-16 align-middle"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="col lastcol">
-                                        <div class="card h-100 text-center p-0">
-                                            <div class="card-body">
-                                                <!-- <img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image2 p-2" alt="" onclick=" clickImage('2')"> -->
-                                                <button type="button" style="font-size:6rem" onclick="addCard()" class="btn btn-lg btn-outline-light waves-effect waves-light"><i class="bx bx-plus-medical font-size-100 align-middle"></i></button>
-                                                <!-- <small class="mt-2"><strong>Add More...</strong></small> -->
-                                            </div>
+                                    <div class="col lastcol p-1">
+                                        <div class="card h-100 btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+                                            <button type="button" onclick="imageRemove()" style="font-size:30px" class="btn btn-outline-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="right" title="Remove Picture">
+                                                <i class="mdi mdi-image-remove align-middle"></i>
+                                            </button>
+                                            <button type="button" onclick="addCard()" style="font-size:30px" class="btn btn-outline-primary waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="right" title="Add New Picture">
+                                                <i class="mdi mdi-image-plus align-middle"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -359,15 +366,25 @@
 
 
         $(".lastcol").before(
-            '<div class="col">' +
-            '<div class="card h-100 text-center p-0 imagecard">' +
-            '<img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="card-img-top image-preview-image' + card + ' p-2" alt="" onclick=" clickImage(' + card + ')">' +
-            '<small class="mt-2"><label for="image' + card + '" class="form-label ">Picture Product ' + card + '</label></small>' +
+            '<div class="col p-1 ancol">' +
+            '<div class="card border-secondary h-100 text-center p-0 imagecard containerprd" style="border: dotted; margin:0px;">' +
+            '<img src="<?= base_url() ?>assets/images/product/no_image copy.avif" class="img-fluid rounded imageprd image-preview-image' + card + ' p-2" style="aspect-ratio: 1/1;" alt="">' +
+            '<small class="mt-2" hidden><label for="image' + card + '" class="form-label ">Picture Product ' + card + '</label></small>' +
             '<input class="form-control form-control-sm" type="file" id="image' + card + '" name="image[]" onchange="previewImage(' + image + ')" style="display:none;">' +
+            '<div class="middle">' +
+            '<button type="button" onclick=" clickImage(' + card + ')" class="btn btn-lg btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Change Picture">' +
+            '<i class="bx bx-edit font-size-16 align-middle"></i>' +
+            '</button>' +
+            '</div>' +
             '</div>' +
             '</div>'
         );
-        console.log(image);
+        // console.log(image);
+
+    }
+
+    function imageRemove() {
+        $(".ancol:last").remove();
 
     }
 
@@ -411,91 +428,6 @@
         var string = generateUUID().replace("-", "").substring(0, 8);
         $('#new_id').val(string.toUpperCase());
     });
-
-    // $("#submit").on('click', '#productinfo', function() {
-    //     console.log('submit');
-    // })
-
-    // function formSubmit() {
-    //     // console.log($("#productinfo").html(data));
-    //     // $("#productinfo").serialize() // returns all the data in your form
-    //     $.ajax({
-    //         url: '<?= base_url() ?>saveproduct',
-    //         type: 'POST',
-    //         contentType: 'application/x-www-form-urlencoded',
-    //         data: $("#productinfo").serialize(),
-    //         success: function(data, textStatus, jqXHR) {
-    //             console.info(data);
-    //         },
-    //         error: function(jqXHR, textStatus, errorThrown) {
-    //             var errorMessage = jqXHR.responseText;
-    //             if (errorMessage.length > 0) {
-    //                 alert(errorMessage);
-    //             }
-    //         }
-    //     });
-    //     // $.ajax({
-    //     //     type: "POST",
-    //     //     url: 'your url',
-    //     //     data: $("#registerSubmit").serialize(),
-    //     //     success: function() {
-    //     //         //success message mybe...
-    //     //     }
-    //     // });
-
-    // }
-
-
-
-    // $("productinfo").on("submit", function(event) {
-    //     event.preventDefault();
-    //     console.log($(this).serialize());
-    // });
 </script>
-
-<!-- <script>
-    function formSubmit() {
-        if ($("#productinfo").length > 0) {
-            $("#productinfo").validate({
-
-                rules: {
-                    productname: {
-                        required: true,
-                        maxlength: 50
-                    },
-                },
-                messages: {
-                    productname: {
-                        required: "Please enter your name",
-                        maxlength: "Name length should be 50 characters long."
-                    },
-                },
-                submitHandler: function(form) {
-                    $('.response-message').removeClass('d-none');
-                    $('#submit-btn').html('Sending..');
-                    $.ajax({
-                        url: "<?= base_url() ?>saveproduct'",
-                        type: "POST",
-                        contentType: 'application/x-www-form-urlencoded',
-                        data: $("#productinfo").serialize(),
-                        dataType: "json",
-                        success: function(response) {
-                            $('#submit-btn').html('Submit');
-                            $('.response-message').html(response?.message);
-                            response?.status === 'success' && $('.response-message').addClass('text-success') || $('.response-message').addClass('text-danger');
-                            $('.response-message').show();
-                            $('.response-message').removeClass('d-none');
-
-                            document.getElementById("registrationForm").reset();
-                            setTimeout(function() {
-                                $('.response-message').hide();
-                            }, 5000);
-                        }
-                    });
-                }
-            })
-        }
-    }
-</script> -->
 
 <?= $this->endSection(); ?>

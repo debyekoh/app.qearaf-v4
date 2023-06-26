@@ -25,6 +25,63 @@
     <!-- App Css-->
     <link href="<?= base_url('assets/css/app.min.css') ?>" id="app-style" rel="stylesheet" type="text/css" />
 
+    <style>
+        .containerprd {
+            position: relative;
+            width: 100%;
+        }
+
+        .imageprd {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
+
+        .closedbtn {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 15%;
+            right: 0%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%)
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%)
+        }
+
+        .containerprd:hover .imageprd {
+            opacity: 0.3;
+        }
+
+        .containerprd:hover .middle {
+            opacity: 1;
+        }
+
+        .containerprd:hover .closedbtn {
+            opacity: 1;
+        }
+
+        /* .closedbtn { */
+        /* background-color: #4CAF50;
+            color: white; */
+        /* font-size: 12px;
+            padding: 12px 12px; */
+        /* position: relative;
+            top: -100px;
+            right: -100px; */
+        /* } */
+    </style>
 
 
 </head>

@@ -121,34 +121,9 @@ class Products extends BaseController
         ]);
     }
 
-    public function create()
-    {
-        $head_page =
-            '
-            <link href="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
-	
-            ';
-        $js_page =
-            '
-            <script src="http://localhost/app.qearaf-v4/public/assets/js/pages/form-createproduct.init.js"></script>
-            <script src="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
-            
-            ';
-        $datapage = array(
-            'titlepage' => 'Create',
-            'tabshop' => $this->tabshop,
-            'head_page' => $head_page,
-            'js_page' => $js_page,
-            'ProductsCategory' => $this->productscategoryModel->findAll(),
-            'ProductsGroup' => $this->productsgroupModel->findAll(),
-            'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
-            'validation' => \Config\Services::validation()
-        );
-        return view('pages_admin/adm_products_create', $datapage);
-        // return view('pages_admin/test', $datapage);
-    }
+
+
+
 
 
     public function save()
@@ -297,6 +272,62 @@ class Products extends BaseController
         // ]);
     }
 
+    public function create()
+    {
+        $head_page =
+            '
+            <link href="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
+	
+            ';
+        $js_page =
+            '
+            <script src="http://localhost/app.qearaf-v4/public/assets/js/pages/form-createproduct.init.js"></script>
+            <script src="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
+            
+            ';
+        $datapage = array(
+            'titlepage' => 'Create',
+            'tabshop' => $this->tabshop,
+            'head_page' => $head_page,
+            'js_page' => $js_page,
+            'ProductsCategory' => $this->productscategoryModel->findAll(),
+            'ProductsGroup' => $this->productsgroupModel->findAll(),
+            'ProductsShow' => $this->productsshowModel->orderBy('pro_id_show', 'asc')->findAll(),
+            'validation' => \Config\Services::validation()
+        );
+        return view('pages_admin/adm_products_create', $datapage);
+        // return view('pages_admin/test', $datapage);
+    }
+
+    public function detail($pro_part_no)
+    {
+        $head_page =
+            '
+            <link rel="stylesheet" href="http://localhost/app.qearaf-v4/public/assets/libs/swiper/swiper-bundle.min.css">
+	
+            ';
+        $js_page =
+            '
+            <script src="http://localhost/app.qearaf-v4/public/assets/libs/swiper/swiper-bundle.min.js"></script>
+            <script src="http://localhost/app.qearaf-v4/public/assets/js/pages/product-detail.init.js"></script>
+            
+            ';
+        $skuno = $pro_part_no;
+        $proid = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        $datapage = array(
+            'titlepage' => 'Products',
+            'tabshop' => $this->tabshop,
+            'head_page' => $head_page,
+            'js_page' => $js_page,
+            'DataProduct' => $this->productsModel->find($proid),
+            'DataPrice' => $this->productspriceModel->find($proid),
+            'DataStock' => $this->productsstockModel->find($proid),
+            'DataImage' => $this->productsimageModel->where('pro_id', $proid)->findAll(),
+        );
+        return view('pages_admin/adm_products_detail', $datapage);
+    }
 
     public function edit($pro_part_no)
     {
