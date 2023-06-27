@@ -60,9 +60,13 @@ $routes->get('/duplicateproduct/(:any)', 'AdminControlpage\Products\Products::co
 $routes->post('/copyproduct/(:any)', 'AdminControlpage\Products\Products::savecopy/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Products::delete', ['filter' => 'role:SuAdmin']);
 
-// Ecommerce
+//Ecommerce 
+//Sales
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
+
+//Ecommerce 
+//Purchase
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'permission:Create']);
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');

@@ -21,6 +21,6 @@ class Sales extends BaseController
             'titlepage' => 'Add New Sales',
             'tabshop' => $this->tabshop,
         );
-        return view('pages_admin/adm_sales', $datapage);
+        return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
 }
