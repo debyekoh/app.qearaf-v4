@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body px-1">
                     <ol class="activity-checkout mb-0 px-4 mt-2">
                         <li class="checkout-item pb-0">
                             <div class="avatar checkout-icon p-1">
@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">02</h5>
@@ -111,13 +111,13 @@
                                             </div>
                                         </div>
                                         <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-fullscreen">
+                                            <div class="modal-dialog modal-fullscreen-sm-down">
                                                 <div class="modal-content">
                                                     <!-- <div class="modal-header">
                                                         <h5 class="modal-title" id="addNewProductLabel">Fullscreen Modal</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div> -->
-                                                    <div class="modal-body">
+                                                    <div class="modal-body px-1">
                                                         <!-- <div class="table-responsive">
                                                             <table class="table align-middle mb-0 table-nowrap" id="table_addnewproduct">
                                                                 <thead>
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">03</h5>
@@ -194,7 +194,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">04</h5>
@@ -247,7 +247,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item pb-0 pb-2">
+                        <li class="checkout-item pb-1 pb-2">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">05</h5>
