@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <ol class="activity-checkout mb-0 px-4 mt-2">
-                        <li class="checkout-item">
+                        <li class="checkout-item pb-0">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">01</h5>
@@ -18,310 +18,47 @@
                             <div class="feed-item-list">
                                 <div>
                                     <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>New Sales Info</u></h5>
-                                    <div class="mb-2">
+                                    <div>
                                         <div>
                                             <div class="row">
                                                 <div class="col-lg-4" hidden>
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                        <label for="floatingInput">ID Sales</label>
+                                                        <input type="text" class="form-control" id="id_sales">
+                                                        <label for="id_sales">ID Sales</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                        <label for="floatingInput">No Sales</label>
+                                                        <input type="text" class="form-control font-size-16 text-uppercase fw-bold" name="no_sales" id="no_sales" placeholder="Sales Number">
+                                                        <label for="no_sales">No Sales</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                        <label for="floatingInput">Date Sales</label>
+                                                        <input type="date" class="form-control flatpickr-input font-size-16 fw-bold" name="date_sales" id="date_sales" placeholder="Date">
+                                                        <label for="date_sales">Date Sales</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
+
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                        <label for="floatingInput">MarketPlace</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- <div class="row">
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="billing-name">Name</label>
-                                                        <input type="text" class="form-control" id="billing-name" placeholder="Enter name">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="billing-email-address">Email Address</label>
-                                                        <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="billing-phone">Phone</label>
-                                                        <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label" for="billing-address">Address</label>
-                                                <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address"></textarea>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-4">
-                                                    <div class="mb-4 mb-lg-0">
-                                                        <label class="form-label">Country</label>
-                                                        <select class="form-control form-select" title="Country">
-                                                            <option value="0">Select Country</option>
-                                                            <option value="AF">Afghanistan</option>
-                                                            <option value="AL">Albania</option>
-                                                            <option value="DZ">Algeria</option>
-                                                            <option value="AS">American Samoa</option>
-                                                            <option value="AD">Andorra</option>
-                                                            <option value="AO">Angola</option>
-                                                            <option value="AI">Anguilla</option>
-                                                            <option value="AQ">Antarctica</option>
-                                                            <option value="AR">Argentina</option>
-                                                            <option value="AM">Armenia</option>
-                                                            <option value="AW">Aruba</option>
-                                                            <option value="AU">Australia</option>
-                                                            <option value="AT">Austria</option>
-                                                            <option value="AZ">Azerbaijan</option>
-                                                            <option value="BS">Bahamas</option>
-                                                            <option value="BH">Bahrain</option>
-                                                            <option value="BD">Bangladesh</option>
-                                                            <option value="BB">Barbados</option>
-                                                            <option value="BY">Belarus</option>
-                                                            <option value="BE">Belgium</option>
-                                                            <option value="BZ">Belize</option>
-                                                            <option value="BJ">Benin</option>
-                                                            <option value="BM">Bermuda</option>
-                                                            <option value="BT">Bhutan</option>
-                                                            <option value="BO">Bolivia</option>
-                                                            <option value="BW">Botswana</option>
-                                                            <option value="BV">Bouvet Island</option>
-                                                            <option value="BR">Brazil</option>
-                                                            <option value="BN">Brunei Darussalam</option>
-                                                            <option value="BG">Bulgaria</option>
-                                                            <option value="BF">Burkina Faso</option>
-                                                            <option value="BI">Burundi</option>
-                                                            <option value="KH">Cambodia</option>
-                                                            <option value="CM">Cameroon</option>
-                                                            <option value="CA">Canada</option>
-                                                            <option value="CV">Cape Verde</option>
-                                                            <option value="KY">Cayman Islands</option>
-                                                            <option value="CF">Central African Republic</option>
-                                                            <option value="TD">Chad</option>
-                                                            <option value="CL">Chile</option>
-                                                            <option value="CN">China</option>
-                                                            <option value="CX">Christmas Island</option>
-                                                            <option value="CC">Cocos (Keeling) Islands</option>
-                                                            <option value="CO">Colombia</option>
-                                                            <option value="KM">Comoros</option>
-                                                            <option value="CG">Congo</option>
-                                                            <option value="CK">Cook Islands</option>
-                                                            <option value="CR">Costa Rica</option>
-                                                            <option value="CI">Cote d'Ivoire</option>
-                                                            <option value="HR">Croatia (Hrvatska)</option>
-                                                            <option value="CU">Cuba</option>
-                                                            <option value="CY">Cyprus</option>
-                                                            <option value="CZ">Czech Republic</option>
-                                                            <option value="DK">Denmark</option>
-                                                            <option value="DJ">Djibouti</option>
-                                                            <option value="DM">Dominica</option>
-                                                            <option value="DO">Dominican Republic</option>
-                                                            <option value="EC">Ecuador</option>
-                                                            <option value="EG">Egypt</option>
-                                                            <option value="SV">El Salvador</option>
-                                                            <option value="GQ">Equatorial Guinea</option>
-                                                            <option value="ER">Eritrea</option>
-                                                            <option value="EE">Estonia</option>
-                                                            <option value="ET">Ethiopia</option>
-                                                            <option value="FK">Falkland Islands (Malvinas)</option>
-                                                            <option value="FO">Faroe Islands</option>
-                                                            <option value="FJ">Fiji</option>
-                                                            <option value="FI">Finland</option>
-                                                            <option value="FR">France</option>
-                                                            <option value="GF">French Guiana</option>
-                                                            <option value="PF">French Polynesia</option>
-                                                            <option value="GA">Gabon</option>
-                                                            <option value="GM">Gambia</option>
-                                                            <option value="GE">Georgia</option>
-                                                            <option value="DE">Germany</option>
-                                                            <option value="GH">Ghana</option>
-                                                            <option value="GI">Gibraltar</option>
-                                                            <option value="GR">Greece</option>
-                                                            <option value="GL">Greenland</option>
-                                                            <option value="GD">Grenada</option>
-                                                            <option value="GP">Guadeloupe</option>
-                                                            <option value="GU">Guam</option>
-                                                            <option value="GT">Guatemala</option>
-                                                            <option value="GN">Guinea</option>
-                                                            <option value="GW">Guinea-Bissau</option>
-                                                            <option value="GY">Guyana</option>
-                                                            <option value="HT">Haiti</option>
-                                                            <option value="HN">Honduras</option>
-                                                            <option value="HK">Hong Kong</option>
-                                                            <option value="HU">Hungary</option>
-                                                            <option value="IS">Iceland</option>
-                                                            <option value="IN">India</option>
-                                                            <option value="ID">Indonesia</option>
-                                                            <option value="IQ">Iraq</option>
-                                                            <option value="IE">Ireland</option>
-                                                            <option value="IL">Israel</option>
-                                                            <option value="IT">Italy</option>
-                                                            <option value="JM">Jamaica</option>
-                                                            <option value="JP">Japan</option>
-                                                            <option value="JO">Jordan</option>
-                                                            <option value="KZ">Kazakhstan</option>
-                                                            <option value="KE">Kenya</option>
-                                                            <option value="KI">Kiribati</option>
-                                                            <option value="KR">Korea, Republic of</option>
-                                                            <option value="KW">Kuwait</option>
-                                                            <option value="KG">Kyrgyzstan</option>
-                                                            <option value="LV">Latvia</option>
-                                                            <option value="LB">Lebanon</option>
-                                                            <option value="LS">Lesotho</option>
-                                                            <option value="LR">Liberia</option>
-                                                            <option value="LY">Libyan Arab Jamahiriya</option>
-                                                            <option value="LI">Liechtenstein</option>
-                                                            <option value="LT">Lithuania</option>
-                                                            <option value="LU">Luxembourg</option>
-                                                            <option value="MO">Macau</option>
-                                                            <option value="MG">Madagascar</option>
-                                                            <option value="MW">Malawi</option>
-                                                            <option value="MY">Malaysia</option>
-                                                            <option value="MV">Maldives</option>
-                                                            <option value="ML">Mali</option>
-                                                            <option value="MT">Malta</option>
-                                                            <option value="MH">Marshall Islands</option>
-                                                            <option value="MQ">Martinique</option>
-                                                            <option value="MR">Mauritania</option>
-                                                            <option value="MU">Mauritius</option>
-                                                            <option value="YT">Mayotte</option>
-                                                            <option value="MX">Mexico</option>
-                                                            <option value="MD">Moldova, Republic of</option>
-                                                            <option value="MC">Monaco</option>
-                                                            <option value="MN">Mongolia</option>
-                                                            <option value="MS">Montserrat</option>
-                                                            <option value="MA">Morocco</option>
-                                                            <option value="MZ">Mozambique</option>
-                                                            <option value="MM">Myanmar</option>
-                                                            <option value="NA">Namibia</option>
-                                                            <option value="NR">Nauru</option>
-                                                            <option value="NP">Nepal</option>
-                                                            <option value="NL">Netherlands</option>
-                                                            <option value="AN">Netherlands Antilles</option>
-                                                            <option value="NC">New Caledonia</option>
-                                                            <option value="NZ">New Zealand</option>
-                                                            <option value="NI">Nicaragua</option>
-                                                            <option value="NE">Niger</option>
-                                                            <option value="NG">Nigeria</option>
-                                                            <option value="NU">Niue</option>
-                                                            <option value="NF">Norfolk Island</option>
-                                                            <option value="MP">Northern Mariana Islands</option>
-                                                            <option value="NO">Norway</option>
-                                                            <option value="OM">Oman</option>
-                                                            <option value="PW">Palau</option>
-                                                            <option value="PA">Panama</option>
-                                                            <option value="PG">Papua New Guinea</option>
-                                                            <option value="PY">Paraguay</option>
-                                                            <option value="PE">Peru</option>
-                                                            <option value="PH">Philippines</option>
-                                                            <option value="PN">Pitcairn</option>
-                                                            <option value="PL">Poland</option>
-                                                            <option value="PT">Portugal</option>
-                                                            <option value="PR">Puerto Rico</option>
-                                                            <option value="QA">Qatar</option>
-                                                            <option value="RE">Reunion</option>
-                                                            <option value="RO">Romania</option>
-                                                            <option value="RU">Russian Federation</option>
-                                                            <option value="RW">Rwanda</option>
-                                                            <option value="KN">Saint Kitts and Nevis</option>
-                                                            <option value="LC">Saint LUCIA</option>
-                                                            <option value="WS">Samoa</option>
-                                                            <option value="SM">San Marino</option>
-                                                            <option value="ST">Sao Tome and Principe</option>
-                                                            <option value="SA">Saudi Arabia</option>
-                                                            <option value="SN">Senegal</option>
-                                                            <option value="SC">Seychelles</option>
-                                                            <option value="SL">Sierra Leone</option>
-                                                            <option value="SG">Singapore</option>
-                                                            <option value="SK">Slovakia (Slovak Republic)</option>
-                                                            <option value="SI">Slovenia</option>
-                                                            <option value="SB">Solomon Islands</option>
-                                                            <option value="SO">Somalia</option>
-                                                            <option value="ZA">South Africa</option>
-                                                            <option value="ES">Spain</option>
-                                                            <option value="LK">Sri Lanka</option>
-                                                            <option value="SH">St. Helena</option>
-                                                            <option value="PM">St. Pierre and Miquelon</option>
-                                                            <option value="SD">Sudan</option>
-                                                            <option value="SR">Suriname</option>
-                                                            <option value="SZ">Swaziland</option>
-                                                            <option value="SE">Sweden</option>
-                                                            <option value="CH">Switzerland</option>
-                                                            <option value="SY">Syrian Arab Republic</option>
-                                                            <option value="TW">Taiwan, Province of China</option>
-                                                            <option value="TJ">Tajikistan</option>
-                                                            <option value="TZ">Tanzania, United Republic of</option>
-                                                            <option value="TH">Thailand</option>
-                                                            <option value="TG">Togo</option>
-                                                            <option value="TK">Tokelau</option>
-                                                            <option value="TO">Tonga</option>
-                                                            <option value="TT">Trinidad and Tobago</option>
-                                                            <option value="TN">Tunisia</option>
-                                                            <option value="TR">Turkey</option>
-                                                            <option value="TM">Turkmenistan</option>
-                                                            <option value="TC">Turks and Caicos Islands</option>
-                                                            <option value="TV">Tuvalu</option>
-                                                            <option value="UG">Uganda</option>
-                                                            <option value="UA">Ukraine</option>
-                                                            <option value="AE">United Arab Emirates</option>
-                                                            <option value="GB">United Kingdom</option>
-                                                            <option value="US">United States</option>
-                                                            <option value="UY">Uruguay</option>
-                                                            <option value="UZ">Uzbekistan</option>
-                                                            <option value="VU">Vanuatu</option>
-                                                            <option value="VE">Venezuela</option>
-                                                            <option value="VN">Viet Nam</option>
-                                                            <option value="VG">Virgin Islands (British)</option>
-                                                            <option value="VI">Virgin Islands (U.S.)</option>
-                                                            <option value="WF">Wallis and Futuna Islands</option>
-                                                            <option value="EH">Western Sahara</option>
-                                                            <option value="YE">Yemen</option>
-                                                            <option value="ZM">Zambia</option>
-                                                            <option value="ZW">Zimbabwe</option>
+                                                        <select class="form-select font-size-16 fw-bold" name="shop" id="shop" aria-label="Floating label select example">
+                                                            <option selected>Select your shop</option>
+                                                            <?php foreach ($datashop as $ds) : ?>
+                                                                <option value="<?= $ds['id_shop']; ?>"><?= $ds['name_shop']; ?> - <?= $ds['marketplace']; ?></option>
+                                                            <?php endforeach ?>
                                                         </select>
+                                                        <label for="shop">MarketPlace</label>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-lg-4">
-                                                    <div class="mb-4 mb-lg-0">
-                                                        <label class="form-label" for="billing-city">City</label>
-                                                        <input type="text" class="form-control" id="billing-city" placeholder="Enter City">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4">
-                                                    <div class="mb-0">
-                                                        <label class="form-label" for="zip-code">Zip / Postal code</label>
-                                                        <input type="text" class="form-control" id="zip-code" placeholder="Enter Postal code">
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">02</h5>
@@ -342,7 +79,10 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+                                                        <tr id="norow">
+                                                            <td class="text-center">-- NoProduct --</td>
+                                                        </tr>
+                                                        <!-- <tr>
                                                             <th scope="row"><img src="assets/images/product/img-1.png" alt="product-img" title="product-img" class="avatar-md"></th>
                                                             <td>
                                                                 <h5 class="font-size-15 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">Home & Office Chair Crime</a></h5>
@@ -357,7 +97,7 @@
                                                                 <p class="text-muted mb-0">$ 260 x 1</p>
                                                             </td>
                                                             <td>$ 260</td>
-                                                        </tr>
+                                                        </tr> -->
                                                     </tbody>
                                                 </table>
 
@@ -367,14 +107,60 @@
                                         <div class="col text-center">
                                             <div class="btn-group" role="group" aria-label="Basic outlined example">
                                                 <button type="button" class="btn btn-outline-danger">Delete Last Item</button>
-                                                <button type="button" class="btn btn-outline-primary">Add New Product</button>
+                                                <button type="button" class="btn btn-outline-primary" id="adnpm" data-bs-toggle="modal" data-bs-target="#addNewProduct">Add New Product</button>
+                                            </div>
+                                        </div>
+                                        <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-fullscreen">
+                                                <div class="modal-content">
+                                                    <!-- <div class="modal-header">
+                                                        <h5 class="modal-title" id="addNewProductLabel">Fullscreen Modal</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div> -->
+                                                    <div class="modal-body">
+                                                        <!-- <div class="table-responsive">
+                                                            <table class="table align-middle mb-0 table-nowrap" id="table_addnewproduct">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="border-top-0" style="width: 90px;" scope="col">Product</th>
+                                                                        <th class="border-top-0" scope="col">Product Desc</th>
+                                                                        <th class="border-top-0" scope="col">Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row"><img src="assets/images/product/img-1.png" alt="product-img" title="product-img" class="avatar-md"></th>
+                                                                        <td>
+                                                                            <h5 class="font-size-15 text-truncate"><a class="text-dark">Home & Office Chair Crime</a></h5>
+                                                                            <p class="text-muted mb-0">$ 260 x 2</p>
+                                                                        </td>
+                                                                        <td>$ 520</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row"><img src="assets/images/product/img-2.png" alt="product-img" title="product-img" class="avatar-md"></th>
+                                                                        <td>
+                                                                            <h5 class="font-size-15 text-truncate"><a class="text-dark">Sofa Home Chair Black</a></h5>
+                                                                            <p class="text-muted mb-0">$ 260 x 1</p>
+                                                                        </td>
+                                                                        <td>$ 260</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div> -->
+                                                        <div id="table-gridjs"></div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">03</h5>
@@ -387,20 +173,20 @@
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                    <label for="floatingInput">Service</label>
+                                                    <input type="text" class="form-control" id="service" name="service" placeholder="Service">
+                                                    <label for="service">Service</label>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                    <label for="floatingInput">No Resi</label>
+                                                    <input type="text" class="form-control" id="no_resi" name="no_resi" placeholder="No Resi">
+                                                    <label for="no_resi">No Resi</label>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                    <label for="floatingInput">Notes</label>
+                                                    <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes">
+                                                    <label for="notes">Notes</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -408,10 +194,10 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item" style="border-color: #1f58c7;">
+                        <li class="checkout-item pb-0" style="border-color: #1f58c7;">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
-                                    <h5 class="text-white font-size-16 mb-0">4</h5>
+                                    <h5 class="text-white font-size-16 mb-0">04</h5>
                                 </div>
                             </div>
                             <div class="feed-item-list">
@@ -424,8 +210,8 @@
                                             <div data-bs-toggle="collapse">
                                                 <label class="card-radio-label">
                                                     <input type="radio" name="packaging-method" id="packaging-method1" class="card-radio-input">
-                                                    <span class="card-radio py-3 text-center text-truncate">
-                                                        <i class="mdi mdi-package-variant-closed fa-3x d-block"></i>
+                                                    <span class="card-radio py-0 text-center text-truncate">
+                                                        <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                         <span>Small 17x9x6cm</span>
                                                     </span>
                                                 </label>
@@ -436,8 +222,8 @@
                                             <div>
                                                 <label class="card-radio-label">
                                                     <input type="radio" name="packaging-method" id="packaging-method2" class="card-radio-input">
-                                                    <span class="card-radio py-3 text-center text-truncate">
-                                                        <i class="mdi mdi-package-variant-closed fa-3x d-block"></i>
+                                                    <span class="card-radio py-0 text-center text-truncate">
+                                                        <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                         Long 8x8x30cm
                                                     </span>
                                                 </label>
@@ -449,8 +235,8 @@
                                                 <label class="card-radio-label">
                                                     <input type="radio" name="packaging-method" id="packaging-method3" class="card-radio-input" checked>
 
-                                                    <span class="card-radio py-3 text-center text-truncate">
-                                                        <i class="mdi mdi-package-variant-closed text-danger fa-3x d-block"></i>
+                                                    <span class="card-radio py-0 text-center text-truncate">
+                                                        <i class="mdi mdi-package-variant-closed text-danger fa-2x d-block"></i>
                                                         <span>No Packaging</span>
                                                     </span>
                                                 </label>
@@ -461,7 +247,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="checkout-item pb-2">
+                        <li class="checkout-item pb-0 pb-2">
                             <div class="avatar checkout-icon p-1">
                                 <div class="avatar-title rounded-circle bg-primary">
                                     <h5 class="text-white font-size-16 mb-0">05</h5>
@@ -473,25 +259,25 @@
                                 </div>
                                 <div>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-md-6">
                                             <div data-bs-toggle="collapse">
                                                 <label class="card-radio-label">
                                                     <input type="radio" name="pay-method" id="pay-methodoption1" class="card-radio-input">
-                                                    <span class="card-radio py-3 text-center text-truncate">
-                                                        <i class="bx bx-credit-card d-block h2 mb-3"></i>
+                                                    <span class="card-radio py-0 text-center text-truncate">
+                                                        <i class="bx bx-credit-card d-block h2"></i>
                                                         Online Payment
                                                     </span>
                                                 </label>
                                             </div>
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-md-6">
                                             <div>
                                                 <label class="card-radio-label">
                                                     <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" checked>
 
-                                                    <span class="card-radio py-3 text-center text-truncate">
-                                                        <i class="bx bx-money d-block h2 mb-3"></i>
+                                                    <span class="card-radio py-0 text-center text-truncate">
+                                                        <i class="bx bx-money d-block h2"></i>
                                                         <span>Cash on Delivery</span>
                                                     </span>
                                                 </label>
@@ -586,6 +372,7 @@
                         </table>
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -607,5 +394,73 @@
 
 </div>
 
-<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+<script src="<?= base_url(); ?>assets/libs/jquery/jquery-1.12.4.js"></script>
+<!-- <script>
+    $("#adnpm").on('click', function() {
+        console.log("test");
+        // get the current row
+        // var currentRow = $(this).closest("tr");
+        // var s = currentRow.find(".switch").val();
+        // if (s != 0) {
+        //     var ss = 0;
+        // } else {
+        //     var ss = 1;
+        // }
+        // var d = currentRow.find(".d").text();
+        // $.ajax({
+        //     // type: "GET",
+        //     url: "<?= base_url() ?>assets/js/pages/gridjs.init.js",
+        //     // data: {
+        //     //     d: d,
+        //     //     ss: ss,
+        //     // },
+        //     success: function(data) {
+        //         $('#btn-more').html("No Data");
+        //     }
+        // });
+        new gridjs.Grid({
+            columns: ["Name", "Email", "Position", "Company", "Country"],
+            pagination: {
+                limit: 5
+            },
+            sort: !0,
+            search: !0,
+            data: [
+                ["Jonathan", "jonathan@example.com", "Senior Implementation Architect", "Hauck Inc", "Holy See"],
+                ["Harold", "harold@example.com", "Forward Creative Coordinator", "Metz Inc", "Iran"],
+                ["Shannon", "shannon@example.com", "Legacy Functionality Associate", "Zemlak Group", "South Georgia"],
+                ["Robert", "robert@example.com", "Product Accounts Technician", "Hoeger", "San Marino"],
+                ["Noel", "noel@example.com", "Customer Data Director", "Howell - Rippin", "Germany"],
+                ["Traci", "traci@example.com", "Corporate Identity Director", "Koelpin - Goldner", "Vanuatu"],
+                ["Kerry", "kerry@example.com", "Lead Applications Associate", "Feeney, Langworth and Tremblay", "Niger"],
+                ["Patsy", "patsy@example.com", "Dynamic Assurance Director", "Streich Group", "Niue"],
+                ["Cathy", "cathy@example.com", "Customer Data Director", "Ebert, Schamberger and Johnston", "Mexico"],
+                ["Tyrone", "tyrone@example.com", "Senior Response Liaison", "Raynor, Rolfson and Daugherty", "Qatar"]
+            ]
+        }).render(document.getElementById("table-gridjs"));
+    });
+    $("#table_addnewproduct").on('click', function() {
+        console.log("test");
+        // get the current row
+        // var currentRow = $(this).closest("tr");
+        // var s = currentRow.find(".switch").val();
+        // if (s != 0) {
+        //     var ss = 0;
+        // } else {
+        //     var ss = 1;
+        // }
+        // var d = currentRow.find(".d").text();
+        // $.ajax({
+        //     type: "POST",
+        //     url: "<?= base_url() ?>setting_account/csp",
+        //     data: {
+        //         d: d,
+        //         ss: ss,
+        //     },
+        //     success: function(data) {
+        //         location.reload();
+        //     }
+        // });
+    });
+</script> -->
 <?= $this->endSection(); ?>

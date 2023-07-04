@@ -304,13 +304,10 @@
                                 <div class="mb-3">
                                     <label class="form-label">Marketplace</label>
                                     <select class="form-select" name="marketplace">
-                                        <option selected>Select Marketplace</option>
-                                        <option>Lazada</option>
-                                        <option>Shopee</option>
-                                        <option>Tokopedia</option>
-                                        <option>Dropshiper</option>
-                                        <option>Reseller</option>
-                                        <option>Other</option>
+                                        <option selected disabled value="">Choose...</option>
+                                        <?php foreach ($listmarketplace as $lm) { ?>
+                                            <option value="<?= $lm['name_marketplace']; ?>"><?= $lm['name_marketplace']; ?> </option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>

@@ -37,6 +37,7 @@ abstract class BaseController extends Controller
      */
     protected $helpers = ['auth', 'array', 'form'];
     protected $shopModel;
+    protected $ListMarketplaceModel;
     protected $tabshop;
     protected $session;
 
@@ -59,6 +60,7 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
         $this->shopModel = new \App\Models\ShopModel();
+        $this->ListMarketplaceModel = new \App\Models\ListMarketplaceModel();
         $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll();
     }
 }

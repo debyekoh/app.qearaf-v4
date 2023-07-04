@@ -1,5 +1,6 @@
  <!-- jQuery-->
- <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
+ <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.0.min.js"></script> -->
+ <script src="<?= base_url(); ?>assets/libs/jquery/jquery-1.10.0.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 

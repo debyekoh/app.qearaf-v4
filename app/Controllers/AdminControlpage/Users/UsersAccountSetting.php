@@ -32,6 +32,7 @@ class UsersAccountSetting extends BaseController
             'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
+            'listmarketplace' => $this->ListMarketplaceModel->findAll(),
             'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
         );
         return view('pages_admin/adm_useraccountsetting', $datapage);
