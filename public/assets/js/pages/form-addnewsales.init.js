@@ -1,6 +1,32 @@
 // flatpickr("#date_sales");
+function generateUUID() {
+    var d = new Date().getTime();
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;
+        if (d > 0) {
+            r = (d + r) % 16 | 0;
+            d = Math.floor(d / 16);
+        } else {
+            r = (d2 + r) % 16 | 0;
+            d2 = Math.floor(d2 / 16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+$(document).ready(function() {
+    var currentTime = new Date()
+    var month = currentTime.getMonth() + 1
+    var day = currentTime.getDate()
+    var year = currentTime.getFullYear()
+    var datestring = day + "/" + month + "/" + year;
+    var string = datestring+"/"+generateUUID().replace("-", "").substring(0, 8);
+    $('#id_sales').val(string.toUpperCase());
+    $('#nso').inerHTML(string.toUpperCase());
+});
+
 $("#adnpm").on('click', function() {
-    console.log("test");
+    console.log("Open modal & List Product");
     // get the current row
     // var currentRow = $(this).closest("tr");
     // var s = currentRow.find(".switch").val();
@@ -21,6 +47,7 @@ $("#adnpm").on('click', function() {
     //         $('#btn-more').html("No Data");
     //     }
     // });
+    $("#table-gridjs").empty();
     new gridjs.Grid({
         columns: [{
             name: "Product",
@@ -43,12 +70,18 @@ $("#adnpm").on('click', function() {
         }, "Stock", {
             name: "Select",
             formatter: function(e) {
-                return gridjs.html(
-                        '<li class="list-inline-item">' +
-                            '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                        '</li>' 
+                // return gridjs.html(
+                //         '<li class="list-inline-item">' +
+                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                //         '</li>' 
+                //     )
+                    const string4 = new String("'"+e+"'");
+                    return gridjs.html(
+                        '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                            '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
+                        '</button>'
                     )
-                
+                    
             }
         }],
         pagination: {
@@ -74,17 +107,69 @@ $("#adnpm").on('click', function() {
     }).render(document.getElementById("table-gridjs"));
 });
 
+function addProduct(sku) {
+    // alert("I want this to appear after the modal has opened! "+ sku);
+    console.log(sku +" Selected Product");
+    if ($("#listsalesproduct > tbody > tr").hasClass(sku)) {
+        Swal.fire({
+        icon: 'error',
+        title: 'Product Already Exist!',
+        })
+    } else {
+    $.ajax({
+        type: "POST",
+        url: './selected',
+        data: {
+            sku: sku,
+        },
+        
+        success: function(respone) {
+                console.log("Modal Closed");
+                $('#addNewProduct').modal('hide');
+                if ($("#listsalesproduct > tbody > tr").hasClass("norow")) {
+                    $(".norow").remove();
+                }
+                console.log("Norow Remove");
+                var i = $(".rowprosales").length;
+                console.log(respone.results);
+                const rupiah = (number)=>{
+                    return new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR"
+                    }).format(number);
+                }
+                $('#listsalesproduct > tbody:last-child').append(
+                    '<tr id="R'+i+'" class="rowprosales '+sku+'">'+
+                        '<th scope="row"><img src="./assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
+                        '<td>'+
+                            '<h5 class="font-size-15 text-truncate mb-0"><a href="javascript: void(0);" class="text-dark">'+respone.results.name+'</a></h5>'+
+                            '<p class="text-muted mb-0">SKU: '+sku+'</p>'+
+                            '<p class="text-muted mb-0">@'+rupiah(respone.results.price)+'</p>'+
+                        '</td>'+
+                        '<td >'+
+                            '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'">'+
+                            '<input class="form-control" type="text" name=price[] placeholder="0" value="'+respone.results.price+'">'+
+                            '<input class="form-control" type="number" name=qty[] placeholder="0" value="">'+
+                        '</td>'+
+                        '<td class="text-center"><button type="button" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
+                    '</tr>'
+                );
+            }
+        });
+    }
+  }
+
 // $( "#addNewProduct" ).on('shown', function(){
 //     alert("I want this to appear after the modal has opened!");
 // });
 
-$('#addNewProduct').on('shown.bs.modal', function () {
-    $('#table-gridjs > div > div.gridjs-head > div > input').trigger('focus')
-    // alert("I want this to appear after the modal has opened!");
-  })
+// $('#addNewProduct').on('shown.bs.modal', function () {
+//     $('#table-gridjs > div > div.gridjs-head > div > input').trigger('focus')
+//     alert("I want this to appear after the modal has opened!");
+//   })
 
-$("#table_addnewproduct").on('click', function() {
-    console.log("test");
+// $(".gridjs-table").on('click', function() {
+//     console.log("Select Product");
     // get the current row
     // var currentRow = $(this).closest("tr");
     // var s = currentRow.find(".switch").val();
@@ -105,4 +190,4 @@ $("#table_addnewproduct").on('click', function() {
     //         location.reload();
     //     }
     // });
-});
+// });

@@ -95,17 +95,6 @@ class Sales extends BaseController
             $data[] = $row;
         }
 
-        // foreach ($query->getResult() as $i) {
-        //     $row[] = $i->pro_model;
-        //     $row[] = $i->pro_price_seller;
-        //     $row[] = $i->pro_price_seller;
-        //     $row[] = $i->pro_price_seller;
-        //     $row[] = $i->pro_price_seller;
-        //     $row[] = $i->pro_price_seller;
-        //     $row[] = $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'];
-        //     $data[] = $row;
-        // }
-
         return $this->response->setJSON([
             'status' => true,
             'response' => 'Success show data',
@@ -115,17 +104,45 @@ class Sales extends BaseController
         ]);
     }
 
+    public function selectedP()
+    {
+        $skuno = $this->request->getVar('sku');
+        $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        // $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        $dataselect = array(
+            'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
+            'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
+            'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
+            'price' => $this->productspriceModel->find($pro_id)['pro_price_seller'],
+            // 'DataProduct' => $this->productsModel->find($pro_id),
+            // 'DataPrice' => $this->productspriceModel->find($pro_id),
+            // 'head_page' => $head_page,
+            // 'js_page' => $js_page,
+            // 'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
+        );
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success',
+            // 'results' => $this->productsModel->findAll(),
+            // 'results' => $query->getResult(),
+            'results' => $dataselect,
+        ]);
+    }
+
     public function create()
     {
         $head_page =
             '
             <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
 
             ';
         $js_page =
             '
             <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
             <script src="' . base_url() . 'assets/js/pages/form-addnewsales.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
             ';
         $datapage = array(
@@ -136,5 +153,10 @@ class Sales extends BaseController
             'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
         );
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
+    }
+
+    public function save()
+    {
+        dd($this->request->getVar());
     }
 }

@@ -64,7 +64,9 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 //Sales
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
+$routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'permission:Create']);
 $routes->get('/listproduct', 'AdminControlpage\Ecommerce\Sales\Sales::list');
+$routes->match(['get', 'post'], '/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
 
 //Ecommerce 
 //Purchase
