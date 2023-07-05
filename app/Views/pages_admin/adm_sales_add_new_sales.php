@@ -21,7 +21,7 @@
                                         <div>
                                             <div>
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-4" hidden>
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control" id="id_sales">
                                                             <label for="id_sales">ID Sales</label>
@@ -249,8 +249,16 @@
             <div class="col-xl-4">
                 <div class="card checkout-order-summary">
                     <div class="card-body">
-                        <div class="p-3 bg-light mb-3">
-                            <h5 class="font-size-16 mb-0">Order Summary <span id="nso" class="float-end ms-2"></span></h5>
+                        <div class="row p-3 bg-light mb-3">
+                            <div class="col-md-6">
+                                <h5 class="font-size-16 mb-0">Order Summary</h5>
+
+                            </div>
+                            <div class="col-md-6">
+                                <h5 id="nso" class="font-size-16 mb-0"></h5>
+                                <!-- <h5 class="font-size-16 mb-0"><span id="nso" class="float-end ms-2"></span></h5> -->
+
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table align-middle mb-0 table-nowrap">

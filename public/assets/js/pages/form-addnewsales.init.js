@@ -14,15 +14,21 @@ function generateUUID() {
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
+function formatDate(d)
+{
+    var month = d.getMonth();
+    var day = d.getDate().toString().padStart(2, '0');
+    var year = d.getFullYear();
+    year = year.toString().substr(-2);
+    month = (month + 1).toString().padStart(2, '0');
+    return month + day + year;
+}
+
 $(document).ready(function() {
-    var currentTime = new Date()
-    var month = currentTime.getMonth() + 1
-    var day = currentTime.getDate()
-    var year = currentTime.getFullYear()
-    var datestring = day + "/" + month + "/" + year;
-    var string = datestring+"/"+generateUUID().replace("-", "").substring(0, 8);
+    var d = new Date();
+    var string = formatDate(d)+"/S/"+generateUUID().replace("-", "").substring(0, 8);
     $('#id_sales').val(string.toUpperCase());
-    $('#nso').inerHTML(string.toUpperCase());
+    $('#nso').html("#"+string.toUpperCase());
 });
 
 $("#adnpm").on('click', function() {
@@ -147,8 +153,8 @@ function addProduct(sku) {
                             '<p class="text-muted mb-0">@'+rupiah(respone.results.price)+'</p>'+
                         '</td>'+
                         '<td >'+
-                            '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'">'+
-                            '<input class="form-control" type="text" name=price[] placeholder="0" value="'+respone.results.price+'">'+
+                            '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'" style="display:none;">'+
+                            '<input class="form-control" type="text" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
                             '<input class="form-control" type="number" name=qty[] placeholder="0" value="">'+
                         '</td>'+
                         '<td class="text-center"><button type="button" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
