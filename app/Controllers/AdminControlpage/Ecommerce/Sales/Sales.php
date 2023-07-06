@@ -150,6 +150,7 @@ class Sales extends BaseController
             'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
+            'listdeliveryservices' => $this->ListDeliveryServicesModel->findAll(),
             'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
         );
         return view('pages_admin/adm_sales_add_new_sales', $datapage);

@@ -29,13 +29,13 @@
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control font-size-16 text-uppercase fw-bold no_sales inewsalesinfo " name="no_sales" id="no_sales" placeholder="Sales Number" value="">
+                                                            <input type="text" class="form-control font-size-16 text-uppercase fw-bold no_sales inewsalesinfo" name="no_sales" id="no_sales" placeholder="Sales Number" value="">
                                                             <label for="no_sales">No Sales</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="date" class="form-control flatpickr-input font-size-16 fw-bold date_sales inewsalesinfo " name="date_sales" id="date_sales" placeholder="Date" value="">
+                                                            <input type="date" class="form-control flatpickr-input font-size-16 fw-bold date_sales inewsalesinfo" name="date_sales" id="date_sales" placeholder="Date" value="">
                                                             <label for="date_sales">Date Sales</label>
                                                         </div>
                                                     </div>
@@ -128,14 +128,26 @@
                                         <div class="mb-2">
                                             <div class="row">
                                                 <div class="col-lg-4">
-                                                    <div class="form-floating mb-3">
+                                                    <!-- <div class="form-floating mb-3">
                                                         <input type="text" class="form-control ideliveryinfo" id="service" name="service" placeholder="Service">
                                                         <label for="service">Service</label>
+                                                    </div> -->
+                                                    <div id="slds" class="form-floating mb-3">
+                                                        <select class="form-select font-size-16 fw-bold deliveryservices ideliveryinfo" name="deliveryservices" id="deliveryservices" aria-label="Floating label select example">
+                                                            <option selected disabled value>Select your Services</option>
+                                                            <?php foreach ($listdeliveryservices as $ds) : ?>
+                                                                <option value="<?= $ds['id']; ?>"><?= $ds['name_delivery_services']; ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                        <label for="deliveryservices">Delivery Services</label>
+                                                        <div class="invalid-feedback">
+                                                            Please choose Delivery Services.
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
+                                                        <input type="text" class="form-control no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
                                                         <label for="no_resi">No Resi</label>
                                                     </div>
                                                 </div>

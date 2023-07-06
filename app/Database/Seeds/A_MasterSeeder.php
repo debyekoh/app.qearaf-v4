@@ -10,5 +10,7 @@ class A_MasterSeeder extends Seeder
     {
         $this->call('TabelUser');
         $this->call('TabelProducts');
+        $this->call('TabelListMarketplace');
+        $this->call('TabelListDeliveryServices');
     }
 }
