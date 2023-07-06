@@ -31,90 +31,172 @@ $(document).ready(function() {
     $('#nso').html("#"+string.toUpperCase());
 });
 
-$("#adnpm").on('click', function() {
-    console.log("Open modal & List Product");
-    // get the current row
-    // var currentRow = $(this).closest("tr");
-    // var s = currentRow.find(".switch").val();
-    // if (s != 0) {
-    //     var ss = 0;
-    // } else {
-    //     var ss = 1;
+$("#presubmit").on('click', function() {
+    // if($('#no_sales').val() == ""){
+    //     $('#no_sales').addClass("is-invalid");
+    // }else if($('#date_sales').val() == ""){
+    //     $('#date_sales').addClass("is-invalid");
+    // }else if($('#shop').val() == null){
+    //     $('#shop').addClass("is-invalid");
+    // }else{
+    //     $("#submit" ).trigger( "click" );
     // }
-    // var d = currentRow.find(".d").text();
-    // $.ajax({
-    //     // type: "GET",
-    //     url: "<?= base_url() ?>assets/js/pages/gridjs.init.js",
-    //     // data: {
-    //     //     d: d,
-    //     //     ss: ss,
-    //     // },
-    //     success: function(data) {
-    //         $('#btn-more').html("No Data");
-    //     }
-    // });
-    $("#table-gridjs").empty();
-    new gridjs.Grid({
-        columns: [{
-            name: "Product",
-            sort: {
-                enabled: !1
+
+    if($('#no_sales').val() == ""){$('#no_sales').addClass("is-invalid");}else{$('#no_sales').removeClass("is-invalid");}
+    if($('#date_sales').val() == ""){$('#date_sales').addClass("is-invalid");}else{$('#date_sales').removeClass("is-invalid");}
+    if($('#shop').val() == null){$('#shop').addClass("is-invalid");}else{$('#shop').removeClass("is-invalid");}
+    if($('#service').val() == ""){$('#service').addClass("is-invalid");}else{$('#service').removeClass("is-invalid");}
+    if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
+    if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
+
+    // console.log($('[name=packaging-method]').length)
+    // console.log($("input[name='packagingmethod']:checked").val())
+    if($("input[name='packagingmethod']:checked").val() == null){
+        console.log("SALAH"); 
+        $('.packagingmethod').addClass("bg-danger is-invalid text-white");
+        
+        
+    }else{
+        console.log("BENAR"); 
+        $('.packagingmethod').removeClass("bg-danger is-invalid text-white");
+    }
+
+    if($("input[name='paymethod']:checked").val() == null){
+        console.log("SALAH"); 
+        $('.paymethod').addClass("bg-danger is-invalid text-white");
+    }else{
+        console.log("BENAR"); 
+        $('.paymethod').removeClass("bg-danger is-invalid text-white");
+    }
+
+    ///
+    if($('.inewsalesinfo .is-invalid').length == 0){$('.newsalesinfo').addClass("bg-danger");}
+    if($('.ideliveryinfo .is-invalid').length == 0){$('.deliveryinfo').addClass("bg-danger");}
+    if($('.ipackagingmethod .is-invalid').length == 0){$('.packaginginfo').addClass("bg-danger");}
+    if($('.ipayinfo .is-invalid').length == 0){$('.payinfo').addClass("bg-danger");}
+    console.log($('.inewsalesinfo is-invalid').length);
+    ///
+    if($('.is-invalid').length == 0){
+        $("#submit" ).trigger( "click" );
+    }
+});
+
+$(".inewsalesinfo").on('input', function() {
+    if($('.inewsalesinfo .is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");$('.no_sales').removeClass("is-invalid");}
+    // $('.paymethod').removeClass("bg-danger is-invalid text-white");
+    console.log($('.inewsalesinfo .is-invalid').length);
+});
+$(".ipackagingmethod").on('change', function() {
+    if($('.inewsalesinfo .is-invalid').length == 0){$('.packaginginfo').removeClass("bg-danger");}
+    $('.packagingmethod').removeClass("bg-danger is-invalid text-white");
+});
+$(".ipaymethod").on('change', function() {
+    if($('.ipayinfo .is-invalid').length == 0){$('.payinfo').removeClass("bg-danger");}
+    $('.paymethod').removeClass("bg-danger is-invalid text-white");
+});
+
+
+$("#adnpm").on('click', function() {
+    console.log($('#shop').val());
+    if($('#shop').val() == null){
+        // $('#shop').addClass("mystyle");
+        $('#shop').addClass("is-invalid");
+        // #shop
+        // var element = document.getElementById("myDIV");
+        // element.classList.add("mystyle");
+        // Swal.fire({
+        //     icon: 'error',
+        //     title: 'Select Marketplace!',
+        //     })
+    }else{
+        console.log("Open modal & List Product");
+        $('#shop').removeClass("is-invalid");
+        $('#addNewProduct').modal('show');
+        // get the current row
+        // var currentRow = $(this).closest("tr");
+        // var s = currentRow.find(".switch").val();
+        // if (s != 0) {
+        //     var ss = 0;
+        // } else {
+        //     var ss = 1;
+        // }
+        // var d = currentRow.find(".d").text();
+        // $.ajax({
+        //     // type: "GET",
+        //     url: "<?= base_url() ?>assets/js/pages/gridjs.init.js",
+        //     // data: {
+        //     //     d: d,
+        //     //     ss: ss,
+        //     // },
+        //     success: function(data) {
+        //         $('#btn-more').html("No Data");
+        //     }
+        // });
+        $("#table-gridjs").empty();
+        new gridjs.Grid({
+            columns: [{
+                name: "Product",
+                sort: {
+                    enabled: !1
+                },
+                // plugin: {
+                //     component: RowSelection
+                // },
+                formatter: function(e) {
+                    return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
+                    // return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
+                }
+            }, {
+                name: "Description",
+                formatter: function(e) {
+                    // return gridjs.html('<span class="fw-semibold">' + e + "</span>")
+                    return gridjs.html('<h5 class="text-start font-size-12">' + e[0] + '</h5><p class="text-start font-size-12 text-muted mb-0">' + e[1] + "</p>")
+                }
+            }, "Stock", {
+                name: "Select",
+                formatter: function(e) {
+                    // return gridjs.html(
+                    //         '<li class="list-inline-item">' +
+                    //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                    //         '</li>' 
+                    //     )
+                        const string4 = new String("'"+e+"'");
+                        return gridjs.html(
+                            '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                                '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
+                            '</button>'
+                        )
+                        
+                }
+            }],
+            pagination: {
+                limit: 10
             },
-            // plugin: {
-            //     component: RowSelection
-            // },
-            formatter: function(e) {
-                return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
-                // return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
-            }
-        }, {
-            name: "Description",
-            formatter: function(e) {
-                // return gridjs.html('<span class="fw-semibold">' + e + "</span>")
-                return gridjs.html('<h5 class="text-start font-size-12">' + e[0] + '</h5><p class="text-start font-size-12 text-muted mb-0">' + e[1] + "</p>")
-            }
-        }, "Stock", {
-            name: "Select",
-            formatter: function(e) {
-                // return gridjs.html(
-                //         '<li class="list-inline-item">' +
-                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                //         '</li>' 
-                //     )
-                    const string4 = new String("'"+e+"'");
-                    return gridjs.html(
-                        '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
-                            '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
-                        '</button>'
-                    )
-                    
-            }
-        }],
-        pagination: {
-            limit: 10
-        },
-        sort: !0,
-        search: !0,
-        server: {
-            url: './listproduct',
-            then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, product.skuno])
-          },
-          style: {
-            table: {
+            sort: !0,
+            search: !0,
+            server: {
+                url: './listproduct',
+                then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, product.skuno])
             },
-            th: {
-              'text-align': 'center'
-            },
-            td: {
-              'text-align': 'center'
-            }
-          } 
-          
-    }).render(document.getElementById("table-gridjs"));
+            style: {
+                table: {
+                },
+                th: {
+                'text-align': 'center'
+                },
+                td: {
+                'text-align': 'center'
+                }
+            } 
+            
+        }).render(document.getElementById("table-gridjs"));
+    }
 });
 
 function addProduct(sku) {
     // alert("I want this to appear after the modal has opened! "+ sku);
+    
+    
     console.log(sku +" Selected Product");
     if ($("#listsalesproduct > tbody > tr").hasClass(sku)) {
         Swal.fire({

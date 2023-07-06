@@ -3,7 +3,7 @@
 <?= $this->section('contents'); ?>
 
 <div class="container-fluid">
-    <form id="productinfo" action="<?= base_url() ?>savenewsales" method="POST">
+    <form id="productinfo" action="<?= base_url() ?>savenewsales" method="POST" class="needs-validation">
         <div class="row">
             <div class="col-xl-8">
                 <div class="card">
@@ -11,7 +11,7 @@
                         <ol class="activity-checkout mb-0 px-4 mt-2">
                             <li class="checkout-item pb-0">
                                 <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title rounded-circle bg-primary">
+                                    <div class="avatar-title newsalesinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">01</h5>
                                     </div>
                                 </div>
@@ -29,26 +29,29 @@
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control font-size-16 text-uppercase fw-bold" name="no_sales" id="no_sales" placeholder="Sales Number">
+                                                            <input type="text" class="form-control font-size-16 text-uppercase fw-bold no_sales inewsalesinfo " name="no_sales" id="no_sales" placeholder="Sales Number" value="">
                                                             <label for="no_sales">No Sales</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="date" class="form-control flatpickr-input font-size-16 fw-bold" name="date_sales" id="date_sales" placeholder="Date">
+                                                            <input type="date" class="form-control flatpickr-input font-size-16 fw-bold date_sales inewsalesinfo " name="date_sales" id="date_sales" placeholder="Date" value="">
                                                             <label for="date_sales">Date Sales</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
 
-                                                        <div class="form-floating mb-3">
-                                                            <select class="form-select font-size-16 fw-bold" name="shop" id="shop" aria-label="Floating label select example">
-                                                                <option selected>Select your shop</option>
+                                                        <div id="slmp" class="form-floating mb-3">
+                                                            <select class="form-select font-size-16 fw-bold shop inewsalesinfo" name="shop" id="shop" aria-label="Floating label select example">
+                                                                <option selected disabled value>Select your shop</option>
                                                                 <?php foreach ($datashop as $ds) : ?>
                                                                     <option value="<?= $ds['id_shop']; ?>"><?= $ds['name_shop']; ?> - <?= $ds['marketplace']; ?></option>
                                                                 <?php endforeach ?>
                                                             </select>
                                                             <label for="shop">MarketPlace</label>
+                                                            <div class="invalid-feedback">
+                                                                Please choose Marketplace.
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -60,7 +63,7 @@
                             </li>
                             <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title rounded-circle bg-primary">
+                                    <div class="avatar-title productinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">02</h5>
                                     </div>
                                 </div>
@@ -93,7 +96,8 @@
                                             <div class="col text-center">
                                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                                                     <!-- <button type="button" class="btn btn-outline-danger">Delete Last Item</button> -->
-                                                    <button type="button" class="btn btn-outline-primary" id="adnpm" data-bs-toggle="modal" data-bs-target="#addNewProduct">Add New Product</button>
+                                                    <!-- <button type="button" class="btn btn-outline-primary" id="adnpm" data-bs-toggle="modal" data-bs-target="#addNewProduct">Add New Product</button> -->
+                                                    <button type="button" class="btn btn-outline-primary" id="adnpm">Add New Product</button>
                                                 </div>
                                             </div>
                                             <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
@@ -114,7 +118,7 @@
                             </li>
                             <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title rounded-circle bg-primary">
+                                    <div class="avatar-title deliveryinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">03</h5>
                                     </div>
                                 </div>
@@ -125,19 +129,19 @@
                                             <div class="row">
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="service" name="service" placeholder="Service">
+                                                        <input type="text" class="form-control ideliveryinfo" id="service" name="service" placeholder="Service">
                                                         <label for="service">Service</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="no_resi" name="no_resi" placeholder="No Resi">
+                                                        <input type="text" class="form-control ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
                                                         <label for="no_resi">No Resi</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="notes" name="notes" placeholder="Notes">
+                                                        <input type="text" class="form-control ideliveryinfo" id="notes" name="notes" placeholder="Notes">
                                                         <label for="notes">Notes</label>
                                                     </div>
                                                 </div>
@@ -148,7 +152,7 @@
                             </li>
                             <li class="checkout-item pb-1" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title rounded-circle bg-primary">
+                                    <div class="avatar-title packaginginfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">04</h5>
                                     </div>
                                 </div>
@@ -161,8 +165,8 @@
                                             <div class="col-md-4">
                                                 <div data-bs-toggle="collapse">
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packaging-method" id="packaging-method1" class="card-radio-input">
-                                                        <span class="card-radio py-0 text-center text-truncate">
+                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="1">
+                                                        <span class="card-radio packagingmethod py-0 text-center text-truncate">
                                                             <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                             <span>Small 17x9x6cm</span>
                                                         </span>
@@ -173,8 +177,8 @@
                                             <div class="col-md-4">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packaging-method" id="packaging-method2" class="card-radio-input">
-                                                        <span class="card-radio py-0 text-center text-truncate">
+                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="2">
+                                                        <span class="card-radio packagingmethod py-0 text-center text-truncate">
                                                             <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                             Long 8x8x30cm
                                                         </span>
@@ -185,10 +189,9 @@
                                             <div class="col-md-4">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packaging-method" id="packaging-method3" class="card-radio-input" checked>
-
-                                                        <span class="card-radio py-0 text-center text-truncate">
-                                                            <i class="mdi mdi-package-variant-closed text-danger fa-2x d-block"></i>
+                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="0">
+                                                        <span class="card-radio packagingmethod py-0 text-center text-truncate">
+                                                            <i class="mdi mdi-package-variant-closed packagingmethod text-danger fa-2x d-block"></i>
                                                             <span>No Packaging</span>
                                                         </span>
                                                     </label>
@@ -201,7 +204,7 @@
                             </li>
                             <li class="checkout-item pb-1 pb-2">
                                 <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title rounded-circle bg-primary">
+                                    <div class="avatar-title payinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">05</h5>
                                     </div>
                                 </div>
@@ -214,10 +217,10 @@
                                             <div class="col-md-6">
                                                 <div data-bs-toggle="collapse">
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="pay-method" id="pay-methodoption1" class="card-radio-input">
-                                                        <span class="card-radio py-0 text-center text-truncate">
-                                                            <i class="bx bx-credit-card d-block h2"></i>
-                                                            Online Payment
+                                                        <input type="radio" name="paymethod" id="pay-methodoption" class="card-radio-input ipaymethod" value="1">
+                                                        <span class="card-radio paymethod py-0 text-center text-truncate">
+                                                            <i class="bx bx-credit-card fa-2x d-block"></i>
+                                                            <span>Online Payment</span>
                                                         </span>
                                                     </label>
                                                 </div>
@@ -226,10 +229,10 @@
                                             <div class="col-md-6">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" checked>
+                                                        <input type="radio" name="paymethod" id="pay-methodoption" class="card-radio-input ipaymethod" value="2">
 
-                                                        <span class="card-radio py-0 text-center text-truncate">
-                                                            <i class="bx bx-money d-block h2"></i>
+                                                        <span class="card-radio paymethod py-0 text-center text-truncate">
+                                                            <i class="bx bx-money fa-2x d-block"></i>
                                                             <span>Cash on Delivery</span>
                                                         </span>
                                                     </label>
@@ -347,7 +350,8 @@
                     <div class="text-end mt-2 mt-sm-0">
                         <!-- <a href="#" class="btn btn-success">
                             <i class="mdi mdi-cart-outline me-1"></i> Procced </a> -->
-                        <button type="submit" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Procced</button>
+                        <button id="presubmit" type="button" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Procced</button>
+                        <button id="submit" type="submit" class="btn btn-success" hidden><i class="bx bx-check me-1 align-middle"></i> Procced</button>
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row-->
