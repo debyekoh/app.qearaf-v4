@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-body px-1">
                         <ol class="activity-checkout mb-0 px-4 mt-2">
-                            <li class="checkout-item pb-0">
+                            <li class="checkout-item pb-0" id="li1">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title newsalesinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">01</h5>
@@ -31,12 +31,18 @@
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control font-size-16 text-uppercase fw-bold no_sales inewsalesinfo" name="no_sales" id="no_sales" placeholder="Sales Number" value="">
                                                             <label for="no_sales">No Sales</label>
+                                                            <div class="invalid-feedback">
+                                                                Please Fill in No Sales.
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
                                                             <input type="date" class="form-control flatpickr-input font-size-16 fw-bold date_sales inewsalesinfo" name="date_sales" id="date_sales" placeholder="Date" value="">
                                                             <label for="date_sales">Date Sales</label>
+                                                            <div class="invalid-feedback">
+                                                                Please choose Date.
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -61,7 +67,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" style="border-color: #1f58c7;">
+                            <li class="checkout-item pb-1" id="li2" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title productinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">02</h5>
@@ -116,7 +122,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" style="border-color: #1f58c7;">
+                            <li class="checkout-item pb-1" id="li3" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title deliveryinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">03</h5>
@@ -149,6 +155,9 @@
                                                     <div class="form-floating mb-3">
                                                         <input type="text" class="form-control no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
                                                         <label for="no_resi">No Resi</label>
+                                                        <div class="invalid-feedback">
+                                                            Please Fill in No Resi.
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -162,7 +171,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" style="border-color: #1f58c7;">
+                            <li class="checkout-item pb-1" id="li4" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title packaginginfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">04</h5>
@@ -214,7 +223,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1 pb-2">
+                            <li class="checkout-item pb-1 pb-2" id="li5">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title payinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">05</h5>
