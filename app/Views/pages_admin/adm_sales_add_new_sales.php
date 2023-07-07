@@ -78,9 +78,9 @@
                                         <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Product Info</u></h5>
                                         <div class="mb-2">
                                             <div class="row mb-3">
-                                                <div class="table-responsive">
-                                                    <table id="listsalesproduct" class="table align-middle mb-0 table-nowrap">
-                                                        <thead>
+                                                <div class="table-responsive ">
+                                                    <table id="listsalesproduct" class="table table-sm rounded rounded-3 overflow-hidden table-light table-striped table-hover align-middle mb-0">
+                                                        <thead class="table-info">
                                                             <tr>
                                                                 <th class="border-top-0" scope="col">Product</th>
                                                                 <th class="border-top-0" scope="col">Product Desc</th>
