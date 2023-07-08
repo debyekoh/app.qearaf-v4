@@ -104,28 +104,7 @@ $("#presubmit").on('click', function() {
             // return false
         }
     });
-    // var sp = $('#listsalesproduct input[type=number]').val();
-    // console.log($('#listsalesproduct input[type=number]').val()== "")
-    // if ($('#listsalesproduct input[type=number]').val().length == 0) {
-    //     // // $(this).parents('p').addClass('is-invalid');
-    //     // // var check = $('#listsalesproduct input[type=number]').val('0')
-    //     // if($('#listsalesproduct input[type=number]').val()==0){
-    //     // $('#listsalesproduct input[type=number]').val('0').addClass('is-invalid');
-    //     // }else{
-    //     // !$('#listsalesproduct input[type=number]').val('0').removeClass('is-invalid');
-    //     // }
-    //     console.log("ADA")
-    // }else{
-    //     console.log("TIDAK ADA")
-    // }
-
-    //  li.checkout-item.pb-0.li1
-
-    // if($('.ipackagingmethod').length == 0){$('.packaginginfo').addClass("bg-danger");}
-    // if($('.ipayinfo .is-invalid').length == 0){$('.payinfo').addClass("bg-danger");}
-    // console.log($('.inewsalesinfo').length);
-    // console.log("Q"+ $('.inewsalesinfo-is-invalid').length);
-    ///
+    
     if($('.is-invalid').length == 0){
         $("#submit" ).trigger( "click" );
     }
@@ -149,8 +128,10 @@ $('#shop').change(function() {
     if($(this).val() != null){$('.shop').removeClass("is-invalid");$('.shop').removeClass("inewsalesinfo-is-invalid");}
     if($('.inewsalesinfo-is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
     $(".listpro").remove();
+    $(".listprosummary").remove();
     console.log("norow"+$(".norow").length)
     if($('.norow').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
+    if($('.norowsummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
     console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
 });
 
@@ -164,6 +145,7 @@ $(document).on('keyup mouseup', '.qtyinput', function() {
             $(this).removeClass("is-invalid");
             $(this).removeClass("input-is-invalid");
             console.log('all inputs filled');
+            console.log("ini baris ke: "+$(this).attr('id'));
         }
         else{
             console.log('theres an zero qty');
@@ -171,9 +153,18 @@ $(document).on('keyup mouseup', '.qtyinput', function() {
             $(this).addClass("input-is-invalid");
             // return false
         }
+        const idrow = $(this).attr('id').substring(4)
+        const valrow = $(this).val()
+        const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
+        const pckgvalsum = $('.pckgval').text()
+        calculate_1(idrow,valrow,pricerow,pckgvalsum)
+        
     }); 
     if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}                                                                                                           
     console.log('changed');
+
+    // console.log($('#deliveryservices').val());
+
 });
   
 //\\//\\
@@ -189,10 +180,27 @@ $("#no_resi").on('input', function() {
 });
 //\\//\\
 $('.ipackagingmethod').on('click',function() {
-    console.log("AA");
+    console.log($("input[name='packagingmethod']:checked").val());
     $('.packagingmethod').removeClass("bg-danger is-invalid text-white");
     $('.packaginginfo').removeClass("bg-danger");
     document.querySelector("#li4").style.borderColor = "#1f58c7";
+    var pckgid = $("input[name='packagingmethod']:checked").val()
+    if(pckgid == 0){pckgprice = 0 ; pckgdesc = "No Packaging"}
+    if(pckgid == 1){pckgprice = 2000 ; pckgdesc = "Small 17x9x6cm"}
+    if(pckgid == 2){pckgprice = 2000 ; pckgdesc = "Long 8x8x30cm"}
+    $('.pckginfo').val(pckgid);
+    $('.pckgval').text(pckgprice);
+    $('.pckgdesc').text(pckgdesc);
+    $('#pckg').text('(Rp '+pckgprice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+')');
+    $('#listsalesproduct input[type=number]').each(function() {
+        const idrow = $(this).attr('id').substring(4)
+        const valrow = $(this).val()
+        const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
+        const pckgvalsum = $('.pckgval').text()
+        calculate_1(idrow,valrow,pricerow,pckgvalsum)
+    
+    });
+
 });
 //\\//\\
 $('.ipaymethod').on('click',function() {
@@ -208,39 +216,11 @@ $('.ipaymethod').on('click',function() {
 $("#adnpm").on('click', function() {
     console.log($('#shop').val());
     if($('#shop').val() == null){
-        // $('#shop').addClass("mystyle");
         $('#shop').addClass("is-invalid");
-        // #shop
-        // var element = document.getElementById("myDIV");
-        // element.classList.add("mystyle");
-        // Swal.fire({
-        //     icon: 'error',
-        //     title: 'Select Marketplace!',
-        //     })
     }else{
         console.log("Open modal & List Product");
         $('#shop').removeClass("is-invalid");
         $('#addNewProduct').modal('show');
-        // get the current row
-        // var currentRow = $(this).closest("tr");
-        // var s = currentRow.find(".switch").val();
-        // if (s != 0) {
-        //     var ss = 0;
-        // } else {
-        //     var ss = 1;
-        // }
-        // var d = currentRow.find(".d").text();
-        // $.ajax({
-        //     // type: "GET",
-        //     url: "<?= base_url() ?>assets/js/pages/gridjs.init.js",
-        //     // data: {
-        //     //     d: d,
-        //     //     ss: ss,
-        //     // },
-        //     success: function(data) {
-        //         $('#btn-more').html("No Data");
-        //     }
-        // });
         $("#table-gridjs").empty();
         new gridjs.Grid({
             columns: [{
@@ -323,26 +303,13 @@ function addProduct(sku) {
         success: function(respone) {
                 console.log("Modal Closed");
                 $('#adnpm').removeClass("btn-outline-danger");
-                // if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}
-                // $('.productinfo ').removeClass("bg-danger");
-                // document.querySelector("#li2").style.borderColor = "#1f58c7";
-                // $('#listsalesproduct input[type=number]').each(function() {
-                //     if ($(this).val() != 0 ) {
-                //         $(this).removeClass("is-invalid");
-                //         $(this).removeClass("input-is-invalid");
-                //         console.log('all inputs filled');
-                //     }
-                //     else{
-                //         console.log('theres an zero qty');
-                //         $(this).addClass("is-invalid");
-                //         $(this).addClass("input-is-invalid");
-                //         // return false
-                //     }
-                // });
 
                 $('#addNewProduct').modal('hide');
                 if ($("#listsalesproduct > tbody > tr").hasClass("norow")) {
                     $(".norow").remove();
+                }
+                if ($("#summarytable > tbody > tr").hasClass("norowsummary")) {
+                    $(".norowsummary").remove();
                 }
                 console.log("Norow Remove");
                 var i = $(".rowprosales").length;
@@ -360,16 +327,34 @@ function addProduct(sku) {
                         '<td>'+
                             '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
                             '<p class="text-muted mb-0">SKU: '+sku+'</p>'+
-                            '<p class="text-muted mb-0">@'+rupiah(respone.results.price)+'</p>'+
+                            '<p class="text-muted mb-0">@Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
                         '<td >'+
                             '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'" style="display:none;">'+
-                            '<input class="form-control" type="text" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
-                            '<input class="form-control qtyinput" id="qty" type="number" min="0" name=qty[] placeholder="0" value="0">'+
+                            '<input class="form-control" type="text" id="priceR'+i+'" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
+                            '<input class="form-control qtyinput" id="qtyR'+i+'" type="number" min="0" name=qty[] placeholder="0" value="0">'+
                         '</td>'+
                         '<td class="text-center"><button type="button" onclick="delProduct('+stringrow+')" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
                     '</tr>'
                 );
+
+                $(".lstr").before(
+                    '<tr id="RS'+i+'" class="listprosummary rowprosalessummary '+sku+'">'+
+                        '<th scope="row"><img src="./assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
+                        '<td>'+
+                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
+                            '<p class="text-muted mb-0 RSprice" id="RSprice'+i+'" hidden>'+respone.results.price+'</p>'+
+                            '<p class="text-muted mb-0 RSqty" id="RSqty'+i+'" hidden>0</p>'+
+                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+i+'" >0</p>'+
+                            '<p class="text-muted mb-0" id="RSpricetx'+i+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
+                        '</td>'+
+                        '<td id="RSsubprice'+i+'">Rp 0</td>'+
+                    '</tr>'
+                );
+
+                
+
+
                 $('#listsalesproduct input[type=number]').each(function() {
                     if ($(this).val() != 0 ) {
                         $(this).removeClass("is-invalid");
@@ -386,13 +371,69 @@ function addProduct(sku) {
             }
         });
     }
-  }
+}
 
 
-  function delProduct(rID) {
-    row = "#"+rID ; $(row).remove();
+function delProduct(rID) {
+    console.log(rID);
+    $("#R"+rID.substring(1)).remove();
+    $("#RS"+rID.substring(1)).remove();
     if($('.listpro').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
-  }
+    if($('.listprosummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
+    $('#listsalesproduct input[type=number]').each(function() {
+        const idrow = $(this).attr('id').substring(4)
+        const valrow = $(this).val()
+        const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
+        const pckgvalsum = $('.pckgval').text()
+        calculate_1(idrow,valrow,pricerow,pckgvalsum)
+    
+    });
+
+}
+
+
+// $('#productinfo').on('keyup change paste', 'input, select, textarea',  function(){
+//     // console.log('Form changed!');
+//     calculate_1();
+// });
+
+// $('#productinfo').bind('click dblclick', function(){
+//     // console.log('Form changed! coy');
+//     calculate_1();
+// });
+
+function calculate_1(idrow,valrow,pricerow,pckgvalsum) {
+    console.log(idrow);
+    console.log(valrow);
+    console.log(pricerow);
+    console.log(pckgvalsum);
+    var sp = pricerow * valrow
+    $('#RSsubprice'+idrow).text('Rp '+sp.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+    $('#RSpricetx'+idrow).text(valrow+' x Rp '+ pricerow.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+    $('#RSqty'+idrow).text(valrow)
+    $('#RSsubpriceval'+idrow).text(sp)
+    console.log("//////////////////////////////")
+
+    var total_price = 0;
+    $('.RSsubpriceval').each(function() {
+        total_price += parseInt($(this).text());
+    }); 
+
+    var tax = total_price*(10/100);
+    
+    $('#subto').text('Rp '+total_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+    $('#tax').text('(Rp '+tax.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+')')
+    
+    var grtot = total_price-pckgvalsum-tax;
+    $('#grtot').text('Rp '+grtot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+    console.log(grtot)
+
+    console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")
+    
+   
+}
+
+
 
 
 // $( "#addNewProduct" ).on('shown', function(){

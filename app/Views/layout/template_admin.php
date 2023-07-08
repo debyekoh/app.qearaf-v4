@@ -121,7 +121,7 @@
                             <form class="p-2">
                                 <div class="search-box">
                                     <div class="position-relative">
-                                        <input type="text" class="form-control rounded bg-light border-0" placeholder="Search...">
+                                        <input type="text" name="searchall" class="form-control rounded bg-light border-0" placeholder="Search...">
                                         <i class="bx bx-search search-icon"></i>
                                     </div>
                                 </div>

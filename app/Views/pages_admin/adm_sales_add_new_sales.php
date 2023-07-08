@@ -79,7 +79,7 @@
                                         <div class="mb-2">
                                             <div class="row mb-3">
                                                 <div class="table-responsive ">
-                                                    <table id="listsalesproduct" class="table table-sm rounded rounded-3 overflow-hidden table-light table-striped table-hover align-middle mb-0">
+                                                    <table id="listsalesproduct" class="table table-sm rounded rounded-3 overflow-hidden table-striped table-hover align-middle mb-0">
                                                         <thead class="table-info">
                                                             <tr>
                                                                 <th class="border-top-0" scope="col">Product</th>
@@ -186,7 +186,7 @@
                                             <div class="col-md-4">
                                                 <div data-bs-toggle="collapse">
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="1">
+                                                        <input type="radio" name="packagingmethod" id="packaging-method1" class="card-radio-input ipackagingmethod" value="1">
                                                         <span class="card-radio packagingmethod py-0 text-center text-truncate">
                                                             <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                             <span>Small 17x9x6cm</span>
@@ -198,7 +198,7 @@
                                             <div class="col-md-4">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="2">
+                                                        <input type="radio" name="packagingmethod" id="packaging-method2" class="card-radio-input ipackagingmethod" value="2">
                                                         <span class="card-radio packagingmethod py-0 text-center text-truncate">
                                                             <i class="mdi mdi-package-variant-closed fa-2x d-block"></i>
                                                             Long 8x8x30cm
@@ -210,7 +210,7 @@
                                             <div class="col-md-4">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="packagingmethod" id="packaging-method" class="card-radio-input ipackagingmethod" value="0">
+                                                        <input type="radio" name="packagingmethod" id="packaging-method0" class="card-radio-input ipackagingmethod" value="0">
                                                         <span class="card-radio packagingmethod py-0 text-center text-truncate">
                                                             <i class="mdi mdi-package-variant-closed packagingmethod text-danger fa-2x d-block"></i>
                                                             <span>No Packaging</span>
@@ -238,7 +238,7 @@
                                             <div class="col-md-6">
                                                 <div data-bs-toggle="collapse">
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="paymethod" id="pay-methodoption" class="card-radio-input ipaymethod" value="1">
+                                                        <input type="radio" name="paymethod" id="pay-methodoption1" class="card-radio-input ipaymethod" value="1">
                                                         <span class="card-radio paymethod py-0 text-center text-truncate">
                                                             <i class="bx bx-credit-card fa-2x d-block"></i>
                                                             <span>Online Payment</span>
@@ -250,7 +250,7 @@
                                             <div class="col-md-6">
                                                 <div>
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="paymethod" id="pay-methodoption" class="card-radio-input ipaymethod" value="2">
+                                                        <input type="radio" name="paymethod" id="pay-methodoption2" class="card-radio-input ipaymethod" value="2">
 
                                                         <span class="card-radio paymethod py-0 text-center text-truncate">
                                                             <i class="bx bx-money fa-2x d-block"></i>
@@ -285,7 +285,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table align-middle mb-0 table-nowrap">
+                            <table id="summarytable" class="table align-middle mb-0 table-nowrap">
                                 <thead>
                                     <tr>
                                         <th class="border-top-0" style="width: 90px;" scope="col">Product</th>
@@ -294,7 +294,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr class="norowsummary">
+                                        <td colspan="3" class="text-center">-- NoProduct --</td>
+                                    </tr>
+                                    <!-- <tr>
                                         <th scope="row"><img src="assets/images/product/img-1.png" alt="product-img" title="product-img" class="avatar-md"></th>
                                         <td>
                                             <h5 class="font-size-15 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">Home & Office Chair Crime</a></h5>
@@ -309,38 +312,50 @@
                                             <p class="text-muted mb-0">$ 260 x 1</p>
                                         </td>
                                         <td>$ 260</td>
-                                    </tr>
-                                    <tr>
+                                    </tr> -->
+                                    <tr class="lstr">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Sub Total :</h5>
                                         </td>
-                                        <td>
-                                            $ 780
+                                        <td id="subto">
+                                            -
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Discount :</h5>
                                         </td>
-                                        <td>
-                                            - $ 78
+                                        <td id="disc">
+                                            -
+                                        </td>
+                                    </tr>
+                                    <tr class="pckg">
+                                        <td colspan="2">
+                                            <h5 class="font-size-14 m-0">Packaging :</h5>
+                                            <!-- <input hidden class="form-control pckginfo" id="pckginfo" type="text" name="pckginfo" value=""> -->
+                                            <p class="text-muted mb-0 pckgdesc"></p>
+                                            <!-- <p class="text-muted mb-0 pckginfo"></p> -->
+                                            <p hidden class="text-muted mb-0 pckgval"></p>
+                                        </td>
+                                        <td id="pckg" class="text-danger">
+                                            -
                                         </td>
                                     </tr>
 
-                                    <tr>
+                                    <!-- <tr>
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Shipping Charge :</h5>
                                         </td>
                                         <td>
                                             $ 25
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Estimated Tax :</h5>
+                                            <h5 class="font-size-14 m-0">Estimated Tax (10%):</h5>
                                         </td>
-                                        <td>
-                                            $ 18.20
+                                        <td id="tax" class="text-danger">
+                                            -
                                         </td>
                                     </tr>
 
@@ -348,8 +363,8 @@
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Total:</h5>
                                         </td>
-                                        <td>
-                                            $ 745.2
+                                        <td id="grtot" class="font-size-18 m-0 fw-bold">
+                                            -
                                         </td>
                                     </tr>
                                 </tbody>
