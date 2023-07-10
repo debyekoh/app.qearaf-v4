@@ -397,6 +397,7 @@
             // console.log(win.innerWidth);
             // console.log("medium");
             document.body.setAttribute("data-sidebar-size", "sm");
+            document.getElementsByClassName('footer')[0].style.left = "0px";
             // document.body.setAttribute("data-sidebar-size", "sm")
         } else if (win.innerWidth <= 412) {
             // console.log("small");
