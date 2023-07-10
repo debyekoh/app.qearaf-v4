@@ -2,7 +2,7 @@
 
 <?= $this->section('contents'); ?>
 
-<div class="container-fluid">
+<div class="container-fluid ps-0 pe-0">
 
     <form id="productinfo" action="<?= base_url() ?>saveproduct" method="POST" enctype="multipart/form-data">
         <?= csrf_field(); ?>

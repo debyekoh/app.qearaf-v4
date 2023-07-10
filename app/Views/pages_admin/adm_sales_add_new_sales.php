@@ -2,7 +2,7 @@
 
 <?= $this->section('contents'); ?>
 
-<div class="container-fluid">
+<div class="container-fluid ps-0 pe-0">
     <form id="productinfo" action="<?= base_url() ?>savenewsales" method="POST" class="needs-validation">
         <div class="row">
             <div class="col-xl-8">
@@ -23,7 +23,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-4" hidden>
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="id_sales">
+                                                            <input type="text" class="form-control" id="id_sales" name="id_sales">
                                                             <label for="id_sales">ID Sales</label>
                                                         </div>
                                                     </div>

@@ -2,7 +2,7 @@
 
 <?= $this->section('contents'); ?>
 
-<div class="container-fluid">
+<div class="container-fluid ps-0 pe-0">
 
     <form id="productinfo" action="<?= base_url() ?>copyproduct/<?= $DataProduct['pro_part_no']; ?>" method="POST">
         <?= csrf_field(); ?>

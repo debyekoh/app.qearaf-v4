@@ -96,7 +96,7 @@
 
 
         <header id="page-topbar" class="isvertical-topbar">
-            <div class="navbar-header">
+            <div class="navbar-header ps-0 pe-0">
                 <div class="d-flex">
 
                     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
@@ -319,10 +319,10 @@
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
-            <div class="page-content">
+            <div class="page-content ps-0 pe-0">
 
                 <!-- container-fluid -->
-                <div class="container-fluid">
+                <div class="container-fluid ps-0 pe-0">
                     <?= $this->include('messages'); ?>
                     <?= $this->include('messages_alert'); ?>
                 </div>
@@ -332,7 +332,7 @@
             <!-- End Page-content -->
 
             <footer class="footer">
-                <div class="container-fluid">
+                <div class="container-fluid ">
                     <div class="row">
                         <div class="col-sm-6">
                             2023 © Qearaf.COM <i>-</i> Version 1.5.0</p>

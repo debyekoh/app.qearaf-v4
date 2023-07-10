@@ -44,9 +44,24 @@ class Sales extends BaseController
 
     public function index()
     {
+        $head_page =
+            '
+            <link href="assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
+	
+            ';
+        $js_page =
+            '
+            <script src="assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="assets/js/pages/mysales.init.js"></script>
+            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            
+            ';
         $datapage = array(
             'titlepage' => 'Sales',
             'tabshop' => $this->tabshop,
+            'head_page' => $head_page,
+            'js_page' => $js_page,
         );
         return view('pages_admin/adm_sales', $datapage);
     }
@@ -175,6 +190,7 @@ class Sales extends BaseController
     {
         // dd($this->request->getVar());
         $dataSales = array(
+            'id_sales'              => strtoupper($this->request->getVar('id_sales')),
             'no_sales'              => strtoupper($this->request->getVar('no_sales')),
             'date_sales'            => $this->request->getVar('date_sales'),
             'id_shop'               => $this->request->getVar('shop'),
@@ -189,8 +205,9 @@ class Sales extends BaseController
         $dataSalesDetail = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
             $dataSalesDetail[] = array(
-                'id_sales_detail'       => strtoupper($this->request->getVar('no_sales')) . '/' . $a,
-                'no_sales'              => $this->request->getVar('date_sales'),
+                'id_sales_detail'       => strtoupper($this->request->getVar('id_sales')) . '/' . $a,
+                'no_sales'              => strtoupper($this->request->getVar('no_sales')),
+                'date_sales'            => $this->request->getVar('date_sales'),
                 'pro_id'                => $this->request->getVar('proid')[$a],
                 'pro_price'             => $this->request->getVar('price')[$a],
                 'pro_qty'               => $this->request->getVar('qty')[$a],
