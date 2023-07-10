@@ -31,7 +31,7 @@
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control font-size-16 text-uppercase fw-bold no_sales inewsalesinfo" name="no_sales" id="no_sales" placeholder="Sales Number" value="">
                                                             <label for="no_sales">No Sales</label>
-                                                            <div class="invalid-feedback">
+                                                            <div class="invalid-feedback no_sales-invalid-feedback">
                                                                 Please Fill in No Sales.
                                                             </div>
                                                         </div>
@@ -153,7 +153,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
+                                                        <input type="text" class="form-control text-uppercase no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
                                                         <label for="no_resi">No Resi</label>
                                                         <div class="invalid-feedback">
                                                             Please Fill in No Resi.

@@ -116,8 +116,24 @@ $("#no_sales").on('input', function() {
     if($(this).val() != null){$('.no_sales').removeClass("is-invalid");$('.no_sales').removeClass("inewsalesinfo-is-invalid");}
     if($('.inewsalesinfo-is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
     
-    console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
-});
+    // console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
+    console.log("newsalesinfo "+ $('#no_sales').val());
+    $.ajax({
+        type: "POST",
+        url: './checksales',
+        data: {
+            nosales: $('#no_sales').val(),
+        },
+        
+        success: function(respone) {
+                console.log(respone.status);
+                if(respone.status == "error"){$('#no_sales').addClass("is-invalid");$('#no_sales').addClass("inewsalesinfo-is-invalid");$('.no_sales-invalid-feedback').text("No Sales Already Exist.");}
+                else
+                {$('#no_sales').removeClass("is-invalid");$('.no_sales-invalid-feedback').text("Please Fill in No Sales.");}
+            }
+        });
+    }
+);
 $('#date_sales').change(function() {
     if($(this).val() != null){$('.date_sales').removeClass("is-invalid");$('.date_sales').removeClass("inewsalesinfo-is-invalid");}
     if($('.inewsalesinfo-is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
