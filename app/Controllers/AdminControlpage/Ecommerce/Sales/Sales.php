@@ -44,6 +44,7 @@ class Sales extends BaseController
 
     public function index()
     {
+
         $head_page =
             '
             <link href="assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
@@ -200,6 +201,7 @@ class Sales extends BaseController
             'note'                  => $this->request->getVar('notes'),
             'packaging'             => $this->request->getVar('packagingmethod'),
             'paymethod'             => $this->request->getVar('paymethod'),
+            'status'                => "process",
         );
 
         $dataSalesDetail = array();
@@ -209,6 +211,7 @@ class Sales extends BaseController
                 'no_sales'              => strtoupper($this->request->getVar('no_sales')),
                 'date_sales'            => $this->request->getVar('date_sales'),
                 'pro_id'                => $this->request->getVar('proid')[$a],
+                'pro_img'               => $this->request->getVar('proimg')[$a],
                 'pro_price'             => $this->request->getVar('price')[$a],
                 'pro_qty'               => $this->request->getVar('qty')[$a],
             );
@@ -222,5 +225,77 @@ class Sales extends BaseController
             session()->setFlashdata('success', $msg);
             return redirect()->to('/sales');
         }
+    }
+
+    public function show($tab)
+    {
+        $this->builder = $this->db->table('sales');
+        // $this->builder->select('id_sales , no_sales , date_sales , name_delivery_services , name_shop as shopname , shop.marketplace as shopmarketplace , status');
+        // $this->builder->join('sales_detail', 'sales_detail.no_sales= sales.no_sales');
+        $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.packaging');
+        $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        $query = $this->builder->get();
+        // dd($query->getResult());
+
+
+
+        $datapage = array(
+            'myproduct' => $this->productsModel->findAll(),
+        );
+
+        $dataarray = array(
+            'productname' => $this->productsModel->findAll(),
+        );
+
+        if (in_groups('4') == true) {
+            $editable = false;
+        } else {
+            $editable = true;
+        }
+        if (in_groups('4') == true) {
+            $deletable = false;
+        } else {
+            $deletable = true;
+        }
+
+        $data = array();
+        $row = array();
+        $imgdata = array();
+        $no = 0;
+        $noa = 0;
+
+        foreach ($query->getResult() as $i) {
+            $row = [
+                "no" => $no++,
+                // "img_sales"     => $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->find()[0]['pro_id'])['pro_image_name'],
+                // "img_sales"     => $imgdata,
+                "item_detail"   => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll(),
+                "item_count"    => count($this->salesdetailModel->where('no_sales', $i->no_sales)->findAll()),
+                "id_sales"      => $i->id_sales,
+                "no_sales"      => $i->no_sales,
+                "date_sales"    => $i->date_sales,
+                "sales"         => $this->salesdetailModel->find($i->no_sales)['pro_price'],
+                "statussales"   => $i->status,
+                // "model" => $i->pro_model,
+                // "skuno" => $i->pro_part_no,
+                // "price" => $i->pro_price_seller,
+                // "statusproduct" => $i->pro_active,
+                // "test" => $test,
+                "editable" => $editable,
+                "deletable" => $deletable,
+                // "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
+            ];
+            $data[] = $row;
+        }
+        // dd($data);
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success show data',
+            // 'results' => $this->productsModel->findAll(),
+            // 'results' => $query->getResult(),
+            'results' => $data,
+        ]);
     }
 }

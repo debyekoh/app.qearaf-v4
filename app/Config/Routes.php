@@ -62,6 +62,7 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 
 //Ecommerce 
 //Sales
+$routes->get('/mysales/show/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1');; //Ajax
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
 $routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'permission:Create']);

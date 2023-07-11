@@ -1,103 +1,138 @@
 
-// function myFunction() {
-//     alert("I am an alert box!");
-//   }
+$(document).ready(function() {
+    // document.querySelector("#toprocess-tab > span.d-none.d-sm-block")
+    $('#salesTab').on('click', function () {
+        var regexPattern = /[^A-Za-z]/g;
+        var a = $('button.nav-link.active').prop('id');
+      })
+    var regexPattern = /[^A-Za-z]/g;
+    $('.gridjs-th-content').text($('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""))
+    var a = $('button.nav-link.active').prop('id');
+    new gridjs.Grid({
+        columns: [
+        {
+            name: $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""),
+            formatter: function(e) {
+                var data_item = e[2]
+                // foreach (e[2]){
 
-// $(function () {
-//     $('[data-toggle="tooltip"]').tooltip()
-// })
+                // }
+                // data_item.forEach(element => {
+                    // console.log( e[2][0]['id_sales_detail'])
+                    console.log(data_item[0])
+                // });
 
-new gridjs.Grid({
-    columns: [{
-        name: "Product",
-        sort: {
-            enabled: !1
-        },
-        formatter: function(e) {
-            return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-lg rounded p-1">')
-            // return gridjs.html('<div class="form-check font-size-16"><input class="form-check-input" type="checkbox" id="orderidcheck01"><label class="form-check-label" for="orderidcheck01"></label></div>')
-        }
-    }, {
-        name: "Product Name",
-        formatter: function(e) {
-            return gridjs.html('<span class="fw-semibold">' + e + "</span>")
-        }
-    },{
-        name: "SKU N0",
-        formatter: function(e) {
-            return gridjs.html('<span class="skuno">' + e + "</span>")
-        }
-    }, "Price", {
-        name: "Status",
-        formatter: function(e) {
-            switch (e) {
-            case "1":
-                return gridjs.html('<span class="badge badge-pill badge-soft-success font-size-12">Active</span>');
-            case "0":
-                return gridjs.html('<span class="badge badge-pill badge-soft-danger font-size-12">Off</span>');
-            }
-        }
-    }, {
-        name: "Action",
-        sort: {
-            enabled: !1
-        },
-        formatter: function(e) {
-            console.log(e);
-            if(e[1]==true && e[2]==true){
-            return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="duplicateproduct/'+ e[0] +'"  id="btnCop" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate" class="px-3 btn btn-sm btn-soft-warning btn-rounded waves-effect waves-dark" data-bs-original-title="Duplicate" aria-label="Duplicate"><i class="far fa-copy font-size-12"></i></a>' +
-                    '</li>'+
-                    '<li class="list-inline-item">' +
-                        '<a href="javascript:void(0);" id="btnDel" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-3 btn btn-sm btn-soft-danger btn-rounded waves-effect waves-dark" data-bs-original-title="Delete" aria-label="Delete"><i class="far fa-trash-alt font-size-12"></i></a>' +
-                    '</li>'
-                )
-            } else if(e[1]==true){
+
+                let itemdata = "";
+                for (i = 0; i < data_item.length; i++) {
+                    // itemdata += cars[i] + "<br>";
+                    itemdata += 
+                        '<div class="row align-items-center">'+
+                            '<div class="col-10">'+
+                                '<div class="user-block">'+
+                                    '<img class="m-1" src="./assets/images/product/'+data_item[i]['pro_img']+'" alt="User Image" style="height: 60px; width: 60px;">'+
+                                    '<span class="username"><b>PAKET KUNCI RODA TW19REH+HDX620-1</b></span>'+
+                                    // '<span class="description" style="padding-left: 20px;">TW19REH-HDX620-1</span>'+
+                                '</div>'+
+                            '</div>'+
+                            
+                            '<div class="col text-center">'+
+                                '<h4>x<b>1</b></h4>'+
+                            '</div>'+
+                        '</div>'
+                    ;
+                }
+
+                
                 return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
-                    '</li>'
-                )
-            }else{
-                return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Detail" aria-label="Detail"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' 
+                '<div class="card card-outline" style="margin-bottom: 0px;">'+
+				 	'<div class="card-header" style="padding-bottom: 5px;padding-top: 5px;padding-left: 10px;background-color: rgb(228 228 228);">'+
+                        '<span class="text-end"><h5 class="font-size-14 mb-0">#' + e[0] + '</h5><p class="font-size-14 text-muted mb-0">' + e[1] + '</p></span>'+
+    				'</div>'+
+    				'<div class="card-body" style="padding: 10px;">'+
+                        '<div  class="d-none d-sm-block">'+
+                            '<div class="row row align-items-center">'+
+                                
+                                '<div class="col-5">'+
+                                    itemdata +
+                                
+                                    
+                                    // '<div class="row row align-items-center">'+
+                                    //     '<div class="col-10">'+
+                                    //         '<div class="user-block">'+
+                                    //             '<img class="" src="https://qearaf.com/uploads/produk_forging_standar/picture_product/product-6ffe1fb2-5ca2f.avif" alt="User Image" style="height: 60px; width: 60px;">'+
+                                    //             '<span class="username" style="padding-left: 20px; min-height: 43.98px;"><b>PAKET KUNCI RODA TW19REH+HDX620-1</b></span>'+
+                                    //             '<span class="description" style="padding-left: 20px;">TW19REH-HDX620-1</span>'+
+                                    //         '</div>'+
+                                    //     '</div>'+
+                                        
+                                    //     '<div class="col text-center">'+
+                                    //         '<h4>x<b>1</b></h4>'+
+                                    //     '</div>'+
+                                    // '</div>'+
+                            
+                                    // '<div class="row row align-items-center">'+
+                                    //     '<div class="col-10">'+
+                                    //         '<div class="user-block">'+
+                                    //             '<img class="" src="https://qearaf.com/uploads/produk_forging_standar/picture_product/product-676f7511-f5006.avif" alt="User Image" style="height: 60px; width: 60px;">'+
+                                    //             '<span class="username" style="padding-left: 20px; min-height: 43.98px;"><b>PACKING KARDUS 8X8X30 cm ORDR-2</b></span>'+
+                                    //             '<span class="description" style="padding-left: 20px;">PCKG-2-8X8X30</span>'+
+                                    //         '</div>'+
+                                    //     '</div>'+
+                                        
+                                    //     '<div class="col text-center">'+
+                                    //         '<h4>x<b>1</b></h4>'+
+                                    //     '</div>'+
+                                    // '</div>'+
+                            
+                                '</div>'+
+                                '<div class="col-3 text-center">'+
+                                    '<p><img class="" src="https://qearaf.com/assets/dist/img/logo/Service_SHOPEEXPRESS.png" style="height: 25px;"></p>'+
+                                    '<p><b>SPXID030559409967</b></p>'+
+                                '</div>'+
+                                '<div class="col">'+
+                                    '<h5><b>81.500,00</b></h5>'+
+                                '</div>'+
+                                '<div class="col text-center">'+
+                                    '<button type="button" class="btn btn-block btn-outline-primary" id="detailTrans" data-nosales_id="202307/10/S/012"><i class="fa fa-lg fa-external-link" aria-hidden="true"></i>' +
+                                    '<br>'+
+                                    'Detail</button>'+
+                                '</div>'+
+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+				'</div>'
                 )
             }
-        }
-    }],
-    pagination: {
-        limit: 10
-    },
-    sort: !0,
-    // search: !0,
-    server: {
-        url: './myproducts/show',
-        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price, product.statusproduct , [product.skuno,product.editable,product.deletable]])
-      },
-      style: {
-        table: {
+        }],
+        pagination: {
+            limit: 10
         },
-        th: {
-          'text-align': 'center'
-        },
-        td: {
-          'text-align': 'center'
-        }
-      } 
-      
-}).render(document.getElementById("sales-all"));
+        // sort: !0,
+        // search: !0,
+        server: {
+            url: './mysales/show/'+a,
+            then: data => data.results.map(sales => [[sales.id_sales , sales.no_sales , sales.item_detail , sales.item_detail]]),
+            // then: data => data.results(),
+          },
+          style: {
+            table: {
+            },
+            th: {
+            //   'text-align': 'center'
+            },
+            td: {
+            //   'text-align': 'center'
+            }
+          } 
+          
+    }).render(document.getElementById("sales-all"));
+});
+
+
+
+
 
 
 // $("#table-gridjs").on('click', '#btnEdit', function() {

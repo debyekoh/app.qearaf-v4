@@ -347,6 +347,7 @@ function addProduct(sku) {
                         '</td>'+
                         '<td >'+
                             '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'" style="display:none;">'+
+                            '<input class="form-control" type="text" name=proimg[] placeholder="0" value="'+respone.results.image+'" style="display:none;">'+
                             '<input class="form-control" type="text" id="priceR'+i+'" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
                             '<input class="form-control qtyinput" id="qtyR'+i+'" type="number" min="0" name=qty[] placeholder="0" value="0">'+
                         '</td>'+

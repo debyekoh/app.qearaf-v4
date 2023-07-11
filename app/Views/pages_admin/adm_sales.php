@@ -9,70 +9,89 @@
     <div class="card">
         <div class="card-body p-1">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#all" role="tab">
+            <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+            </div> -->
+
+            <ul class="nav nav-tabs nav-tabs-custom mt-1" id="salesTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-home"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">All <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#process" role="tab">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="toprocess-tab" data-bs-toggle="tab" data-bs-target="#toprocess" type="button" role="tab" aria-controls="toprocess" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="far fa-user"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Process <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#packaging" role="tab">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="topackaging-tab" data-bs-toggle="tab" data-bs-target="#topackaging" type="button" role="tab" aria-controls="topackaging" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="far fa-envelope"> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></i></span>
                         <span class="d-none d-sm-block">Packaging <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#delivery" role="tab">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="readytodelivery-tab" data-bs-toggle="tab" data-bs-target="#readytodelivery" type="button" role="tab" aria-controls="readytodelivery" aria-selected="true">
+                        <span class="d-block d-sm-none"><i class="far fa-envelope"> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></i></span>
+                        <span class="d-none d-sm-block">Ready <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-cog"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Delivery <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#received" role="tab">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="received" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-cog"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Received <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#completed" role="tab">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-cog"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Completed <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#cancel" role="tab">
+
+                <li class="nav-item d-none d-sm-block" role="presentation">
+                    <button class="nav-link" id="cancel-tab" data-bs-toggle="tab" data-bs-target="#cancel" type="button" role="tab" aria-controls="cancel" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-cog"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Cancel <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#return" role="tab">
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="return-tab" data-bs-toggle="tab" data-bs-target="#return" type="button" role="tab" aria-controls="return" aria-selected="true">
                         <span class="d-block d-sm-none"><i class="fas fa-cog"></i> <span class="rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">2</span></span>
                         <span class="d-none d-sm-block">Return <span class="rounded-pill bg-primary bg-gradient" style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">2</span></span>
-                    </a>
+                    </button>
                 </li>
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content p-3 text-muted">
-                <!-- <div class="col-xl-3 col-md-12">
-                    <div class="pb-3 pb-xl-0">
-                        <form class="email-search">
-                            <div class="position-relative">
-                                <input type="text" class="form-control bg-light" placeholder="Search...">
-                                <span class="bx bx-search font-size-18"></span>
-                            </div>
-                        </form>
-                    </div>
-                </div> -->
-                <div class="col-md-4 col-sm-12 mb-2">
+            <div class="tab-content p-3 text-muted pb-0" id="salesTabContent">
+                <div class="col-md-4 col-sm-12 mb-3">
                     <div class="row">
                         <div class="col-4 pe-0">
                             <select class="form-select form-select-sm bg-light" style="border-radius: 0.5rem !important; border-bottom-right-radius: 0px !important;border-top-right-radius: 0px !important;" aria-label=".form-select-sm example">
@@ -86,43 +105,34 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="tab-pane active" id="all" role="tabpanel">
+                <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                     <div id="sales-all"></div>
                 </div>
-                <div class="tab-pane" id="process" role="tabpanel">
-                    <p class="mb-0">
-                        Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-                        single-origin coffee squid. Exercitation +1 labore velit, blog
-                        sartorial PBR leggings next level wes anderson artisan four loko
-                        farm-to-table craft beer twee. Qui photo booth letterpress,
-                        commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-                        vinyl cillum PBR. Homo nostrud organic, assumenda labore
-                        aesthetic magna delectus.
-                    </p>
+                <div class="tab-pane fade" id="toprocess" role="tabpanel" aria-labelledby="toprocess-tab">
+                    <div id="sales-process"></div>
                 </div>
-                <div class="tab-pane" id="packaging" role="tabpanel">
-                    <p class="mb-0">
-                        Etsy mixtape wayfarers, ethical wes anderson tofu before they
-                        sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                        farm-to-table readymade. Messenger bag gentrify pitchfork
-                        tattooed craft beer, iphone skateboard locavore carles etsy
-                        salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
-                        Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
-                        mi whatever gluten-free carles.
-                    </p>
+                <div class="tab-pane fade" id="topackaging" role="tabpanel" aria-labelledby="topackaging-tab">
+                    <div id="sales-packaging"></div>
                 </div>
-                <div class="tab-pane" id="delivery" role="tabpanel">
-                    <p class="mb-0">
-                        Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                        art party before they sold out master cleanse gluten-free squid
-                        scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                        art party locavore wolf cliche high life echo park Austin. Cred
-                        vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                        farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral,
-                        mustache readymade keffiyeh craft.
-                    </p>
+                <div class="tab-pane fade" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
+                    <div id="sales-delivery"></div>
                 </div>
+                <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">
+                    <div id="sales-received"></div>
+                </div>
+                <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                    <div id="sales-completed"></div>
+                </div>
+                <div class="tab-pane fade" id="cancel" role="tabpanel" aria-labelledby="cancel-tab">
+                    <div id="sales-cancel"></div>
+                </div>
+                <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
+                    <div id="sales-return"></div>
+                </div>
+
+
+
+
             </div>
         </div><!-- end card-body -->
     </div>
