@@ -9,8 +9,11 @@ class CreateListDeliveryServices extends Migration
     public function up()
     {
         $fields = [
-            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'name_delivery_services'        => ['type' => 'varchar', 'constraint' => 255],
+            'id'                         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'name_delivery_services'     => ['type' => 'varchar', 'constraint' => 255],
+            'image_services'             => ['type' => 'varchar', 'constraint' => 255],
+
+
         ];
 
         $this->forge->addField($fields);

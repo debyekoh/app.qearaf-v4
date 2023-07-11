@@ -91,7 +91,7 @@
 
             <!-- Tab panes -->
             <div class="tab-content p-3 text-muted pb-0" id="salesTabContent">
-                <div class="col-md-4 col-sm-12 mb-3">
+                <div class="col-md-4 col-sm-12">
                     <div class="row">
                         <div class="col-4 pe-0">
                             <select class="form-select form-select-sm bg-light" style="border-radius: 0.5rem !important; border-bottom-right-radius: 0px !important;border-top-right-radius: 0px !important;" aria-label=".form-select-sm example">
