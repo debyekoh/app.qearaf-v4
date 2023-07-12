@@ -105,10 +105,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-                    <div id="sales-all"></div>
+                <div id="tabcontent">
+                    <div id="salestabcontent"></div>
                 </div>
-                <div class="tab-pane fade" id="toprocess" role="tabpanel" aria-labelledby="toprocess-tab">
+                <!-- <div class="tab-pane fade" id="toprocess" role="tabpanel" aria-labelledby="toprocess-tab">
                     <div id="sales-process"></div>
                 </div>
                 <div class="tab-pane fade" id="topackaging" role="tabpanel" aria-labelledby="topackaging-tab">
@@ -128,7 +128,7 @@
                 </div>
                 <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
                     <div id="sales-return"></div>
-                </div>
+                </div> -->
 
 
 

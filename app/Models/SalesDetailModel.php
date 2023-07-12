@@ -10,6 +10,6 @@ class SalesDetailModel extends Model
     protected $primaryKey = 'no_sales';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'id_sales_detail', 'no_sales', 'pro_id', 'pro_img', 'pro_price', 'pro_qty', 'status',
+        'id_sales_detail', 'no_sales', 'pro_id', 'pro_img', 'pro_price', 'pro_price_basic', 'pro_qty', 'status',
     ];
 }

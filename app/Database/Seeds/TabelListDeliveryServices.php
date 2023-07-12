@@ -19,7 +19,7 @@ class TabelListDeliveryServices extends Seeder
             ],
             [
                 'name_delivery_services'      => 'Grab',
-                'image_services'              => 'picture-img.png',
+                'image_services'              => 'Service_Grab.png',
             ],
             [
                 'name_delivery_services'      => 'J&T Express',
@@ -27,7 +27,7 @@ class TabelListDeliveryServices extends Seeder
             ],
             [
                 'name_delivery_services'      => 'JNE Express',
-                'image_services'              => 'picture-img.png',
+                'image_services'              => 'Service_JNE.png',
             ],
             [
                 'name_delivery_services'      => 'Lion Parcel',

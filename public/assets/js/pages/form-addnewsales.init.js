@@ -37,6 +37,7 @@ $(document).ready(function() {
           return false;
         }
       });
+
 });
 
 
@@ -169,11 +170,22 @@ $(document).on('keyup mouseup', '.qtyinput', function() {
             $(this).addClass("input-is-invalid");
             // return false
         }
-        const idrow = $(this).attr('id').substring(4)
-        const valrow = $(this).val()
-        const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
-        const pckgvalsum = $('.pckgval').text()
-        calculate_1(idrow,valrow,pricerow,pckgvalsum)
+        if($("input[name='packagingmethod']:checked").val()==null){pckgid = 0}else{pckgid = $("input[name='packagingmethod']:checked").val()}
+        if(pckgid == 0){pckgprice = 0 ; pckgdesc = "No Packaging"}
+        if(pckgid == 1){pckgprice = 2000 ; pckgdesc = "Small 17x9x6cm"}
+        if(pckgid == 2){pckgprice = 2000 ; pckgdesc = "Long 8x8x30cm"}
+        $('.pckginfo').val(pckgid);
+        $('#pckgval').val(pckgprice);
+        $('.pckgdesc').text(pckgdesc);
+        $('#pckg').text('Rp '+pckgprice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+        $('#listsalesproduct input[type=number]').each(function() {
+            const idrow = $(this).attr('id').substring(4)
+            const valrow = $(this).val()
+            const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
+            const pckgvalsum = parseInt($('#pckgval').val())
+            calculate_1(idrow,valrow,pricerow,pckgvalsum)
+    
+    });
         
     }); 
     if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}                                                                                                           
@@ -205,14 +217,14 @@ $('.ipackagingmethod').on('click',function() {
     if(pckgid == 1){pckgprice = 2000 ; pckgdesc = "Small 17x9x6cm"}
     if(pckgid == 2){pckgprice = 2000 ; pckgdesc = "Long 8x8x30cm"}
     $('.pckginfo').val(pckgid);
-    $('.pckgval').text(pckgprice);
+    $('#pckgval').val(pckgprice);
     $('.pckgdesc').text(pckgdesc);
-    $('#pckg').text('(Rp '+pckgprice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+')');
+    $('#pckg').text('Rp '+pckgprice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
     $('#listsalesproduct input[type=number]').each(function() {
         const idrow = $(this).attr('id').substring(4)
         const valrow = $(this).val()
         const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
-        const pckgvalsum = $('.pckgval').text()
+        const pckgvalsum = parseInt($('#pckgval').val())
         calculate_1(idrow,valrow,pricerow,pckgvalsum)
     
     });
@@ -401,7 +413,7 @@ function delProduct(rID) {
         const idrow = $(this).attr('id').substring(4)
         const valrow = $(this).val()
         const pricerow = $('#price'+$(this).attr('id').substring(3)+'').val()
-        const pckgvalsum = $('.pckgval').text()
+        const pckgvalsum = parseInt($('#pckgval').val())
         calculate_1(idrow,valrow,pricerow,pckgvalsum)
     
     });
@@ -441,8 +453,9 @@ function calculate_1(idrow,valrow,pricerow,pckgvalsum) {
     $('#subto').text('Rp '+total_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
     $('#tax').text('(Rp '+tax.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+')')
     
-    var grtot = total_price-pckgvalsum-tax;
+    const grtot = parseInt(total_price)-parseInt(tax)+parseInt(pckgvalsum);
     $('#grtot').text('Rp '+grtot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+    $('#grtotval').val(grtot)
     console.log(grtot)
 
     console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")

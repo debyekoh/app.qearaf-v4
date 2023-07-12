@@ -69,6 +69,7 @@ $routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', [
 $routes->get('/listproduct', 'AdminControlpage\Ecommerce\Sales\Sales::list');
 $routes->match(['get', 'post'], '/checksales', 'AdminControlpage\Ecommerce\Sales\Sales::checkNoSales'); //Ajax
 $routes->match(['get', 'post'], '/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
+$routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::selectedPckg'); //AjaxModal
 
 //Ecommerce 
 //Purchase

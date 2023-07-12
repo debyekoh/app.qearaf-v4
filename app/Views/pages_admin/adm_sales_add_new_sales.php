@@ -329,32 +329,24 @@
                                             -
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <h5 class="font-size-14 m-0">Estimated Tax (10%):</h5>
+                                        </td>
+                                        <td id="tax" class="text-danger">
+                                            -
+                                        </td>
+                                    </tr>
                                     <tr class="pckg">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Packaging :</h5>
                                             <!-- <input hidden class="form-control pckginfo" id="pckginfo" type="text" name="pckginfo" value=""> -->
                                             <p class="text-muted mb-0 pckgdesc"></p>
                                             <!-- <p class="text-muted mb-0 pckginfo"></p> -->
-                                            <p hidden class="text-muted mb-0 pckgval"></p>
+                                            <!-- <p hidden class="text-muted mb-0 pckgval"></p> -->
+                                            <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="0">
                                         </td>
-                                        <td id="pckg" class="text-danger">
-                                            -
-                                        </td>
-                                    </tr>
-
-                                    <!-- <tr>
-                                        <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Shipping Charge :</h5>
-                                        </td>
-                                        <td>
-                                            $ 25
-                                        </td>
-                                    </tr> -->
-                                    <tr>
-                                        <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Estimated Tax (10%):</h5>
-                                        </td>
-                                        <td id="tax" class="text-danger">
+                                        <td id="pckg">
                                             -
                                         </td>
                                     </tr>
@@ -365,6 +357,9 @@
                                         </td>
                                         <td id="grtot" class="font-size-18 m-0 fw-bold">
                                             -
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="grtotval" name="grtotval">
                                         </td>
                                     </tr>
                                 </tbody>
