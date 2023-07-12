@@ -58,11 +58,28 @@ class Sales extends BaseController
             <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
             
             ';
+
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        $this->builder->like('member_id', user()->member_id);
+        $data_tab = array(
+            'All'           => $this->builder->get()->getNumRows(),
+            'Process'       => $this->builder->where('status', 'Process')->get()->getNumRows(),
+            'Packaging'     => $this->builder->where('status', 'Packaging')->get()->getNumRows(),
+            'Ready'         => $this->builder->where('status', 'Ready')->get()->getNumRows(),
+            'Delivery'      => $this->builder->where('status', 'Delivery')->get()->getNumRows(),
+            'Received'      => $this->builder->where('status', 'Received')->get()->getNumRows(),
+            'Completed'     => $this->builder->where('status', 'Completed')->get()->getNumRows(),
+            'Cancel'        => $this->builder->where('status', 'Cancel')->get()->getNumRows(),
+            'Return'        => $this->builder->where('status', 'Return')->get()->getNumRows(),
+        );
+
         $datapage = array(
-            'titlepage' => 'Sales',
-            'tabshop' => $this->tabshop,
-            'head_page' => $head_page,
-            'js_page' => $js_page,
+            'titlepage'     => 'Sales',
+            'tabshop'       => $this->tabshop,
+            'head_page'     => $head_page,
+            'js_page'       => $js_page,
+            'tabnotif'      => $data_tab,
         );
         return view('pages_admin/adm_sales', $datapage);
     }
@@ -242,7 +259,7 @@ class Sales extends BaseController
             'bill'                  => array_sum($priceArray),
             'payment'               => $this->request->getVar('grtotval'),
             'paymethod'             => $this->request->getVar('paymethod'),
-            'status'                => "process",
+            'status'                => "Process",
         );
         // dd($dataSalesDetail, $dataSales);
         $this->salesModel->insert($dataSales);
@@ -256,15 +273,17 @@ class Sales extends BaseController
 
     public function show($tab = null, $find = null)
     {
+
         $this->builder = $this->db->table('sales');
         if ($tab == "All") {
             // $this->builder->where('status', null);
         } else {
             $this->builder->where('status', $tab);
         }
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
-        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        $this->builder->like('member_id', user()->member_id);
         $query = $this->builder->get();
 
         // if($id != null) {
@@ -305,6 +324,23 @@ class Sales extends BaseController
                 );
                 $salesArray[] = $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_price'];
             }
+            if ($this->salesModel->find($i->id_sales)['status'] == "Process") {
+                $next_status = "Packaging";
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Packaging") {
+                $next_status = "Ready";
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Ready") {
+                $next_status = "Delivery";
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Delivery") {
+                $next_status = "Received";
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Received") {
+                $next_status = "Completed";
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Completed") {
+                $next_status = null;
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Cancel") {
+                $next_status = null;
+            } else if ($this->salesModel->find($i->id_sales)['status'] == "Return") {
+                $next_status = null;
+            }
             $row = [
                 "no" => $no++,
                 "item_detail"       => $dataProductDetail,
@@ -318,6 +354,7 @@ class Sales extends BaseController
                 "bill"              => "Rp " . number_format($i->bill, 0, ',', '.'),
                 "paymethode"        => $i->paymethod,
                 "statussales"       => ucwords($i->status),
+                "nextstatus"        => $next_status,
                 "editable"          => $editable,
                 "deletable"         => $deletable,
             ];

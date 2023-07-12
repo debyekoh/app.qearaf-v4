@@ -11,7 +11,16 @@ $(document).ready(function() {
     var a = $('button.nav-link.active').prop('id');
     new gridjs.Grid({
         columns: [
-        {
+            { 
+                name: 'ID Sales',
+                hidden: true,
+            },{ 
+                name: 'NO Sales',
+                hidden: true,
+            },{ 
+                name: 'NO Resi',
+                hidden: true,
+            },{
             name: name,
             formatter: function(e) {
                 var data_item = e[2]
@@ -95,7 +104,7 @@ $(document).ready(function() {
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
-                                                    '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Next</a></li>'+
+                                                    '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>'+
                                                     '</ul>'+
                                                 '</div>'+
                                             '</span>'+
@@ -113,9 +122,15 @@ $(document).ready(function() {
         },
         // sort: !0,
         // search: !0,
+        search: {
+            selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
+          },
         server: {
             url: './mysales/show/'+name,
             then: data => data.results.map(sales => [
+                    sales.id_sales ,            
+                    sales.no_sales ,
+                    sales.no_resi,              
                 [   sales.id_sales ,            // 0 //
                     sales.no_sales ,            // 1 //
                     sales.item_detail ,         // 2 //
@@ -123,7 +138,8 @@ $(document).ready(function() {
                     sales.no_resi,              // 4 //
                     sales.bill,                 // 5 //
                     sales.statussales,          // 6 //
-                    sales.paymethode            // 7 //
+                    sales.paymethode,           // 7 //
+                    sales.nextstatus            // 8 //
                 ]
             ]),
             // then: data => data.results(),
@@ -144,6 +160,14 @@ $(document).ready(function() {
           } 
           
     }).render(document.getElementById("salestabcontent"));
+    $(".gridjs-head").addClass("m-0");
+    $('.gridjs-search-input').attr('placeholder','SEARCH...');
+    $(".gridjs-search-input").addClass("text-uppercase fw-bold bg-soft-warning py-1");
+    $(".gridjs-search-input").css("border-radius", "0.6rem");
+    // document.getElementsByClassName("gridjs-search-input").style.display = "none";
+    // $("#salestabcontent > div > div.gridjs-head > div > input").style.display = "none";
+    // $("p").css("background-color", "yellow");
+    // text-uppercase fw-bold
 });
 
 $(".nav-link").on('click', function() {
@@ -156,7 +180,16 @@ $(".nav-link").on('click', function() {
     $("#tabcontent").append('<div id="salestabcontent"></div>');
     new gridjs.Grid({
         columns: [
-        {
+            { 
+                name: 'ID Sales',
+                hidden: true,
+            },{ 
+                name: 'NO Sales',
+                hidden: true,
+            },{ 
+                name: 'NO Resi',
+                hidden: true,
+            },{
             name: $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""),
             formatter: function(e) {
                 var data_item = e[2]
@@ -240,7 +273,7 @@ $(".nav-link").on('click', function() {
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
                                                     '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
-                                                    '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Next</a></li>'+
+                                                    '<li><a href="#" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>'+
                                                     '</ul>'+
                                                 '</div>'+
                                             '</span>'+
@@ -258,9 +291,15 @@ $(".nav-link").on('click', function() {
         },
         // sort: !0,
         // search: !0,
+        search: {
+            selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
+          },
         server: {
             url: './mysales/show/'+name,
             then: data => data.results.map(sales => [
+                    sales.id_sales ,
+                    sales.no_sales ,
+                    sales.no_resi,
                 [   sales.id_sales ,            // 0 //
                     sales.no_sales ,            // 1 //
                     sales.item_detail ,         // 2 //
@@ -268,11 +307,13 @@ $(".nav-link").on('click', function() {
                     sales.no_resi,              // 4 //
                     sales.bill,                 // 5 //
                     sales.statussales,          // 6 //
-                    sales.paymethode            // 7 //
+                    sales.paymethode,           // 7 //
+                    sales.nextstatus            // 8 //
                 ]
             ]),
             // then: data => data.results(),
           },
+        //   #salestabcontent > div > div.gridjs-head
           style: {
             table: {
             },
@@ -289,8 +330,14 @@ $(".nav-link").on('click', function() {
           } 
           
     }).render(document.getElementById("salestabcontent"));
+    $(".gridjs-head").addClass("m-0");
+    $('.gridjs-search-input').attr('placeholder','SEARCH...');
+    $(".gridjs-search-input").addClass("text-uppercase fw-bold bg-soft-warning py-1");
+    $(".gridjs-search-input").css("border-radius", "0.6rem");
 
 })
+
+
 
 
 
