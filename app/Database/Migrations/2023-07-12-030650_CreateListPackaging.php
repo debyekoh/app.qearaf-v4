@@ -30,6 +30,6 @@ class CreateListPackaging extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('list_packaging');
     }
 }

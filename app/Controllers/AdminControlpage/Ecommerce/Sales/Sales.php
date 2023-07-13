@@ -346,6 +346,7 @@ class Sales extends BaseController
                 "item_detail"       => $dataProductDetail,
                 "item_count"        => count($this->salesdetailModel->where('no_sales', $i->no_sales)->findAll()),
                 "id_sales"          => $i->id_sales,
+                "id_sales_noslash"  => str_replace('/', '', $i->id_sales),
                 "no_sales"          => $i->no_sales,
                 "date_sales"        => $i->date_sales,
                 "delivery_services" => $i->image_services,
@@ -369,5 +370,52 @@ class Sales extends BaseController
             // 'results' => $query->getResult(),
             'results' => $data,
         ]);
+    }
+
+    public function nextto()
+    {
+        $id_sales = $this->request->getVar('id');
+        $status_sales = $this->request->getVar('name');
+        if ($this->salesModel->find($id_sales) != null) {
+            $dataSales = array(
+                'status'      => $status_sales,
+            );
+            $this->salesModel->update(['id_sales' => $id_sales], $dataSales);
+            //
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            $this->builder->like('member_id', user()->member_id);
+            $data_tab = array(
+                'All'           => $this->builder->get()->getNumRows(),
+                'Process'       => $this->builder->where('status', 'Process')->get()->getNumRows(),
+                'Packaging'     => $this->builder->where('status', 'Packaging')->get()->getNumRows(),
+                'Ready'         => $this->builder->where('status', 'Ready')->get()->getNumRows(),
+                'Delivery'      => $this->builder->where('status', 'Delivery')->get()->getNumRows(),
+                'Received'      => $this->builder->where('status', 'Received')->get()->getNumRows(),
+                'Completed'     => $this->builder->where('status', 'Completed')->get()->getNumRows(),
+                'Cancel'        => $this->builder->where('status', 'Cancel')->get()->getNumRows(),
+                'Return'        => $this->builder->where('status', 'Return')->get()->getNumRows(),
+            );
+            //
+            $status = "success";
+        } else {
+            $status = "error";
+        }
+
+        return $this->response->setJSON([
+            'status' => $status,
+            'datatab' => $data_tab,
+            'id' => $id_sales,
+            'name' => $status_sales,
+        ]);
+
+        // $ds = substr("$id_sales", 0, 6);
+        // $tn = substr("$id_sales", 6, 1);
+        // $tu = substr("$id_sales", 7);
+        // $idsales = $ds . "/" . $tn . "/" . $tu;
+        // if ($this->salesModel->find($idsales) != null) {
+        //     $this->salesModel->update(['id_sales' => $idsales], ['status' => $status]);
+        // }
+        // // dd($id_sales, $status);
     }
 }
