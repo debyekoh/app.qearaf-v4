@@ -1,19 +1,19 @@
 // flatpickr("#date_sales");
-function generateUUID() {
-    var d = new Date().getTime();
-    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16;
-        if (d > 0) {
-            r = (d + r) % 16 | 0;
-            d = Math.floor(d / 16);
-        } else {
-            r = (d2 + r) % 16 | 0;
-            d2 = Math.floor(d2 / 16);
-        }
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-}
+// function generateUUID() {
+//     var d = new Date().getTime();
+//     var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
+//     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+//         var r = Math.random() * 16;
+//         if (d > 0) {
+//             r = (d + r) % 16 | 0;
+//             d = Math.floor(d / 16);
+//         } else {
+//             r = (d2 + r) % 16 | 0;
+//             d2 = Math.floor(d2 / 16);
+//         }
+//         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+//     });
+// }
 function formatDate(d)
 {
     var month = d.getMonth();
@@ -25,10 +25,10 @@ function formatDate(d)
 }
 
 $(document).ready(function() {
-    var d = new Date();
-    var string = formatDate(d)+"/S/"+generateUUID().replace("-", "").substring(0, 8);
-    $('#id_sales').val(string.toUpperCase());
-    $('#nso').html("#"+string.toUpperCase());
+    // var d = new Date();
+    // var string = formatDate(d)+"/S/"+generateUUID().replace("-", "").substring(0, 8);
+    // $('#id_sales').val(string.toUpperCase());
+    // $('#nso').html("#"+string.toUpperCase());
 
     $(window).keydown(function(event){
         if( (event.keyCode == 13)) {
@@ -139,6 +139,47 @@ $('#date_sales').change(function() {
     if($(this).val() != null){$('.date_sales').removeClass("is-invalid");$('.date_sales').removeClass("inewsalesinfo-is-invalid");}
     if($('.inewsalesinfo-is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
     
+
+    // datestring = $(this).val().substring(2, 4) + $(this).val().substring(5, 7) + $(this).val().substring(8, 10);
+    $.ajax({
+        type: "POST",
+        url: './mysales/count',
+        data: {
+            date: $(this).val(),
+        },
+        success: function(respone) {
+            var set_no = respone.set_no
+                          console.log(set_no)
+            function generateUUID() {
+                var d = new Date().getTime();
+                var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = Math.random() * 16;
+                    if (d > 0) {
+                        r = (d + r) % 16 | 0;
+                        d = Math.floor(d / 16);
+                    } else {
+                        r = (d2 + r) % 16 | 0;
+                        d2 = Math.floor(d2 / 16);
+                    }
+                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                });
+            }
+        
+            var d = new Date();
+            var string = formatDate(d)+"/S/"+set_no+"/"+generateUUID().replace("-", "").substring(0, 8);
+            console.log(string)
+            $('#id_sales').val(string.toUpperCase());
+            $('#nso').html("#"+string.toUpperCase());
+        }
+    });
+
+
+
+
+
+
+
     console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
 });
 $('#shop').change(function() {

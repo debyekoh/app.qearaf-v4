@@ -183,6 +183,43 @@ class Sales extends BaseController
         ]);
     }
 
+    public function countSales()
+    {
+        $date = $this->request->getVar('date');
+
+        // $this->builder = $this->db->table('sales');
+        // $this->builder->like('member_id', user()->member_id);
+
+        // if ($this->salesModel->where('date_sales', $date)->findAll() != null) {
+        //     $status = "error";
+        // } else {
+        $status = "success";
+        $count_data = count($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find());
+        if ($count_data != 0) {
+            // $set_no = number_format(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 11)) + 1;
+            // $set_no = intval(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 11));
+            $char = number_format(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 2));
+            $charLength = strlen($char);
+            if ($charLength == 1) {
+                $no = 1 + $char;
+                $set_no = "0" . $no;
+            } else {
+                $set_no = substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 2) + 1;
+            }
+        } else {
+            $set_no = '01';
+        }
+        // }
+
+        return $this->response->setJSON([
+            'status' => number_format(01),
+            'set_no' => $set_no,
+            // 'count'  => $this->salesModel->where('date_sales', $date)->findAll(),
+            // 'last_no'  => is_int(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 17)),
+            // 'last_no'  => count($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()),
+        ]);
+    }
+
     public function checkNoSales()
     {
         $nosales = $this->request->getVar('nosales');
@@ -284,6 +321,8 @@ class Sales extends BaseController
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
         $this->builder->like('member_id', user()->member_id);
+        $this->builder->orderBy('date_sales', 'DESC');
+        $this->builder->orderBy('id_sales', 'DESC');
         $query = $this->builder->get();
 
         // if($id != null) {

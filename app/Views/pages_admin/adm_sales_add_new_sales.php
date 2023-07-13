@@ -21,7 +21,7 @@
                                         <div>
                                             <div>
                                                 <div class="row">
-                                                    <div class="col-lg-4" hidden>
+                                                    <div class="col-lg-4">
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control" id="id_sales" name="id_sales">
                                                             <label for="id_sales">ID Sales</label>
