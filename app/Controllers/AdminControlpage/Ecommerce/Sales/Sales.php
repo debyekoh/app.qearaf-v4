@@ -186,22 +186,11 @@ class Sales extends BaseController
     public function countSales()
     {
         $date = $this->request->getVar('date');
-
-        // $this->builder = $this->db->table('sales');
-        // $this->builder->like('member_id', user()->member_id);
-
-        // if ($this->salesModel->where('date_sales', $date)->findAll() != null) {
-        //     $status = "error";
-        // } else {
-        $status = "success";
         $count_data = count($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find());
-        if ($count_data != 0) {
-            // $set_no = number_format(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 11)) + 1;
-            // $set_no = intval(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 11));
-            $char = number_format(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 2));
-            $charLength = strlen($char);
-            if ($charLength == 1) {
-                $no = 1 + $char;
+        $last_no = isset($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales']) ? number_format(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 2)) : 0;
+        if ($count_data != null) {
+            if ($last_no < 9) {
+                $no = 1 + $last_no;
                 $set_no = "0" . $no;
             } else {
                 $set_no = substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 9, 2) + 1;
@@ -212,13 +201,13 @@ class Sales extends BaseController
         // }
 
         return $this->response->setJSON([
-            'status' => number_format(01),
+            'status' => 'success',
+            'date' => $this->request->getVar('date'),
             'set_no' => $set_no,
-            // 'count'  => $this->salesModel->where('date_sales', $date)->findAll(),
-            // 'last_no'  => is_int(substr($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()[0]['id_sales'], 17)),
-            // 'last_no'  => count($this->salesModel->where('date_sales', $date)->orderBy('id_sales', 'desc')->limit(1)->find()),
         ]);
     }
+
+
 
     public function checkNoSales()
     {
@@ -447,14 +436,31 @@ class Sales extends BaseController
             'id' => $id_sales,
             'name' => $status_sales,
         ]);
+    }
 
-        // $ds = substr("$id_sales", 0, 6);
-        // $tn = substr("$id_sales", 6, 1);
-        // $tu = substr("$id_sales", 7);
-        // $idsales = $ds . "/" . $tn . "/" . $tu;
-        // if ($this->salesModel->find($idsales) != null) {
-        //     $this->salesModel->update(['id_sales' => $idsales], ['status' => $status]);
-        // }
-        // // dd($id_sales, $status);
+    public function detail()
+    {
+        $id_sales = $this->request->getVar('id');
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+        $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+        // $this->builder->like('member_id', user()->member_id);
+        // $this->builder->orderBy('date_sales', 'DESC');
+        // $this->builder->orderBy('id_sales', 'DESC');
+        $query = $this->builder->getWhere(['id_sales' => $id_sales]);
+
+        $info_sales = $this->salesModel->find($id_sales);
+        $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+        $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
+        $data_detail = array(
+            'ifs'           => $info_sales,                // 'INFO SALES' 
+            'dsl'           => $data_sales_detail,         // 'DETAIL SALES'
+        );
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'detail' => $data_detail
+        ]);
     }
 }
