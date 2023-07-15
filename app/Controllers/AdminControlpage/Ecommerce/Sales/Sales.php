@@ -16,7 +16,9 @@ use App\Models\SalesDetailModel;
 class Sales extends BaseController
 {
     protected $db;
+    // protected $db1;
     protected $builder;
+    protected $builder1;
     protected $productsModel;
     protected $productsstockModel;
     protected $productspriceModel;
@@ -40,6 +42,7 @@ class Sales extends BaseController
         $this->salesModel = new SalesModel();
         $this->salesdetailModel = new SalesDetailModel();
         $this->db      = \Config\Database::connect();
+        // $this->db1      = \Config\Database::connect();
     }
 
     public function index()
@@ -441,6 +444,7 @@ class Sales extends BaseController
     public function detail()
     {
         $id_sales = $this->request->getVar('id');
+        $no_sales = $this->salesModel->find($id_sales)['no_sales'];
         $this->builder = $this->db->table('sales');
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
@@ -450,12 +454,16 @@ class Sales extends BaseController
         // $this->builder->orderBy('id_sales', 'DESC');
         $query = $this->builder->getWhere(['id_sales' => $id_sales]);
 
-        $info_sales = $this->salesModel->find($id_sales);
-        $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+        $this->builder1 = $this->db->table('sales_detail');
+        $this->builder1->join('products', 'products.pro_id= sales_detail.pro_id');
+        $query1 = $this->builder1->getWhere(['no_sales' => $no_sales]);
+
+        // $info_sales = $this->salesModel->find($id_sales);
         $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
         $data_detail = array(
-            'ifs'           => $info_sales,                // 'INFO SALES' 
-            'dsl'           => $data_sales_detail,         // 'DETAIL SALES'
+            // 'test'           => $query1->getResult(),                // 'INFO SALES' 
+            'ifs'           => $query->getRow(),                // 'INFO SALES' 
+            'dsl'           => $query1->getResult(),         // 'DETAIL SALES'
         );
 
         return $this->response->setJSON([

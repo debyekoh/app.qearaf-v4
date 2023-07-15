@@ -410,7 +410,7 @@ function addProduct(sku) {
                         '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
                             '<p class="text-muted mb-0 RSprice" id="RSprice'+i+'" hidden>'+respone.results.price+'</p>'+
                             '<p class="text-muted mb-0 RSqty" id="RSqty'+i+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+i+'" >0</p>'+
+                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+i+'" hidden>0</p>'+
                             '<p class="text-muted mb-0" id="RSpricetx'+i+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
                         '<td id="RSsubprice'+i+'">Rp 0</td>'+

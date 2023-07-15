@@ -297,22 +297,6 @@
                                     <tr class="norowsummary">
                                         <td colspan="3" class="text-center">-- NoProduct --</td>
                                     </tr>
-                                    <!-- <tr>
-                                        <th scope="row"><img src="assets/images/product/img-1.png" alt="product-img" title="product-img" class="avatar-md"></th>
-                                        <td>
-                                            <h5 class="font-size-15 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">Home & Office Chair Crime</a></h5>
-                                            <p class="text-muted mb-0">$ 260 x 2</p>
-                                        </td>
-                                        <td>$ 520</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><img src="assets/images/product/img-2.png" alt="product-img" title="product-img" class="avatar-md"></th>
-                                        <td>
-                                            <h5 class="font-size-15 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">Sofa Home Chair Black</a></h5>
-                                            <p class="text-muted mb-0">$ 260 x 1</p>
-                                        </td>
-                                        <td>$ 260</td>
-                                    </tr> -->
                                     <tr class="lstr">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Sub Total :</h5>

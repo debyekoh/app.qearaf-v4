@@ -72,10 +72,10 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="d-flex justify-content-end p-3">
+            <div class="justify-content-end p-3" style="position: absolute;right: 0.5rem;top: 2.7rem;">
                 <h5 id="tcard" class="card-title mb-0 pe-1"></h5>
             </div>
-            <div class="tab-content p-3 text-muted py-0" id="salesTabContent" style="position: relative; top: -46px;">
+            <div class="tab-content p-3 text-muted py-0" id="salesTabContent">
                 <div id="tabcontent">
                     <div id="salestabcontent"></div>
                 </div>
@@ -99,74 +99,40 @@
                             <h5 class="modal-title" id="salesdetailsModalLabel">Sales Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <p class="mb-1">No Sales: <span id="nos" class="text-primary">#Martin Gurley</span></p>
-                            <p class="mb-3">Sales Id: <span id="ids" class="text-primary">SK2540</span></p>
+                        <div class="modal-body py-1">
+                            <table class="table align-middle table-sm table-nowrap table-borderless border-bottom table-centered p-1 mb-0">
+                                <tbody>
+                                    <tr class="py-0">
+                                        <th class="py-0 fw-bold" style="width:10%;">
+                                            Shop</th>
+                                        <td class="py-0 fw-bold" style="width:1%;">:</td>
+                                        <td class="py-0 text-muted">
+                                            <h6 class="mb-0"><span id="shp" class="text-truncate">#Martin Gurley</span></h6>
+                                        </td>
+                                    </tr>
+                                    <tr class="py-0">
+                                        <th class="py-0 fw-bold">
+                                            No Sales</th>
+                                        <td class="py-0 fw-bold">:</td>
+                                        <td class="py-0 text-muted">
+                                            <h6 class="mb-0"><span id="nos" class="text-primary">#Martin Gurley</span></h6>
+                                        </td>
+                                    </tr>
+                                    <tr class="py-0">
+                                        <th class="py-0 fw-bold">
+                                            Sales ID</th>
+                                        <td class="py-0 fw-bold">:</td>
+                                        <td class="py-0 text-muted">
+                                            <h6 class="mb-0"><span id="ids" class="text-primary">#Martin Gurley</span></h6>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <h6 class="mb-1">Shop: <span id="nos" class="text-primary">#Martin Gurley</span></h6>
+                            <h6 class="mb-1">No Sales: <span id="nos" class="text-primary">#Martin Gurley</span></h6>
+                            <h6 class="mb-3">Sales ID: <span id="ids" class="text-primary">SK2540</span></h6> -->
+                            <div class="table-responsive" id="tabel_viewsales">
 
-                            <div class="table-responsive">
-                                <table class="table align-middle table-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">
-                                                <div>
-                                                    <img src="assets/images/product/img-1.png" alt="" class="rounded avatar-md">
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <div>
-                                                    <h5 class="text-truncate font-size-14">Home & Office Chair Crime</h5>
-                                                    <p class="text-muted mb-0">$ 225 x 1</p>
-                                                </div>
-                                            </td>
-                                            <td>$ 255</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">
-                                                <div>
-                                                    <img src="assets/images/product/img-2.png" alt="" class="rounded avatar-md">
-                                                </div>
-                                            </th>
-                                            <td>
-                                                <div>
-                                                    <h5 class="text-truncate font-size-14">Tuition Classes Chair Crime</h5>
-                                                    <p class="text-muted mb-0">$ 145 x 1</p>
-                                                </div>
-                                            </td>
-                                            <td>$ 145</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <h6 class="m-0 text-right">Sub Total:</h6>
-                                            </td>
-                                            <td>
-                                                $ 400
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <h6 class="m-0 text-right">Shipping:</h6>
-                                            </td>
-                                            <td>
-                                                Free
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <h6 class="m-0 text-right">Total:</h6>
-                                            </td>
-                                            <td>
-                                                $ 400
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                         <div class="modal-footer">
