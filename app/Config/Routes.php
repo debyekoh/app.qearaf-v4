@@ -68,6 +68,7 @@ $routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto
 $routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail'); //Ajax
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
+$routes->get('/editsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::edit/$1', ['filter' => 'permission:Create']);
 $routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'permission:Create']);
 $routes->get('/listproduct', 'AdminControlpage\Ecommerce\Sales\Sales::list');
 $routes->match(['get', 'post'], '/checksales', 'AdminControlpage\Ecommerce\Sales\Sales::checkNoSales'); //Ajax

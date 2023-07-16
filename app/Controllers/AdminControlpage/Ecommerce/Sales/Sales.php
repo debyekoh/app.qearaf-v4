@@ -12,6 +12,7 @@ use App\Models\ProductsCategoryModel;
 use App\Models\ProductsImageModel;
 use App\Models\SalesModel;
 use App\Models\SalesDetailModel;
+use App\Models\ShopModel;
 
 class Sales extends BaseController
 {
@@ -28,6 +29,7 @@ class Sales extends BaseController
     protected $productsimageModel;
     protected $salesModel;
     protected $salesdetailModel;
+    protected $shopModel;
 
     public function __construct()
     {
@@ -41,6 +43,7 @@ class Sales extends BaseController
         $this->productsimageModel = new ProductsImageModel();
         $this->salesModel = new SalesModel();
         $this->salesdetailModel = new SalesDetailModel();
+        $this->shopModel = new ShopModel();
         $this->db      = \Config\Database::connect();
         // $this->db1      = \Config\Database::connect();
     }
@@ -470,5 +473,55 @@ class Sales extends BaseController
             'status' => 'success',
             'detail' => $data_detail
         ]);
+    }
+
+    public function edit($idsales)
+    {
+        $id_sales = substr($idsales, 0, 6) . "/" . substr($idsales, 6, 1) . "/" . substr($idsales, 7, 2) . "/" . substr($idsales, 9);
+        if ($this->salesModel->find($id_sales) == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            $head_page =
+                '
+                <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+                <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
+    
+                ';
+            $js_page =
+                '
+                <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+                <script src="' . base_url() . 'assets/js/pages/form-addnewsales.init.js"></script>
+                <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    
+                ';
+
+            $dataSales = array(
+                'id_sales'              => $id_sales,
+                'no_sales'              => $this->salesModel->find($id_sales)['no_sales'],
+                'date_sales'            => $this->salesModel->find($id_sales)['date_sales'],
+                'id_shop'               => $this->salesModel->find($id_sales)['id_shop'],
+                'deliveryservices'      => $this->salesModel->find($id_sales)['deliveryservices'],
+                'name_shop'             => $this->shopModel->find($this->salesModel->find($id_sales)['id_shop'])['name_shop'],
+                'marketplace'           => $this->shopModel->find($this->salesModel->find($id_sales)['id_shop'])['marketplace'],
+                'resi'                  => $this->salesModel->find($id_sales)['deliveryservices'],
+                'note'                  => $this->salesModel->find($id_sales)['resi'],
+                'packaging'             => $this->salesModel->find($id_sales)['packaging'],
+                'packaging_charge'      => $this->salesModel->find($id_sales)['packaging_charge'],
+                'bill'                  => $this->salesModel->find($id_sales)['bill'],
+                'payment'               => $this->salesModel->find($id_sales)['payment'],
+                'paymethod'             => $this->salesModel->find($id_sales)['paymethod'],
+                // 'status'                => "Process",
+            );
+            $datapage = array(
+                'titlepage' => 'Edit Sales',
+                'tabshop' => $this->tabshop,
+                'head_page' => $head_page,
+                'js_page' => $js_page,
+                'dataSales' => $dataSales,
+                'listdeliveryservices' => $this->ListDeliveryServicesModel->findAll(),
+                'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
+            );
+            return view('pages_admin/adm_sales_edit_sales', $datapage);
+        }
     }
 }

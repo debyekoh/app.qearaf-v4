@@ -81,6 +81,9 @@ function renderSales(name) {
                 const s_id = new String("'"+e[0]+"'");
                 const s_name = new String("'"+e[8]+"'");
                 const cancel = new String("'Cancel'");
+                // const toedit = new String("'form#toedit"+e[0]+"'");
+                const toedit = new String(e[0].substr(0, 6)+e[0].substr(7, 1)+e[0].substr(9, 2)+e[0].substr(12));
+                
                 if(e[8]!=null){
                     btn_goto +=
                     '<li><a  onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
@@ -130,8 +133,8 @@ function renderSales(name) {
                                                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
                                                         // btn_vito +
                                                         '<li><a  onclick="vito('+s_id+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                                                        '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
                                                         '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
-                                                        '<li><a href="javascript: void(0);" onclick="addProduct()" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
                                                         btn_goto +
                                                     '</ul>'+
                                                 '</div>'+
