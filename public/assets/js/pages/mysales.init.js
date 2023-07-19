@@ -54,7 +54,7 @@ function renderSales(name) {
                                     '</div>'+
                                 '</div>'+
                                 '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                    '<h5 class="mb-1 text-truncate"><a href="" class="font-size-15 text-dark">'+data_item[i]['pro_name']+'</a></h5>'+
+                                    '<h5 class="mb-1 text-truncate"><a class="font-size-15 text-dark">'+data_item[i]['pro_name']+'</a></h5>'+
                                     '<p class="text-muted fw-semibold mb-0 text-truncate">'+data_item[i]['pro_sku']+'</p>'+
                                 '</div>'+
                                 '<div class="flex-shrink-0">'+
@@ -417,7 +417,7 @@ function vito(s_id , s_name) {
                         '</th>'+
                         '<td>'+
                             ' <div>'+
-                                '<h5 class="text-truncate fw-bold font-size-14 mb-0">'+data.detail.dsl[l].pro_name+'-'+data.detail.dsl[l].pro_model+''+
+                                '<h5 class="text-truncate fw-bold font-size-14 mb-0">'+data.detail.dsl[l].pro_name+' '+data.detail.dsl[l].pro_model+''+
                                 ' <p class="text-truncate mb-0">'+data.detail.dsl[l].pro_qty+' x Rp '+data.detail.dsl[l].pro_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                             '</div>'+
                         ' </td>'+

@@ -429,6 +429,7 @@
                                 Version 1.5.0
                             </div>
                         </div>
+                        <input type="hidden" id="BaseUrl" name="BaseUrl" value="<?= base_url(); ?>">
                     </div>
                 </div>
             </footer>

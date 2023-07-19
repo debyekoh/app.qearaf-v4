@@ -23,8 +23,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-4" hidden>
                                                         <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="id_sales" name="id_sales">
-                                                            <label for="id_sales">ID Sales</label>
+                                                            <input type="text" class="form-control" id="idsales" name="id_sales">
+                                                            <label>ID Sales</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -91,7 +91,9 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr class="norow">
-                                                                <td colspan="4" class="text-center">-- NoProduct --</td>
+                                                                <td colspan="4" class="text-center">-- NoProduct --
+                                                                    <!-- <input class="prorow" type="number" value="1212"> -->
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -328,7 +330,7 @@
                                             <p class="text-muted mb-0 pckgdesc"></p>
                                             <!-- <p class="text-muted mb-0 pckginfo"></p> -->
                                             <!-- <p hidden class="text-muted mb-0 pckgval"></p> -->
-                                            <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="0">
+                                            <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="0" hidden>
                                         </td>
                                         <td id="pckg">
                                             -
@@ -343,7 +345,7 @@
                                             -
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" id="grtotval" name="grtotval">
+                                            <input type="text" class="form-control" id="grtotval" name="grtotval" hidden>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -356,13 +358,13 @@
             </div>
         </div>
         <div class="col-xl-8">
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col">
                     <a href="<?= base_url() ?>sales" class="btn btn-link text-muted">
                         <i class="mdi mdi-arrow-left me-1"></i> Cancel Input </a>
                 </div> <!-- end col -->
                 <div class="col">
-                    <div class="text-end mt-2 mt-sm-0">
+                    <div class="text-end">
                         <!-- <a href="#" class="btn btn-success">
                             <i class="mdi mdi-cart-outline me-1"></i> Procced </a> -->
                         <button id="presubmit" type="button" class="btn btn-success"><i class="bx bx-check me-1 align-middle"></i> Procced</button>

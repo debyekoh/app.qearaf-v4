@@ -30,6 +30,7 @@ $(document).ready(function() {
     // var string = formatDate(d)+"/S/"+generateUUID().replace("-", "").substring(0, 8);
     // $('#id_sales').val(string.toUpperCase());
     // $('#nso').html("#"+string.toUpperCase());
+    console.log($("#BaseUrl").val());
 
     $(window).keydown(function(event){
         if( (event.keyCode == 13)) {
@@ -122,7 +123,7 @@ $("#no_sales").on('input', function() {
     // console.log("newsalesinfo "+ $('#no_sales').val());
     $.ajax({
         type: "POST",
-        url: './checksales',
+        url: $("#BaseUrl").val()+'checksales',
         data: {
             nosales: $('#no_sales').val(),
         },
@@ -146,7 +147,7 @@ $('#date_sales').change(function() {
     var inputDate = $(this).val();
     $.ajax({
         type: "POST",
-        url: './mysales/count',
+        url: $("#BaseUrl").val()+'mysales/count',
         data: {
             date: inputDate,
         },
@@ -169,7 +170,7 @@ $('#date_sales').change(function() {
             }
             var d = new Date(inputDate);
             var string = formatDate(d)+"/S/"+set_no+"/"+generateUUID().replace("-", "").substring(0, 8);
-            $('#id_sales').val(string.toUpperCase());
+            $('#idsales').val(string.toUpperCase());
             $('#nso').html("#"+string.toUpperCase());
         }
     });
@@ -178,14 +179,41 @@ $('#date_sales').change(function() {
     // console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
 });
 $('#shop').change(function() {
+    // console.log($(this).val());
+    var  s = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: $("#BaseUrl").val()+'groupshop',
+        data: {s: s,},
+        success: function(data) {
+            console.log(data.status);
+            if(data.status == "Reseller"){
+                var checkres = "true"
+            }else {
+                var checkres = "false"
+            }
+
+            if($("#bfr").val() == checkres){
+                console.log("ITEM TIDAK DIHAPUS")
+            }else{
+                console.log("ITEM DIHAPUS")
+                $(".listpro").remove();
+                $(".listprosummary").remove();
+                if($('.norow').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
+                if($('.norowsummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
+            }
+            // console.log($("#bfr").val())
+            // $("#bfr").val()
+        }
+    });
     if($(this).val() != null){$('.shop').removeClass("is-invalid");$('.shop').removeClass("inewsalesinfo-is-invalid");}
     if($('.inewsalesinfo-is-invalid').length == 0){$('.newsalesinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
-    $(".listpro").remove();
-    $(".listprosummary").remove();
-    console.log("norow"+$(".norow").length)
-    if($('.norow').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
-    if($('.norowsummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
-    console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
+    // $(".listpro").remove();
+    // $(".listprosummary").remove();
+    // console.log("norow"+$(".norow").length)
+    // if($('.norow').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
+    // if($('.norowsummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
+    // console.log("newsalesinfo "+ $('.inewsalesinfo-is-invalid').length);
 });
 
 
@@ -278,11 +306,18 @@ $('.ipaymethod').on('click',function() {
 
 
 $("#adnpm").on('click', function() {
-    console.log($('#shop').val());
+    // var values = [];
+    // $("input[name='iprorow[]']").each(function() {
+    //     values.push($(this).val());
+    // });
+    // var maxrow = Math.max.apply(Math, values);
+    // console.log(maxrow);
+
+    // console.log($('#shop').val());
     if($('#shop').val() == null){
         $('#shop').addClass("is-invalid");
     }else{
-        console.log("Open modal & List Product");
+        // console.log("Open modal & List Product");
         $('#shop').removeClass("is-invalid");
         $('#addNewProduct').modal('show');
         $("#table-gridjs").empty();
@@ -296,8 +331,8 @@ $("#adnpm").on('click', function() {
                 //     component: RowSelection
                 // },
                 formatter: function(e) {
-                    return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
-                    // return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
+                    return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
+                    // return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
                 }
             }, {
                 name: "Description",
@@ -328,7 +363,7 @@ $("#adnpm").on('click', function() {
             sort: !0,
             search: !0,
             server: {
-                url: './listproduct',
+                url: $("#BaseUrl").val()+'listproduct',
                 then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, product.skuno])
             },
             style: {
@@ -348,10 +383,19 @@ $("#adnpm").on('click', function() {
 
 function addProduct(sku) {
     // alert("I want this to appear after the modal has opened! "+ sku);
-    
+    var values = [];
+    $("input[name='iprorow[]']").each(function() {
+        values.push($(this).val());
+    });
+    if(values.length != 0){
+        var maxrow = Math.max.apply(Math, values);
+        var nextiprorow = maxrow + 1;
+    } else {
+        var nextiprorow = 0;
+    }
     
     console.log(sku +" Selected Product");
-    if ($("#listsalesproduct > tbody > tr").hasClass(sku)) {
+    if ($("#listsalesproduct > tbody > tr").hasClass(sku)) {s
         Swal.fire({
         icon: 'error',
         title: 'Product Already Exist!',
@@ -359,12 +403,13 @@ function addProduct(sku) {
     } else {
     $.ajax({
         type: "POST",
-        url: './selected',
+        url: $("#BaseUrl").val()+'selected',
         data: {
             sku: sku,
         },
         
         success: function(respone) {
+                console.log("next: "+nextiprorow);
                 console.log("Modal Closed");
                 $('#adnpm').removeClass("btn-outline-danger");
 
@@ -376,7 +421,6 @@ function addProduct(sku) {
                     $(".norowsummary").remove();
                 }
                 console.log("Norow Remove");
-                var i = $(".rowprosales").length;
                 console.log(respone.results);
                 const rupiah = (number)=>{
                     return new Intl.NumberFormat("id-ID", {
@@ -384,36 +428,37 @@ function addProduct(sku) {
                     currency: "IDR"
                     }).format(number);
                 }
-                const stringrow = new String("'R"+i+"'");
+                const stringrow = new String("'R"+nextiprorow+"'");
                 $('#listsalesproduct > tbody:last-child').append(
-                    '<tr id="R'+i+'" class="listpro rowprosales '+sku+'">'+
-                        '<th scope="row"><img src="./assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
+                    '<tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">'+
+                        '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
                         '<td>'+
                             '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
                             '<p class="text-muted mb-0">SKU: '+sku+'</p>'+
                             '<p class="text-muted mb-0">@Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
                         '<td >'+
+                            '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" hidden></input>'+
                             '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'" style="display:none;">'+
                             '<input class="form-control" type="text" name=proimg[] placeholder="0" value="'+respone.results.image+'" style="display:none;">'+
-                            '<input class="form-control" type="text" id="priceR'+i+'" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
-                            '<input class="form-control qtyinput" id="qtyR'+i+'" type="number" min="0" name=qty[] placeholder="0" value="0">'+
+                            '<input class="form-control" type="text" id="priceR'+nextiprorow+'" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
+                            '<input class="form-control qtyinput" id="qtyR'+nextiprorow+'" type="number" min="0" name=qty[] placeholder="0" value="0">'+
                         '</td>'+
                         '<td class="text-center"><button type="button" onclick="delProduct('+stringrow+')" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
                     '</tr>'
                 );
 
                 $(".lstr").before(
-                    '<tr id="RS'+i+'" class="listprosummary rowprosalessummary '+sku+'">'+
-                        '<th scope="row"><img src="./assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
+                    '<tr id="RS'+nextiprorow+'" class="listprosummary rowprosalessummary '+sku+'">'+
+                        '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="'+respone.results.image+'" title="'+respone.results.image+'" class="avatar-md"></th>'+
                         '<td>'+
                         '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                            '<p class="text-muted mb-0 RSprice" id="RSprice'+i+'" hidden>'+respone.results.price+'</p>'+
-                            '<p class="text-muted mb-0 RSqty" id="RSqty'+i+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+i+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0" id="RSpricetx'+i+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
+                            '<p class="text-muted mb-0 RSprice" id="RSprice'+nextiprorow+'" hidden>'+respone.results.price+'</p>'+
+                            '<p class="text-muted mb-0 RSqty" id="RSqty'+nextiprorow+'" hidden>0</p>'+
+                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+nextiprorow+'" hidden>0</p>'+
+                            '<p class="text-muted mb-0" id="RSpricetx'+nextiprorow+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
-                        '<td id="RSsubprice'+i+'">Rp 0</td>'+
+                        '<td id="RSsubprice'+nextiprorow+'">Rp 0</td>'+
                     '</tr>'
                 );
 

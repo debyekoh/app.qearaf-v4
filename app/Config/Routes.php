@@ -64,15 +64,18 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 //Sales
 $routes->get('/mysales/show/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1'); //Ajax
 $routes->post('/mysales/count', 'AdminControlpage\Ecommerce\Sales\Sales::countSales'); //Ajax
-$routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto'); //Ajax
-$routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail'); //Ajax
-$routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index');
-$routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'permission:Create']);
-$routes->get('/editsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::edit/$1', ['filter' => 'permission:Create']);
-$routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'permission:Create']);
+$routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin']); //Ajax
+$routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
+$routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->get('/editsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::edit/$1', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->post('/updatesales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::update/$1', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->get('/listproduct', 'AdminControlpage\Ecommerce\Sales\Sales::list');
 $routes->match(['get', 'post'], '/checksales', 'AdminControlpage\Ecommerce\Sales\Sales::checkNoSales'); //Ajax
-$routes->match(['get', 'post'], '/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
+$routes->post('/groupshop', 'AdminControlpage\Ecommerce\Sales\Sales::checkGroupShop'); //Ajax
+$routes->post('/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
+$routes->post('editsales/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
 $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::selectedPckg'); //AjaxModal
 
 //Ecommerce 

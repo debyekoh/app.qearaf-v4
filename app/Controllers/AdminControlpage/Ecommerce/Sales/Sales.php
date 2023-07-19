@@ -13,11 +13,11 @@ use App\Models\ProductsImageModel;
 use App\Models\SalesModel;
 use App\Models\SalesDetailModel;
 use App\Models\ShopModel;
+use App\Models\UserProfileModel;
 
 class Sales extends BaseController
 {
     protected $db;
-    // protected $db1;
     protected $builder;
     protected $builder1;
     protected $productsModel;
@@ -30,6 +30,7 @@ class Sales extends BaseController
     protected $salesModel;
     protected $salesdetailModel;
     protected $shopModel;
+    protected $userProfileModel;
 
     public function __construct()
     {
@@ -44,8 +45,8 @@ class Sales extends BaseController
         $this->salesModel = new SalesModel();
         $this->salesdetailModel = new SalesDetailModel();
         $this->shopModel = new ShopModel();
+        $this->userProfileModel = new UserProfileModel();
         $this->db      = \Config\Database::connect();
-        // $this->db1      = \Config\Database::connect();
     }
 
     public function index()
@@ -65,19 +66,103 @@ class Sales extends BaseController
             
             ';
 
+        //Query All//
         $this->builder = $this->db->table('sales');
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-        $this->builder->like('member_id', user()->member_id);
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryAll = $this->builder->get();
+        // $All = $QueryAll->getNumRows();
+
+        //Query Proces//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryProcess = $this->builder->where('status', 'Process')->get();
+        // $Process = $QueryProcess->getNumRows();
+
+        //Query Packaging//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryPackaging = $this->builder->where('status', 'Packaging')->get();
+        // $Packaging = $QueryPackaging->getResult();
+
+        //Query Ready//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryReady = $this->builder->where('status', 'Ready')->get();
+        // $Ready = $QueryReady->getResult();
+
+        //Query Delivery//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryDelivery = $this->builder->where('status', 'Delivery')->get();
+        // $Delivery = $QueryDelivery->getResult();
+
+        //Query Received//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryReceived = $this->builder->where('status', 'Received')->get();
+        // $Received = $QueryReceived->getResult();
+
+        //Query Completed//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryCompleted = $this->builder->where('status', 'Completed')->get();
+        // $Completed = $QueryCompleted->getResult();
+
+        //Query Cancel//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryCancel = $this->builder->where('status', 'Cancel')->get();
+        // $Cancel = $QueryCancel->getResult();
+
+        //Query Return//
+        $this->builder = $this->db->table('sales');
+        $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
+        $QueryReturn = $this->builder->where('status', 'Return')->get();
+        // $Return = $QueryReturn->getResult();
+
+
+        // $this->builder->like('member_id', user()->member_id);
+        // if (in_groups('3') == true || in_groups('4') == true) {
+        //     $this->builder->like('member_id', user()->member_id);
+        // }
+        // $All = $this->builder->get()->getNumRows();
         $data_tab = array(
-            'All'           => $this->builder->get()->getNumRows(),
-            'Process'       => $this->builder->where('status', 'Process')->get()->getNumRows(),
-            'Packaging'     => $this->builder->where('status', 'Packaging')->get()->getNumRows(),
-            'Ready'         => $this->builder->where('status', 'Ready')->get()->getNumRows(),
-            'Delivery'      => $this->builder->where('status', 'Delivery')->get()->getNumRows(),
-            'Received'      => $this->builder->where('status', 'Received')->get()->getNumRows(),
-            'Completed'     => $this->builder->where('status', 'Completed')->get()->getNumRows(),
-            'Cancel'        => $this->builder->where('status', 'Cancel')->get()->getNumRows(),
-            'Return'        => $this->builder->where('status', 'Return')->get()->getNumRows(),
+            'All'           => $QueryAll->getNumRows(),
+            'Process'       => $QueryProcess->getNumRows(),
+            'Packaging'     => $QueryPackaging->getNumRows(),
+            'Ready'         => $QueryReady->getNumRows(),
+            'Delivery'      => $QueryDelivery->getNumRows(),
+            'Received'      => $QueryReceived->getNumRows(),
+            'Completed'     => $QueryCompleted->getNumRows(),
+            'Cancel'        => $QueryCancel->getNumRows(),
+            'Return'        => $QueryReturn->getNumRows(),
         );
 
         $datapage = array(
@@ -229,6 +314,19 @@ class Sales extends BaseController
         ]);
     }
 
+    public function checkGroupShop()
+    {
+        $id_shop = $this->request->getVar('s');
+        $member_id_owner = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+        $id_owner = $this->userProfileModel->where('member_id', $member_id_owner)->find()[0]['id'];
+        $this->builder = $this->db->table('auth_groups_users');
+        $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+        $query = $this->builder->where('user_id', $id_owner)->get();
+        return $this->response->setJSON([
+            'status' => $query->getRow()->name,
+        ]);
+    }
+
 
     public function create()
     {
@@ -245,13 +343,20 @@ class Sales extends BaseController
             <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
             ';
+
+        if (in_groups('1') == true || in_groups('2') == true) {
+            $datashop = $this->shopModel->findAll();
+        } else {
+            $datashop = $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll();
+        }
         $datapage = array(
             'titlepage' => 'Add New Sales',
             'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
             'listdeliveryservices' => $this->ListDeliveryServicesModel->findAll(),
-            'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
+            // 'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
+            'datashop' => $datashop,
         );
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
@@ -315,7 +420,9 @@ class Sales extends BaseController
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
-        $this->builder->like('member_id', user()->member_id);
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->like('member_id', user()->member_id);
+        }
         $this->builder->orderBy('date_sales', 'DESC');
         $this->builder->orderBy('id_sales', 'DESC');
         $query = $this->builder->get();
@@ -350,7 +457,7 @@ class Sales extends BaseController
                 $pro_id = $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_id'];
                 $dataProductDetail[] = array(
                     'pro_id'        => $pro_id,
-                    'pro_name'      => $this->productsModel->find($pro_id)['pro_name'] . '-' . $this->productsModel->find($pro_id)['pro_model'],
+                    'pro_name'      => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
                     'pro_sku'       => $this->productsModel->find($pro_id)['pro_part_no'],
                     'pro_img'       => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_img'],
                     'pro_price'     => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_price'],
@@ -495,23 +602,74 @@ class Sales extends BaseController
     
                 ';
 
+            $itemsales = $this->salesdetailModel->where('no_sales', $this->salesModel->find($id_sales)['no_sales'])->orderBy('id_sales_detail', 'asc')->findAll();
+            $dataSalesDetail = array();
+            // $priceArray = array();
+            for ($a = 0; $a < count($itemsales); $a++) {
+                $proid = $itemsales[$a]['pro_id'];
+                $dataSalesDetail[] = array(
+                    'id_sales_detail'       => $itemsales[$a]['id_sales_detail'],
+                    'pro_id'                => $proid,
+                    'pro_part_no'           => $this->productsModel->find($proid)['pro_part_no'],
+                    'pro_img'               => $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($proid) !== null ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($proid)['pro_image_name'] : 'no_image.png',
+                    'pro_name'              => $this->productsModel->find($proid)['pro_name'] . ' ' . $this->productsModel->find($proid)['pro_model'],
+                    'pro_price'             => $itemsales[$a]['pro_price'],
+                    'pro_qty'               => $itemsales[$a]['pro_qty'],
+                    // 'no_sales'              => strtoupper($this->request->getVar('no_sales')),
+                    // 'date_sales'            => $this->request->getVar('date_sales'),
+                    // 'pro_price_basic'       => $this->productspriceModel->find($this->request->getVar('proid')[$a])['pro_price_basic'],
+                );
+
+                // $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
+            }
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+            $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+            $this->builder->join('list_packaging', 'list_packaging.id_packaging= sales.packaging');
+            $query = $this->builder->getWhere(['id_sales' => $id_sales]);
+
+            //shop_group//
+            $id_shop = $this->salesModel->find($id_sales)['id_shop'];
+            $member_id_owner = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+            $id_owner = $this->userProfileModel->where('member_id', $member_id_owner)->find()[0]['id'];
+            $this->builder = $this->db->table('auth_groups_users');
+            $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+            $query1 = $this->builder->where('user_id', $id_owner)->get();
+            $name_shop = $query1->getRow()->name;
+            if ($name_shop == "Reseller") {
+                $reseller_status = "true";
+            } else {
+                $reseller_status = "false";
+            };
             $dataSales = array(
                 'id_sales'              => $id_sales,
                 'no_sales'              => $this->salesModel->find($id_sales)['no_sales'],
                 'date_sales'            => $this->salesModel->find($id_sales)['date_sales'],
                 'id_shop'               => $this->salesModel->find($id_sales)['id_shop'],
-                'deliveryservices'      => $this->salesModel->find($id_sales)['deliveryservices'],
+                'id_deliveryservices'   => $query->getRow()->deliveryservices,
+                'name_deliveryservices' => $query->getRow()->name_delivery_services,
                 'name_shop'             => $this->shopModel->find($this->salesModel->find($id_sales)['id_shop'])['name_shop'],
                 'marketplace'           => $this->shopModel->find($this->salesModel->find($id_sales)['id_shop'])['marketplace'],
-                'resi'                  => $this->salesModel->find($id_sales)['deliveryservices'],
-                'note'                  => $this->salesModel->find($id_sales)['resi'],
+                'reseller_status'       => $reseller_status,
+                'resi'                  => $this->salesModel->find($id_sales)['resi'],
+                'note'                  => $this->salesModel->find($id_sales)['note'],
                 'packaging'             => $this->salesModel->find($id_sales)['packaging'],
+                'name_packaging'        => $query->getRow()->name_packaging,
                 'packaging_charge'      => $this->salesModel->find($id_sales)['packaging_charge'],
                 'bill'                  => $this->salesModel->find($id_sales)['bill'],
                 'payment'               => $this->salesModel->find($id_sales)['payment'],
                 'paymethod'             => $this->salesModel->find($id_sales)['paymethod'],
+                'itemsales'             => $this->salesdetailModel->where('no_sales', $this->salesModel->find($id_sales)['no_sales'])->orderBy('id_sales_detail', 'asc')->findAll(),
+                'dataSalesDetail'       => $dataSalesDetail,
                 // 'status'                => "Process",
             );
+
+            if (in_groups('1') == true || in_groups('2') == true) {
+                $datashop = $this->shopModel->findAll();
+            } else {
+                $datashop = $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll();
+            }
             $datapage = array(
                 'titlepage' => 'Edit Sales',
                 'tabshop' => $this->tabshop,
@@ -519,9 +677,15 @@ class Sales extends BaseController
                 'js_page' => $js_page,
                 'dataSales' => $dataSales,
                 'listdeliveryservices' => $this->ListDeliveryServicesModel->findAll(),
-                'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
+                'datashop' => $datashop,
+                // 'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
             );
             return view('pages_admin/adm_sales_edit_sales', $datapage);
         }
+    }
+
+    public function update($idsales)
+    {
+        dd($this->request->getVar());
     }
 }
