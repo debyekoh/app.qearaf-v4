@@ -420,6 +420,7 @@ class Sales extends BaseController
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+        // $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
         if (in_groups('3') == true || in_groups('4') == true) {
             $this->builder->like('member_id', user()->member_id);
         }
@@ -482,8 +483,24 @@ class Sales extends BaseController
             } else if ($this->salesModel->find($i->id_sales)['status'] == "Return") {
                 $next_status = null;
             }
+
+            //shop_group//
+            $id_shop = $this->salesModel->find($i->id_sales)['id_shop'];
+            $member_id_owner = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+            $id_owner = $this->userProfileModel->where('member_id', $member_id_owner)->find()[0]['id'];
+            $this->builder = $this->db->table('auth_groups_users');
+            $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+            $query1 = $this->builder->where('user_id', $id_owner)->get();
+            $name_shop = $query1->getRow()->name;
+            if ($name_shop == "Reseller") {
+                $shop_detail = $name_shop . " (" . $i->name_shop . " " . $i->marketplace . ")";
+            } else {
+                $shop_detail = $i->name_shop . " " . $i->marketplace;
+            };
+
             $row = [
                 "no" => $no++,
+                "shop_detail"       => $shop_detail,
                 "item_detail"       => $dataProductDetail,
                 "item_count"        => count($this->salesdetailModel->where('no_sales', $i->no_sales)->findAll()),
                 "id_sales"          => $i->id_sales,
@@ -515,6 +532,7 @@ class Sales extends BaseController
 
     public function nextto()
     {
+
         $id_sales = $this->request->getVar('id');
         $status_sales = $this->request->getVar('name');
         if ($this->salesModel->find($id_sales) != null) {
@@ -523,19 +541,102 @@ class Sales extends BaseController
             );
             $this->salesModel->update(['id_sales' => $id_sales], $dataSales);
             //
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // $this->builder->like('member_id', user()->member_id);
+
+            //Query All//
             $this->builder = $this->db->table('sales');
             $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            $this->builder->like('member_id', user()->member_id);
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryAll = $this->builder->get();
+            // $All = $QueryAll->getNumRows();
+
+            //Query Proces//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryProcess = $this->builder->where('status', 'Process')->get();
+            // $Process = $QueryProcess->getNumRows();
+
+            //Query Packaging//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryPackaging = $this->builder->where('status', 'Packaging')->get();
+            // $Packaging = $QueryPackaging->getResult();
+
+            //Query Ready//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryReady = $this->builder->where('status', 'Ready')->get();
+            // $Ready = $QueryReady->getResult();
+
+            //Query Delivery//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryDelivery = $this->builder->where('status', 'Delivery')->get();
+            // $Delivery = $QueryDelivery->getResult();
+
+            //Query Received//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryReceived = $this->builder->where('status', 'Received')->get();
+            // $Received = $QueryReceived->getResult();
+
+            //Query Completed//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryCompleted = $this->builder->where('status', 'Completed')->get();
+            // $Completed = $QueryCompleted->getResult();
+
+            //Query Cancel//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryCancel = $this->builder->where('status', 'Cancel')->get();
+            // $Cancel = $QueryCancel->getResult();
+
+            //Query Return//
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            if (in_groups('3') == true || in_groups('4') == true) {
+                $this->builder->like('member_id', user()->member_id);
+            }
+            $QueryReturn = $this->builder->where('status', 'Return')->get();
+            // $Return = $QueryReturn->getResult();
+
+
             $data_tab = array(
-                'All'           => $this->builder->get()->getNumRows(),
-                'Process'       => $this->builder->where('status', 'Process')->get()->getNumRows(),
-                'Packaging'     => $this->builder->where('status', 'Packaging')->get()->getNumRows(),
-                'Ready'         => $this->builder->where('status', 'Ready')->get()->getNumRows(),
-                'Delivery'      => $this->builder->where('status', 'Delivery')->get()->getNumRows(),
-                'Received'      => $this->builder->where('status', 'Received')->get()->getNumRows(),
-                'Completed'     => $this->builder->where('status', 'Completed')->get()->getNumRows(),
-                'Cancel'        => $this->builder->where('status', 'Cancel')->get()->getNumRows(),
-                'Return'        => $this->builder->where('status', 'Return')->get()->getNumRows(),
+                'All'           => $QueryAll->getNumRows(),
+                'Process'       => $QueryProcess->getNumRows(),
+                'Packaging'     => $QueryPackaging->getNumRows(),
+                'Ready'         => $QueryReady->getNumRows(),
+                'Delivery'      => $QueryDelivery->getNumRows(),
+                'Received'      => $QueryReceived->getNumRows(),
+                'Completed'     => $QueryCompleted->getNumRows(),
+                'Cancel'        => $QueryCancel->getNumRows(),
+                'Return'        => $QueryReturn->getNumRows(),
             );
             //
             $status = "success";
@@ -686,6 +787,65 @@ class Sales extends BaseController
 
     public function update($idsales)
     {
-        dd($this->request->getVar());
+        // dd($this->request->getVar());
+        // for ($a = 0; $a < count($this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales'))->findAll()); $a++) {
+        //     $dataLastSalesDetail[] = $this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales'))->find()[$a];
+        // }
+
+        // $dataLastSalesDetail = $this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales')))->findAll();
+        $NoSalestoDelete = $this->request->getVar('no_sales');
+
+        $dataNewSalesDetail = array();
+        $priceArray = array();
+        for ($b = 0; $b < count($this->request->getVar('proid')); $b++) {
+            $dataNewSalesDetail[] = array(
+                'id_sales_detail'       => strtoupper($this->request->getVar('idsales')) . '/' . $b,
+                'no_sales'              => strtoupper($this->request->getVar('no_sales')),
+                'date_sales'            => $this->request->getVar('date_sales'),
+                'pro_id'                => $this->request->getVar('proid')[$b],
+                'pro_img'               => $this->request->getVar('proimg')[$b],
+                'pro_price_basic'       => $this->productspriceModel->find($this->request->getVar('proid')[$b])['pro_price_basic'],
+                'pro_price'             => $this->request->getVar('price')[$b],
+                'pro_qty'               => $this->request->getVar('qty')[$b],
+            );
+            $priceArray[] = $this->request->getVar('price')[$b] * $this->request->getVar('qty')[$b];
+        }
+
+        $dataSales = array(
+            'id_sales'              => strtoupper($this->request->getVar('idsales')),
+            'no_sales'              => strtoupper($this->request->getVar('no_sales')),
+            'date_sales'            => $this->request->getVar('date_sales'),
+            'id_shop'               => $this->request->getVar('shop'),
+            'deliveryservices'      => $this->request->getVar('deliveryservices'),
+            'marketplace'           => $this->request->getVar('shop'),
+            'resi'                  => strtoupper($this->request->getVar('no_resi')),
+            'note'                  => $this->request->getVar('notes'),
+            'packaging'             => $this->request->getVar('packagingmethod'),
+            'packaging_charge'      => $this->request->getVar('pckgval'),
+            'bill'                  => array_sum($priceArray),
+            'payment'               => $this->request->getVar('grtotval'),
+            'paymethod'             => $this->request->getVar('paymethod'),
+            // 'status'                => "Process",
+        );
+        // dd($dataNewSalesDetail, $dataSales);
+
+        $this->salesdetailModel->delete($NoSalestoDelete);
+        $this->salesdetailModel->insertBatch($dataNewSalesDetail);
+        $this->salesModel->update(['id_sales' => $this->request->getVar('idsales')], $dataSales);
+
+
+        if ($this->db->affectedRows() > 0) {
+            $msg = 'No Sales ' . $this->request->getVar('no_sales') . ' Berhasil di Perbarui';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/sales');
+        }
+        // $this->db->transStart();
+        // $this->db->query('AN SQL QUERY...');
+        // $this->db->query('ANOTHER QUERY...');
+        // $this->db->transComplete();
+
+        // if ($this->db->transStatus() === false) {
+        //     // generate an error... or use the log_message() function to log your error
+        // }
     }
 }

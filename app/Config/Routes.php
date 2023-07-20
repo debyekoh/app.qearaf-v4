@@ -64,7 +64,7 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 //Sales
 $routes->get('/mysales/show/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1'); //Ajax
 $routes->post('/mysales/count', 'AdminControlpage\Ecommerce\Sales\Sales::countSales'); //Ajax
-$routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin']); //Ajax
+$routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'role:SuAdmin,Admin,Reseller']);

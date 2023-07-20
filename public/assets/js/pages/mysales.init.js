@@ -40,6 +40,7 @@ function renderSales(name) {
                 var data_item = e[2]
                 let itemdata = "";
                 let paystatus = "";
+                let salesstatus = "";
                 let btn_goto = "";
                 let btn_vito = "";
                 for (i = 0; i < data_item.length; i++) {
@@ -73,7 +74,7 @@ function renderSales(name) {
                 }
                 if(e[7]==2){
                     paystatus +=
-                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-2 fw-bold rounded text-center">Cash on Delivery <i class="mdi mdi-cash-multiple font-size-14 ms-1"></i></h5>' ;
+                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-0 fw-bold rounded text-center">Cash on Delivery <i class="mdi mdi-cash-multiple font-size-14 ms-1"></i></h5>' ;
                 }
 
                 
@@ -87,19 +88,57 @@ function renderSales(name) {
                 if(e[8]!=null){
                     btn_goto +=
                     '<li><a  onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
-                }else{
-
                 }
+
+                if(e[6]== "Process"){
+                    salesstatus +=
+                    '<span class="badge bg-warning bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Packaging"){
+                    salesstatus +=
+                    '<span class="badge bg-secondary bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Ready"){
+                    salesstatus +=
+                    '<span class="badge bg-info bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Delivery"){
+                    salesstatus +=
+                    '<span class="badge bg-primary bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Received"){
+                    salesstatus +=
+                    '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Completed"){
+                    salesstatus +=
+                    '<span class="badge bg-dark bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                }
+
+                if(e[6]== "Cancel" || e[6]== "Return"){
+                    salesstatus +=
+                    '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>';
+                }
+
+
                 return gridjs.html(
                 '<div class="card border-dark border-gradient" style="margin-bottom: 0px;">'+
 				 	'<div class="card-header bg-dark bg-gradient text-white px-2 py-1" >'+
                         '<div class="d-flex align-items-center p-0">'+
                             '<div class="flex-grow-1 overflow-hidden">'+
-                            '<p class="fw-bold fst-italic font-size-14 text-truncate mb-0">#' + e[1] + '</p>'+
+                                '<p class="fw-bold fst-italic font-size-14 text-truncate mb-0">#' + e[1] + '</p>'+
                                 '<p class="fw-bold text-secondary mb-0" style="font-size:10px;">' + e[0] + '</p>'+
                             '</div>'+
                             '<div class="flex-shrink-0 ms-2">'+
-                                '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>'+
+                                '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[10] + '</span>'+
+                                // '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>'+
+                                // '<p class="fw-bold fst-italic font-size-14 text-truncate mb-0">#' + e[1] + '</p>'+
+                                // '<p class="fw-bold text-secondary mb-0" style="font-size:10px;"><span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span></p>'+
                             '</div>'+
                         '</div>'+
     				'</div>'+
@@ -108,21 +147,22 @@ function renderSales(name) {
                                 '<div class="col-md-4 my-1">'+
                                     itemdata +
                                 '</div>'+
-                                '<div class="col-md-4 my-1">'+
+                                '<div class="col-md-4 p-0 my-1">'+
                                     '<div class="d-flex align-items-center p-0">'+
                                         '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
                                             '<img src="./assets/images/services/' + e[3] + '" style="height: 1.4rem; width: auto;" class="img-fluid" alt="' + e[3] + '">'+
                                             '<p class="fw-bold fst-italic text-truncate mb-0">' + e[4] + '</p>'+
                                         '</div>'+
                                         '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-2 rounded text-center">' + e[5] + '</h5>'+
+                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>'+
+                                            paystatus +
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
                                 '<div class="col-md-4 my-1">'+
                                     '<div class="d-flex align-items-center p-0">'+
                                         '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
-                                            paystatus +
+                                            salesstatus +
                                         '</div>'+
                                         '<div class="flex-grow-1 ms-3 text-center">'+
                                             '<span>'+
@@ -159,9 +199,9 @@ function renderSales(name) {
         server: {
             url: './mysales/show/'+name,
             then: data => data.results.map(sales => [
-                    sales.id_sales ,            
-                    sales.no_sales ,
-                    sales.no_resi,              
+                    sales.id_sales,            
+                    sales.no_sales,
+                    sales.no_resi,
                 [   sales.id_sales ,            // 0 //
                     sales.no_sales ,            // 1 //
                     sales.item_detail ,         // 2 //
@@ -171,8 +211,10 @@ function renderSales(name) {
                     sales.statussales,          // 6 //
                     sales.paymethode,           // 7 //
                     sales.nextstatus,           // 8 //
-                    sales.id_sales_noslash      // 9 //
-                ]
+                    sales.id_sales_noslash,     // 9 //
+                    sales.shop_detail           // 10 //
+                ],
+                    sales.shop_detail
             ]),
             // then: data => data.results(),
           },
@@ -238,6 +280,7 @@ Swal.fire({
                   renderSales(name)
                   if(data.datatab.Process!=0){
                       $(".proces_span_none").html(
+                          '<i class="mdi mdi-application-settings mdi-24px"></i>'+
                           '<span class="process rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Process+'</span>'
@@ -248,12 +291,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Process+'</span>'
                           );
                   }else{
-                      $(".proces_span_none").html('');
+                      $(".proces_span_none").html('<i class="mdi mdi-application-settings mdi-24px"></i>');
                       $(".proces_span_block").html('Process');
                   }
                   // $('.packaging').text(data.datatab.Packaging);
                   if(data.datatab.Packaging!=0){
                       $(".packaging_span_none").html(
+                          '<i class="mdi mdi-package-variant mdi-24px"></i>'+
                           '<span class="packaging rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Packaging+'</span>'
@@ -264,12 +308,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Packaging+'</span>'
                           );
                   }else{
-                      $(".packaging_span_none").html('');
+                      $(".packaging_span_none").html('<i class="mdi mdi-package-variant mdi-24px"></i>');
                       $(".packaging_span_block").html('Packaging');
                   }
                   // $('.ready').text(data.datatab.Ready);
                   if(data.datatab.Ready!=0){
                       $(".ready_span_none").html(
+                          '<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>'+
                           '<span class="ready rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Ready+'</span>'
@@ -280,12 +325,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Ready+'</span>'
                           );
                   }else{
-                      $(".ready_span_none").html('');
+                      $(".ready_span_none").html('<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>');
                       $(".ready_span_block").html('Ready');
                   }
                   // $('.delivery').text(data.datatab.Delivery);
                   if(data.datatab.Delivery!=0){
                       $(".delivery_span_none").html(
+                          '<i class="mdi mdi-truck-fast-outline mdi-24px"></i>'+
                           '<span class="delivery rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Delivery+'</span>'
@@ -296,12 +342,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Delivery+'</span>'
                           );
                   }else{
-                      $(".delivery_span_none").html('');
+                      $(".delivery_span_none").html('<i class="mdi mdi-truck-fast-outline mdi-24px"></i>');
                       $(".delivery_span_block").html('Delivery');
                   }
                   // $('.received').text(data.datatab.Received);
                   if(data.datatab.Received!=0){
                       $(".received_span_none").html(
+                          '<i class="mdi mdi-progress-check mdi-24px"></i>'+
                           '<span class="received rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Received+'</span>'
@@ -312,12 +359,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Received+'</span>'
                           );
                   }else{
-                      $(".received_span_none").html('');
+                      $(".received_span_none").html('<i class="mdi mdi-progress-check mdi-24px"></i>');
                       $(".received_span_block").html('Received');
                   }
                   // $('.completed').text(data.datatab.Completed);
                   if(data.datatab.Completed!=0){
                       $(".completed_span_none").html(
+                          '<i class="mdi mdi-check-decagram mdi-24px"></i>'+
                           '<span class="completed rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Completed+'</span>'
@@ -328,12 +376,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Completed+'</span>'
                           );
                   }else{
-                      $(".completed_span_none").html('');
+                      $(".completed_span_none").html('<i class="mdi mdi-check-decagram mdi-24px"></i>');
                       $(".completed_span_block").html('Completed');
                   }
                   // $('.cancel').text(data.datatab.Cancel);
                   if(data.datatab.Cancel!=0){
                       $(".cancel_span_none").html(
+                          '<i class="mdi mdi-progress-close mdi-24px"></i>'+
                           '<span class="cancel rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Cancel+'</span>'
@@ -344,12 +393,13 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Cancel+'</span>'
                           );
                   }else{
-                      $(".cancel_span_none").html('');
+                      $(".cancel_span_none").html('<i class="mdi mdi-progress-close mdi-24px"></i>');
                       $(".cancel_span_block").html('Cancel');
                   }
                   // $('.return').text(data.datatab.Return);
                   if(data.datatab.Return!=0){
                       $(".return_span_none").html(
+                          '<i class="mdi mdi-backup-restore mdi-24px"></i>'+
                           '<span class="return rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
                           'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
                           'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Return+'</span>'
@@ -360,7 +410,7 @@ Swal.fire({
                           'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Return+'</span>'
                           );
                   }else{
-                      $(".return_span_none").html('');
+                      $(".return_span_none").html('<i class="mdi mdi-backup-restore mdi-24px"></i>');
                       $(".return_span_block").html('Return');
                   }
                   }
