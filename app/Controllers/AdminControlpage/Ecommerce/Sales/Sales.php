@@ -14,6 +14,7 @@ use App\Models\SalesModel;
 use App\Models\SalesDetailModel;
 use App\Models\ShopModel;
 use App\Models\UserProfileModel;
+use App\Models\ListNotificationModel;
 
 class Sales extends BaseController
 {
@@ -31,6 +32,7 @@ class Sales extends BaseController
     protected $salesdetailModel;
     protected $shopModel;
     protected $userProfileModel;
+    protected $notificationModel;
 
     public function __construct()
     {
@@ -46,6 +48,7 @@ class Sales extends BaseController
         $this->salesdetailModel = new SalesDetailModel();
         $this->shopModel = new ShopModel();
         $this->userProfileModel = new UserProfileModel();
+        $this->notificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
     }
 
@@ -643,6 +646,13 @@ class Sales extends BaseController
         } else {
             $status = "error";
         }
+
+
+        $dataNotif = array(
+            'status'      => $status_sales,
+        );
+
+
 
         return $this->response->setJSON([
             'status' => $status,

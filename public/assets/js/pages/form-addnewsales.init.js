@@ -57,81 +57,83 @@ $("#presubmit").on('click', function() {
         if (result.isConfirmed) {
             Swal.fire({
                 icon: 'success',
-                text: 'No Sales: '+$('#no_sales').val()+' Success to <b>Change</b>',
-                timer: 3000,
+                html: "No Sales: "+$('#no_sales').val()+" Success to <b>Change</b>",
+                showConfirmButton: false,
+                timer: 500,
                 timerProgressBar: true,
-              })
-        //     }
-        // })
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        console.log('I was closed by the timer')
+                        // console.log($(".norow").length)
+                        if($('#no_sales').val() == ""){$('#no_sales').addClass("is-invalid");$('#no_sales').addClass("inewsalesinfo-is-invalid");}else{$('#no_sales').removeClass("is-invalid");}
+                        if($('#date_sales').val() == ""){$('#date_sales').addClass("is-invalid");$('#date_sales').addClass("inewsalesinfo-is-invalid");}else{$('#date_sales').removeClass("is-invalid");}
+                        if($('#shop').val() == null){$('#shop').addClass("is-invalid"); $('#shop').addClass("inewsalesinfo-is-invalid");}else{$('#shop').removeClass("is-invalid");}
+                        if($(".norow").length > 0){
+                            $('.productinfo ').addClass("bg-danger"); 
+                            $('#adnpm').addClass("btn-outline-danger");
+                            document.querySelector("#li2").style.borderColor = "red";}
+                            else{
+                                if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}
+                            }
+                        if($('#deliveryservices').val() == null){$('#deliveryservices').addClass("is-invalid");$('#deliveryservices').addClass("ideliveryinfo-is-invalid");}else{$('#deliveryservices').removeClass("is-invalid");}
+                        if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");$('#no_resi').addClass("ideliveryinfo-is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
 
-            console.log($(".norow").length)
-            if($('#no_sales').val() == ""){$('#no_sales').addClass("is-invalid");$('#no_sales').addClass("inewsalesinfo-is-invalid");}else{$('#no_sales').removeClass("is-invalid");}
-            if($('#date_sales').val() == ""){$('#date_sales').addClass("is-invalid");$('#date_sales').addClass("inewsalesinfo-is-invalid");}else{$('#date_sales').removeClass("is-invalid");}
-            if($('#shop').val() == null){$('#shop').addClass("is-invalid"); $('#shop').addClass("inewsalesinfo-is-invalid");}else{$('#shop').removeClass("is-invalid");}
-            if($(".norow").length > 0){
-                $('.productinfo ').addClass("bg-danger"); 
-                $('#adnpm').addClass("btn-outline-danger");
-                document.querySelector("#li2").style.borderColor = "red";}
-                else{
-                    if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}
-                }
-            if($('#deliveryservices').val() == null){$('#deliveryservices').addClass("is-invalid");$('#deliveryservices').addClass("ideliveryinfo-is-invalid");}else{$('#deliveryservices').removeClass("is-invalid");}
-            if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");$('#no_resi').addClass("ideliveryinfo-is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
+                        // if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
 
-            // if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
+                        // console.log($('[name=packaging-method]').length)
+                        // console.log($("input[name='packagingmethod']:checked").val())
+                        if($("input[name='packagingmethod']:checked").val() == null){
+                            console.log("SALAH"); 
+                            $('.packagingmethod').addClass("bg-danger is-invalid text-white");
+                            $('.packaginginfo').addClass("bg-danger");
+                            document.querySelector("#li4").style.borderColor = "red";
+                        }else{
+                            console.log("BENAR"); 
+                            $('.packagingmethod').removeClass("bg-danger is-invalid text-white");
+                            $('.packaginginfo').removeClass("bg-danger");
+                            document.querySelector("#li4").style.borderColor = "#1f58c7";
+                        }
 
-            // console.log($('[name=packaging-method]').length)
-            // console.log($("input[name='packagingmethod']:checked").val())
-            if($("input[name='packagingmethod']:checked").val() == null){
-                console.log("SALAH"); 
-                $('.packagingmethod').addClass("bg-danger is-invalid text-white");
-                $('.packaginginfo').addClass("bg-danger");
-                document.querySelector("#li4").style.borderColor = "red";
-            }else{
-                console.log("BENAR"); 
-                $('.packagingmethod').removeClass("bg-danger is-invalid text-white");
-                $('.packaginginfo').removeClass("bg-danger");
-                document.querySelector("#li4").style.borderColor = "#1f58c7";
+                        if($("input[name='paymethod']:checked").val() == null){
+                            console.log("SALAH"); 
+                            $('.paymethod').addClass("bg-danger is-invalid text-white");
+                            $('.payinfo').addClass("bg-danger");
+                        }else{
+                            console.log("BENAR"); 
+                            $('.paymethod').removeClass("bg-danger is-invalid text-white");
+                            $('.payinfo').removeClass("bg-danger");
+                        }
+                        
+                        ///
+                        if($('.inewsalesinfo-is-invalid').length != 0){$('.newsalesinfo').addClass("bg-danger");document.querySelector("#li1").style.borderColor = "red";} 
+                        // if($('.input-is-invalid').length != 0){$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}           //---OK---//
+                        console.log("test "+$('.input-is-invalid').length);
+                        // if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}
+                        if($('.ideliveryinfo-is-invalid').length != 0){$('.deliveryinfo').addClass("bg-danger");document.querySelector("#li3").style.borderColor = "red";}           //---OK---//
+                        ///
+
+
+                        $('#listsalesproduct input[type=number]').each(function() {
+                            if ($(this).val() != 0 ) {
+                                $(this).removeClass("is-invalid");
+                                $(this).removeClass("input-is-invalid");
+                                console.log('all inputs filled');
+                            }
+                            else{
+                                console.log('theres an zero qty');
+                                $(this).addClass("is-invalid");
+                                $(this).addClass("input-is-invalid");
+                                // return false
+                            }
+                        });
+                        
+                        if($('.is-invalid').length == 0){
+                            $("#submit" ).trigger( "click" );
+                        }
+                    }
+                })
+             
             }
-
-            if($("input[name='paymethod']:checked").val() == null){
-                console.log("SALAH"); 
-                $('.paymethod').addClass("bg-danger is-invalid text-white");
-                $('.payinfo').addClass("bg-danger");
-            }else{
-                console.log("BENAR"); 
-                $('.paymethod').removeClass("bg-danger is-invalid text-white");
-                $('.payinfo').removeClass("bg-danger");
-            }
-            
-            ///
-            if($('.inewsalesinfo-is-invalid').length != 0){$('.newsalesinfo').addClass("bg-danger");document.querySelector("#li1").style.borderColor = "red";} 
-            // if($('.input-is-invalid').length != 0){$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}           //---OK---//
-            console.log("test "+$('.input-is-invalid').length);
-            // if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}
-            if($('.ideliveryinfo-is-invalid').length != 0){$('.deliveryinfo').addClass("bg-danger");document.querySelector("#li3").style.borderColor = "red";}           //---OK---//
-            ///
-
-
-            $('#listsalesproduct input[type=number]').each(function() {
-                if ($(this).val() != 0 ) {
-                    $(this).removeClass("is-invalid");
-                    $(this).removeClass("input-is-invalid");
-                    console.log('all inputs filled');
-                }
-                else{
-                    console.log('theres an zero qty');
-                    $(this).addClass("is-invalid");
-                    $(this).addClass("input-is-invalid");
-                    // return false
-                }
-            });
-            
-            if($('.is-invalid').length == 0){
-                $("#submit" ).trigger( "click" );
-            }
-
-        }
         })
 });
 
