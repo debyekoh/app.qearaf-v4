@@ -135,8 +135,18 @@
 
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <div class="modal-footer" id="ftmod">
+                            <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>
+                            <!-- <div class="container">
+                                <div class="row">
+                                    <div class="col-6 text-start">
+                                        <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <button type="button" class="btn btn-primary bg-gradient waves-effect" data-dismiss="modal">Submit</button>
+                                    </div>
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

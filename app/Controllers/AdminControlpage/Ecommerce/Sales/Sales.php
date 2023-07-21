@@ -66,6 +66,7 @@ class Sales extends BaseController
             <script src="assets/libs/gridjs/gridjs.umd.js"></script>
             <script src="assets/js/pages/mysales.init.js"></script>
             <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="assets/libs/imask/imask.min.js"></script>
             
             ';
 
@@ -514,6 +515,7 @@ class Sales extends BaseController
                 "no_resi"           => $i->resi,
                 "packaging"         => $i->packaging,
                 "bill"              => "Rp " . number_format($i->bill, 0, ',', '.'),
+                "payment"           => "Rp " . number_format($i->payment, 0, ',', '.'),
                 "paymethode"        => $i->paymethod,
                 "statussales"       => ucwords($i->status),
                 "nextstatus"        => $next_status,
@@ -538,11 +540,17 @@ class Sales extends BaseController
 
         $id_sales = $this->request->getVar('id');
         $status_sales = $this->request->getVar('name');
+        $payment_value = $this->request->getVar('paymval');
+        // dd($id_sales, $status_sales, $payment_value);
         if ($this->salesModel->find($id_sales) != null) {
             $dataSales = array(
                 'status'      => $status_sales,
             );
             $this->salesModel->update(['id_sales' => $id_sales], $dataSales);
+
+            if ($payment_value > 0 && $status_sales == "Received") {
+                $this->salesModel->update(['id_sales' => $id_sales], ['payment' => $payment_value]);
+            }
             //
             // $this->builder = $this->db->table('sales');
             // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');

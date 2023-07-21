@@ -42,8 +42,11 @@ function renderSales(name) {
                 let itemdata = "";
                 let paystatus = "";
                 let salesstatus = "";
+                let bill_value = "";
                 let btn_goto = "";
-                let btn_vito = "";
+                let btn_gocancel = "";
+                let btn_goreturn = "";
+                let btn_goedit = "";
                 for (i = 0; i < data_item.length; i++) {
                     itemdata += 
                         '<div class="row align-items-center p-1">'+
@@ -83,47 +86,112 @@ function renderSales(name) {
                 const s_id = new String("'"+e[0]+"'");
                 const s_name = new String("'"+e[8]+"'");
                 const cancel = new String("'Cancel'");
-                // const toedit = new String("'form#toedit"+e[0]+"'");
+                const goreturn = new String("'Return'");
+                const goreceived = new String("'Received'");
                 const toedit = new String(e[0].substr(0, 6)+e[0].substr(7, 1)+e[0].substr(9, 2)+e[0].substr(12));
                 
-                if(e[8]!=null){
-                    btn_goto +=
-                    '<li><a  onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
-                }
+                // if(e[8]!=null){
+                //     btn_goedit +=
+                //     '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    
+                // }
 
                 if(e[6]== "Process"){
                     salesstatus +=
                     '<span class="badge bg-warning bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    btn_goedit +=
+                    '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    btn_gocancel +=
+                    '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    // btn_goreturn +=
+                    // '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    btn_goto +=
+                    '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
                 }
 
                 if(e[6]== "Packaging"){
                     salesstatus +=
                     '<span class="badge bg-secondary bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    btn_goedit +=
+                    '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    btn_gocancel +=
+                    '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    // btn_goreturn +=
+                    // '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    btn_goto +=
+                    '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
                 }
 
                 if(e[6]== "Ready"){
                     salesstatus +=
                     '<span class="badge bg-info bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    btn_goedit +=
+                    '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    btn_gocancel +=
+                    '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    // btn_goreturn +=
+                    // '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    btn_goto +=
+                    '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
                 }
 
                 if(e[6]== "Delivery"){
                     salesstatus +=
                     '<span class="badge bg-primary bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    btn_goedit +=
+                    '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    // btn_gocancel +=
+                    // '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    btn_goreturn +=
+                    '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    btn_goto +=
+                    '<li><a  onclick="vito('+s_id+','+goreceived+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
+                    
                 }
 
                 if(e[6]== "Received"){
                     salesstatus +=
                     '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    btn_goedit +=
+                    '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    // btn_gocancel +=
+                    // '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    btn_goreturn +=
+                    '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    btn_goto +=
+                    '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[11] + '</h5>';
                 }
 
                 if(e[6]== "Completed"){
                     salesstatus +=
                     '<span class="badge bg-dark bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[11] + '</h5>';
+                    // btn_goedit +=
+                    // '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
+                    // btn_gocancel +=
+                    // '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+                    // btn_goreturn +=
+                    // '<li><a onclick="to('+s_id+','+goreturn+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-backup-restore font-size-16 text-danger me-1"></i> Return</a></li>';
+                    // btn_goto +=
+                    // '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
                 }
 
                 if(e[6]== "Cancel" || e[6]== "Return"){
                     salesstatus +=
                     '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
                 }
 
 
@@ -155,7 +223,8 @@ function renderSales(name) {
                                             '<p class="fw-bold fst-italic text-truncate mb-0">' + e[4] + '</p>'+
                                         '</div>'+
                                         '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>'+
+                                            // '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>'+
+                                            bill_value +
                                             paystatus +
                                         '</div>'+
                                     '</div>'+
@@ -174,8 +243,11 @@ function renderSales(name) {
                                                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
                                                         // btn_vito +
                                                         '<li><a  onclick="vito('+s_id+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
-                                                        '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
-                                                        '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
+                                                        // '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
+                                                        // '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
+                                                        btn_goedit +
+                                                        btn_gocancel +
+                                                        btn_goreturn +
                                                         btn_goto +
                                                     '</ul>'+
                                                 '</div>'+
@@ -213,7 +285,8 @@ function renderSales(name) {
                     sales.paymethode,           // 7 //
                     sales.nextstatus,           // 8 //
                     sales.id_sales_noslash,     // 9 //
-                    sales.shop_detail           // 10 //
+                    sales.shop_detail,          // 10 //
+                    sales.payment               // 11 //
                 ],
                     sales.shop_detail
             ]),
@@ -248,7 +321,8 @@ function renderSales(name) {
   }
 
 
-function to(s_id , s_name) {
+function to(s_id , s_name , s_paym) {
+$('#viewSales').modal('hide');
 Swal.fire({
     title: 'Are you sure?',
     html: "You want to <b>"+s_name+"</b> Sales No:<b>"+s_id+"</b>",
@@ -274,6 +348,7 @@ Swal.fire({
                         data: {
                             id: s_id,
                             name: s_name,
+                            paymval: s_paym,
                         },
                         success: function(data) {
                             // console.log(data)
@@ -446,6 +521,24 @@ Swal.fire({
 
 function vito(s_id , s_name) {
     $('#viewSales').modal('show');
+    console.log(s_name)
+    let paymentinput = ''
+    if(s_name != null){
+        paymentinput +=
+        '<tr>'+
+            '<td colspan="3" class="font-size-18 m-0 fw-bold border-bottom-0">'+
+                '<div class="form-floating mb-3">'+
+                    '<input type="text" min="4" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">'+
+                    '<label for="payment">Payment</label>'+
+                    '<div class="invalid-feedback">'+
+                        'Please Fill in Payment.'+
+                    '</div>'+
+                    '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
+                '</div>'+
+            '</td>'+
+        '</tr>';
+
+    }
     $.ajax({
         type: "POST",
         url: "./mysales/detail",
@@ -519,10 +612,10 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr>'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right">Estimated Tax (10%):</h6>'+
+                                '<h6 class="m-0 text-right" id="td_tax">Estimated Tax (10%):</h6>'+
                             ' </td>'+
-                            '<td class="text-danger">'+
-                                ' ('+tax+')'+
+                            '<td class="text-danger" id="td_tax_val">'+
+                                'Rp ('+tax+')'+
                             '</td>'+
                         '</tr>'+
                         '<tr>'+
@@ -544,22 +637,156 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr >'+
                             ' <td colspan="2" class="border-bottom-0">'+
-                                '<h6 class="m-0 text-right">Total Payment:</h6>'+
+                                '<h6 class="m-0 text-right" id="tdesc">Billing Information:</h6>'+
                             '</td>'+
-                            '<td class="font-size-18 m-0 fw-bold border-bottom-0">'+
+                            '<td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">'+
                                 'Rp '+((subtotal-((10/100)*subtotal))+parseInt(data.detail.ifs.packaging_charge)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
                             '</td>'+
                         '</tr>'+
+                        paymentinput+
                     '</tbody>'+
                 '</table>'
             )
+
+            // const s_id = new String("'"+data.detail.ifs.id_sales+"'");
+            // const s_name = new String("'Completed'");
+            if(data.detail.ifs.status == "Delivery"){
+
+                $("#ftmod").html(
+                    '<div class="container">'+
+                        '<div class="row">'+
+                            '<div class="col-6 text-start">'+
+                                '<button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>'+
+                            '</div>'+
+                            '<div class="col-6 text-end">'+
+                                '<button type="button" id="presubmit" class="btn btn-primary bg-gradient waves-effect" data-dismiss="modal">Submit</button>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+                );
+            }
+
+            if(data.detail.ifs.status == "Received" || data.detail.ifs.status == "Completed" ){
+                let subtotal = 0;
+                    for (l = 0; l < data.detail.dsl.length; l++) {
+                        subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
+                    }
+                let pis = data.detail.ifs.payment;
+                let as = (parseInt(subtotal)-parseInt(pis-data.detail.ifs.packaging_charge));
+                let bs = (parseInt(as) / parseInt(subtotal))*100
+                $("#td_tax").html("Tax ("+bs.toFixed(1)+"%)" )
+                $("#td_tax_val").html("Rp ("+as.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
+                $("#tdesc").html("Payment")
+                $("#tval").html("Rp "+pis.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+            }
+
+            $('#viewSales').on('shown.bs.modal', function () {$("#payment").focus();});
             
+
+            
+            $("#payment").on('input', function() {
+                console.log("diinput");
+                var masked = IMask(document.getElementById("payment"), {
+                    mask: "Rp. num",
+                    blocks: {
+                        num: {
+                            mask: Number,
+                            thousandsSeparator: " "
+                        }
+                    }
+                })
+                console.log(masked.unmaskedValue);
+                if($('#payment').val().length > 4){
+                    console.log($('#payment').val())
+                    $('#payment').removeClass("is-invalid");
+                    $('#payment').addClass("is-valid");
+                    $('#paymentval').val(masked.unmaskedValue)
+                    let subtotal = 0;
+                    for (l = 0; l < data.detail.dsl.length; l++) {
+                        subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
+                    }
+                    let pi = masked.unmaskedValue;
+                    let a = (parseInt(subtotal)-parseInt(pi-data.detail.ifs.packaging_charge));
+                    let b = (parseInt(a) / parseInt(subtotal))*100
+                    console.log(b)
+                    if(a >= 0 ) {
+                        $('#profitstring').html("Rp. "+parseInt(a))
+                        $('#payment').removeClass("is-invalid");
+                        $('#payment').addClass("is-valid");
+                        $("#td_tax").html("Tax ("+b.toFixed(1)+"%)" )
+                        $("#td_tax_val").html("Rp ("+a.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
+                    }else{
+                        $('#profitstring').html("Rp. "+parseInt(0))
+                        $('#payment').removeClass("is-valid");
+                        $('#payment').addClass("is-invalid");
+                    }
+                }else{
+                    console.log($('#payment').val())
+                    $('#payment').removeClass("is-valid");
+                    $('#payment').addClass("is-invalid");
+                }
+            });
+
+
+            $("#payment").keydown(function(event){
+                if( (event.keyCode == 13)) {
+                    event.preventDefault();
+                    console.log("Enter SUBMIT")
+                    if($('.is-invalid').length == 0) {
+                        presubmit();
+                    }
+                  return false;
+                }
+            });
+
+            $("#presubmit").on('click', function() {
+                console.log("Click SUBMIT")
+                console.log($('.is-invalid').length)
+                if($('.is-invalid').length == 0) {
+                    presubmit();
+                }
+            });
+
+            
+            function presubmit() {
+                if($('#payment').val().length > 4){
+                    $('#payment').removeClass("is-invalid");
+                    $('#payment').addClass("is-valid");
+                }else{
+                    $('#payment').removeClass("is-valid");
+                    $('#payment').addClass("is-invalid");
+                }
+            
+                if($('#payment').val().length > 4){
+                    console.log("SUBMITED")
+                    console.log($('#paymentval').val())
+                    
+                    var s_id = data.detail.ifs.id_sales;
+                    var s_name = "Received";
+                    var s_paym = $('#paymentval').val();
+                    console.log(s_id,s_name,s_paym)
+                    to(s_id , s_name , s_paym)
+
+            
+                }else{
+                    console.log("Belum Input")
+                }
+            }
+
+            //   function to(s_id , s_name) {
+
+            //   }
+
+            // $("#payment").trigger("focus");
+
             
             
         }
 
     })
 }
+
+
 
   
 
