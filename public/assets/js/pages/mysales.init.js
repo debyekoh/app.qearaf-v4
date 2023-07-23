@@ -242,7 +242,8 @@ function renderSales(name) {
                                                     '</button>'+
                                                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
                                                         // btn_vito +
-                                                        '<li><a  onclick="vito('+s_id+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                                                        // '<li><a  onclick="vito('+s_id+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                                                        '<li><a href="detail/view/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
                                                         // '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
                                                         // '<li><a onclick="to('+s_id+','+cancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>'+
                                                         btn_goedit +

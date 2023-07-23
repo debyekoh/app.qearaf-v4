@@ -1,5 +1,8 @@
 !function() {
     "use strict";
+    
+
+
     var t, e, a, s, n = localStorage.getItem("language"), o = "en";
     // function l(e) {
     //     document.getElementsByClassName("header-lang-img").forEach(function(t) {
@@ -281,9 +284,7 @@
             t[e].checked = this.checked
     }
     )
-}();
 
-function checkNotif() {
     $.ajax({
         type: "POST",
         url: $("#BaseUrl").val()+'notification',
@@ -292,48 +293,25 @@ function checkNotif() {
             console.log(data.results)
             let list = "";
             for (i = 0; i < data.results.length; i++) {
-                if(data.results[i].read_status == 1){
-                    const s_id = new String("'"+data.results[i].id_notif+"'");
-                    list +=
-                        '<a href="'+$("#BaseUrl").val()+''+data.results[i].path_notif+'" onclick="readNotif('+s_id+')"  class="text-reset notification-item">'+
-                        // '<a href="#" onclick="readNotif('+s_id+')" class="text-reset notification-item">'+
-                            '<div class="d-flex bg-soft-warning">'+
-                                '<div class="flex-shrink-0 avatar-sm me-3">'+
-                                    '<span class="avatar-title bg-success rounded-circle font-size-16">'+
-                                        '<i class="bx bx-badge-check"></i>'+
-                                    '</span>'+
-                                '</div>'+
-                                '<div class="flex-grow-1">'+
-                                    '<h6 class="mb-1">'+data.results[i].status_notif+'</h6>'+
-                                    '<div class="font-size-13">'+
-                                        '<p class="mb-1">'+data.results[i].notification+' is Now Available</p>'+
-                                        '<p class="mb-0 fst-italic text-end"><span class="">'+data.results[i].created_at+'</span></p>'+
-                                    '</div>'+
+                list +=
+                    '<a href="#!" class="text-reset notification-item">'+
+                        '<div class="d-flex bg-soft-warning">'+
+                            '<div class="flex-shrink-0 avatar-sm me-3">'+
+                                '<span class="avatar-title bg-success rounded-circle font-size-16">'+
+                                    '<i class="bx bx-badge-check"></i>'+
+                                '</span>'+
+                            '</div>'+
+                            '<div class="flex-grow-1">'+
+                                '<h6 class="mb-1">'+data.results[i].status_notif+'</h6>'+
+                                '<div class="font-size-13">'+
+                                    '<p class="mb-1">'+data.results[i].notification+' is Now Available</p>'+
+                                    '<p class="mb-0 fst-italic text-end"><span class="">'+data.results[i].created_at+'</span></p>'+
                                 '</div>'+
                             '</div>'+
-                        '</a>'
-                    ;
-                } else {
-                    const s_id = new String("'"+data.results[i].id_notif+"'");
-                    list +=
-                    '<a href="'+$("#BaseUrl").val()+''+data.results[i].path_notif+'" onclick="readNotif('+s_id+')"  class="text-reset notification-item">'+
-                            '<div class="d-flex">'+
-                                '<div class="flex-shrink-0 avatar-sm me-3">'+
-                                    '<span class="avatar-title bg-success rounded-circle font-size-16">'+
-                                        '<i class="bx bx-badge-check"></i>'+
-                                    '</span>'+
-                                '</div>'+
-                                '<div class="flex-grow-1">'+
-                                    '<h6 class="mb-1">'+data.results[i].status_notif+'</h6>'+
-                                    '<div class="font-size-13">'+
-                                        '<p class="mb-1">'+data.results[i].notification+' is Now Available</p>'+
-                                        '<p class="mb-0 fst-italic text-end"><span class="">'+data.results[i].created_at+'</span></p>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                        '</a>'
-                    ;
-                }
+                        '</div>'+
+                    '</a>'
+                ;
+                
             }
 
             $("#listNotif").html(list);
@@ -344,30 +322,13 @@ function checkNotif() {
                     // '<i class="bx bx-bell icon-sm align-middle"></i>'+
                     '<span class="noti-dot bg-danger rounded-pill" >'+data.pill+'</span>'
                 ;
-            }else{
-                $(".noti-dot").remove();
             }
             $("#page-header-notifications-dropdown").append(pillhtml);
 
         }
     });
-}
-
-checkNotif();
 
 
-function readNotif(a) {
-    $.ajax({
-        type: "POST",
-        url: $("#BaseUrl").val()+'notification/read',
-        dataType: "JSON",
-        data: {
-            data: a,
-        },
-        success: function(data) {
-            checkNotif();
-        }
-    })
-    console.log(a)
     
-}
+}();
+

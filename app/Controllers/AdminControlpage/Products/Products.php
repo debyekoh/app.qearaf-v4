@@ -10,6 +10,7 @@ use App\Models\ProductsShowModel;
 use App\Models\ProductsGroupModel;
 use App\Models\ProductsCategoryModel;
 use App\Models\ProductsImageModel;
+use App\Models\ListNotificationModel;
 
 class Products extends BaseController
 {
@@ -22,7 +23,7 @@ class Products extends BaseController
     protected $productsgroupModel;
     protected $productscategoryModel;
     protected $productsimageModel;
-
+    protected $listNotificationModel;
 
     public function __construct()
     {
@@ -34,6 +35,7 @@ class Products extends BaseController
         $this->productsgroupModel = new ProductsGroupModel();
         $this->productscategoryModel = new ProductsCategoryModel();
         $this->productsimageModel = new ProductsImageModel();
+        $this->listNotificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
     }
 
@@ -219,7 +221,7 @@ class Products extends BaseController
         }
 
 
-        // $name_product = $this->request->getVar();
+        ///// Parameter Product
         $dataProduct = array(
             'pro_id'            => $this->request->getVar('pro_id'),
             'pro_name'          => $this->request->getGetPost('productname'),
@@ -248,9 +250,34 @@ class Products extends BaseController
             'pro_max_stock'     => $this->request->getVar('maxstock'),
         );
 
+        ///// Parameter Notification
+        $targetgroup = "All";
+        $this->builder = $this->db->table('users');
+        $query = $this->builder->get();
+        $notification = user()->fullname . " Created New Product";
+        $dataNotification = array();
+        for ($a = 0; $a < $query->getNumRows(); $a++) {
+            $dataNotification[] = array(
+                'type_notif'            => "Information",
+                'path_notif'            => "product/" . $this->request->getVar('skunumber'),
+                'status_notif'          => "Create Product " . $this->request->getGetPost('productname') . " " . $this->request->getVar('productmodel'),
+                'to_member_id'          => $query->getResult()[$a]->member_id,
+                'to_fullname'           => $query->getResult()[$a]->fullname,
+                'to_user_image'         => null,
+                'from_member_id'        => user()->member_id,
+                'from_fullname'         => user()->fullname,
+                'from_user_image'       => user()->user_image,
+                'notification'          => $notification,
+                'notification_image'    => '',
+                'read_status'           => 1,
+            );
+        }
+
+        ///// Insert to Database
         $this->productsModel->insert($dataProduct);
         $this->productspriceModel->insert($dataPrice);
         $this->productsstockModel->insert($dataStock);
+        $this->listNotificationModel->insertBatch($dataNotification);
         $a = 1;
         $b = 1;
         if ($imagefile = $this->request->getFiles()) {
@@ -268,6 +295,11 @@ class Products extends BaseController
                 }
             }
         }
+
+
+
+
+        ///// Redirect
         if ($this->shopModel->affectedRows() > 0 && $this->productspriceModel->affectedRows()) {
             $msg = $this->request->getVar('productname') . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);

@@ -39,6 +39,10 @@ $routes->get('/', 'AdminControlpage\Dashboards\Dashboards::index');
 // Dashboards
 $routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
 
+// Template
+$routes->post('/notification', 'Notification::index');
+$routes->post('/notification/read', 'Notification::read');
+
 // Shop
 $routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
 $routes->get('/myshops/(:any)', 'AdminControlpage\Shop\Myshop\Myshop::shops/$1');
@@ -67,6 +71,7 @@ $routes->post('/mysales/count', 'AdminControlpage\Ecommerce\Sales\Sales::countSa
 $routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->get('/sales', 'AdminControlpage\Ecommerce\Sales\Sales::index', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->get('/detail/view/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::detailview/$1');
 $routes->get('/addnewsales', 'AdminControlpage\Ecommerce\Sales\Sales::create', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->get('/editsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::edit/$1', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->post('/updatesales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::update/$1', ['filter' => 'role:SuAdmin,Admin,Reseller']);

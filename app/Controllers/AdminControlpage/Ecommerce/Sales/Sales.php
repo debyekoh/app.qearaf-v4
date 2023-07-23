@@ -302,8 +302,6 @@ class Sales extends BaseController
         ]);
     }
 
-
-
     public function checkNoSales()
     {
         $nosales = $this->request->getVar('nosales');
@@ -548,8 +546,35 @@ class Sales extends BaseController
             );
             $this->salesModel->update(['id_sales' => $id_sales], $dataSales);
 
+            ///// Parameter Notification
+            $targetgroup = "All";
+            $this->builder = $this->db->table('users');
+            $query = $this->builder->get();
+            $notification = user()->fullname . " Created New Product";
+            $dataNotification = array();
+            for ($a = 0; $a < $query->getNumRows(); $a++) {
+                $dataNotification[] = array(
+                    'type_notif'            => "Information",
+                    'path_notif'            => "product/" . $this->request->getVar('skunumber'),
+                    'status_notif'          => "Create Product " . $this->request->getGetPost('productname') . " " . $this->request->getVar('productmodel'),
+                    'to_member_id'          => $query->getResult()[$a]->member_id,
+                    'to_fullname'           => $query->getResult()[$a]->fullname,
+                    'to_user_image'         => null,
+                    'from_member_id'        => user()->member_id,
+                    'from_fullname'         => user()->fullname,
+                    'from_user_image'       => user()->user_image,
+                    'notification'          => $notification,
+                    'notification_image'    => '',
+                    'read_status'           => 1,
+                );
+            }
+
             if ($payment_value > 0 && $status_sales == "Received") {
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => $payment_value]);
+            }
+
+            if ($status_sales == "Cancel" > 0 || $status_sales == "Return") {
+                $this->salesModel->update(['id_sales' => $id_sales], ['payment' => 0]);
             }
             //
             // $this->builder = $this->db->table('sales');
@@ -668,6 +693,44 @@ class Sales extends BaseController
             'id' => $id_sales,
             'name' => $status_sales,
         ]);
+    }
+
+    public function detailview($idsales)
+    {
+        $id_sales = substr($idsales, 0, 6) . "/" . substr($idsales, 6, 1) . "/" . substr($idsales, 7, 2) . "/" . substr($idsales, 9);
+        if ($this->salesModel->find($id_sales) == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+            $this->builder = $this->db->table('sales');
+            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+            $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+            $this->builder->join('list_packaging', 'list_packaging.id_packaging= sales.packaging');
+            // $this->builder->like('member_id', user()->member_id);
+            // $this->builder->orderBy('date_sales', 'DESC');
+            // $this->builder->orderBy('id_sales', 'DESC');
+            $query = $this->builder->getWhere(['id_sales' => $id_sales]);
+
+            $this->builder1 = $this->db->table('sales_detail');
+            $this->builder1->join('products', 'products.pro_id= sales_detail.pro_id');
+            $query1 = $this->builder1->getWhere(['no_sales' => $no_sales]);
+
+            // $info_sales = $this->salesModel->find($id_sales);
+            // $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
+            $data_detail = array(
+                // 'test'           => $query1->getResult(),                // 'INFO SALES' 
+                'ifs'           => $query->getRow(),                // 'INFO SALES' 
+                'dsl'           => $query1->getResult(),         // 'DETAIL SALES'
+            );
+
+            $datapage = array(
+                'titlepage' => 'Detail Sales #' . $id_sales,
+                'tabshop' => $this->tabshop,
+                'datadetail' => $data_detail,
+            );
+            return view('pages_admin/adm_sales_detailview', $datapage);
+        }
     }
 
     public function detail()

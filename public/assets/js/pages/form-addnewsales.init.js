@@ -403,6 +403,7 @@ $("#adnpm").on('click', function() {
             
         }).render(document.getElementById("table-gridjs"));
     }
+    $('#addNewProduct').on('shown.bs.modal', function () {$(".gridjs-search-input").focus();});
 });
 
 function addProduct(sku) {
