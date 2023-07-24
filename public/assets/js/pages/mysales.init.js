@@ -511,6 +511,7 @@ Swal.fire({
                                 "hideMethod": "slideUp"
                             }
                             toastr["success"](data.id+" status changed to "+data.name)
+                            checkNotif();
                         }
                     });
                 }
@@ -518,6 +519,7 @@ Swal.fire({
             
     }
   })
+  
 }
 
 function vito(s_id , s_name) {
@@ -785,6 +787,8 @@ function vito(s_id , s_name) {
         }
 
     })
+
+    
 }
 
 

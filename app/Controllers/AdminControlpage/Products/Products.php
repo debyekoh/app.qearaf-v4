@@ -254,13 +254,14 @@ class Products extends BaseController
         $targetgroup = "All";
         $this->builder = $this->db->table('users');
         $query = $this->builder->get();
-        $notification = user()->fullname . " Created New Product";
+        $title_notif = $this->request->getGetPost('productname') . " " . $this->request->getVar('productmodel');
+        $notification = "is now available";
         $dataNotification = array();
         for ($a = 0; $a < $query->getNumRows(); $a++) {
             $dataNotification[] = array(
-                'type_notif'            => "Information",
                 'path_notif'            => "product/" . $this->request->getVar('skunumber'),
-                'status_notif'          => "Create Product " . $this->request->getGetPost('productname') . " " . $this->request->getVar('productmodel'),
+                'type_notif'            => "New Product",
+                'title_notif'           => $title_notif,
                 'to_member_id'          => $query->getResult()[$a]->member_id,
                 'to_fullname'           => $query->getResult()[$a]->fullname,
                 'to_user_image'         => null,

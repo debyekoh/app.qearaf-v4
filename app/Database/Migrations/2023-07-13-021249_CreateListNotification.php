@@ -12,7 +12,7 @@ class CreateListNotification extends Migration
             'id_notif'              => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'path_notif'            => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
             'type_notif'            => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
-            'status_notif'          => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
+            'title_notif'          => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
             'to_member_id'          => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
             'to_fullname'           => ['type' => 'varchar', 'constraint' => 255, 'null' => false],
             'to_user_image'         => ['type' => 'varchar', 'constraint' => 255, 'null' => false],

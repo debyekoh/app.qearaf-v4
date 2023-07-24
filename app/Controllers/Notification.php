@@ -20,6 +20,8 @@ class Notification extends BaseController
     {
         $this->builder = $this->db->table('list_notification');
         $this->builder->where('to_member_id', user()->member_id);
+        $this->builder->orderBy('created_at', 'desc');
+        $this->builder->limit(6);
         $query = $this->builder->get();
 
         $data = array();
@@ -29,7 +31,7 @@ class Notification extends BaseController
                 'id_notif'              => $i->id_notif,
                 'type_notif'            => $i->type_notif,
                 'path_notif'            => $i->path_notif,
-                'status_notif'          => $i->status_notif,
+                'title_notif'           => $i->title_notif,
                 'to_member_id'          => $i->to_member_id,
                 'to_fullname'           => $i->to_fullname,
                 'to_user_image'         => $i->to_user_image,

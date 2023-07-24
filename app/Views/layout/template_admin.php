@@ -134,7 +134,7 @@
                             <i class="bx bx-bell icon-sm align-middle"></i>
                             <!-- <span class="noti-dot bg-danger rounded-pill"></span> -->
                         </button>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
                             <div class="p-3">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div data-simplebar style="max-height: 250px;" id="listNotif">
+                            <div data-simplebar id="listNotif">
                                 <!-- <a href="#!" class="text-reset notification-item">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 avatar-sm me-3">
@@ -178,7 +178,7 @@
                                     </div>
                                 </a> -->
                             </div>
-                            <div class="p-2 border-top d-grid">
+                            <div class="p-1 border-top d-grid">
                                 <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="javascript:void(0)">
                                     <i class="uil-arrow-circle-right me-1"></i> <span>View More..</span>
                                 </a>

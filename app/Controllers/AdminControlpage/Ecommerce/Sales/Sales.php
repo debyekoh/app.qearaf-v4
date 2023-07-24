@@ -32,7 +32,7 @@ class Sales extends BaseController
     protected $salesdetailModel;
     protected $shopModel;
     protected $userProfileModel;
-    protected $notificationModel;
+    protected $listNotificationModel;
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class Sales extends BaseController
         $this->salesdetailModel = new SalesDetailModel();
         $this->shopModel = new ShopModel();
         $this->userProfileModel = new UserProfileModel();
-        $this->notificationModel = new ListNotificationModel();
+        $this->listNotificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
     }
 
@@ -363,6 +363,19 @@ class Sales extends BaseController
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
 
+    // public function checkTargetGroupShop($id_shop)
+    // {
+    //     $id_shop = $this->request->getVar('s');
+    //     $member_id_owner = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+    //     $id_owner = $this->userProfileModel->where('member_id', $member_id_owner)->find()[0]['id'];
+    //     $this->builder = $this->db->table('auth_groups_users');
+    //     $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+    //     $query = $this->builder->where('user_id', $id_owner)->get();
+    //     return $this->response->setJSON([
+    //         'status' => $query->getRow()->name,
+    //     ]);
+    // }
+
     public function save()
     {
         // dd($this->request->getVar());
@@ -400,9 +413,49 @@ class Sales extends BaseController
             'paymethod'             => $this->request->getVar('paymethod'),
             'status'                => "Process",
         );
-        // dd($dataSalesDetail, $dataSales);
+
+        /// Parameter Notification
+
+        $id_shop = $this->request->getVar('shop');
+        $member_id_ownershop = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+        $shopname = $this->shopModel->where('id_shop', $id_shop)->find()[0]['name_shop'] . " " . $this->shopModel->where('id_shop', $id_shop)->find()[0]['marketplace'];
+        $names = ['SuAdmin', 'Admin'];
+        $this->builder = $this->db->table('auth_groups_users');
+        $this->builder->select('member_id, fullname');
+        $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+        $this->builder->join('users', 'users.id= auth_groups_users.user_id');
+        $this->builder->Where('member_id', $member_id_ownershop);
+        $this->builder->orWhereIn('name', $names);
+        $targetgroup = $this->builder->get();
+        $title_notif = strtoupper($this->request->getVar('no_sales'));
+        $notification = "from " . $shopname . " Confirmed";
+        $id_sales = strtoupper($this->request->getVar('id_sales'));
+        $key_sales = substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12);
+        $dataNotification = array();
+        for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
+            $dataNotification[] = array(
+                'path_notif'            => "detail/view/" . $key_sales,
+                'type_notif'            => "New Sales",
+                'title_notif'           => $title_notif,
+                'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
+                'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
+                'to_user_image'         => null,
+                'from_member_id'        => user()->member_id,
+                'from_fullname'         => user()->fullname,
+                'from_user_image'       => user()->user_image,
+                'notification'          => $notification,
+                'notification_image'    => '',
+                'read_status'           => 1,
+            );
+        }
+
+        // dd($dataSalesDetail, $dataSales, $member_id_ownershop, $dataNotification, $targetgroup->getResult());
+
+
         $this->salesModel->insert($dataSales);
         $this->salesdetailModel->insertBatch($dataSalesDetail);
+        // $this->setNotif();
+        $this->listNotificationModel->insertBatch($dataNotification);
         if ($this->salesModel->db->affectedRows() > 0 && $this->salesdetailModel->db->affectedRows() > 0) {
             $msg = $this->request->getVar('no_sales') . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
@@ -544,38 +597,70 @@ class Sales extends BaseController
             $dataSales = array(
                 'status'      => $status_sales,
             );
+
+            // dd($id_sales);
+
             $this->salesModel->update(['id_sales' => $id_sales], $dataSales);
 
-            ///// Parameter Notification
-            $targetgroup = "All";
-            $this->builder = $this->db->table('users');
-            $query = $this->builder->get();
-            $notification = user()->fullname . " Created New Product";
-            $dataNotification = array();
-            for ($a = 0; $a < $query->getNumRows(); $a++) {
-                $dataNotification[] = array(
-                    'type_notif'            => "Information",
-                    'path_notif'            => "product/" . $this->request->getVar('skunumber'),
-                    'status_notif'          => "Create Product " . $this->request->getGetPost('productname') . " " . $this->request->getVar('productmodel'),
-                    'to_member_id'          => $query->getResult()[$a]->member_id,
-                    'to_fullname'           => $query->getResult()[$a]->fullname,
-                    'to_user_image'         => null,
-                    'from_member_id'        => user()->member_id,
-                    'from_fullname'         => user()->fullname,
-                    'from_user_image'       => user()->user_image,
-                    'notification'          => $notification,
-                    'notification_image'    => '',
-                    'read_status'           => 1,
-                );
-            }
 
             if ($payment_value > 0 && $status_sales == "Received") {
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => $payment_value]);
             }
 
-            if ($status_sales == "Cancel" > 0 || $status_sales == "Return") {
+            if ($status_sales == "Cancel" || $status_sales == "Return") {
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => 0]);
             }
+
+
+            /// Parameter Notification
+            $dataNotification = array();
+            if ($status_sales == "Cancel" || $status_sales == "Return" || $status_sales == "Received" || $status_sales == "Completed") {
+
+                $id_shop = $this->salesModel->find($id_sales)['id_shop'];
+                $member_id_ownershop = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+                $shopname = $this->shopModel->where('id_shop', $id_shop)->find()[0]['name_shop'] . " " . $this->shopModel->where('id_shop', $id_shop)->find()[0]['marketplace'];
+                $names = ['SuAdmin', 'Admin'];
+                $this->builder = $this->db->table('auth_groups_users');
+                $this->builder->select('member_id, fullname');
+                $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+                $this->builder->join('users', 'users.id= auth_groups_users.user_id');
+                $this->builder->Where('member_id', $member_id_ownershop);
+                $this->builder->orWhereIn('name', $names);
+                $targetgroup = $this->builder->get();
+                $title_notif = strtoupper($this->salesModel->find($id_sales)['no_sales']);
+                $notification = "from " . $shopname . " " . $status_sales;
+                // $id_sales = strtoupper($this->request->getVar('id_sales'));
+                $key_sales = substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12);
+                // $dataNotification = array();
+                for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
+                    $dataNotification[] = array(
+                        'path_notif'            => "detail/view/" . $key_sales,
+                        'type_notif'            => "Sales " . $status_sales,
+                        'title_notif'           => $title_notif,
+                        'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
+                        'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
+                        'to_user_image'         => null,
+                        'from_member_id'        => user()->member_id,
+                        'from_fullname'         => user()->fullname,
+                        'from_user_image'       => user()->user_image,
+                        'notification'          => $notification,
+                        'notification_image'    => '',
+                        'read_status'           => 1,
+                    );
+                }
+                $this->listNotificationModel->insertBatch($dataNotification);
+            }
+
+
+
+
+
+
+
+
+
+
+
             //
             // $this->builder = $this->db->table('sales');
             // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
@@ -692,6 +777,7 @@ class Sales extends BaseController
             'datatab' => $data_tab,
             'id' => $id_sales,
             'name' => $status_sales,
+            'test' => $dataNotification,
         ]);
     }
 
@@ -928,5 +1014,46 @@ class Sales extends BaseController
         // if ($this->db->transStatus() === false) {
         //     // generate an error... or use the log_message() function to log your error
         // }
+    }
+
+
+    //Notiffunction
+    public function setNotif()
+    {
+        $id_shop = $this->request->getVar('shop');
+        $member_id_ownershop = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+        $shopname = $this->shopModel->where('id_shop', $id_shop)->find()[0]['name_shop'] . " " . $this->shopModel->where('id_shop', $id_shop)->find()[0]['marketplace'];
+        $names = ['SuAdmin', 'Admin'];
+        $this->builder = $this->db->table('auth_groups_users');
+        $this->builder->select('member_id, fullname');
+        $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+        $this->builder->join('users', 'users.id= auth_groups_users.user_id');
+        $this->builder->Where('member_id', $member_id_ownershop);
+        $this->builder->orWhereIn('name', $names);
+        $targetgroup = $this->builder->get();
+        $title_notif = strtoupper($this->request->getVar('no_sales'));
+        $notification = "from " . $shopname . " Confirmed";
+        $id_sales = strtoupper($this->request->getVar('id_sales'));
+        $key_sales = substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12);
+        $dataNotification = array();
+        for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
+            $dataNotification[] = array(
+                'path_notif'            => "detail/view/" . $key_sales,
+                'type_notif'            => "New Sales",
+                'title_notif'           => $title_notif,
+                'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
+                'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
+                'to_user_image'         => null,
+                'from_member_id'        => user()->member_id,
+                'from_fullname'         => user()->fullname,
+                'from_user_image'       => user()->user_image,
+                'notification'          => $notification,
+                'notification_image'    => '',
+                'read_status'           => 1,
+            );
+        }
+
+        // dd($dataNotification);
+        $this->listNotificationModel->insertBatch($dataNotification);
     }
 }

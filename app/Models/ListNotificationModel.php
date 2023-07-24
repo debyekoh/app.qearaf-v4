@@ -10,7 +10,7 @@ class ListNotificationModel extends Model
     protected $primaryKey = 'id_notif';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'type_notif', 'path_notif', 'status_notif',
+        'type_notif', 'path_notif', 'title_notif',
         'to_member_id', 'to_fullname', 'to_user_image',
         'from_member_id', 'from_fullname', 'from_user_image',
         'notification', 'notification_image', 'read_status',

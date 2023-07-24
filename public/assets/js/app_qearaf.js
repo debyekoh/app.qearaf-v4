@@ -283,7 +283,10 @@
     )
 }();
 
-function checkNotif() {
+// window.fn1 = function fn1() {
+//     alert("external fn clicked");
+// }
+window.checkNotif = function checkNotif() {
     $.ajax({
         type: "POST",
         url: $("#BaseUrl").val()+'notification',
@@ -297,16 +300,16 @@ function checkNotif() {
                     list +=
                         '<a href="'+$("#BaseUrl").val()+''+data.results[i].path_notif+'" onclick="readNotif('+s_id+')"  class="text-reset notification-item">'+
                         // '<a href="#" onclick="readNotif('+s_id+')" class="text-reset notification-item">'+
-                            '<div class="d-flex bg-soft-warning">'+
-                                '<div class="flex-shrink-0 avatar-sm me-3">'+
+                            '<div class="d-flex list-group-item list-group-item-action list-group-item-warning py-1">'+
+                                '<div class="flex-shrink-0 align-self-center avatar-sm me-3">'+
                                     '<span class="avatar-title bg-success rounded-circle font-size-16">'+
                                         '<i class="bx bx-badge-check"></i>'+
                                     '</span>'+
                                 '</div>'+
                                 '<div class="flex-grow-1">'+
-                                    '<h6 class="mb-1">'+data.results[i].status_notif+'</h6>'+
+                                    '<h6 class="mb-1">'+data.results[i].type_notif+'</h6>'+
                                     '<div class="font-size-13">'+
-                                        '<p class="mb-1">'+data.results[i].notification+' is Now Available</p>'+
+                                        '<p class="mb-0 font-size-16"><strong class="text-primary"><u>'+data.results[i].title_notif+'</u> </strong>'+data.results[i].notification+'</p>'+
                                         '<p class="mb-0 fst-italic text-end"><span class="">'+data.results[i].created_at+'</span></p>'+
                                     '</div>'+
                                 '</div>'+
@@ -317,16 +320,16 @@ function checkNotif() {
                     const s_id = new String("'"+data.results[i].id_notif+"'");
                     list +=
                     '<a href="'+$("#BaseUrl").val()+''+data.results[i].path_notif+'" onclick="readNotif('+s_id+')"  class="text-reset notification-item">'+
-                            '<div class="d-flex">'+
-                                '<div class="flex-shrink-0 avatar-sm me-3">'+
+                            '<div class="d-flex py-1">'+
+                                '<div class="flex-shrink-0 align-self-center avatar-sm me-3">'+
                                     '<span class="avatar-title bg-success rounded-circle font-size-16">'+
                                         '<i class="bx bx-badge-check"></i>'+
                                     '</span>'+
                                 '</div>'+
                                 '<div class="flex-grow-1">'+
-                                    '<h6 class="mb-1">'+data.results[i].status_notif+'</h6>'+
+                                    '<h6 class="mb-1">'+data.results[i].type_notif+'</h6>'+
                                     '<div class="font-size-13">'+
-                                        '<p class="mb-1">'+data.results[i].notification+' is Now Available</p>'+
+                                        '<p class="mb-0 font-size-16"><strong class="text-primary"><u>'+data.results[i].title_notif+'</u> </strong>'+data.results[i].notification+'</p>'+
                                         '<p class="mb-0 fst-italic text-end"><span class="">'+data.results[i].created_at+'</span></p>'+
                                     '</div>'+
                                 '</div>'+
