@@ -98,7 +98,7 @@ function renderSales(name) {
 
                 if(e[6]== "Process"){
                     salesstatus +=
-                    '<span class="badge bg-warning bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    '<span class="badge border border-primary text-primary fw-bold font-size-16">' + e[6] + '</span>';
                     btn_goedit +=
                     '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
                     btn_gocancel +=
@@ -113,7 +113,7 @@ function renderSales(name) {
 
                 if(e[6]== "Packaging"){
                     salesstatus +=
-                    '<span class="badge bg-secondary bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    '<span class="badge border border-warning text-warning fw-bold font-size-16">' + e[6] + '</span>';
                     btn_goedit +=
                     '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
                     btn_gocancel +=
@@ -128,7 +128,7 @@ function renderSales(name) {
 
                 if(e[6]== "Ready"){
                     salesstatus +=
-                    '<span class="badge bg-info bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    '<span class="badge border border-success text-success fw-bold font-size-16">' + e[6] + '</span>';
                     btn_goedit +=
                     '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
                     btn_gocancel +=
@@ -159,7 +159,7 @@ function renderSales(name) {
 
                 if(e[6]== "Received"){
                     salesstatus +=
-                    '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    '<span class="badge bg-warning bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
                     btn_goedit +=
                     '<li><a href="editsales/'+toedit+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>';
                     // btn_gocancel +=
@@ -174,7 +174,7 @@ function renderSales(name) {
 
                 if(e[6]== "Completed"){
                     salesstatus +=
-                    '<span class="badge bg-dark bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
+                    '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[6] + '</span>';
                     bill_value +=
                     '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[11] + '</h5>';
                     // btn_goedit +=
@@ -187,9 +187,16 @@ function renderSales(name) {
                     // '<li><a onclick="to('+s_id+','+s_name+')" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-page-next-outline font-size-16 text-success me-1"></i> Go to ' + e[8] + '</a></li>';
                 }
 
-                if(e[6]== "Cancel" || e[6]== "Return"){
+                if(e[6]== "Cancel"){
                     salesstatus +=
-                    '<span class="badge bg-light bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>';
+                    '<span class="badge bg-dark text-white bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>';
+                    bill_value +=
+                    '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
+                }
+
+                if(e[6]== "Return"){
+                    salesstatus +=
+                    '<span class="badge bg-danger text-white bg-gradient fw-bold font-size-16 text-dark">' + e[6] + '</span>';
                     bill_value +=
                     '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[5] + '</h5>';
                 }

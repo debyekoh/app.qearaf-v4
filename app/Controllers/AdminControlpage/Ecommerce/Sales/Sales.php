@@ -363,19 +363,6 @@ class Sales extends BaseController
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
 
-    // public function checkTargetGroupShop($id_shop)
-    // {
-    //     $id_shop = $this->request->getVar('s');
-    //     $member_id_owner = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
-    //     $id_owner = $this->userProfileModel->where('member_id', $member_id_owner)->find()[0]['id'];
-    //     $this->builder = $this->db->table('auth_groups_users');
-    //     $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
-    //     $query = $this->builder->where('user_id', $id_owner)->get();
-    //     return $this->response->setJSON([
-    //         'status' => $query->getRow()->name,
-    //     ]);
-    // }
-
     public function save()
     {
         // dd($this->request->getVar());

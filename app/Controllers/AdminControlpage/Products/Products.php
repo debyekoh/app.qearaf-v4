@@ -69,7 +69,7 @@ class Products extends BaseController
     public function show()
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_active, pro_current_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
         $query = $this->builder->get();
@@ -108,6 +108,9 @@ class Products extends BaseController
                 "model" => $i->pro_model,
                 "skuno" => $i->pro_part_no,
                 "price" => $i->pro_price_seller,
+                "stock" => $i->pro_current_stock,
+                "minstock" => $i->pro_min_stock,
+                "maxstock" => $i->pro_max_stock,
                 "statusproduct" => $i->pro_active,
                 "editable" => $editable,
                 "deletable" => $deletable,
@@ -133,6 +136,7 @@ class Products extends BaseController
             // 'results' => $this->productsModel->findAll(),
             // 'results' => $query->getResult(),
             'results' => $data,
+            // 'test' => $query->getResult()
         ]);
     }
 

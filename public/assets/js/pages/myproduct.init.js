@@ -27,7 +27,41 @@ new gridjs.Grid({
         formatter: function(e) {
             return gridjs.html('<span class="skuno">' + e + "</span>")
         }
-    }, "Price", {
+    }, {
+        name: "Price",
+        formatter: function(e) {
+            return gridjs.html('<span class="price">Rp ' + e.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + "</span>")
+            // switch (e) {
+            // case ">= 1":
+            //     return gridjs.html('<span class="badge badge-pill badge-soft-success font-size-12">Active</span>');
+            // case "0":
+            //     return gridjs.html('<span class="badge badge-pill badge-soft-danger font-size-12">Off</span>');
+            // }
+        }
+    }, {
+        name: "Stock",
+        formatter: function(e) {
+            // return gridjs.html('<span class="stock">' + e[0] + "</span>")
+            if(parseInt(e[0]) <= parseInt(e[1]) ){
+                return gridjs.html('<span class="stock badge border border-danger text-danger font-size-14">' + e[0] + ' Pcs</span>')
+            }
+            if(parseInt(e[0]) > parseInt(e[1]) && parseInt(e[0]) <= (parseInt(e[1])+5)){
+                return gridjs.html('<span class="stock badge border border-warning text-warning font-size-14">' + e[0] + ' Pcs</span>')
+            }
+            if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) < parseInt(e[2])){
+                return gridjs.html('<span class="stock badge border border-dark text-dark font-size-14">' + e[0] + ' Pcs</span>')
+            }
+            if(parseInt(e[0]) > parseInt(e[2])){
+                return gridjs.html('<span class="stock badge border border-primary text-primary font-size-14">' + e[0] + ' Pcs</span>')
+            }
+            // switch (e) {
+            // case ">= 1":
+            //     return gridjs.html('<span class="badge badge-pill badge-soft-success font-size-12">Active</span>');
+            // case "0":
+            //     return gridjs.html('<span class="badge badge-pill badge-soft-danger font-size-12">Off</span>');
+            // }
+        }
+    }, {
         name: "Status",
         formatter: function(e) {
             switch (e) {
@@ -84,7 +118,7 @@ new gridjs.Grid({
     search: !0,
     server: {
         url: './myproducts/show',
-        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price, product.statusproduct , [product.skuno,product.editable,product.deletable]])
+        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price , [product.stock, product.minstock , product.maxstock], product.statusproduct , [product.skuno,product.editable,product.deletable]])
       },
       style: {
         table: {

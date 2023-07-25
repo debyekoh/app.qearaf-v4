@@ -77,7 +77,7 @@ $routes->get('/editsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::edit/
 $routes->post('/updatesales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::update/$1', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->post('/savenewsales', 'AdminControlpage\Ecommerce\Sales\Sales::save', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->get('/listproduct', 'AdminControlpage\Ecommerce\Sales\Sales::list');
-$routes->match(['get', 'post'], '/checksales', 'AdminControlpage\Ecommerce\Sales\Sales::checkNoSales'); //Ajax
+$routes->post('/checksales', 'AdminControlpage\Ecommerce\Sales\Sales::checkNoSales'); //Ajax
 $routes->post('/groupshop', 'AdminControlpage\Ecommerce\Sales\Sales::checkGroupShop'); //Ajax
 $routes->post('/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
 $routes->post('editsales/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
@@ -86,7 +86,11 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 //Ecommerce 
 //Purchase
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
+$routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase'); //Ajax
+$routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase'); //Ajax
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'permission:Create']);
+$routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin,Reseller']);
+$routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1');
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
 
 //Delivery
