@@ -10,9 +10,11 @@ class TabelListSupplier extends Seeder
     {
         $data_category = [
             [
+                'type'               => 'Product',
                 'name_supplier'      => 'Menara Terus Makmur (METEMA)',
             ],
             [
+                'type'               => 'Other',
                 'name_supplier'      => 'Online Shop',
             ],
         ];

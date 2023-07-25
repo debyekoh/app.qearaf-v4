@@ -38,10 +38,10 @@
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div id="pctg" class="form-floating mb-3">
-                                                            <select class="form-select font-size-16 fw-bold supplier inewpurchaseinfo" name="purch_category" id="purch_category" aria-label="Purchase Category">
+                                                            <select class="form-select font-size-16 fw-bold purch_category inewpurchaseinfo" name="purch_category" id="purch_category" aria-label="Purchase Category">
                                                                 <option selected disabled value>Select Purchase Category</option>
-                                                                <?php foreach ($datasupplier as $ds) : ?>
-                                                                    <option value="<?= $ds['id']; ?>"><?= $ds['name_supplier']; ?></option>
+                                                                <?php foreach ($datacategory as $dc) : ?>
+                                                                    <option value="<?= $dc['id']; ?>"><?= $dc['category_name']; ?></option>
                                                                 <?php endforeach ?>
                                                             </select>
                                                             <label for="purch_category">Purchase Category</label>
@@ -64,7 +64,13 @@
                                                             <select class="form-select font-size-16 fw-bold supplier inewpurchaseinfo" name="supplier" id="supplier" aria-label="Floating label select example">
                                                                 <option selected disabled value>Select your Supplier</option>
                                                                 <?php foreach ($datasupplier as $ds) : ?>
-                                                                    <option value="<?= $ds['id']; ?>"><?= $ds['name_supplier']; ?></option>
+                                                                    <option class="op_datasupplier" value="<?= $ds['id']; ?>" hidden="hidden"><?= $ds['name_supplier']; ?></option>
+                                                                <?php endforeach ?>
+                                                                <?php foreach ($datashop as $ds) : ?>
+                                                                    <option class="op_datashop" value="<?= $ds['id_shop']; ?>" hidden="hidden"><?= $ds['name_shop']; ?> - <?= $ds['marketplace']; ?></option>
+                                                                <?php endforeach ?>
+                                                                <?php foreach ($dataconsumable as $ds) : ?>
+                                                                    <option class="op_dataconsumable" value="<?= $ds['id']; ?>" hidden="hidden"><?= $ds['name_supplier']; ?></option>
                                                                 <?php endforeach ?>
                                                             </select>
                                                             <label for="supplier">Supplier</label>

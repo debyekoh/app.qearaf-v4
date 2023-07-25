@@ -88,6 +88,8 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
 $routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase'); //Ajax
 $routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase'); //Ajax
+// $routes->get('/listproductp', 'AdminControlpage\Ecommerce\Purchase\Purchase::list');
+$routes->get('/listproductp/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::list/$1');
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'permission:Create']);
 $routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin,Reseller']);
 $routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1');

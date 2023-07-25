@@ -9,8 +9,9 @@ class CreateListSupplier extends Migration
     public function up()
     {
         $fields = [
-            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'name_supplier'        => ['type' => 'varchar', 'constraint' => 255],
+            'id'                    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'type'                  => ['type' => 'varchar', 'constraint' => 255],
+            'name_supplier'         => ['type' => 'varchar', 'constraint' => 255],
         ];
 
         $this->forge->addField($fields);

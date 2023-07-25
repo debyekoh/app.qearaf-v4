@@ -16,7 +16,7 @@ class TabelListPayMethode extends Seeder
                 'pay_methode'      => 'COD',
             ],
             [
-                'pay_methode'      => 'Kredit',
+                'pay_methode'      => 'TOP',
             ],
             [
                 'pay_methode'      => 'Ewalet',

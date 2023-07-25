@@ -11,6 +11,7 @@ class CreatePurchase extends Migration
         $this->forge->addField([
             // 'id_purchase'       => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
             'no_purchase'       => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
+            'purch_category'    => ['type' => 'varchar', 'constraint' => 50, 'null' => false],
             'date_purchase'     => ['type' => 'date', 'null' => false],
             'note'              => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'bill'              => ['type' => 'float', 'null' => false],

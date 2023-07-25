@@ -28,6 +28,10 @@ class TabelProducts extends Seeder
             [
                 'pro_name_category'      => 'Plastic',
                 'created_at'         => date('Y-m-d H:i:s')
+            ],
+            [
+                'pro_name_category'      => 'Packaging',
+                'created_at'         => date('Y-m-d H:i:s')
             ]
         ];
 
@@ -42,6 +46,10 @@ class TabelProducts extends Seeder
             ],
             [
                 'pro_name_group'      => 'Sanitation',
+                'created_at'         => date('Y-m-d H:i:s')
+            ],
+            [
+                'pro_name_group'      => 'Consumable',
                 'created_at'         => date('Y-m-d H:i:s')
             ]
         ];

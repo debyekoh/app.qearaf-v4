@@ -2,13 +2,20 @@
 
 namespace App\Controllers\AdminControlpage\Ecommerce\Purchase;
 
+use App\Controllers\BaseController;
+use App\Models\ProductsModel;
+use App\Models\ProductsStockModel;
+use App\Models\ProductsPriceModel;
+use App\Models\ProductsShowModel;
+use App\Models\ProductsGroupModel;
+use App\Models\ProductsCategoryModel;
+use App\Models\ProductsImageModel;
 use App\Models\PurchaseModel;
 use App\Models\PurchaseDetailModel;
-use App\Models\SupplierModel;
-use App\Models\ProductsPriceModel;
+use App\Models\ListSupplierModel;
+use App\Models\ListCategoryPurchaseModel;
 use App\Models\ListNotificationModel;
 
-use App\Controllers\BaseController;
 
 class Purchase extends BaseController
 {
@@ -16,8 +23,15 @@ class Purchase extends BaseController
     protected $builder;
     protected $purchaseModel;
     protected $purchaseDetailModel;
-    protected $supplierModel;
+    protected $listSupplierModel;
+    protected $listCategoryPurchaseModel;
+    protected $productsModel;
+    protected $productsstockModel;
     protected $productspriceModel;
+    protected $productsshowModel;
+    protected $productsgroupModel;
+    protected $productscategoryModel;
+    protected $productsimageModel;
     protected $listNotificationModel;
 
     public function __construct()
@@ -25,8 +39,16 @@ class Purchase extends BaseController
         helper(['form', 'url']);
         $this->purchaseModel = new PurchaseModel();
         $this->purchaseDetailModel = new PurchaseDetailModel();
-        $this->supplierModel = new SupplierModel();
+        $this->listSupplierModel = new ListSupplierModel();
+        $this->listCategoryPurchaseModel = new ListCategoryPurchaseModel();
         $this->productspriceModel = new ProductsPriceModel();
+        $this->productsModel = new ProductsModel();
+        $this->productsstockModel = new ProductsStockModel();
+        $this->productsshowModel = new ProductsShowModel();
+        $this->productsgroupModel = new ProductsGroupModel();
+        $this->productscategoryModel = new ProductsCategoryModel();
+        $this->productsimageModel = new ProductsImageModel();
+
         $this->listNotificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
     }
@@ -99,16 +121,106 @@ class Purchase extends BaseController
         // } else {
         //     $datashop = $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll();
         // }
+
+        // $this->builder = $this->db->table('products');
+        // $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
+        // $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
+        // $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        // $pro_group = ['Consumable'];
+        // $this->builder->orWhereIn('pro_group', $pro_group);
+        // $consumable = $this->builder->get();
+
+
+        if (in_groups('1') == true || in_groups('2') == true) {
+            $datashop = $this->shopModel->findAll();
+        } else {
+            $datashop = $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll();
+        }
         $datapage = array(
             'titlepage' => 'Add New Purchase',
             'tabshop' => $this->tabshop,
             'head_page' => $head_page,
             'js_page' => $js_page,
             'listdeliveryservices' => $this->ListDeliveryServicesModel->findAll(),
-            // 'datashop' => $this->shopModel->asArray()->where('member_id', user()->member_id)->orderBy('marketplace', 'asc')->findAll(),
-            'datasupplier' => $this->supplierModel->findAll(),
+            'datashop' => $datashop,
+            'datasupplier' => $this->listSupplierModel->findAll(),
+            'dataconsumable' => $this->listSupplierModel->whereIn('type', ['Other', 'Consumable'])->findAll(),
+            'datacategory' => $this->listCategoryPurchaseModel->findAll(),
         );
         return view('pages_admin/adm_purchase_add_new_purchase', $datapage);
+    }
+
+    public function list($params)
+    {
+        $this->builder = $this->db->table('products');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_show, pro_active, pro_current_stock');
+        $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
+        $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        if ($params == 1) {
+            $key = ['Consumable'];
+            $this->builder->whereNotIn('pro_group', $key);
+        }
+        if ($params == 2) {
+            $key = ['IklanAds'];
+            $this->builder->whereIn('pro_category', $key);
+        }
+        if ($params == 3) {
+            $key0 = ['Consumable'];
+            $this->builder->whereIn('pro_group', $key0);
+            $key1 = ['IklanAds'];
+            $this->builder->whereNotIn('pro_category', $key1);
+        }
+        $query = $this->builder->get();
+
+
+
+        $datapage = array(
+            'myproduct' => $this->productsModel->findAll(),
+        );
+
+        $dataarray = array(
+            'productname' => $this->productsModel->findAll(),
+        );
+
+        if (in_groups('1') == true || in_groups('2') == true) {
+            $editable = true;
+        } else {
+            $editable = false;
+        }
+        if (in_groups('1') == true) {
+            $deletable = true;
+        } else {
+            $deletable = false;
+        }
+
+        $data = array();
+        $row = array();
+        $no = 0;
+
+        foreach ($query->getResult() as $i) {
+            $row = [
+                "no" => $no++,
+                "idpro" => $i->productspro_id,
+                "name" => $i->pro_name,
+                "model" => $i->pro_model,
+                "skuno" => $i->pro_part_no,
+                "price" => $i->pro_price_seller,
+                "current_stock" => $i->pro_current_stock,
+                "statusproduct" => $i->pro_active,
+                "editable" => $editable,
+                "deletable" => $deletable,
+                "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
+            ];
+            $data[] = $row;
+        }
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success show data',
+            // 'results' => $this->productsModel->findAll(),
+            'test' => $params,
+            'results' => $data,
+        ]);
     }
 
     public function save()
@@ -157,7 +269,7 @@ class Purchase extends BaseController
 
         // $id_shop = strtoupper($this->request->getVar('no_purchase'));
         $supplierid = $this->request->getVar('supplier');
-        $suppliername = $this->supplierModel->where('id', $supplierid)->find()[0]['name_supplier'];
+        $suppliername = $this->listSupplierModel->where('id', $supplierid)->find()[0]['name_supplier'];
         $names = ['SuAdmin', 'Admin'];
         $this->builder = $this->db->table('auth_groups_users');
         $this->builder->select('member_id, fullname');
@@ -188,7 +300,7 @@ class Purchase extends BaseController
             );
         }
 
-        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification);
+        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification);
 
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);

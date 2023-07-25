@@ -43,7 +43,10 @@ $(document).ready(function() {
 });
 
 
+
+
 $("#presubmit").on('click', function() {
+    if($('#purch_category').val() == null){$('#purch_category').addClass("is-invalid"); $('#purch_category').addClass("inewpurchaseinfo-is-invalid");}else{$('#purch_category').removeClass("is-invalid");}
     if($('#no_purchase').val() == ""){$('#no_purchase').addClass("is-invalid");$('#no_purchase').addClass("inewpurchaseinfo-is-invalid");}else{$('#no_purchase').removeClass("is-invalid");}
     if($('#date_purchase').val() == ""){$('#date_purchase').addClass("is-invalid");$('#date_purchase').addClass("inewpurchaseinfo-is-invalid");}else{$('#date_purchase').removeClass("is-invalid");}
     if($('#supplier').val() == null){$('#supplier').addClass("is-invalid"); $('#supplier').addClass("inewpurchaseinfo-is-invalid");}else{$('#supplier').removeClass("is-invalid");}
@@ -163,7 +166,50 @@ $("#no_purchase").on('input', function() {
         });
     }
 );
-$('#date_purchase').change(function() {
+$('#purch_category').change(function pcchange() {
+    if($(this).val() != null){$('.purch_category').removeClass("is-invalid");$('.purch_category').removeClass("inewpurchaseinfo-is-invalid");}
+    if($('.inewpurchaseinfo-is-invalid').length == 0){$('.newpurchaseinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
+    let pcid = $(this).val();
+    let spel = "";
+    console.log(pcid)
+    $("#supplier option").each(function () {if (this.defaultSelected) {this.selected = true; return; } else {this.selected = false;}});
+    if(pcid == 1) {
+        $('.op_datasupplier').each(function() {
+            $('.op_datasupplier').removeAttr("hidden")
+        })
+        $('.op_datashop').each(function() {
+            $('.op_datashop').attr("hidden",true)
+        })
+        $('.op_dataconsumable').each(function() {
+            $('.op_dataconsumable').attr("hidden",true)
+        })
+    }
+    if(pcid == 2) {
+        $('.op_datasupplier').each(function() {
+            $('.op_datasupplier').attr("hidden",true)
+        })
+        $('.op_datashop').each(function() {
+            $('.op_datashop').removeAttr("hidden")
+        })
+        $('.op_dataconsumable').each(function() {
+            $('.op_dataconsumable').attr("hidden",true)
+        })
+    }
+    if(pcid == 3) {
+        $('.op_datasupplier').each(function() {
+            $('.op_datasupplier').attr("hidden",true)
+        })
+        $('.op_datashop').each(function() {
+            $('.op_datashop').attr("hidden",true)
+        })
+        $('.op_dataconsumable').each(function() {
+            $('.op_dataconsumable').removeAttr("hidden")
+        })
+    }
+    
+});
+
+$('#date_purchase').change(function dpchange() {
     if($(this).val() != null){$('.date_purchase').removeClass("is-invalid");$('.date_purchase').removeClass("inewpurchaseinfo-is-invalid");$('#no_purchase').removeClass("is-invalid");$('#no_purchase').removeClass("inewpurchaseinfo-is-invalid")}
     if($('.inewpurchaseinfo-is-invalid').length == 0){$('.newpurchaseinfo').removeClass("bg-danger");document.querySelector("#li1").style.borderColor = "#1f58c7";}
     
@@ -220,7 +266,7 @@ $('#date_purchase').change(function() {
 
     // console.log("newpurchaseinfo "+ $('.inewpurchaseinfo-is-invalid').length);
 });
-$('#supplier').change(function() {
+$('#supplier').change(function spchange() {
     // console.log($(this).val());
     // var  s = $(this).val();
     // $.ajax({
@@ -350,13 +396,14 @@ $('.ipaymethod').on('click',function() {
 
 
 $("#adnpm").on('click', function() {
-    // var values = [];
+    console.log("cek"+$('#purch_category').val())
+    // var values = [];purch_category
     // $("input[name='iprorow[]']").each(function() {
     //     values.push($(this).val());
     // });
     // var maxrow = Math.max.apply(Math, values);
     // console.log(maxrow);
-
+    // var category = $('#purch_category').val()
     console.log($('#date_purchase').val());
     if($('#date_purchase').val() == ""){
         $('#date_purchase').addClass("is-invalid");
@@ -426,7 +473,7 @@ $("#adnpm").on('click', function() {
             sort: !0,
             search: !0,
             server: {
-                url: $("#BaseUrl").val()+'listproduct',
+                url: $("#BaseUrl").val()+'listproductp/'+$('#purch_category').val(),
                 then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
             },
             style: {
