@@ -130,7 +130,7 @@
                                             <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-fullscreen-sm-down">
                                                     <div class="modal-content">
-                                                        <div class="modal-body px-1">
+                                                        <div class="modal-body px-1" id="divtbl">
                                                             <div id="table-gridjs"></div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -274,6 +274,26 @@
                                                             <span>Term of Payment</span>
                                                         </span>
                                                     </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row justify-content-end">
+                                                <div class="col-lg-6">
+                                                    <div class="form-floating mt-3">
+                                                        <input type="text" min="4" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">
+                                                        <label for="payment">Payment</label>
+                                                        <div class="invalid-feedback">
+                                                            Please Fill in Payment.
+                                                        </div>
+                                                        <!-- '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+ -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check mt-3 pt-3">
+                                                        <input type="checkbox" class="form-check-input" id="horizontal-customCheck">
+                                                        <label class="form-check-label" for="horizontal-customCheck">Remember me</label>
+                                                    </div>
+
                                                 </div>
                                             </div>
 

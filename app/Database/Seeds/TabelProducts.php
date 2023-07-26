@@ -32,6 +32,10 @@ class TabelProducts extends Seeder
             [
                 'pro_name_category'      => 'Packaging',
                 'created_at'         => date('Y-m-d H:i:s')
+            ],
+            [
+                'pro_name_category'      => 'IklanAds',
+                'created_at'         => date('Y-m-d H:i:s')
             ]
         ];
 

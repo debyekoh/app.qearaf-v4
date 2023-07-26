@@ -268,8 +268,15 @@ class Purchase extends BaseController
         );
 
         // $id_shop = strtoupper($this->request->getVar('no_purchase'));
+        $purchcategory = $this->request->getVar('purch_category');
         $supplierid = $this->request->getVar('supplier');
-        $suppliername = $this->listSupplierModel->where('id', $supplierid)->find()[0]['name_supplier'];
+        $purchcategoryname = $this->listCategoryPurchaseModel->find($purchcategory)['category_name'];
+        if ($purchcategory == 2) {
+            $suppliername = $this->shopModel->find($supplierid)['name_shop'] . " " . $this->shopModel->find($supplierid)['marketplace'];
+        } else {
+            $suppliername = $this->listSupplierModel->where('id', $supplierid)->find()[0]['name_supplier'];
+        }
+        // dd($purchcategory, $supplierid, $suppliername);
         $names = ['SuAdmin', 'Admin'];
         $this->builder = $this->db->table('auth_groups_users');
         $this->builder->select('member_id, fullname');
@@ -286,7 +293,7 @@ class Purchase extends BaseController
         for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
             $dataNotification[] = array(
                 'path_notif'            => "detail/purchaseview/" . $key_sales,
-                'type_notif'            => "Purchase Product",
+                'type_notif'            => "Purchase " . $purchcategoryname,
                 'title_notif'           => $title_notif,
                 'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
                 'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
@@ -300,7 +307,7 @@ class Purchase extends BaseController
             );
         }
 
-        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification);
+        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname);
 
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);

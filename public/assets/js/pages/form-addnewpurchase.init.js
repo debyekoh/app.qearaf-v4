@@ -206,6 +206,10 @@ $('#purch_category').change(function pcchange() {
             $('.op_dataconsumable').removeAttr("hidden")
         })
     }
+    $(".listpro").remove();
+    $(".listprosummary").remove();
+    if($('.norow').length == 0){$('#listpurchaseproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
+    if($('.norowsummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
     
 });
 
@@ -403,15 +407,21 @@ $("#adnpm").on('click', function() {
     // });
     // var maxrow = Math.max.apply(Math, values);
     // console.log(maxrow);
-    // var category = $('#purch_category').val()
-    console.log($('#date_purchase').val());
-    if($('#date_purchase').val() == ""){
+    var category = $('#purch_category').val()
+    if($('#purch_category').val() === null){
+        $('#purch_category').addClass("is-invalid"); 
+    }
+    if($('#date_purchase').val() === ""){
         $('#date_purchase').addClass("is-invalid");
-    }else{
+    }
+    console.log($('#date_purchase').val());
+    if($('#date_purchase').val() != "" && $('#purch_category').val() != ""){
         // console.log("Open modal & List Product");
         // $('#supplier').removeClass("is-invalid");
         $('#addNewProduct').modal('show');
-        $("#table-gridjs").empty();
+        // $("#table-gridjs").empty();
+        $("#table-gridjs").remove();
+        $("#divtbl").append('<div id="table-gridjs"></div>');
         new gridjs.Grid({
             columns: [{
                 name: "Product",
@@ -473,7 +483,7 @@ $("#adnpm").on('click', function() {
             sort: !0,
             search: !0,
             server: {
-                url: $("#BaseUrl").val()+'listproductp/'+$('#purch_category').val(),
+                url: $("#BaseUrl").val()+'listproductp/'+category,
                 then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
             },
             style: {
