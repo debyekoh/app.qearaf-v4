@@ -113,6 +113,7 @@ class Purchase extends BaseController
             <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
             <script src="' . base_url() . 'assets/js/pages/form-addnewpurchase.init.js"></script>
             <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="assets/libs/imask/imask.min.js"></script>
 
             ';
 
@@ -244,7 +245,7 @@ class Purchase extends BaseController
 
         if ($this->request->getVar('paymethod') == 1) {
             $statuspurchase = "Lunas";
-            $paymentvalue = $this->request->getVar('grtotval');
+            $paymentvalue = $this->request->getVar('paymentval');
         } else {
             $statuspurchase = "Belum Lunas";
             $paymentvalue = 0;

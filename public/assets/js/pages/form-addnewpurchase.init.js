@@ -632,6 +632,48 @@ function delProduct(rID) {
 //     // console.log('Form changed! coy');
 //     calculate_1();
 // });
+// if($("#switch1").checked) {
+//     // Respond to the result
+//     alert("Checkbox checked!");
+// }
+
+checkBox = document.getElementById('switch1').addEventListener('click', event => {
+	if(event.target.checked) {
+		console.log("Checkbox checked!");
+        $('#payment').val($('#paymentvaldefault').val())
+        $('#payment').attr('disabled', 'disabled')
+        var masked = IMask(document.getElementById("payment"), {
+            mask: "Rp. num",
+            blocks: {
+                num: {
+                    mask: Number,
+                    thousandsSeparator: " "
+                }
+            }
+        })
+        $('#paymentval').val($('#paymentvaldefault').val())
+	}else{
+        console.log("Checkbox Unchecked!");
+        $('#payment').removeAttr('disabled')
+    }
+});
+
+$("#payment").on('input', function() {
+    // if($(this).val() != null){$('.no_resi').removeClass("is-invalid");$('.no_resi').removeClass("ideliveryinfo-is-invalid");}
+    // if($('.ideliveryinfo-is-invalid').length == 0){$('.deliveryinfo').removeClass("bg-danger");document.querySelector("#li3").style.borderColor = "#1f58c7";}
+    // console.log("newpurchaseinfo "+ $('.ideliveryinfo-is-invalid').length);
+    console.log($(this).val());
+    var masked = IMask(document.getElementById("payment"), {
+        mask: "Rp. num",
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: " "
+            }
+        }
+    })
+    $('#paymentval').val(masked.unmaskedValue)
+});
 
 function calculate_1(idrow,valrow,pricerow) {
     // console.log(idrow);
@@ -651,7 +693,18 @@ function calculate_1(idrow,valrow,pricerow) {
     $('#subto').text('Rp '+total_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
     const grtot = parseInt(total_price);
     $('#grtot').text('Rp '+grtot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
-    $('#grtotval').val(grtot)
+    $('#payment').val(grtot)
+    $('#paymentval').val(grtot)
+    $('#paymentvaldefault').val(grtot)
+    var masked = IMask(document.getElementById("payment"), {
+        mask: "Rp. num",
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: " "
+            }
+        }
+    })
     // console.log(grtot)
 }
 

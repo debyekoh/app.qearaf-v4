@@ -253,9 +253,9 @@
                                     <div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div data-bs-toggle="collapse">
+                                                <div data-bs-toggle="collapse" class="mb-3">
                                                     <label class="card-radio-label">
-                                                        <input type="radio" name="paymethod" id="pay-methodoption1" class="card-radio-input ipaymethod" value="1">
+                                                        <input type="radio" name="paymethod" id="pay-methodoption1" class="card-radio-input ipaymethod mb-3" value="1">
                                                         <span class="card-radio paymethod py-0 text-center text-truncate">
                                                             <i class="bx bx-credit-card fa-2x d-block"></i>
                                                             <span>Online Payment</span>
@@ -265,7 +265,7 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <div>
+                                                <div class="mb-3">
                                                     <label class="card-radio-label">
                                                         <input type="radio" name="paymethod" id="pay-methodoption2" class="card-radio-input ipaymethod" value="3">
 
@@ -277,26 +277,38 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row justify-content-end">
-                                                <div class="col-lg-6">
-                                                    <div class="form-floating mt-3">
-                                                        <input type="text" min="4" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">
-                                                        <label for="payment">Payment</label>
-                                                        <div class="invalid-feedback">
-                                                            Please Fill in Payment.
-                                                        </div>
-                                                        <!-- '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+ -->
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check mt-3 pt-3">
-                                                        <input type="checkbox" class="form-check-input" id="horizontal-customCheck">
-                                                        <label class="form-check-label" for="horizontal-customCheck">Remember me</label>
-                                                    </div>
 
+                                        </div>
+                                        <div class="row justify-content-end">
+                                            <div class="col-lg-6 ">
+                                                <div class="form-floating">
+                                                    <input type="text" min="4" class="form-control font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment" disabled>
+                                                    <label for="payment">Payment</label>
+                                                    <div class="invalid-feedback">
+                                                        Please Fill in Payment.
+                                                    </div>
+                                                    <input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>
+                                                    <input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-6 mt-3">
+                                                <div class="form-check form-check-inline p-0 mx-0">
+                                                    <input type="checkbox" id="switch1" switch="none" checked="">
+                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label>
 
+                                                    <!-- <input type="checkbox" class="form-check-input" id="horizontal-customCheck"> -->
+                                                    <!-- <label class="form-check-label" for="horizontal-customCheck">Remember me</label> -->
+                                                </div>
+                                                <span class="fw-bold align-top">Payment Auto Input</span>
+                                                <!-- <div class=""> -->
+                                                <!-- <input type="checkbox" id="switch1" switch="none" checked="">
+                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label> -->
+                                                <!-- <input type="checkbox" class="form-check-input" id="horizontal-customCheck"> -->
+                                                <!-- <label class="form-check-label" for="horizontal-customCheck">Remember me</label>
+                                                    <p>Input Auto</p>
+                                                </div> -->
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -377,7 +389,7 @@
                                             -
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" id="grtotval" name="grtotval" hidden>
+                                            <!-- <input type="text" class="form-control" id="grtotval" name="grtotval" hidden> -->
                                         </td>
                                     </tr>
                                 </tbody>
