@@ -652,9 +652,11 @@ checkBox = document.getElementById('switch1').addEventListener('click', event =>
             }
         })
         $('#paymentval').val($('#paymentvaldefault').val())
+        $('.checkboxlabel').removeClass('text-muted')
 	}else{
         console.log("Checkbox Unchecked!");
         $('#payment').removeAttr('disabled')
+        $('.checkboxlabel').addClass('text-muted')
     }
 });
 

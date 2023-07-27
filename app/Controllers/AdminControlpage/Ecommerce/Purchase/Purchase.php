@@ -21,6 +21,7 @@ class Purchase extends BaseController
 {
     protected $db;
     protected $builder;
+    protected $builder1;
     protected $purchaseModel;
     protected $purchaseDetailModel;
     protected $listSupplierModel;
@@ -55,9 +56,26 @@ class Purchase extends BaseController
 
     public function index()
     {
+        $head_page =
+            '
+            <link href="assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
+	
+            ';
+        $js_page =
+            '
+            <script src="assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="assets/js/pages/mypurchase.init.js"></script>
+            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="assets/libs/imask/imask.min.js"></script>
+            
+            ';
         $datapage = array(
-            'titlepage' => 'Purchase',
-            'tabshop' => $this->tabshop,
+            'titlepage'     => 'Purchase',
+            'tabshop'       => $this->tabshop,
+            'head_page'     => $head_page,
+            'js_page'       => $js_page,
+            'tabpurchase'   => $this->listCategoryPurchaseModel->findAll(),
         );
         return view('pages_admin/adm_purchase', $datapage);
     }
@@ -254,6 +272,8 @@ class Purchase extends BaseController
         $dataPurchase = array(
             // 'id_purchase'           => strtoupper($this->request->getVar('id_purchase')),
             'no_purchase'           => strtoupper($this->request->getVar('no_purchase')),
+            'purch_category'        => $this->request->getVar('purch_category'),
+            'supplier_id'           => $this->request->getVar('supplier'),
             'date_purchase'         => $this->request->getVar('date_purchase'),
             // 'id_shop'               => $this->request->getVar('shop'),
             // 'deliveryservices'      => $this->request->getVar('deliveryservices'),
@@ -308,16 +328,179 @@ class Purchase extends BaseController
             );
         }
 
-        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname);
+        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname);
 
+        $this->db->transBegin();
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);
-        // $this->setNotif();
         $this->listNotificationModel->insertBatch($dataNotification);
-        if ($this->purchaseModel->db->affectedRows() > 0 && $this->purchaseDetailModel->db->affectedRows() > 0) {
+
+        if ($this->db->transStatus() === false) {
+            $this->db->transRollback();
+            $msg = strtoupper($this->request->getVar('no_purchase')) . ' Gagal di Tambahkan';
+            session()->setFlashdata('error', $msg);
+            return redirect()->to('/purchase');
+        } else {
+            $this->db->transCommit();
             $msg = strtoupper($this->request->getVar('no_purchase')) . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
             return redirect()->to('/purchase');
         }
+
+        // $this->purchaseModel->insert($dataPurchase);
+        // $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);
+        // // $this->setNotif();
+        // $this->listNotificationModel->insertBatch($dataNotification);
+        // if ($this->purchaseModel->db->affectedRows() > 0 && $this->purchaseDetailModel->db->affectedRows() > 0) {
+        //     $msg = strtoupper($this->request->getVar('no_purchase')) . ' Berhasil di Tambahkan';
+        //     session()->setFlashdata('success', $msg);
+        //     return redirect()->to('/purchase');
+        // }
+    }
+
+    public function detailview($nopurchase)
+    {
+        $no_purchase = substr($nopurchase, 0, 6) . "/" . substr($nopurchase, 6, 1) . "/" . substr($nopurchase, 7, 2) . "/" . substr($nopurchase, 9);
+        if ($this->purchaseModel->find($no_purchase) == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            // $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+            $purchcategory = $this->purchaseModel->find($no_purchase)['purch_category'];
+            $this->builder = $this->db->table('purchase');
+            if ($purchcategory == 2) {
+                $this->builder->join('shop', 'shop.id_shop= purchase.supplier_id');
+            } else {
+                $this->builder->join('list_supplier', 'list_supplier.id= purchase.supplier_id');
+            }
+
+            // $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+            // $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+            // $this->builder->join('list_packaging', 'list_packaging.id_packaging= sales.packaging');
+            // // $this->builder->like('member_id', user()->member_id);
+            // // $this->builder->orderBy('date_sales', 'DESC');
+            // // $this->builder->orderBy('id_sales', 'DESC');
+            $query = $this->builder->getWhere(['no_purchase' => $no_purchase]);
+
+            $this->builder1 = $this->db->table('purchase_detail');
+            $this->builder1->join('products', 'products.pro_id= purchase_detail.pro_id');
+            $query1 = $this->builder1->getWhere(['no_purchase' => $no_purchase]);
+
+            // $info_sales = $this->salesModel->find($id_sales);
+            // $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
+            $data_detail = array(
+                'test'           => $this->purchaseModel->find($no_purchase)['purch_category'],                // 'INFO PURCHASE' 
+                'ifp'           => $query->getRow(),               // 'INFO PURCHASE' 
+                'dpl'           => $query1->getResult(),         // 'DETAIL PURCHASE'
+            );
+
+            // dd($data_detail);
+
+            $datapage = array(
+                'titlepage' => 'Detail Purchase #' . $no_purchase,
+                'tabshop' => $this->tabshop,
+                'datadetail' => $data_detail,
+            );
+            return view('pages_admin/adm_purchase_detailview', $datapage);
+        }
+
+
+
+
+        // $datapage = array(
+        //     'titlepage' => 'Purchase',
+        //     'tabshop' => $this->tabshop,
+        // );
+        // // return view('pages_admin/adm_purchase', $datapage);
+        // return view('pages_admin/adm_purchase_detailview', $datapage);
+    }
+
+    public function show($tab = null, $find = null)
+    {
+
+        $this->builder = $this->db->table('purchase');
+        if ($tab == "All") {
+        } else {
+            $this->builder->join('list_category_purchase', 'list_category_purchase.id = purchase.purch_category');
+            if ($tab == "ADSIklan") {
+                $this->builder->like('category_name', 'Iklan');
+            } else {
+                $this->builder->like('category_name', $tab);
+            }
+        }
+        $query = $this->builder->get();
+
+        if (in_groups('4') == true) {
+            $editable = false;
+        } else {
+            $editable = true;
+        }
+        if (in_groups('4') == true) {
+            $deletable = false;
+        } else {
+            $deletable = true;
+        }
+
+        $data = array();
+        $row = array();
+        $imgdata = array();
+        $no = 0;
+        $noa = 0;
+
+        foreach ($query->getResult() as $i) {
+            $dataProductDetail = array();
+            $purchaseArray = array();
+            for ($a = 0; $a < count($this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()); $a++) {
+                $pro_id = $this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()[$a]['pro_id'];
+                $dataProductDetail[] = array(
+                    'pro_id'        => $pro_id,
+                    'pro_name'      => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
+                    'pro_sku'       => $this->productsModel->find($pro_id)['pro_part_no'],
+                    'pro_img'       => $this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()[$a]['pro_img'],
+                    'pro_price'     => $this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()[$a]['pro_price'],
+                    'pro_qty'       => $this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()[$a]['pro_qty'],
+                );
+                $purchaseArray[] = $this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->orderBy('no_purchase_detail', 'asc')->findAll()[$a]['pro_price'];
+            }
+
+
+            if ($this->listSupplierModel->find($i->supplier_id) != null) {
+                $suppliername = $this->listSupplierModel->find($i->supplier_id)['name_supplier'];
+            } else {
+                $suppliername = $this->shopModel->find($i->supplier_id)['name_shop'] . " " . $this->shopModel->find($i->supplier_id)['marketplace'];
+            }
+
+            $row = [
+                "no" => $no++,
+                // "shop_detail"       => $shop_detail,
+                "supplier_detail"       => $suppliername,
+                "item_detail"       => $dataProductDetail,
+                "item_count"        => count($this->purchaseDetailModel->where('no_purchase', $i->no_purchase)->findAll()),
+                "no_purchase"       => $i->no_purchase,
+                "id_sales_noslash"  => str_replace('/', '', $i->no_purchase),
+                "bill"              => "Rp " . number_format($i->bill, 0, ',', '.'),
+                "payment"           => "Rp " . number_format($i->payment, 0, ',', '.'),
+                "paymethode"        => $i->paymethod,
+                "statuspurchase"       => ucwords($i->status),
+                "editable"          => $editable,
+                "deletable"         => $deletable,
+                // "no_sales"          => $i->no_purchase,
+                // "date_purchase"        => $i->date_purchase,
+                // "delivery_services" => "picture-img.png",
+                // "no_resi"           => "RESI",
+                // "packaging"         => "PACKAGING",
+                // "nextstatus"        => $next_status,
+                // "nextstatus"        => "AA",
+            ];
+            $data[] = $row;
+        }
+        // dd($data, $query->getResult(), $this->listCategoryPurchaseModel->like('category_name', "ads")->find());
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success show data',
+            // 'results' => $this->productsModel->findAll(),
+            // 'results' => $query->getResult(),
+            'results' => $data,
+        ]);
     }
 }

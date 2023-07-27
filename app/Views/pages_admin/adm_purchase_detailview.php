@@ -42,28 +42,51 @@
                         <tbody>
                             <tr class="py-0">
                                 <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                <td class="py-0 fw-bold" style="width:10%;">Shop</td>
+                                <td class="py-0 fw-bold" style="width:10%;">Buyer</td>
                                 <td class="py-0 fw-bold" style="width:1%;">:</td>
                                 <td class="py-0 text-muted">
-                                    <h6 class="mb-0"><span id="shp" class="text-truncate"><?= $datadetail['ifs']->name_shop; ?> <?= $datadetail['ifs']->marketplace; ?></span></h6>
+                                    <h6 class="mb-0"><span id="shp" class="text-truncate">QEARAF.COM</span></h6>
                                 </td>
                             </tr>
                             <tr class="py-0">
                                 <th class="py-0 fw-bold" style="width:1%;" hidden>2</th>
-                                <td class="py-0 fw-bold" style="width:10%;">No Sales</td>
+                                <td class="py-0 fw-bold" style="width:10%;">Purchase From</td>
                                 <td class="py-0 fw-bold" style="width:1%;">:</td>
                                 <td class="py-0 text-muted">
-                                    <h6 class="mb-0"><span id="shp" class="text-truncate">#<?= $datadetail['ifs']->no_sales; ?></span></h6>
+                                    <?php
+                                    $pid = $datadetail['ifp']->purch_category;
+                                    if ($pid == 2) { ?>
+                                        <h6 class="mb-0"><span id="shp" class="text-truncate"><?= $datadetail['ifp']->name_shop; ?> <?= $datadetail['ifp']->marketplace; ?></span></h6>
+                                    <?php } else { ?>
+                                        <h6 class="mb-0"><span id="shp" class="text-truncate"><?= $datadetail['ifp']->name_supplier; ?></span></h6>
+                                    <?php } ?>
                                 </td>
                             </tr>
                             <tr class="py-0">
+                                <th class="py-0 fw-bold" style="width:1%;" hidden>2</th>
+                                <td class="py-0 fw-bold" style="width:10%;">Date Purchase</td>
+                                <td class="py-0 fw-bold" style="width:1%;">:</td>
+                                <td class="py-0 text-muted">
+                                    <h6 class="mb-0"><span id="shp" class="text-truncate"><?= $datadetail['ifp']->date_purchase; ?></span></h6>
+                                </td>
+                            </tr>
+                            <tr class="py-0">
+                                <th class="py-0 fw-bold" style="width:1%;" hidden>2</th>
+                                <td class="py-0 fw-bold" style="width:10%;">No Purchase</td>
+                                <td class="py-0 fw-bold" style="width:1%;">:</td>
+                                <td class="py-0 text-muted">
+                                    <h6 class="mb-0"><span id="shp" class="text-truncate">#<?= $datadetail['ifp']->no_purchase; ?></span></h6>
+                                </td>
+                            </tr>
+
+                            <!-- <tr class="py-0">
                                 <th class="py-0 fw-bold" style="width:1%;" hidden>3</th>
                                 <td class="py-0 fw-bold" style="width:10%;">Sales ID</td>
                                 <td class="py-0 fw-bold" style="width:1%;">:</td>
                                 <td class="py-0 text-muted">
-                                    <h6 class="mb-0"><span id="ids" class="text-primary"><?= $datadetail['ifs']->id_sales; ?></span></span></h6>
+                                    <h6 class="mb-0"><span id="ids" class="text-primary"></span></span></h6>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                     <div id="tabel_viewsales">
@@ -78,7 +101,7 @@
                             </thead>
                             <tbody>
                                 <?php $subtotal = 0; ?>
-                                <?php foreach ($datadetail['dsl'] as $ds) {
+                                <?php foreach ($datadetail['dpl'] as $ds) {
                                     $subtotal += (($ds->pro_qty) * ($ds->pro_price));
                                 ?>
                                     <tr>
@@ -101,64 +124,8 @@
                                     </td>
                                     <td>Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
                                 </tr>
-                                <tr>
-                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Shipping:</h6>
-                                        <p class="text-muted mb-0"><img src="<?= base_url(); ?>assets/images/services/<?= $datadetail['ifs']->image_services; ?>" alt="<?= $datadetail['ifs']->image_services; ?>" style="height: 1.4rem; width: auto;" class="img-fluid"></p>
-                                    </td>
-                                    <td> Free</td>
-                                </tr>
-                                <?php
-                                $chs = $datadetail['ifs']->status;
-                                if ($chs == "Process" || $chs == "Packaging" || $chs == "Ready" || $chs == "Delivery") {
-                                    $taxtitle = "Estimated Tax (10%):";
-                                    $taxval = "Rp (" . number_format($subtotal * (10 / 100), 0, ",", ".") . ")";
-                                    $billingtitle = "Billing Information:";
-                                    $billingval = number_format(($subtotal - ($subtotal * (10 / 100))) + $datadetail['ifs']->price_packaging, 0, ",", ".");
-                                    // $packagingtype = "Rp (" . number_format($subtotal * (10 / 100), 0, ",", ".") . ")";
-                                }
-                                if ($chs == "Received" || $chs == "Completed") {
-                                    $taxtperctg = number_format(100 - ((($datadetail['ifs']->payment - $datadetail['ifs']->price_packaging) / $subtotal) * 100), 2, ",", ".");
-                                    $taxtitle = "Tax (" . $taxtperctg . "%):";
-                                    $taxval = "Rp (" . number_format($subtotal - ($datadetail['ifs']->payment - $datadetail['ifs']->price_packaging), 0, ",", ".") . ")";
-                                    $billingtitle = "Payment Information:";
-                                    $billingval = number_format($datadetail['ifs']->payment, 0, ",", ".");
-                                    // $packagingtype = "Rp (" . number_format($subtotal * (10 / 100), 0, ",", ".") . ")";
-                                }
-                                if ($chs == "Return") {
-                                    $taxtitle = "Tax (%):";
-                                    $taxval = "(Return)";
-                                    $billingtitle = "Payment Information:";
-                                    $billingval = number_format($datadetail['ifs']->payment, 0, ",", ".");
-                                    // $packagingtype = "Rp (" . number_format($subtotal * (10 / 100), 0, ",", ".") . ")";
-                                }
-                                if ($chs == "Cancel") {
-                                    $taxtitle = "Tax (%):";
-                                    $taxval = "(Cancel)";
-                                    $billingtitle = "Payment Information:";
-                                    $billingval = number_format($datadetail['ifs']->payment, 0, ",", ".");
-                                    // $packagingtype = "Rp (" . number_format($subtotal * (10 / 100), 0, ",", ".") . ")";
-                                }
-
-                                ?>
-                                <tr>
-                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right"><?= $taxtitle; ?></h6>
-                                    </td>
-                                    <td class="text-danger"><?= $taxval; ?></td>
-                                </tr>
-                                <tr>
-                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Packaging:</h6>
-                                        <p class="text-muted mb-0"><?= $datadetail['ifs']->name_packaging; ?></p>
-                                    </td>
-                                    <td> Rp <?= number_format($datadetail['ifs']->price_packaging, 0, ",", "."); ?></td>
-                                </tr>
-                                <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
                                 <tr class="border-bottom-0">
+                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
                                     <td colspan="2">
                                         <h6 class="m-0 text-right">Discount:</h6>
                                     </td>
@@ -167,9 +134,9 @@
                                 <tr>
                                     <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
                                     <td colspan="2" class="border-bottom-0">
-                                        <h6 class="m-0 text-right" id="tdesc"><?= $billingtitle; ?></h6>
+                                        <h6 class="m-0 text-right" id="tdesc">Billing Information:</h6>
                                     </td>
-                                    <td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">Rp <?= $billingval; ?></td>
+                                    <td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
                                 </tr>
                             </tbody>
                         </table>

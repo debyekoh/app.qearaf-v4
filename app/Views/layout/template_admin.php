@@ -293,9 +293,11 @@
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="<?= base_url() ?>sales" data-key="t-sales">Sales</a></li>
                                 <li><a href="<?= base_url() ?>addnewsales" data-key="t-addnewsales">Add New Sales</a></li>
-                                <li><a href="<?= base_url() ?>purchase" data-key="t-purchase">Purchase</a></li>
-                                <li><a href="<?= base_url() ?>addnewpurchase" data-key="t-addnewsales">Add New Purchase</a></li>
-                                <li><a href="<?= base_url() ?>invoice" data-key="t-invoice">Invoice</a></li>
+                                <?php if (in_groups('SuAdmin') || in_groups('Admin')) : ?>
+                                    <li><a href="<?= base_url() ?>purchase" data-key="t-purchase">Purchase</a></li>
+                                    <li><a href="<?= base_url() ?>addnewpurchase" data-key="t-addnewsales">Add New Purchase</a></li>
+                                    <li><a href="<?= base_url() ?>invoice" data-key="t-invoice">Invoice</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
 

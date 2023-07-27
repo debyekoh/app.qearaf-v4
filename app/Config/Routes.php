@@ -85,14 +85,15 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 
 //Ecommerce 
 //Purchase
-$routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index');
-$routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase'); //Ajax
-$routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase'); //Ajax
+$routes->get('/mypurchase/show/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::show/$1', ['filter' => 'role:SuAdmin,Admin']); //Ajax
+$routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
+$routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 // $routes->get('/listproductp', 'AdminControlpage\Ecommerce\Purchase\Purchase::list');
-$routes->get('/listproductp/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::list/$1');
-$routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'permission:Create']);
-$routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin,Reseller']);
-$routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1');
+$routes->get('/listproductp/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::list/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
 
 //Delivery

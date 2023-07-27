@@ -10,6 +10,6 @@ class PurchaseModel extends Model
     protected $primaryKey = 'no_purchase';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'no_purchase', 'date_purchase', 'note', 'bill', 'payment', 'paymethod', 'status',
+        'no_purchase', 'purch_category', 'supplier_id', 'date_purchase', 'note', 'bill', 'payment', 'paymethod', 'status',
     ];
 }

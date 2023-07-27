@@ -243,7 +243,7 @@
                             <li class="checkout-item pb-1 pb-2" id="li3">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title payinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">05</h5>
+                                        <h5 class="text-white font-size-16 mb-0">03</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
@@ -299,7 +299,7 @@
                                                     <!-- <input type="checkbox" class="form-check-input" id="horizontal-customCheck"> -->
                                                     <!-- <label class="form-check-label" for="horizontal-customCheck">Remember me</label> -->
                                                 </div>
-                                                <span class="fw-bold align-top">Payment Auto Input</span>
+                                                <span class="checkboxlabel fw-bold align-top">Payment Auto Input</span>
                                                 <!-- <div class=""> -->
                                                 <!-- <input type="checkbox" id="switch1" switch="none" checked="">
                                                     <label for="switch1" data-on-label="On" data-off-label="Off"></label> -->
