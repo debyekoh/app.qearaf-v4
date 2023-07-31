@@ -13,13 +13,20 @@ class Dashboards extends BaseController
     protected $partnerKey;
     protected $code;
     protected $shop_id;
+    protected $access_token;
+    protected $refresh_token;
+    // {"refresh_token":"794b44516c44585357436b6c687a504e",
+    // "access_token":"557a485641465342694962674b565966",
+    // "expire_in":14311,"request_id":"99118c0d4f55691efa739cec0e032520","error":"","message":""}
     public function __construct()
     {
         $this->urlHost = "https://partner.test-stable.shopeemobile.com";
         $this->partnerId = 1056329;
         $this->partnerKey = "675359486f4f6c6c556e687763446b527179724474447877767649714659435a";
-        $this->code = "67497a6c77647a4a63715158456b7555";
+        $this->code = "59626c4b634941455a6f487168555055";
         $this->shop_id = 89782;
+        $this->access_token = "557a485641465342694962674b565966";
+        $this->refresh_token = "794b44516c44585357436b6c687a504e";
     }
     public function index()
     {
@@ -34,42 +41,56 @@ class Dashboards extends BaseController
 
     public function shopinfo()
     {
-        function shopinformation($token, $partnerId, $partnerKey, $shopId)
+        function shopinformation($partnerId, $partnerKey, $access_token,  $shopId)
         {
             $host = "https://partner.test-stable.shopeemobile.com";
             $path = "/api/v2/shop/get_shop_info";
 
             $timest = time();
+            // $body = array("partner_id" => $partnerId,  "shop_id" => $shopId, "partner_id" => $partnerId);
             // $body = array("token" => $token,  "shop_id" => $shopId, "partner_id" => $partnerId);
-            $baseString = sprintf("%s%s%s", $partnerId, $path, $timest);
+            // partner_id, api path, timestamp, access_token, shop_id and partner_key
+            $baseString = sprintf("%s%s%s%s%s", $partnerId, $path, $timest, $access_token, $shopId);
+            // print_r($baseString);
+            // print_r("<br>");
             $sign = hash_hmac('sha256', $baseString, $partnerKey);
-            $url = sprintf("%s%s?access_token=%s&partner_id=%s&timestamp=%s&sign=%s", $host, $path, $token, $partnerId, $timest, $sign);
+            print_r($sign);
+            print_r("<br>");
+            $url = sprintf("%s%s?access_token=%s&partner_id=%s&timestamp=%s&sign=%s", $host, $path, $access_token, $partnerId, $timest, $sign);
             echo $url;
+            print_r("<br>");
             // Shop API: partner_id, api path, timestamp, access_token, shop_id
-            // CURLOPT_URL => 'https://partner.test-stable.shopeemobile.com/api/v2/shop/get_shop_info?access_token=4479424942796c434b446252454f7669&partner_id=1056329&shop_id=89782&sign=sign&timestamp=timestamp',
+            // print_r('https://partner.test-stable.shopeemobile.com/api/v2/shop/get_shop_info?access_token=access_token&partner_id=partner_id&shop_id=shop_id&sign=sign&timestamp=timestamp');
 
-            $c = curl_init($url);
-            curl_setopt($c, CURLOPT_POST, 1);
-            // curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($body));
-            curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-            $resp = curl_exec($c);
-            echo "raw result: $resp";
+            $curl = curl_init();
 
-            // $ret = json_decode($resp, true);
-            // $accessToken = $ret["access_token"];
-            // $newRefreshToken = $ret["refresh_token"];
-            // echo "\naccess_token: $accessToken, refresh_token: $newRefreshToken raw: $ret" . "\n";
-            // return $ret;
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            echo $response;
         }
 
         $host = "https://partner.shopeemobile.com";
 
         $partnerId = $this->partnerId;
         $partnerKey = $this->partnerKey;
-        $token = '7a614d666c6157704751445a58684866';
+        $access_token = $this->access_token;
         $shopId = $this->shop_id;
-        print_r(shopinformation($token, $partnerId, $partnerKey, $shopId));
+        print_r(shopinformation($partnerId, $partnerKey, $access_token,  $shopId));
     }
 
     public function token_apishopee()
