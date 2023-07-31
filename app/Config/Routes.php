@@ -32,6 +32,11 @@ $routes->set404Override();
 
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'AdminControlpage\Dashboards\Dashboards::index');
+$routes->get('/CApishopee', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
+$routes->get('/TCApishopee', 'AdminControlpage\Dashboards\Dashboards::token_apishopee');
+$routes->get('/Shopeinfo', 'AdminControlpage\Dashboards\Dashboards::shopinfo');
+$routes->get('/test', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
+
 
 /* --------------------------------------------------------------------
  * Route AdminControlpage
