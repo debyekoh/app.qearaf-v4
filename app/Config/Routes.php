@@ -92,6 +92,7 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 //Purchase
 $routes->get('/mypurchase/show/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::show/$1', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/mypurchase/detail', 'AdminControlpage\Ecommerce\Purchase\Purchase::detail', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 // $routes->get('/listproductp', 'AdminControlpage\Ecommerce\Purchase\Purchase::list');

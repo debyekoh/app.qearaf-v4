@@ -503,4 +503,85 @@ class Purchase extends BaseController
             'results' => $data,
         ]);
     }
+
+    public function detail()
+    {
+        $no_purchase = $this->request->getVar('id');
+        if ($this->purchaseModel->find($no_purchase) == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            // $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+            $purchcategory = $this->purchaseModel->find($no_purchase)['purch_category'];
+            $this->builder = $this->db->table('purchase');
+            if ($purchcategory == 2) {
+                $this->builder->join('shop', 'shop.id_shop= purchase.supplier_id');
+            } else {
+                $this->builder->join('list_supplier', 'list_supplier.id= purchase.supplier_id');
+            }
+
+            // $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+            // $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+            // $this->builder->join('list_packaging', 'list_packaging.id_packaging= sales.packaging');
+            // // $this->builder->like('member_id', user()->member_id);
+            // // $this->builder->orderBy('date_sales', 'DESC');
+            // // $this->builder->orderBy('id_sales', 'DESC');
+            $query = $this->builder->getWhere(['no_purchase' => $no_purchase]);
+
+            $this->builder1 = $this->db->table('purchase_detail');
+            $this->builder1->join('products', 'products.pro_id= purchase_detail.pro_id');
+            $query1 = $this->builder1->getWhere(['no_purchase' => $no_purchase]);
+
+            // $info_sales = $this->salesModel->find($id_sales);
+            // $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
+            $data_detail = array(
+                'test'           => $this->purchaseModel->find($no_purchase)['purch_category'],                // 'INFO PURCHASE' 
+                'ifp'           => $query->getRow(),               // 'INFO PURCHASE' 
+                'dpl'           => $query1->getResult(),         // 'DETAIL PURCHASE'
+            );
+
+            // dd($data_detail);
+            return $this->response->setJSON([
+                'status' => 'success',
+                'detail' => $data_detail
+            ]);
+
+            // $datapage = array(
+            //     'titlepage' => 'Detail Purchase #' . $no_purchase,
+            //     'tabshop' => $this->tabshop,
+            //     'datadetail' => $data_detail,
+            // );
+            // return view('pages_admin/adm_purchase_detailview', $datapage);
+        }
+    }
+
+    // public function detail()
+    // {
+    //     $no_purchase = $this->request->getVar('id');
+    //     // $no_sales = $this->purchaseModel->find($id_sales)['no_purchase'];
+    //     $this->builder = $this->db->table('sales');
+    //     $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+    //     $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+    //     $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+    //     // $this->builder->like('member_id', user()->member_id);
+    //     // $this->builder->orderBy('date_sales', 'DESC');
+    //     // $this->builder->orderBy('id_sales', 'DESC');
+    //     $query = $this->builder->getWhere(['id_sales' => $id_sales]);
+
+    //     $this->builder1 = $this->db->table('sales_detail');
+    //     $this->builder1->join('products', 'products.pro_id= sales_detail.pro_id');
+    //     $query1 = $this->builder1->getWhere(['no_sales' => $no_sales]);
+
+    //     // $info_sales = $this->salesModel->find($id_sales);
+    //     $data_sales_detail = $this->salesdetailModel->where('no_sales', $no_sales)->findAll();
+    //     $data_detail = array(
+    //         // 'test'           => $query1->getResult(),                // 'INFO SALES' 
+    //         'ifs'           => $query->getRow(),                // 'INFO SALES' 
+    //         'dsl'           => $query1->getResult(),         // 'DETAIL SALES'
+    //     );
+
+    //     return $this->response->setJSON([
+    //         'status' => 'success',
+    //         'detail' => $data_detail
+    //     ]);
+    // }
 }
