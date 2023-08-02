@@ -118,6 +118,25 @@ class Purchase extends BaseController
         ]);
     }
 
+    public function listmarketplace()
+    {
+        // $nopurchase = $this->request->getVar('nopurchase');
+        // if ($this->purchaseModel->where('no_purchase', $nopurchase)->findAll() != null) {
+        //     $status = "error";
+        // } else {
+        //     $status = "success";
+        // }
+
+        $this->builder = $this->db->table('shop');
+        $this->builder->where('member_id', user()->member_id);
+        $this->builder->orderBy('marketplace', 'asc');
+        $query = $this->builder->get();
+
+        return $this->response->setJSON([
+            'l' => $query->getResult(),
+        ]);
+    }
+
     public function create()
     {
         $head_page =

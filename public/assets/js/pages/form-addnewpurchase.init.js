@@ -57,6 +57,24 @@ $("#presubmit").on('click', function() {
         else{
             if($('.input-is-invalid').length == 0){$('.productinfo').removeClass("bg-danger");document.querySelector("#li2").style.borderColor = "#1f58c7";}else{$('.productinfo').addClass("bg-danger");document.querySelector("#li2").style.borderColor = "red";}
         }
+    if($('#payment').val() == ""){
+        $('#payment').addClass("is-invalid");
+        $('#payment').addClass("inewpurchaseinfo-is-invalid");
+    }else{
+        $('#payment').removeClass("is-invalid");
+    }
+    if($('#paysource').val() == null){
+        $('#paysource').addClass("is-invalid");
+        $('#paysource').addClass("inewpurchaseinfo-is-invalid");
+    }else{
+        $('#paysource').removeClass("is-invalid");
+    }
+    if($('#ewalletmarketplace').val() == null){
+        $('#ewalletmarketplace').addClass("is-invalid");
+        $('#ewalletmarketplace').addClass("inewpurchaseinfo-is-invalid");
+    }else{
+        $('#ewalletmarketplace').removeClass("is-invalid");
+    }
     // if($('#deliveryservices').val() == null){$('#deliveryservices').addClass("is-invalid");$('#deliveryservices').addClass("ideliveryinfo-is-invalid");}else{$('#deliveryservices').removeClass("is-invalid");}
     // if($('#no_resi').val() == ""){$('#no_resi').addClass("is-invalid");$('#no_resi').addClass("ideliveryinfo-is-invalid");}else{$('#no_resi').removeClass("is-invalid");}
 
@@ -391,12 +409,159 @@ $(document).on('keyup mouseup', '.qtyinput', function() {
 //\\//\\
 $('.ipaymethod').on('click',function() {
     console.log("BB");
+    console.log($(this).val());
+    
     $('.paymethod').removeClass("bg-danger is-invalid text-white");
     $('.payinfo').removeClass("bg-danger");
+    
+    if($(this).val() == 1){
+        document.getElementById("li3").style.borderColor = "#1f58c7";
+        $("#li3pi").remove()
+        $("#ol").append(
+            '<li class="checkout-item pb-1" id="li4">'+
+                '<div class="avatar checkout-icon p-1">'+
+                    '<div class="avatar-title paymentfrom rounded-circle bg-primary">'+
+                        '<h5 class="text-white font-size-16 mb-0">04</h5>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="feed-item-list">'+
+                    '<div>'+
+                        '<h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Payment From</u></h5>'+
+                        '<div class="mb-2">'+
+                           ' <div class="row" id="li4sel">'+
+                                '<div class="col-lg-6">'+
+                                    '<div id="" class="form-floating mb-3">'+
+                                        '<select class="form-select font-size-16 fw-bold sourcepayment" name="paysource" id="paysource" aria-label="Floating label select example">'+
+                                            '<option selected disabled value>Select Source Payment</option>'+
+                                            '<option value="ewallet">E-Wallet Marketplace</option>'+
+                                            '<option value="balanceaccount">Balance QEARAF.COM</option>'+
+                                            // '<?php foreach ($listdeliveryservices as $ds) : ?>'+
+                                            //     '<option value="<?= $ds['id']; ?>"><?= $ds['name_delivery_services']; ?></option>'+
+                                            // '<?php endforeach ?>'+
+                                        '</select>'+
+                                        '<label for="deliveryservices">Payment Source</label>'+
+                                        '<div class="invalid-feedback">'+
+                                            'Please choose Payment Source.'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="row justify-content-end" id="li4pi">'+
+                                '<div class="col-lg-6 ">'+
+                                    '<div class="form-floating">'+
+                                        '<input type="text" min="4" class="form-control font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment" disabled>'+
+                                        '<label for="payment">Payment</label>'+
+                                        '<div class="invalid-feedback">'+
+                                            'Please Fill in Payment.'+
+                                        '</div>'+
+                                        '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
+                                        '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-lg-6 mt-3">'+
+                                    '<div class="form-check form-check-inline p-0 mx-0">'+
+                                        '<input type="checkbox" id="switch1" switch="none" checked="">'+
+                                        '<label for="switch1" data-on-label="On" data-off-label="Off"></label>'+
+                                    '</div>'+
+                                    '<span class="checkboxlabel fw-bold align-top">Payment Auto Input</span>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</li>'
+        );
+        spayonhange()
+        console.log($("#li4pi"))
+    }
+    if($(this).val() == 3){
+        
+        $("#li4").remove()
+        document.getElementById("li3").style.borderColor = null;
+        console.log(document.getElementById('li3pi'))
+        if(document.getElementById('li3pi')==null){
+            $("#pi3").append(
+                '<div class="row justify-content-end" id="li3pi">'+
+                    '<div class="col-lg-6 ">'+
+                        '<div class="form-floating">'+
+                            '<input type="text" min="4" class="form-control font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment" disabled>'+
+                            '<label for="payment">Payment</label>'+
+                            '<div class="invalid-feedback">'+
+                                'Please Fill in Payment.'+
+                            '</div>'+
+                            '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
+                            '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="col-lg-6 mt-3">'+
+                        '<div class="form-check form-check-inline p-0 mx-0">'+
+                            '<input type="checkbox" id="switch1" switch="none" checked="">'+
+                            '<label for="switch1" data-on-label="On" data-off-label="Off"></label>'+
+                        '</div>'+
+                        '<span class="checkboxlabel fw-bold align-top">Payment Auto Input</span>'+
+                    '</div>'+
+                '</div>'
+            )
+            
+        }
+        
+    }
+
+    addeventcheckuncheck();
 });
 
+// $('#paysource').change(function spayhange() {
+//     console.log($("#paysource").val());
+//     console.log($(this).val());
+// })
+const id_shop = new String('id_shop');
+const name_shop = new String('name_shop');
+const marketplace = new String('marketplace');
+
+function spayonhange(){
+    document.getElementById('paysource').addEventListener('change',function spayhange() {
+        console.log(id_shop)
+        console.log($(this).val());
+        if($(this).val() == "ewallet"){
+            $.ajax({
+                type: "GET",
+                url: $("#BaseUrl").val()+'listmarketplace',
+                success: function(data) {
+                    console.log(data.l[0])
+
+                    let selop = "";
+                    for (i = 0; i < data.l.length; i++) {
+                        selop += 
+                        '<option class="op_datashop" value="'+data.l[i]['id_shop']+'" >'+data.l[i]['name_shop']+' - '+data.l[i]['marketplace']+'</option>'
+                        ;
+                    }
+
+                    console.log(selop)
+
+                    $("#li4sel").append(
+                        '<div class="col-lg-6" id="li4ewallet">'+
+                            '<div id="" class="form-floating mb-3">'+
+                                '<select class="form-select font-size-16 fw-bold sourcepayment" name="ewalletmarketplace" id="ewalletmarketplace" aria-label="Floating label select example">'+
+                                    "<option selected disabled value>Select your E-wallet Marketplace</option>"+
+                                    selop +
+                                '</select>'+
+                                '<label for="deliveryservices">E-wallet Marketplace</label>'+
+                                '<div class="invalid-feedback">'+
+                                    'Please choose E-wallet Marketplace.'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'
+                    )
+                }
+            });
+        }
+        if($(this).val() == "balanceaccount"){
+            $("#li4ewallet").remove()
+        }
 
 
+    }
+)}
 
 
 $("#adnpm").on('click', function() {
@@ -636,29 +801,32 @@ function delProduct(rID) {
 //     // Respond to the result
 //     alert("Checkbox checked!");
 // }
-
-checkBox = document.getElementById('switch1').addEventListener('click', event => {
-	if(event.target.checked) {
-		console.log("Checkbox checked!");
-        $('#payment').val($('#paymentvaldefault').val())
-        $('#payment').attr('disabled', 'disabled')
-        var masked = IMask(document.getElementById("payment"), {
-            mask: "Rp. num",
-            blocks: {
-                num: {
-                    mask: Number,
-                    thousandsSeparator: " "
+function addeventcheckuncheck(){
+    document.getElementById('switch1').addEventListener('click', event => {
+        if(event.target.checked) {
+            console.log("Checkbox checked!");
+            $('#payment').val($('#paymentvaldefault').val())
+            $('#payment').attr('disabled', 'disabled')
+            var masked = IMask(document.getElementById("payment"), {
+                mask: "Rp. num",
+                blocks: {
+                    num: {
+                        mask: Number,
+                        thousandsSeparator: " "
+                    }
                 }
-            }
-        })
-        $('#paymentval').val($('#paymentvaldefault').val())
-        $('.checkboxlabel').removeClass('text-muted')
-	}else{
-        console.log("Checkbox Unchecked!");
-        $('#payment').removeAttr('disabled')
-        $('.checkboxlabel').addClass('text-muted')
-    }
-});
+            })
+            $('#paymentval').val($('#paymentvaldefault').val())
+            $('.checkboxlabel').removeClass('text-muted')
+        }else{
+            console.log("Checkbox Unchecked!");
+            $('#payment').removeAttr('disabled')
+            $('.checkboxlabel').addClass('text-muted')
+        }
+    });
+}
+
+addeventcheckuncheck();
 
 $("#payment").on('input', function() {
     // if($(this).val() != null){$('.no_resi').removeClass("is-invalid");$('.no_resi').removeClass("ideliveryinfo-is-invalid");}

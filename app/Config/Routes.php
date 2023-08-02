@@ -97,6 +97,7 @@ $routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase
 $routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 // $routes->get('/listproductp', 'AdminControlpage\Ecommerce\Purchase\Purchase::list');
 $routes->get('/listproductp/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::list/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/listmarketplace', 'AdminControlpage\Ecommerce\Purchase\Purchase::listmarketplace', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'role:SuAdmin,Admin']);
 $routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1', ['filter' => 'role:SuAdmin,Admin']);

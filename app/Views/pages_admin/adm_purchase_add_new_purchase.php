@@ -8,7 +8,7 @@
             <div class="col-xl-8">
                 <div class="card">
                     <div class="card-body px-1">
-                        <ol class="activity-checkout mb-0 px-4 mt-2">
+                        <ol class="activity-checkout mb-0 px-4 mt-2" id="ol">
                             <li class="checkout-item pb-0" id="li1">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title newpurchaseinfo rounded-circle bg-primary">
@@ -144,50 +144,50 @@
                                 </div>
                             </li>
                             <!-- <li class="checkout-item pb-1" id="li3" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
-                                    <div class="avatar-title deliveryinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">03</h5>
+                                    <div class="avatar checkout-icon p-1">
+                                        <div class="avatar-title deliveryinfo rounded-circle bg-primary">
+                                            <h5 class="text-white font-size-16 mb-0">03</h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="feed-item-list" style="border-color: #f5f6f8;">
-                                    <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Delivery Info</u></h5>
-                                        <div class="mb-2">
-                                            <div class="row">
-                                                <div class="col-lg-4">
-                                                    <div id="slds" class="form-floating mb-3">
-                                                        <select class="form-select font-size-16 fw-bold deliveryservices ideliveryinfo" name="deliveryservices" id="deliveryservices" aria-label="Floating label select example">
-                                                            <option selected disabled value>Select your Services</option>
-                                                            <?php foreach ($listdeliveryservices as $ds) : ?>
-                                                                <option value="<?= $ds['id']; ?>"><?= $ds['name_delivery_services']; ?></option>
-                                                            <?php endforeach ?>
-                                                        </select>
-                                                        <label for="deliveryservices">Delivery Services</label>
-                                                        <div class="invalid-feedback">
-                                                            Please choose Delivery Services.
+                                    <div class="feed-item-list" style="border-color: #f5f6f8;">
+                                        <div>
+                                            <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Delivery Info</u></h5>
+                                            <div class="mb-2">
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div id="slds" class="form-floating mb-3">
+                                                            <select class="form-select font-size-16 fw-bold deliveryservices ideliveryinfo" name="deliveryservices" id="deliveryservices" aria-label="Floating label select example">
+                                                                <option selected disabled value>Select your Services</option>
+                                                                <?php foreach ($listdeliveryservices as $ds) : ?>
+                                                                    <option value="<?= $ds['id']; ?>"><?= $ds['name_delivery_services']; ?></option>
+                                                                <?php endforeach ?>
+                                                            </select>
+                                                            <label for="deliveryservices">Delivery Services</label>
+                                                            <div class="invalid-feedback">
+                                                                Please choose Delivery Services.
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control text-uppercase no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
-                                                        <label for="no_resi">No Resi</label>
-                                                        <div class="invalid-feedback">
-                                                            Please Fill in No Resi.
+                                                    <div class="col-lg-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control text-uppercase no_resi ideliveryinfo" id="no_resi" name="no_resi" placeholder="No Resi">
+                                                            <label for="no_resi">No Resi</label>
+                                                            <div class="invalid-feedback">
+                                                                Please Fill in No Resi.
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control ideliveryinfo" id="notes" name="notes" placeholder="Notes">
-                                                        <label for="notes">Notes</label>
+                                                    <div class="col-lg-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control ideliveryinfo" id="notes" name="notes" placeholder="Notes">
+                                                            <label for="notes">Notes</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li> -->
+                                </li> -->
                             <!-- <li class="checkout-item pb-1" id="li4" style="border-color: #1f58c7;">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title packaginginfo rounded-circle bg-primary">
@@ -240,7 +240,7 @@
                                     </div>
                                 </div>
                             </li> -->
-                            <li class="checkout-item pb-1 pb-2" id="li3">
+                            <li class="checkout-item pb-1" id="li3">
                                 <div class="avatar checkout-icon p-1">
                                     <div class="avatar-title payinfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">03</h5>
@@ -250,7 +250,7 @@
                                     <div>
                                         <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Payment Info</u></h5>
                                     </div>
-                                    <div>
+                                    <div id="pi3">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div data-bs-toggle="collapse" class="mb-3">
@@ -279,7 +279,7 @@
 
 
                                         </div>
-                                        <div class="row justify-content-end">
+                                        <div class="row justify-content-end" id="li3pi">
                                             <div class="col-lg-6 ">
                                                 <div class="form-floating">
                                                     <input type="text" min="4" class="form-control font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment" disabled>
@@ -295,19 +295,8 @@
                                                 <div class="form-check form-check-inline p-0 mx-0">
                                                     <input type="checkbox" id="switch1" switch="none" checked="">
                                                     <label for="switch1" data-on-label="On" data-off-label="Off"></label>
-
-                                                    <!-- <input type="checkbox" class="form-check-input" id="horizontal-customCheck"> -->
-                                                    <!-- <label class="form-check-label" for="horizontal-customCheck">Remember me</label> -->
                                                 </div>
                                                 <span class="checkboxlabel fw-bold align-top">Payment Auto Input</span>
-                                                <!-- <div class=""> -->
-                                                <!-- <input type="checkbox" id="switch1" switch="none" checked="">
-                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label> -->
-                                                <!-- <input type="checkbox" class="form-check-input" id="horizontal-customCheck"> -->
-                                                <!-- <label class="form-check-label" for="horizontal-customCheck">Remember me</label>
-                                                    <p>Input Auto</p>
-                                                </div> -->
-
                                             </div>
                                         </div>
                                     </div>
