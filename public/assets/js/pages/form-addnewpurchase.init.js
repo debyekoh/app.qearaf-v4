@@ -59,19 +59,22 @@ $("#presubmit").on('click', function() {
         }
     if($('#payment').val() == ""){
         $('#payment').addClass("is-invalid");
-        $('#payment').addClass("inewpurchaseinfo-is-invalid");
+        // $('#payment').addClass("inewpurchaseinfo-is-invalid");
     }else{
         $('#payment').removeClass("is-invalid");
     }
     if($('#paysource').val() == null){
         $('#paysource').addClass("is-invalid");
-        $('#paysource').addClass("inewpurchaseinfo-is-invalid");
+        $('.paymentfrom').addClass("bg-danger");
+        // paymentfrom
+        // $('#paysource').addClass("inewpurchaseinfo-is-invalid");
     }else{
         $('#paysource').removeClass("is-invalid");
+        $('.paymentfrom').addClass("bg-danger");
     }
     if($('#ewalletmarketplace').val() == null){
         $('#ewalletmarketplace').addClass("is-invalid");
-        $('#ewalletmarketplace').addClass("inewpurchaseinfo-is-invalid");
+        // $('#ewalletmarketplace').addClass("inewpurchaseinfo-is-invalid");
     }else{
         $('#ewalletmarketplace').removeClass("is-invalid");
     }
@@ -454,8 +457,8 @@ $('.ipaymethod').on('click',function() {
                                         '<div class="invalid-feedback">'+
                                             'Please Fill in Payment.'+
                                         '</div>'+
-                                        '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
-                                        '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
+                                        // '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
+                                        // '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
                                     '</div>'+
                                 '</div>'+
                                 '<div class="col-lg-6 mt-3">'+
@@ -489,8 +492,8 @@ $('.ipaymethod').on('click',function() {
                             '<div class="invalid-feedback">'+
                                 'Please Fill in Payment.'+
                             '</div>'+
-                            '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
-                            '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
+                            // '<input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>'+
+                            // '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
                         '</div>'+
                     '</div>'+
                     '<div class="col-lg-6 mt-3">'+
@@ -502,16 +505,32 @@ $('.ipaymethod').on('click',function() {
                     '</div>'+
                 '</div>'
             )
+
+            
             
         }
         
     }
 
+    $("#payment").val($("#paymentval").val());
+    var masked = IMask(document.getElementById("payment"), {
+        mask: "Rp. num",
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: " "
+            }
+        }
+    })
     addeventcheckuncheck();
 });
 
 // $('#paysource').change(function spayhange() {
 //     console.log($("#paysource").val());
+//     console.log($(this).val());
+// })
+// $('#ewalletmarketplace').change(function ewallchange() {
+//     // console.log($("#ewalletmarketplace").val());
 //     console.log($(this).val());
 // })
 const id_shop = new String('id_shop');
@@ -552,6 +571,12 @@ function spayonhange(){
                             '</div>'+
                         '</div>'
                     )
+
+                    $('#ewalletmarketplace').change(function ewallchange() {
+                        $('#ewalletmarketplace').removeClass("is-invalid");
+                        console.log($(this).val()+"AAAAA");
+                        
+                    })
                 }
             });
         }

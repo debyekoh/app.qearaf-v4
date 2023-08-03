@@ -276,19 +276,17 @@
                                                     </label>
                                                 </div>
                                             </div>
-
-
                                         </div>
+                                        <input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>
+                                        <input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>
                                         <div class="row justify-content-end" id="li3pi">
                                             <div class="col-lg-6 ">
                                                 <div class="form-floating">
-                                                    <input type="text" min="4" class="form-control font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment" disabled>
+                                                    <input type="text" min="4" class="form-control font-size-18 fw-bold ipaymethod" id="payment" name="payment" placeholder="Input Payment" disabled>
                                                     <label for="payment">Payment</label>
                                                     <div class="invalid-feedback">
                                                         Please Fill in Payment.
                                                     </div>
-                                                    <input type="number" class="form-control " id="paymentvaldefault" name="paymentvaldefault" placeholder="Payment Value default" hidden>
-                                                    <input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 mt-3">
