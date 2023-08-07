@@ -130,14 +130,14 @@
                                     <td colspan="2">
                                         <h6 class="m-0 text-right">Discount:</h6>
                                     </td>
-                                    <td> -</td>
+                                    <td>Rp <?= number_format($subtotal - $datadetail['ifp']->payment, 0, ",", "."); ?></td>
                                 </tr>
                                 <tr>
                                     <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
                                     <td colspan="2" class="border-bottom-0">
                                         <h6 class="m-0 text-right" id="tdesc">Billing Information:</h6>
                                     </td>
-                                    <td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
+                                    <td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">Rp <?= number_format($datadetail['ifp']->payment, 0, ",", "."); ?></td>
                                 </tr>
                             </tbody>
 
@@ -228,11 +228,7 @@
                                         </tr>
                                     <?php } ?>
 
-                                    <!-- <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Total:</h5>
-                                        </td>
-                                        <td id="grtot" class="font-size-18 m-0 fw-bold">Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
-                                        </tr> -->
+
                                 </tbody>
                             </table>
 
