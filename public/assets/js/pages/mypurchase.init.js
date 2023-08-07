@@ -89,7 +89,7 @@ function renderPurchase(name) {
                 }
                 if(e[5]==3){
                     paymethode +=
-                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-0 fw-bold rounded text-center">Cash on Delivery <i class="fas fa-handshake font-size-14 ms-1"></i></h5>' ;
+                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-0 fw-bold rounded text-center">Term Of Payment <i class="fas fa-handshake font-size-14 ms-1"></i></h5>' ;
                 }
 
 

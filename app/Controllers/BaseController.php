@@ -37,6 +37,9 @@ abstract class BaseController extends Controller
      */
     protected $helpers = ['auth', 'array', 'form'];
     protected $shopModel;
+    protected $ballanceAccount;
+    protected $ballanceEWallet;
+    protected $debtAccount;
     protected $ListMarketplaceModel;
     protected $ListDeliveryServicesModel;
     protected $tabshop;
@@ -60,6 +63,9 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
+        $this->ballanceAccount = new \App\Models\BallanceAccount();
+        $this->ballanceEWallet = new \App\Models\BallanceEWallet();
+        $this->debtAccount = new \App\Models\DebtAccount();
         $this->shopModel = new \App\Models\ShopModel();
         $this->ListMarketplaceModel = new \App\Models\ListMarketplaceModel();
         $this->ListDeliveryServicesModel = new \App\Models\ListDeliveryServicesModel();

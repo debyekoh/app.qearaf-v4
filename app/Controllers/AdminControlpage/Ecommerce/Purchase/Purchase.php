@@ -280,13 +280,33 @@ class Purchase extends BaseController
             $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
         }
 
-        if ($this->request->getVar('paymethod') == 1) {
+        if ($this->request->getVar('paymethod') == 1) {                         //ONLINE PAYMENT
             $statuspurchase = "Lunas";
             $paymentvalue = $this->request->getVar('paymentval');
-        } else {
+            if ($this->request->getVar('paysource') == "ewallet") {
+                //ONLINE PAYMENT -> By: E-Wallet
+                $payCode = "OP-EWAL";
+                $idpayCode  = $this->request->getVar('ewalletmarketplace');
+                $valuetoupdate  = intval($this->ballanceEWallet->find($idpayCode)['value_ewallet']) - intval($paymentvalue);
+            }
+            if ($this->request->getVar('paysource') == "balanceaccount") {
+                //ONLINE PAYMENT -> By: Balance Account
+                $payCode    = "OP-BALA";
+                $idpayCode  = user_id();
+                $valuetoupdate  = intval($this->ballanceAccount->find($idpayCode)['value_account']) - intval($paymentvalue);
+            }
+        } else {                                                                //TERM OF PAYMENT
             $statuspurchase = "Belum Lunas";
             $paymentvalue = 0;
+            $paymentvaluetrue = $this->request->getVar('paymentval');
+            $payCode = "TOP-DEB";
+            $idpayCode  = user_id();
+            $valuetoupdate  = intval($this->debtAccount->find($idpayCode)['value_debt']) + intval($paymentvaluetrue);
         }
+
+        // $paymethod = $this->request->getVar('paysource');
+        // $paysource = $this->request->getVar('paysource');
+        // $payval = $this->request->getVar('paymentval');
 
         $dataPurchase = array(
             // 'id_purchase'           => strtoupper($this->request->getVar('id_purchase')),
@@ -347,11 +367,25 @@ class Purchase extends BaseController
             );
         }
 
-        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname);
+
+
+
+        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate);
 
         $this->db->transBegin();
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);
+
+        if ($payCode == "OP-EWAL") {            //ONLINE PAYMENT -> By: E-Wallet
+            $this->ballanceEWallet->update(['ewallet_shopid' => $idpayCode], ['value_ewallet' => $valuetoupdate]);
+        } else if ($payCode == "OP-BALA") {     //ONLINE PAYMENT -> By: Balance Account
+            $this->ballanceAccount->update(['balance_userid' => $idpayCode], ['value_account' => $valuetoupdate]);
+        } else if ($payCode == "TOP-DEB") {     //TERM OFPAYMENT -> By: Debt
+            $this->debtAccount->update(['debt_userid' => $idpayCode], ['value_debt' => $valuetoupdate]);
+        } else {
+            $this->db->transRollback();
+        }
+
         $this->listNotificationModel->insertBatch($dataNotification);
 
         if ($this->db->transStatus() === false) {
