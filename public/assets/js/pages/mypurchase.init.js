@@ -35,6 +35,7 @@ function renderPurchase(name) {
                 var data_item = e[2]
                 let itemdata = "";
                 let paystatus = "";
+                let payval = "";
                 let paymethode = "";
                 let btn_gopayment = "";
                 let btn_gocancel = "";
@@ -69,12 +70,14 @@ function renderPurchase(name) {
                 const gocancel = new String("'Cancel'");
                 
                 if(e[4]=="Lunas"){
+                    payval = e[7];
                     paystatus +=
                         '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
                     btn_gocancel +=
                         '<li><a onclick="to('+pid+','+gocancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
                 }
                 if(e[4]=="Belum Lunas"){
+                    payval = e[3];
                     paystatus +=
                         '<span class="badge bg-danger bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
                     btn_gopayment +=
@@ -116,7 +119,7 @@ function renderPurchase(name) {
                                             '<p class="fw-bold fst-italic text-truncate mb-0">' + e[6] + '</p>'+
                                         '</div>'+
                                         '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + e[3] + '</h5>'+
+                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + payval + '</h5>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -166,6 +169,7 @@ function renderPurchase(name) {
                     purchase.statuspurchase,       // 4 // OK
                     purchase.paymethode,           // 5 // OK
                     purchase.supplier_detail,      // 6 // OK
+                    purchase.payment,              // 7 // OK
                 ],
             ]),
           },

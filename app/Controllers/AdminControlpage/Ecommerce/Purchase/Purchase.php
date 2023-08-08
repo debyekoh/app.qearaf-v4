@@ -137,6 +137,26 @@ class Purchase extends BaseController
         ]);
     }
 
+    public function selectedP()
+    {
+        $skuno = $this->request->getVar('sku');
+        $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        $dataselect = array(
+            'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
+            'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
+            'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
+            'price' => $this->productspriceModel->find($pro_id)['pro_price_basic'],
+        );
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success',
+            // 'results' => $this->productsModel->findAll(),
+            // 'results' => $query->getResult(),
+            'results' => $dataselect,
+        ]);
+    }
+
     public function create()
     {
         $head_page =
@@ -191,7 +211,7 @@ class Purchase extends BaseController
     public function list($params)
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_show, pro_active, pro_current_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_price_basic , pro_show, pro_active, pro_current_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
         if ($params == 1) {
@@ -242,7 +262,8 @@ class Purchase extends BaseController
                 "name" => $i->pro_name,
                 "model" => $i->pro_model,
                 "skuno" => $i->pro_part_no,
-                "price" => $i->pro_price_seller,
+                "price" => $i->pro_price_basic,
+                // "price" => $i->pro_price_seller,
                 "current_stock" => $i->pro_current_stock,
                 "statusproduct" => $i->pro_active,
                 "editable" => $editable,
@@ -283,16 +304,19 @@ class Purchase extends BaseController
         if ($this->request->getVar('paymethod') == 1) {                         //ONLINE PAYMENT
             $statuspurchase = "Lunas";
             $paymentvalue = $this->request->getVar('paymentval');
+            $paymentvaluetrue = $this->request->getVar('paymentval');
             if ($this->request->getVar('paysource') == "ewallet") {
                 //ONLINE PAYMENT -> By: E-Wallet
                 $payCode = "OP-EWAL";
                 $idpayCode  = $this->request->getVar('ewalletmarketplace');
+                $valuelast  = intval($this->ballanceEWallet->find($idpayCode)['value_ewallet']);
                 $valuetoupdate  = intval($this->ballanceEWallet->find($idpayCode)['value_ewallet']) - intval($paymentvalue);
             }
             if ($this->request->getVar('paysource') == "balanceaccount") {
                 //ONLINE PAYMENT -> By: Balance Account
                 $payCode    = "OP-BALA";
                 $idpayCode  = user_id();
+                $valuelast  = intval($this->ballanceAccount->find($idpayCode)['value_account']);
                 $valuetoupdate  = intval($this->ballanceAccount->find($idpayCode)['value_account']) - intval($paymentvalue);
             }
         } else {                                                                //TERM OF PAYMENT
@@ -301,8 +325,22 @@ class Purchase extends BaseController
             $paymentvaluetrue = $this->request->getVar('paymentval');
             $payCode = "TOP-DEB";
             $idpayCode  = user_id();
+            $valuelast  = intval($this->debtAccount->find($idpayCode)['value_debt']);
             $valuetoupdate  = intval($this->debtAccount->find($idpayCode)['value_debt']) + intval($paymentvaluetrue);
         }
+
+        $dataLogTrans = array(
+            'balance_userid_log'        => $idpayCode,   // for "balance_account_log"
+            'ewallet_shopid_log'        => $idpayCode,   // for "balance_ewallet_log"
+            'debt_userid_log'           => $idpayCode,   // for "debt_account_log"
+            'log_key'                   => strtoupper($this->request->getVar('no_purchase')),
+            'log_code'                  => $payCode,
+            'log_description'           => "Purchase",
+            'link'                      => "detail/purchaseview/" . substr(strtoupper($this->request->getVar('no_purchase')), 0, 6) .  substr(strtoupper($this->request->getVar('no_purchase')), 7, 1) .  substr(strtoupper($this->request->getVar('no_purchase')), 9, 2) .  substr(strtoupper($this->request->getVar('no_purchase')), 12),
+            'last_value'                => $valuelast,
+            'trans_value'               => $paymentvaluetrue,
+            'new_value'                 => $valuetoupdate,
+        );
 
         // $paymethod = $this->request->getVar('paysource');
         // $paysource = $this->request->getVar('paysource');
@@ -370,7 +408,7 @@ class Purchase extends BaseController
 
 
 
-        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate);
+        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate, $dataLogTrans);
 
         $this->db->transBegin();
         $this->purchaseModel->insert($dataPurchase);
@@ -378,10 +416,13 @@ class Purchase extends BaseController
 
         if ($payCode == "OP-EWAL") {            //ONLINE PAYMENT -> By: E-Wallet
             $this->ballanceEWallet->update(['ewallet_shopid' => $idpayCode], ['value_ewallet' => $valuetoupdate]);
+            $this->ballanceEWalletLog->insert($dataLogTrans);
         } else if ($payCode == "OP-BALA") {     //ONLINE PAYMENT -> By: Balance Account
             $this->ballanceAccount->update(['balance_userid' => $idpayCode], ['value_account' => $valuetoupdate]);
+            $this->ballanceAccountLog->insert($dataLogTrans);
         } else if ($payCode == "TOP-DEB") {     //TERM OFPAYMENT -> By: Debt
             $this->debtAccount->update(['debt_userid' => $idpayCode], ['value_debt' => $valuetoupdate]);
+            $this->debtAccountLog->insert($dataLogTrans);
         } else {
             $this->db->transRollback();
         }

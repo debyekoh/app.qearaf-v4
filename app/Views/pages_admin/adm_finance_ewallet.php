@@ -40,13 +40,25 @@
                                 <h4 class="mt-2 mb-0 fw-bolder font-size-22">Rp <?= number_format($ds->value_ewallet, 0, ",", "."); ?>,-
                                     <!-- <span class="text-success fw-medium font-size-13 align-middle"> <i class="mdi mdi-arrow-up"></i> 8.34% </span> -->
                                 </h4>
-                                <div class="d-flex mt-1 align-items-end overflow-hidden">
+                                <!-- <div class="d-flex mt-1 align-items-end overflow-hidden">
                                     <div class="flex-grow-1">
-                                        <p class="text-muted mb-0 text-truncate">Total Saldo</p>
+                                        <p class="text-muted mb-0">Total Saldo</p>
                                     </div>
-                                    <!-- <div class="flex-shrink-0">
-                                        <div id="mini-1" data-colors='["#1f58c7"]' class="apex-charts"></div>
-                                    </div> -->
+                                    <div class="flex-shrink-0">
+                                        <button type="button" class="btn btn-warning waves-effect waves-light w-md">
+                                            <i class="bx bx-smile font-size-16 align-middle me-2"></i> Primary
+                                        </button>
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="text-muted mt-1">Total Saldo</p>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <button type="button" class="btn btn-sm btnwhitdraw btn-warning waves-effect waves-light" data-value="<?= $ds->id_shop; ?>">
+                                            <i class="mdi mdi-transfer-down align-middle me-2"></i>Whitdraw
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

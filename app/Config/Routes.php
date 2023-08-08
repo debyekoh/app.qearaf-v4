@@ -96,12 +96,14 @@ $routes->post('/mypurchase/detail', 'AdminControlpage\Ecommerce\Purchase\Purchas
 $routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->post('/checkpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::checkNoPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 // $routes->get('/listproductp', 'AdminControlpage\Ecommerce\Purchase\Purchase::list');
+$routes->post('/selectedPurch', 'AdminControlpage\Ecommerce\Purchase\Purchase::selectedP'); //AjaxModal
 $routes->get('/listproductp/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::list/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/listmarketplace', 'AdminControlpage\Ecommerce\Purchase\Purchase::listmarketplace', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'role:SuAdmin,Admin']);
 $routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
+
 
 //Delivery
 $routes->get('/delivery', 'AdminControlpage\Delivery\Delivery::index');
@@ -114,6 +116,7 @@ $routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index');
 $routes->get('/summaryfinance', 'AdminControlpage\Finance\SummaryFinance::index');
 $routes->get('/balance', 'AdminControlpage\Finance\Balance::index');
 $routes->get('/ewallet', 'AdminControlpage\Finance\Ewallet::index');
+$routes->get('/wdnow/(:any)', 'AdminControlpage\Finance\Ewallet::whitdrawnow/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');
 $routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
 $routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');

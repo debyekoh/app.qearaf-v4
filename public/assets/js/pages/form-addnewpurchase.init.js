@@ -624,7 +624,7 @@ function addProduct(sku) {
     } else {
     $.ajax({
         type: "POST",
-        url: $("#BaseUrl").val()+'selected',
+        url: $("#BaseUrl").val()+'selectedPurch',
         data: {
             sku: sku,
         },
@@ -750,6 +750,19 @@ function addeventcheckuncheck(){
             $('#payment').removeAttr('disabled')
             $('.checkboxlabel').addClass('text-muted')
         }
+        $("#payment").on('input', function() {
+            console.log($(this).val());
+            var masked = IMask(document.getElementById("payment"), {
+                mask: "Rp. num",
+                blocks: {
+                    num: {
+                        mask: Number,
+                        thousandsSeparator: " "
+                    }
+                }
+            })
+            $('#paymentval').val(masked.unmaskedValue)
+        });
     });
 }
 
