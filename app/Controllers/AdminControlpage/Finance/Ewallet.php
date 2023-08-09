@@ -89,21 +89,12 @@ class Ewallet extends BaseController
         return view('pages_admin/adm_finance_ewallet', $datapage);
     }
 
-    public function whitdrawnow($pass)
+    public function withdraw($pass, $idshop)
     {
-        // if()
-        // if (!password_verify(base64_encode(hash('sha384', service('request')->getPost('newPasswords'), true)), $pass)) {
-        //     echo 'password not match';
-        // } else {
-        //     echo 'password matched';
-        // }
-        // base64_encode(hash('sha384', $password, true));
-
-
-        // $this->response->setStatusCode(404);
         $login    = user()->username;
-        $password = $pass;
+        $password = base64_decode($pass);
         $remember = null;
+
 
         $type = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
@@ -112,7 +103,71 @@ class Ewallet extends BaseController
             $this->response->setStatusCode(404, "Password Wrong");
         } else {
             return $this->response->setJSON([
+                'shop'      => base64_encode($idshop),
+                'shopdesc'  => $this->shopModel->find($idshop)['name_shop'] . " " . $this->shopModel->find($idshop)['marketplace'],
+                'ewal'      => number_format($this->ballanceEWallet->find($idshop)['value_ewallet'], 0, ",", ".") . ",-",
+            ]);
+        }
+
+
+
+
+        // return $this->response->setJSON([
+        //     'status' => 'success',
+        //     'data' => $type,
+        //     'pass' => user()->password_hash,
+        // ]);
+    }
+
+    public function withdrawnow($idshop)
+    {
+        $id_shop    = base64_decode(base64_decode($idshop));
+
+        if (!$this->ballanceEWallet->find($id_shop)) {
+            $this->response->setStatusCode(404);
+        } else {
+            $ewcurval = $this->ballanceEWallet->find($id_shop)['value_ewallet'];
+            $bacurval = $this->ballanceAccount->find(user_id())['value_account'];
+
+            $dataewallet = array(
+                'ewallet_shopid'     => 'E-Wallet',
+                'value_ewallet'       => $this->ballanceEWallet->find($id_shop)['value_ewallet'] - $ewcurval,
+            );
+            $dataewalletlog = array(
+                'balance_userid_log'        => user_id(),   // for "balance_account_log"
+                'ewallet_shopid_log'        => $id_shop,    // for "balance_ewallet_log"
+                'debt_userid_log'           => null,        // for "debt_account_log"
+                'log_key'                   => date("ymd") . "/WD/" . sprintf("%04d", count($this->ballanceEWalletLog->like('log_key', date("ymd") . "/WD/")->findAll()) + 1),
+                'log_code'                  => "WDTOBAL",
+                'log_description'           => "Withdraw",
+                'link'                      => "ewallet",
+                'last_value'                => $this->ballanceEWallet->find($id_shop)['value_ewallet'],
+                'trans_value'               => $ewcurval,
+                'new_value'                 => $this->ballanceEWallet->find($id_shop)['value_ewallet'] - $ewcurval,
+            );
+            $dataebalaccount = array(
+                'balance_userid'     => 'E-Wallet',
+                'value_account'       => $bacurval + $ewcurval,
+            );
+            $dataebalaccountlog = array(
+                'balance_userid_log'        => user_id(),   // for "balance_account_log"
+                'ewallet_shopid_log'        => $id_shop,    // for "balance_ewallet_log"
+                'debt_userid_log'           => null,        // for "debt_account_log"
+                'log_key'                   => date("ymd") . "/WD/" . sprintf("%04d", count($this->ballanceEWalletLog->like('log_key', date("ymd") . "/WD/")->findAll()) + 1),
+                'log_code'                  => "WDFWAL",
+                'log_description'           => "Withdraw From " . $id_shop,
+                'link'                      => "balance",
+                'last_value'                => $bacurval,
+                'trans_value'               => $ewcurval,
+                'new_value'                 => $bacurval + $ewcurval,
+            );
+
+
+
+            return $this->response->setJSON([
                 'status' => 'success',
+                'data'  => [$dataewallet, $dataewalletlog, $dataebalaccount],
+                'datalog'  => [$dataewalletlog, $dataebalaccountlog]
             ]);
         }
 
