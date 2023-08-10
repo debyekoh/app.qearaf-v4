@@ -203,23 +203,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr id="RS0" class="listprosummary rowprosalessummary TW21RHB-00">
-                                        <th scope="row"><img src="http://localhost/app.qearaf-v4/public/assets/images/product/2AAEBD7B-picture-1.png" alt="2AAEBD7B-picture-1.png" title="2AAEBD7B-picture-1.png" class="avatar-md"></th>
-                                        <td>
-                                            <h5 class="text-truncate mb-0"><a class="font-size-14 text-dark">Tire Wrench 21RHB</a></h5>
-                                            <p class="text-muted mb-0 RSprice" id="RSprice0" hidden="">40000</p>
-                                            <p class="text-muted mb-0 RSqty" id="RSqty0" hidden="">6</p>
-                                            <p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval0" hidden="">240000</p>
-                                            <p class="text-muted mb-0" id="RSpricetx0">6 x Rp 40.000</p>
-                                        </td>
-                                        <td id="RSsubprice0">Rp 240.000</td>
-                                    </tr>
+                                    <?php $subtotal = 0; ?>
+                                    <?php foreach ($datadetail['dsl'] as $ds) {
+                                        $subtotal += (($ds->pro_qty) * ($ds->pro_price));
+                                    ?>
+                                        <tr>
+                                            <th scope="row"><img src="<?= base_url(); ?>assets/images/product/<?= $ds->pro_img; ?>" alt="<?= $ds->pro_img; ?>" class="avatar-md"></th>
+                                            <td>
+                                                <h5 class="text-truncate fw-bold font-size-14 mb-0"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-truncate mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
+                                            </td>
+                                            <td>Rp <?= number_format(($ds->pro_qty) * ($ds->pro_price), 0, ",", "."); ?></td>
+                                        </tr>
+                                    <?php } ?>
                                     <tr class="lstr">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Sub Total :</h5>
                                         </td>
-                                        <td id="subto">
-                                            Rp 240.000 </td>
+                                        <td>Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
@@ -231,23 +231,23 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <h5 class="font-size-14 m-0">Estimated Tax (10%):</h5>
+                                            <h5 class="font-size-14 m-0"><?= $taxtitle; ?></h5>
                                         </td>
                                         <td id="tax" class="text-danger">
-                                            (Rp 24.000)
+                                            <?= $taxval; ?>
                                         </td>
                                     </tr>
                                     <tr class="pckg">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Packaging :</h5>
                                             <!-- <input hidden class="form-control pckginfo" id="pckginfo" type="text" name="pckginfo" value=""> -->
-                                            <p class="text-muted mb-0 pckgdesc">Long 8x8x30cm</p>
+                                            <p class="text-muted mb-0 pckgdesc"><?= $datadetail['ifs']->name_packaging; ?></p>
                                             <!-- <p class="text-muted mb-0 pckginfo"></p> -->
                                             <!-- <p hidden class="text-muted mb-0 pckgval"></p> -->
-                                            <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="2000" hidden="">
+                                            <!-- <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="2000" hidden=""> -->
                                         </td>
                                         <td id="pckg">
-                                            Rp 2.000 </td>
+                                            Rp <?= number_format($datadetail['ifs']->price_packaging, 0, ",", "."); ?> </td>
                                     </tr>
 
                                     <tr class="bg-light">
@@ -255,7 +255,7 @@
                                             <h5 class="font-size-14 m-0">Total:</h5>
                                         </td>
                                         <td id="grtot" class="font-size-18 m-0 fw-bold">
-                                            Rp 218.000 </td>
+                                            Rp <?= $billingval; ?> </td>
                                         <td>
                                             <input type="text" class="form-control" id="grtotval" name="grtotval" value="218000" hidden="">
                                         </td>
