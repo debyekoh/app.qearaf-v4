@@ -45,6 +45,7 @@ abstract class BaseController extends Controller
     protected $debtAccountLog;
     protected $ListMarketplaceModel;
     protected $ListDeliveryServicesModel;
+    protected $listNotificationModel;
     protected $tabshop;
     protected $session;
 
@@ -75,6 +76,7 @@ abstract class BaseController extends Controller
         $this->shopModel = new \App\Models\ShopModel();
         $this->ListMarketplaceModel = new \App\Models\ListMarketplaceModel();
         $this->ListDeliveryServicesModel = new \App\Models\ListDeliveryServicesModel();
+        $this->listNotificationModel = new \App\Models\ListNotificationModel();
         $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll();
     }
 }

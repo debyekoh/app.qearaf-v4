@@ -594,6 +594,36 @@ class Sales extends BaseController
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => $payment_value]);
             }
 
+            if ($status_sales == "Completed") {
+                $key_sales = substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12);
+                $id_shop = $this->salesModel->find($id_sales)['id_shop'];
+                $cur_ewallet = intval($this->ballanceEWallet->find($id_shop)['value_ewallet']);
+                $payment = intval($this->salesModel->find($id_sales)['payment']);
+                $new_ewallet = $cur_ewallet + $payment;
+                $dataewalletlog = array(
+                    'balance_userid_log'        => user_id(),   // for "balance_account_log"
+                    'ewallet_shopid_log'        => $id_shop,    // for "balance_ewallet_log"
+                    'debt_userid_log'           => null,        // for "debt_account_log"
+                    'log_key'                   => date("ymd") . "/IN/" . sprintf("%04d", count($this->ballanceEWalletLog->like('log_key', date("ymd") . "/IN/")->findAll()) + 1),
+                    'log_code'                  => "IN-SALES",
+                    'log_description'           => "Payment Sales " . $id_sales,
+                    'link'                      => "detail/view/" . $key_sales,
+                    'last_value'                => $cur_ewallet,
+                    'trans_value'               => $payment,
+                    'new_value'                 => $new_ewallet,
+                );
+
+
+                $this->db->transBegin();
+                $this->ballanceEWallet->update(['ewallet_shopid' => $id_shop], ['value_ewallet' => $new_ewallet]);
+                $this->ballanceEWalletLog->insert($dataewalletlog);
+                if ($this->db->transStatus() === false) {
+                    $this->db->transRollback();
+                } else {
+                    $this->db->transCommit();
+                }
+            }
+
             if ($status_sales == "Cancel" || $status_sales == "Return") {
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => 0]);
             }

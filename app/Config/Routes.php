@@ -116,6 +116,8 @@ $routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index');
 $routes->get('/summaryfinance', 'AdminControlpage\Finance\SummaryFinance::index');
 $routes->get('/balance', 'AdminControlpage\Finance\Balance::index');
 $routes->get('/ewallet', 'AdminControlpage\Finance\Ewallet::index');
+$routes->get('/ewallet/(:any)', 'AdminControlpage\Finance\Ewallet::ewalet_shop/$1');
+$routes->get('/ewalletList/(:any)', 'AdminControlpage\Finance\Ewallet::ewalet_shop_list/$1');
 $routes->get('/wd/(:any)/(:any)', 'AdminControlpage\Finance\Ewallet::withdraw/$1/$2', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/wdnow/(:any)', 'AdminControlpage\Finance\Ewallet::withdrawnow/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');

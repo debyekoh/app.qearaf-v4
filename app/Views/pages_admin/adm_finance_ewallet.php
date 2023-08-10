@@ -27,17 +27,17 @@
                                             <i class="bx bx-dots-horizontal text-muted font-size-22"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="#">Yearly</a>
-                                            <a class="dropdown-item" href="#">Monthly</a>
+                                            <a class="dropdown-item" href="ewallet/<?= base64_encode(base64_encode($ds->id_shop)); ?>">Detail E-Wallet</a>
+                                            <!-- <a class="dropdown-item" href="#">Monthly</a>
                                             <a class="dropdown-item" href="#">Weekly</a>
-                                            <a class="dropdown-item" href="#">Today</a>
+                                            <a class="dropdown-item" href="#">Today</a> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <h4 class="mt-2 mb-0 fw-bolder font-size-22">Rp <?= number_format($ds->value_ewallet, 0, ",", "."); ?>,-
+                                <h4 class="mt-2 mb-0 fw-bolder font-size-22" id="<?= base64_encode(base64_encode($ds->id_shop)); ?>">Rp <?= number_format($ds->value_ewallet, 0, ",", "."); ?>,-
                                     <!-- <span class="text-success fw-medium font-size-13 align-middle"> <i class="mdi mdi-arrow-up"></i> 8.34% </span> -->
                                 </h4>
                                 <!-- <div class="d-flex mt-1 align-items-end overflow-hidden">
@@ -55,9 +55,15 @@
                                         <p class="text-muted mt-1">Total Saldo</p>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <button type="button" class="btn btn-sm btnwhitdraw btn-warning waves-effect waves-light" data-value="<?= $ds->id_shop; ?>">
-                                            <i class="mdi mdi-transfer-down align-middle me-2"></i>Whitdraw
-                                        </button>
+                                        <?php if ($ds->value_ewallet == 0) { ?>
+                                            <button type="button" class="btn btn-sm btn-warning waves-effect waves-light" disabled>
+                                                <i class="mdi mdi-transfer-down align-middle me-2"></i>Withdraw
+                                            </button>
+                                        <?php } else { ?>
+                                            <button type="button" class="btn btn-sm btnwhitdraw btn-warning waves-effect waves-light" data-value="<?= $ds->id_shop; ?>">
+                                                <i class="mdi mdi-transfer-down align-middle me-2"></i>Withdraw
+                                            </button>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>

@@ -105,6 +105,23 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes, Withdraw Now!'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": true,
+                        "newestOnTop": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "3000",
+                        "timeOut": "3000",
+                        "extendedTimeOut": "3000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "slideDown",
+                        "hideMethod": "slideUp"
+                    }
                     $.ajax({
                         type: "GET",
                         url: "./wdnow/"+btoa(a),
@@ -116,6 +133,10 @@ $(document).ready(function() {
                                         'Your E-Wallet Successfully Withdrawn.!',
                                         'success'
                                     )
+                            notifLaunch('success', 'Your E-Wallet Successfully Withdrawn.!');
+                            checkNotif();
+                            // $('"#'+result.id+'"').html(result.value)
+                            document.getElementById(result.id).innerHTML = result.value;
                         },
                         error: function(result) {
                             console.log(result)
@@ -124,6 +145,8 @@ $(document).ready(function() {
                                         'Your E-Wallet Failed Withdrawn.!',
                                         'error'
                                     )
+                            notifLaunch('error', 'Your E-Wallet Failed Withdrawn.!');
+                            checkNotif();
                         }
                     })
 

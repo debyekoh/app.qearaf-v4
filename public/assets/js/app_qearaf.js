@@ -286,6 +286,34 @@
 // window.fn1 = function fn1() {
 //     alert("external fn clicked");
 // }
+
+window.notifLaunch = function notifLaunch(status,message) {
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "3000",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "slideDown",
+        "hideMethod": "slideUp"
+    }
+    if(status=="success"){
+        toastr["success"](message)
+    }
+    if(status=="error"){
+        toastr["error"](message)
+    }
+}
+
+
 window.checkNotif = function checkNotif() {
     $.ajax({
         type: "POST",
