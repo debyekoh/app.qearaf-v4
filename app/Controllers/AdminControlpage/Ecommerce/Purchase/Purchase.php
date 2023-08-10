@@ -335,7 +335,7 @@ class Purchase extends BaseController
             'debt_userid_log'           => $idpayCode,   // for "debt_account_log"
             'log_key'                   => strtoupper($this->request->getVar('no_purchase')),
             'log_code'                  => $payCode,
-            'log_description'           => "Purchase",
+            'log_description'           => "Purchase " . strtoupper($this->request->getVar('no_purchase')),
             'link'                      => "detail/purchaseview/" . substr(strtoupper($this->request->getVar('no_purchase')), 0, 6) .  substr(strtoupper($this->request->getVar('no_purchase')), 7, 1) .  substr(strtoupper($this->request->getVar('no_purchase')), 9, 2) .  substr(strtoupper($this->request->getVar('no_purchase')), 12),
             'last_value'                => $valuelast,
             'trans_value'               => $paymentvaluetrue,

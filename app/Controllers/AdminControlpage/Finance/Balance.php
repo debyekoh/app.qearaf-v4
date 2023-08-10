@@ -23,46 +23,71 @@ class Balance extends BaseController
 
     public function index()
     {
-        $this->builder = $this->db->table('shop');
-        $this->builder->join('balance_ewallet', 'balance_ewallet.ewallet_shopid = shop.id_shop');
-        if (in_groups('1') == true || in_groups('2') == true) {
-            $queryballance = $this->builder->get();
-        } else {
-            $this->builder->Where('member_id', user()->member_id);
-            $this->builder->orderBy('marketplace', 'asc');
-            $queryballance = $this->builder->get();
-        }
 
-        // $test = $this->builder->get();
+        $head_page =
+            '
+            <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
+	
+            ';
+        $js_page =
+            '
+            <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/mybalancelog.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/imask/imask.min.js"></script>
+            
+            ';
+
+        $datapage = array(
+            'titlepage'          => 'Balance',
+            'tabshop'            => $this->tabshop,
+            'head_page'          => $head_page,
+            'js_page'            => $js_page,
+            'databalanceaccount' => $this->ballanceAccount->find(user_id()),
+        );
+        return view('pages_admin/adm_finance_ballance', $datapage);
+    }
+
+    public function log_show()
+    {
+        $this->builder = $this->db->table('balance_account_log');
+        if (!in_groups('1') && !in_groups('2')) {
+            $this->builder->where('balance_userid_log', user_id());
+        }
+        $this->builder->orderBy('created_at', 'DESC');
+        $query = $this->builder->get();
+
         $data = array();
         $row = array();
         $no = 0;
 
-        foreach ($queryballance->getResult() as $i) {
-            $data[] = $this->ballanceEWallet->find($i->id_shop);
-            // $row = [
-            //     "no" => $no++,
-            //     "idpro" => $i->productspro_id,
-            //     "name" => $i->pro_name,
-            //     "model" => $i->pro_model,
-            //     "skuno" => $i->pro_part_no,
-            //     "price" => $i->pro_price_seller,
-            //     "current_stock" => $i->pro_current_stock,
-            //     "statusproduct" => $i->pro_active,
-            //     "editable" => $editable,
-            //     "deletable" => $deletable,
-            //     "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
-            // ];
-            // $data[] = $row;
+        foreach ($query->getResult() as $i) {
+            if ($i->log_code == "IN-FEWAL") {
+                $idshop = substr($i->log_description, 14);
+                $shopname = $this->shopModel->find($idshop)['name_shop'] . " " . $this->shopModel->find($idshop)['marketplace'];
+                $log_transaction = $shopname;
+            };
+            if ($i->log_code == "OP-BALA") {
+                $log_transaction = substr($i->log_description, 9);
+            };
+
+            $row = [
+                "no"                => $no++,
+                "log_code"          => $i->log_code,
+                "log_transaction"   => $log_transaction,
+                "link"              => $i->link,
+                'last_value'        => number_format($i->last_value, 0, ",", ".") . ",-",
+                'trans_value'       => number_format($i->trans_value, 0, ",", ".") . ",-",
+                'new_value'         => number_format($i->new_value, 0, ",", ".") . ",-",
+                'date'              => $i->created_at
+            ];
+            $data[] = $row;
         }
 
-
-        $datapage = array(
-            'titlepage' => 'Balance',
-            'tabshop' => $this->tabshop,
-            'databalanceaccount' => $this->ballanceAccount->find(user_id()),
-            'databalanceewallet' => $queryballance->getResult(),
-        );
-        return view('pages_admin/adm_finance_ballance', $datapage);
+        // dd($data);
+        return $this->response->setJSON([
+            'results' => $data,
+        ]);
     }
 }

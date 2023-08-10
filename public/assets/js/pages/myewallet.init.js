@@ -105,23 +105,6 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes, Withdraw Now!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    toastr.options = {
-                        "closeButton": true,
-                        "debug": true,
-                        "newestOnTop": true,
-                        "progressBar": true,
-                        "positionClass": "toast-top-center",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "3000",
-                        "timeOut": "3000",
-                        "extendedTimeOut": "3000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "slideDown",
-                        "hideMethod": "slideUp"
-                    }
                     $.ajax({
                         type: "GET",
                         url: "./wdnow/"+btoa(a),
