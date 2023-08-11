@@ -215,8 +215,10 @@ $('#shop').change(function() {
             console.log(data.status);
             if(data.status == "Reseller"){
                 var checkres = "true"
+                $("#group_shop").val(data.status);
             }else {
                 var checkres = "false"
+                $("#group_shop").val("NotReseller");
             }
 
             if($("#bfr").val() == checkres){
@@ -360,6 +362,9 @@ $("#adnpm").on('click', function() {
                     return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
                     // return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
                 }
+            }, { 
+                name: 'SKU',
+                hidden: true,
             }, {
                 name: "Description",
                 formatter: function(e) {
@@ -406,10 +411,12 @@ $("#adnpm").on('click', function() {
                 limit: 10
             },
             sort: !0,
-            search: !0,
+            search: {
+                selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.skuno : cell
+              },
             server: {
                 url: $("#BaseUrl").val()+'listproduct',
-                then: data => data.results.map(product => [product.image, [product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
+                then: data => data.results.map(product => [product.image, product.skuno,[product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
             },
             style: {
                 table: {
@@ -452,6 +459,7 @@ function addProduct(sku) {
         url: $("#BaseUrl").val()+'selected',
         data: {
             sku: sku,
+            sshop: $("#group_shop").val(),
         },
         
         success: function(respone) {

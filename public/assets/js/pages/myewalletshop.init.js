@@ -18,7 +18,10 @@ $(document).ready(function() {
 function renderList(pageid) {
     let page_id = btoa(btoa(pageid));
     new gridjs.Grid({
-        columns: ["No", {
+        columns: [{ 
+            name: 'No',
+            hidden: true,
+        },{
             name: "Description",
             formatter: function(e) {
                 if(e[0]=="IN-SALES"){

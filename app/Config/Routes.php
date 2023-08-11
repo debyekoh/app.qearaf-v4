@@ -110,7 +110,11 @@ $routes->get('/delivery', 'AdminControlpage\Delivery\Delivery::index');
 
 //Warehouse
 $routes->get('/stock', 'AdminControlpage\Warehouse\Stock::index');
+$routes->get('/stockShow/(:any)', 'AdminControlpage\Warehouse\Stock::show/$1');
+$routes->get('/gcs/(:any)', 'AdminControlpage\Warehouse\Stock::get_current_stock/$1');
+$routes->post('/ucs/(:any)', 'AdminControlpage\Warehouse\Stock::update_current_stock/$1');
 $routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index');
+$routes->get('/historyinoutLog', 'AdminControlpage\Warehouse\HistoryInOut::historyLog');
 
 //Finance
 $routes->get('/summaryfinance', 'AdminControlpage\Finance\SummaryFinance::index');

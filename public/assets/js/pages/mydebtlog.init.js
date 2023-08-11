@@ -1,6 +1,9 @@
 
     new gridjs.Grid({
-        columns: ["No", {
+        columns: [{ 
+            name: 'No',
+            hidden: true,
+        }, {
             name: "Description",
             formatter: function(e) {
                 if(e[0]=="TOP-DEB"){

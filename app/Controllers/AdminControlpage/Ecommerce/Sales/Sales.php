@@ -182,20 +182,11 @@ class Sales extends BaseController
     public function list()
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_show, pro_active, pro_current_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model,pro_price_reseler, pro_price_seller, pro_show, pro_active, pro_current_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        $this->builder->notLike('pro_group', 'Consumable');
         $query = $this->builder->get();
-
-
-
-        $datapage = array(
-            'myproduct' => $this->productsModel->findAll(),
-        );
-
-        $dataarray = array(
-            'productname' => $this->productsModel->findAll(),
-        );
 
         if (in_groups('1') == true || in_groups('2') == true) {
             $editable = true;
@@ -219,7 +210,6 @@ class Sales extends BaseController
                 "name" => $i->pro_name,
                 "model" => $i->pro_model,
                 "skuno" => $i->pro_part_no,
-                "price" => $i->pro_price_seller,
                 "current_stock" => $i->pro_current_stock,
                 "statusproduct" => $i->pro_active,
                 "editable" => $editable,
@@ -232,8 +222,6 @@ class Sales extends BaseController
         return $this->response->setJSON([
             'status' => true,
             'response' => 'Success show data',
-            // 'results' => $this->productsModel->findAll(),
-            // 'results' => $query->getResult(),
             'results' => $data,
         ]);
     }
@@ -241,12 +229,19 @@ class Sales extends BaseController
     public function selectedP()
     {
         $skuno = $this->request->getVar('sku');
+        $status_shop = $this->request->getVar('sshop');
         $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        if ($status_shop == "Reseller") {
+            $pricegroup = $this->productspriceModel->find($pro_id)['pro_price_reseler'];
+        }
+        if ($status_shop == "NotReseller") {
+            $pricegroup = $this->productspriceModel->find($pro_id)['pro_price_seller'];
+        }
         $dataselect = array(
             'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
             'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
             'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
-            'price' => $this->productspriceModel->find($pro_id)['pro_price_seller'],
+            'price' => $pricegroup,
         );
 
         return $this->response->setJSON([
