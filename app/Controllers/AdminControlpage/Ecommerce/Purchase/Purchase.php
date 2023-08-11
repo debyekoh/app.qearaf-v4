@@ -5,6 +5,7 @@ namespace App\Controllers\AdminControlpage\Ecommerce\Purchase;
 use App\Controllers\BaseController;
 use App\Models\ProductsModel;
 use App\Models\ProductsStockModel;
+use App\Models\ProductsStockLogModel;
 use App\Models\ProductsPriceModel;
 use App\Models\ProductsShowModel;
 use App\Models\ProductsGroupModel;
@@ -28,6 +29,7 @@ class Purchase extends BaseController
     protected $listCategoryPurchaseModel;
     protected $productsModel;
     protected $productsstockModel;
+    protected $productsstockLogModel;
     protected $productspriceModel;
     protected $productsshowModel;
     protected $productsgroupModel;
@@ -45,6 +47,7 @@ class Purchase extends BaseController
         $this->productspriceModel = new ProductsPriceModel();
         $this->productsModel = new ProductsModel();
         $this->productsstockModel = new ProductsStockModel();
+        $this->productsstockLogModel = new ProductsStockLogModel();
         $this->productsshowModel = new ProductsShowModel();
         $this->productsgroupModel = new ProductsGroupModel();
         $this->productscategoryModel = new ProductsCategoryModel();
@@ -285,6 +288,7 @@ class Purchase extends BaseController
     public function save()
     {
         $dataPurchaseDetail = array();
+        $datastockUpdate = array();
         $priceArray = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
             $dataPurchaseDetail[] = array(
@@ -298,8 +302,32 @@ class Purchase extends BaseController
                 'pro_qty'               => $this->request->getVar('qty')[$a],
             );
 
+            $currentstock = $this->productsstockModel->find($this->request->getVar('proid')[$a])['pro_current_stock'];
+            $trans_stock = $currentstock + $this->request->getVar('qty')[$a];
+            $new_stock = $currentstock + $this->request->getVar('qty')[$a];
+            $datastockUpdate[] = array(
+                'pro_id'                => $this->request->getVar('proid')[$a],
+                'pro_current_stock'     => $currentstock + $this->request->getVar('qty')[$a],
+            );
+
+            $productsStockLog = array(
+                'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
+                'log_key'                   => date("ymd") . "/PURCHASE/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/PURCHASE/")->findAll()) + 1),
+                'log_code'                  => "PURCHASE",
+                'log_description'           => "PURCHASE " . strtoupper($this->request->getVar('no_purchase')),,
+                'link'                      => "detail/purchaseview/" . substr(strtoupper($this->request->getVar('no_purchase')), 0, 6) .  substr(strtoupper($this->request->getVar('no_purchase')), 7, 1) .  substr(strtoupper($this->request->getVar('no_purchase')), 9, 2) .  substr(strtoupper($this->request->getVar('no_purchase')), 12),
+                'last_value'                => $currentstock,
+                'trans_value'               => $trans_stock,
+                'new_value'                 => $new_stock,
+            );
+
+
+
+
             $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
         }
+
+
 
         if ($this->request->getVar('paymethod') == 1) {                         //ONLINE PAYMENT
             $statuspurchase = "Lunas";
@@ -408,11 +436,12 @@ class Purchase extends BaseController
 
 
 
-        // dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate, $dataLogTrans);
+        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate, $dataLogTrans, $datastockUpdate);
 
         $this->db->transBegin();
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);
+        $this->productsstockModel->updateBatch($datastockUpdate, 'pro_id');
 
         if ($payCode == "OP-EWAL") {            //ONLINE PAYMENT -> By: E-Wallet
             $this->ballanceEWallet->update(['ewallet_shopid' => $idpayCode], ['value_ewallet' => $valuetoupdate]);
