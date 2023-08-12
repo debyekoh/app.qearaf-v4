@@ -81,19 +81,43 @@ class HistoryInOut extends BaseController
 
         foreach ($query->getResult() as $i) {
             if ($i->log_code == "CHANGE-STOCK") {
-                $idpro = substr($i->log_description, 13);
-                $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = null;
+                // $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
             };
+            if ($i->log_code == "PURCHASE") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 9);
+                // $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
+            };
+            if ($i->log_code == "SALES") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 6);
+                // $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
+            };
+            if ($i->log_code == "CANCEL-SALES") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 7);
+                // $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
+            };
+            if ($i->log_code == "RETURN-SALES") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 7);
+            };
+            $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
+
+
 
             $row = [
-                "no"                => $no++,
-                "log_code"          => $i->log_code,
-                "log_transaction"   => $log_transaction,
-                "link"              => $i->link,
-                'last_value'        => $i->last_value,
-                'trans_value'       => $i->trans_value,
-                'new_value'         => $i->new_value,
-                'date'              => $i->created_at
+                "no"                    => $no++,
+                "no_transaction"        => $no_transaction,
+                "log_code"              => $i->log_code,
+                "log_transaction"       => $log_transaction,
+                "link"                  => $i->link,
+                'last_value'            => $i->last_value,
+                'trans_value'           => $i->trans_value,
+                'new_value'             => $i->new_value,
+                'date'                  => $i->created_at
             ];
             $data[] = $row;
         }

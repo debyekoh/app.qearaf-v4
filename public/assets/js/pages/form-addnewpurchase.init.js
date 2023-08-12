@@ -566,17 +566,18 @@ $("#adnpm").on('click', function() {
                     //         '</li>' 
                     //     )
                         const string4 = new String("'"+e[1]+"'");
-                        if(e[0]!=0){
+                        // if(e[0]!=0){
                         return gridjs.html(
                             '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
                                 '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
                             '</button>'
-                        )}else{
-                        return gridjs.html(
-                            '<button type="button" class="btn btn-sm btn-soft-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
-                                '<i class="mdi mdi-close-box-multiple-outline font-size-12 align-middle me-2"></i> Kosong'+
-                            '</button>'
-                        )}
+                        )
+                        // }else{
+                        // return gridjs.html(
+                        //     '<button type="button" class="btn btn-sm btn-soft-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                        //         '<i class="mdi mdi-close-box-multiple-outline font-size-12 align-middle me-2"></i> Kosong'+
+                        //     '</button>'
+                        // )}
                         
                 }
             }],

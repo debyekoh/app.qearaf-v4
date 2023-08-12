@@ -289,6 +289,7 @@ class Purchase extends BaseController
     {
         $dataPurchaseDetail = array();
         $datastockUpdate = array();
+        $productsStockLog = array();
         $priceArray = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
             $dataPurchaseDetail[] = array(
@@ -303,18 +304,18 @@ class Purchase extends BaseController
             );
 
             $currentstock = $this->productsstockModel->find($this->request->getVar('proid')[$a])['pro_current_stock'];
-            $trans_stock = $currentstock + $this->request->getVar('qty')[$a];
+            $trans_stock = $this->request->getVar('qty')[$a];
             $new_stock = $currentstock + $this->request->getVar('qty')[$a];
             $datastockUpdate[] = array(
                 'pro_id'                => $this->request->getVar('proid')[$a],
                 'pro_current_stock'     => $currentstock + $this->request->getVar('qty')[$a],
             );
 
-            $productsStockLog = array(
+            $productsStockLog[] = array(
                 'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
-                'log_key'                   => date("ymd") . "/PURCHASE/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/PURCHASE/")->findAll()) + 1),
+                'log_key'                   => date("ymd") . "/PURCHASE/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/PURCHASE/")->findAll()) + 1 + $a),
                 'log_code'                  => "PURCHASE",
-                'log_description'           => "PURCHASE " . strtoupper($this->request->getVar('no_purchase')),,
+                'log_description'           => "PURCHASE " . strtoupper($this->request->getVar('no_purchase')),
                 'link'                      => "detail/purchaseview/" . substr(strtoupper($this->request->getVar('no_purchase')), 0, 6) .  substr(strtoupper($this->request->getVar('no_purchase')), 7, 1) .  substr(strtoupper($this->request->getVar('no_purchase')), 9, 2) .  substr(strtoupper($this->request->getVar('no_purchase')), 12),
                 'last_value'                => $currentstock,
                 'trans_value'               => $trans_stock,
@@ -436,11 +437,12 @@ class Purchase extends BaseController
 
 
 
-        dd($this->request->getVar(), $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate, $dataLogTrans, $datastockUpdate);
+        // dd($this->request->getVar(), $productsStockLog, $dataPurchaseDetail, $dataPurchase, $dataNotification, $purchcategoryname, $paymentvalue,  $idpayCode, $valuetoupdate, $dataLogTrans, $datastockUpdate);
 
         $this->db->transBegin();
         $this->purchaseModel->insert($dataPurchase);
         $this->purchaseDetailModel->insertBatch($dataPurchaseDetail);
+        $this->productsstockLogModel->insertBatch($productsStockLog);
         $this->productsstockModel->updateBatch($datastockUpdate, 'pro_id');
 
         if ($payCode == "OP-EWAL") {            //ONLINE PAYMENT -> By: E-Wallet
@@ -550,6 +552,8 @@ class Purchase extends BaseController
                 $this->builder->like('category_name', $tab);
             }
         }
+        $this->builder->orderBy('date_purchase', 'desc');
+        $this->builder->orderBy('created_at', 'desc');
         $query = $this->builder->get();
 
         if (in_groups('4') == true) {
