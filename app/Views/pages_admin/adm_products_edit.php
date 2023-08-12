@@ -142,7 +142,7 @@
                                     <div class="col-lg-4">
                                         <div class="mb-3">
                                             <label class="form-label" for="currentstock">Current Stock</label>
-                                            <input id="currentstock" name="currentstock" placeholder="Enter Current Stock" type="number" class="form-control" value="<?= (old('currentstock')) ? (old('currentstock')) : $DataStock['pro_current_stock']; ?>">
+                                            <input id="currentstock" name="currentstock" placeholder="Enter Current Stock" type="number" class="form-control" value="<?= (old('currentstock')) ? (old('currentstock')) : $DataStock['pro_current_stock']; ?>" disabled>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">

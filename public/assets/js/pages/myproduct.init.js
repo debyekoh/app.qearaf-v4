@@ -48,7 +48,7 @@ new gridjs.Grid({
             if(parseInt(e[0]) > parseInt(e[1]) && parseInt(e[0]) <= (parseInt(e[1])+5)){
                 return gridjs.html('<span class="stock badge border border-warning text-warning font-size-14">' + e[0] + ' Pcs</span>')
             }
-            if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) < parseInt(e[2])){
+            if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) <= parseInt(e[2])){
                 return gridjs.html('<span class="stock badge border border-dark text-dark font-size-14">' + e[0] + ' Pcs</span>')
             }
             if(parseInt(e[0]) > parseInt(e[2])){
