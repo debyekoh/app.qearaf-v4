@@ -9,27 +9,27 @@
                 if(e[0]=="CHANGE-STOCK"){
                     return gridjs.html(
                         '<p class="mb-0 text-start">'+
-                            '<b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>'+
+                            '<b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
                 if(e[0]=="PURCHASE"){
                     return gridjs.html(
                         '<p class="mb-0 text-start">'+
-                            '<b>Purchase <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>'+
+                            '<b>Purchase <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
                 if(e[0]=="SALES"){
                     return gridjs.html(
                         '<p class="mb-0 text-start">'+
-                            '<b>Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-danger"><b>( -'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>'+
+                            '<b>Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-danger"><b>( -'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
                 if(e[0]=="CANCEL-SALES"){
                     return gridjs.html(
                         '<p class="mb-0 text-start">'+
-                            '<b>Cancel Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>'+
+                            '<b>Cancel Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
                 if(e[0]=="RETURN-SALES"){
                     return gridjs.html(
                         '<p class="mb-0 text-start">'+
-                            '<b>Return Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>'+
+                            '<b>Return Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
             }
         },"Date"],
