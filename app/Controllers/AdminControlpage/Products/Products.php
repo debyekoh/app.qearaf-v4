@@ -318,17 +318,41 @@ class Products extends BaseController
         // ]);
     }
 
+    public function selected()
+    {
+        $skuno = $this->request->getVar('sku');
+        $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
+        $dataselect = array(
+            'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
+            'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
+            'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
+            'price' => '0',
+        );
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success',
+            // 'results' => $this->productsModel->findAll(),
+            // 'results' => $query->getResult(),
+            'results' => $dataselect,
+        ]);
+    }
+
     public function create()
     {
         $head_page =
             '
-            <link href="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
+            <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link href="' . base_url() . 'assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
 	
             ';
         $js_page =
             '
-            <script src="http://localhost/app.qearaf-v4/public/assets/js/pages/form-createproduct.init.js"></script>
-            <script src="http://localhost/app.qearaf-v4/public/assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/form-createproduct.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="' . base_url() . 'assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
             

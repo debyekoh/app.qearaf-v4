@@ -31,6 +31,16 @@
                         '<p class="mb-0 text-start">'+
                             '<b>Return Sales <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
                         '</p>')}
+                if(e[0]=="EDIT-SALES-LAST"){
+                    return gridjs.html(
+                        '<p class="mb-0 text-start">'+
+                            '<b>Change Sales (Last) <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-success"><b>( +'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
+                        '</p>')}
+                if(e[0]=="EDIT-SALES-NEW"){
+                    return gridjs.html(
+                        '<p class="mb-0 text-start">'+
+                            '<b>Change Sales (New) <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[6]+'</a></b>. <b>Change Stock <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a></b>, Qty: <u class="text-danger"><b>( -'+e[5]+' )pcs</b></u> Change from  <b><u>'+e[3]+' pcs</u> </b> to <b><u>'+e[4]+' pcs</u></b>.'+
+                        '</p>')}
             }
         },"Date"],
         pagination: {

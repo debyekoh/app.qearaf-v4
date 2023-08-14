@@ -60,6 +60,7 @@ $routes->match(['get', 'post'], '/setting_account/dds', 'AdminControlpage\Users\
 // Products
 $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
 $routes->get('/myproducts/show', 'AdminControlpage\Products\Products::show');
+$routes->post('/selectedcp', 'AdminControlpage\Products\Products::selected'); //AjaxModal
 $routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'role:SuAdmin']);
 $routes->get('/product/(:any)', 'AdminControlpage\Products\Products::detail/$1', ['filter' => 'role:SuAdmin']);
 $routes->post('/saveproduct', 'AdminControlpage\Products\Products::save', ['filter' => 'role:SuAdmin']);

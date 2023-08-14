@@ -48,6 +48,7 @@
                                                     <div class="col-lg-4">
 
                                                         <div id="slmp" class="form-floating mb-3">
+                                                            <input type="text" class="form-control font-size-16" name="group_shop" id="group_shop" value="<?= $dataSales['statusshop']; ?>" hidden>
                                                             <select class="form-select font-size-16 fw-bold shop inewsalesinfo" name="shop" id="shop" aria-label="Floating label select example">
                                                                 <option disabled value>Select your shop</option>
                                                                 <option selected value="<?= $dataSales['id_shop']; ?>"><?= $dataSales['name_shop']; ?> - <?= $dataSales['marketplace']; ?></option>

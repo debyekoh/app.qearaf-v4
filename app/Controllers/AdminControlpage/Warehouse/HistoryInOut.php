@@ -104,6 +104,14 @@ class HistoryInOut extends BaseController
                 $idpro = $i->products_stock_log_proid;
                 $no_transaction = substr($i->log_description, 7);
             };
+            if ($i->log_code == "EDIT-SALES-LAST") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 15);
+            };
+            if ($i->log_code == "EDIT-SALES-NEW") {
+                $idpro = $i->products_stock_log_proid;
+                $no_transaction = substr($i->log_description, 15);
+            };
             $log_transaction = $this->productsModel->find($idpro)['pro_name'] . " " . $this->productsModel->find($idpro)['pro_model'];
 
 

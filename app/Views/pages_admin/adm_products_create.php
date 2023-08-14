@@ -212,9 +212,14 @@
                                         <label class="form-label" for="price">Bundling Product</label>
                                         <div class="mt-2">
                                             <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                            <input type="checkbox" id="switch" name="bundingproduct" switch="bool" checked value="1" />
+                                            <input type="checkbox" id="switch" name="bundingproduct" switch="bool" value="0" />
                                             <label for="switch" data-on-label="Yes" data-off-label="No"></label>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="row_bundling">
+                                    <div id="div_tabel_bundling">
                                     </div>
                                 </div>
 
@@ -359,7 +364,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-<script>
+<!-- <script>
     function addCard() {
         const card = document.querySelectorAll('.imagecard').length + 1;
         var image = "'image" + card + "'";
@@ -428,6 +433,6 @@
         var string = generateUUID().replace("-", "").substring(0, 8);
         $('#new_id').val(string.toUpperCase());
     });
-</script>
+</script> -->
 
 <?= $this->endSection(); ?>

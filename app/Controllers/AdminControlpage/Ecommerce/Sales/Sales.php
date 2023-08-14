@@ -1003,8 +1003,10 @@ class Sales extends BaseController
             $name_shop = $query1->getRow()->name;
             if ($name_shop == "Reseller") {
                 $reseller_status = "true";
+                $statusshop = "Reseller";
             } else {
                 $reseller_status = "false";
+                $statusshop = "NotReseller";
             };
             $dataSales = array(
                 'id_sales'              => $id_sales,
@@ -1026,7 +1028,7 @@ class Sales extends BaseController
                 'paymethod'             => $this->salesModel->find($id_sales)['paymethod'],
                 'itemsales'             => $this->salesdetailModel->where('no_sales', $this->salesModel->find($id_sales)['no_sales'])->orderBy('id_sales_detail', 'asc')->findAll(),
                 'dataSalesDetail'       => $dataSalesDetail,
-                // 'status'                => "Process",
+                'statusshop'            => $statusshop,
             );
 
             if (in_groups('1') == true || in_groups('2') == true) {
@@ -1050,15 +1052,46 @@ class Sales extends BaseController
 
     public function update($idsales)
     {
-        // dd($this->request->getVar());
-        // for ($a = 0; $a < count($this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales'))->findAll()); $a++) {
-        //     $dataLastSalesDetail[] = $this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales'))->find()[$a];
-        // }
-
-        // $dataLastSalesDetail = $this->salesdetailModel->where('no_sales', $this->request->getVar('no_sales')))->findAll();
+        $IDSalestoDelete = $this->salesModel->where('no_sales', $this->request->getVar('no_sales'))->find()[0]['id_sales'];
         $NoSalestoDelete = $this->request->getVar('no_sales');
+        $dataLaststockUpdate = array();
+        $productsLastStockLog = array();
+
+        $this->db->transBegin();
+
+        // dd(count($this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()));
+        for ($a = 0; $a < count($this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()); $a++) {
+            $pro_idLast = $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_id'];
+            $currentstockLast = $this->productsstockModel->find($pro_idLast)['pro_current_stock'];
+            $trans_stockLast = $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'];
+            $new_stockLast = $currentstockLast + $trans_stockLast;
+
+            $dataLaststockUpdate[] = array(
+                'pro_id'                => $pro_idLast,
+                'pro_current_stock'     => $currentstockLast + $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'],
+            );
+
+            $productsLastStockLog[] = array(
+                'products_stock_log_proid'  => $pro_idLast,
+                'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                'log_code'                  => "EDIT-SALES-LAST",
+                'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
+                'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
+                'last_value'                => $currentstockLast,
+                'trans_value'               => $trans_stockLast,
+                'new_value'                 => $new_stockLast,
+            );
+        }
+
+        // dd($dataLaststockUpdate, $productsLastStockLog);
+
+        $this->productsstockLogModel->insertBatch($productsLastStockLog);
+        $this->productsstockModel->updateBatch($dataLaststockUpdate, 'pro_id');
+        $this->salesdetailModel->delete($NoSalestoDelete);
 
         $dataNewSalesDetail = array();
+        $datastockUpdateNew = array();
+        $productsStockLogNew = array();
         $priceArray = array();
         for ($b = 0; $b < count($this->request->getVar('proid')); $b++) {
             $dataNewSalesDetail[] = array(
@@ -1071,8 +1104,31 @@ class Sales extends BaseController
                 'pro_price'             => $this->request->getVar('price')[$b],
                 'pro_qty'               => $this->request->getVar('qty')[$b],
             );
+
+            $currentstockNew = $this->productsstockModel->find($this->request->getVar('proid')[$b])['pro_current_stock'];
+            $trans_stockNew = $this->request->getVar('qty')[$b];
+            $new_stockNew = $currentstockNew - $this->request->getVar('qty')[$b];
+            $datastockUpdateNew[] = array(
+                'pro_id'                => $this->request->getVar('proid')[$b],
+                'pro_current_stock'     => $currentstockNew - $this->request->getVar('qty')[$b],
+            );
+
+            $productsStockLogNew[] = array(
+                'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
+                'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
+                'log_code'                  => "EDIT-SALES-NEW",
+                'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('idsales')), 0, 6) .  substr(strtoupper($this->request->getVar('idsales')), 7, 1) .  substr(strtoupper($this->request->getVar('idsales')), 9, 2) .  substr(strtoupper($this->request->getVar('idsales')), 12),
+                'last_value'                => $currentstockNew,
+                'trans_value'               => $trans_stockNew,
+                'new_value'                 => $new_stockNew,
+            );
+
             $priceArray[] = $this->request->getVar('price')[$b] * $this->request->getVar('qty')[$b];
         }
+
+        $this->productsstockLogModel->insertBatch($productsStockLogNew);
+        $this->productsstockModel->updateBatch($datastockUpdateNew, 'pro_id');
 
         $dataSales = array(
             'id_sales'              => strtoupper($this->request->getVar('idsales')),
@@ -1092,24 +1148,27 @@ class Sales extends BaseController
         );
         // dd($dataNewSalesDetail, $dataSales);
 
-        $this->salesdetailModel->delete($NoSalestoDelete);
+
         $this->salesdetailModel->insertBatch($dataNewSalesDetail);
         $this->salesModel->update(['id_sales' => $this->request->getVar('idsales')], $dataSales);
 
-
-        if ($this->db->affectedRows() > 0) {
-            $msg = 'No Sales ' . $this->request->getVar('no_sales') . ' Berhasil di Perbarui';
+        if ($this->db->transStatus() === false) {
+            $this->db->transRollback();
+            $msg = strtoupper($this->request->getVar('no_sales')) . ' Gagal di Tambahkan';
+            session()->setFlashdata('error', $msg);
+            return redirect()->to('/sales');
+        } else {
+            $this->db->transCommit();
+            $msg = strtoupper($this->request->getVar('no_sales')) . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
             return redirect()->to('/sales');
         }
-        // $this->db->transStart();
-        // $this->db->query('AN SQL QUERY...');
-        // $this->db->query('ANOTHER QUERY...');
-        // $this->db->transComplete();
 
-        // if ($this->db->transStatus() === false) {
-        //     // generate an error... or use the log_message() function to log your error
-        // }
+        /* if ($this->db->affectedRows() > 0) {
+            $msg = 'No Sales ' . $this->request->getVar('no_sales') . ' Berhasil di Perbarui';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/sales');
+        } */
     }
 
 
