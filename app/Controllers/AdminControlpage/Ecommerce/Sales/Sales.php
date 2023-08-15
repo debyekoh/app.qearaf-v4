@@ -393,6 +393,9 @@ class Sales extends BaseController
         $dataSalesDetail = array();
         $datastockUpdate = array();
         $productsStockLog = array();
+        $proidArray = array();
+        $proidToDelete = array();
+        $proidToPush = array();
         $priceArray = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
             $dataSalesDetail[] = array(
@@ -406,14 +409,33 @@ class Sales extends BaseController
                 'pro_qty'               => $this->request->getVar('qty')[$a],
             );
 
+            $proidArray[] = $this->request->getVar('proid')[$a];
+
             $currentstock = $this->productsstockModel->find($this->request->getVar('proid')[$a])['pro_current_stock'];
             $trans_stock = $this->request->getVar('qty')[$a];
             $new_stock = $currentstock - $this->request->getVar('qty')[$a];
+
+
+            if ($this->productsModel->find($this->request->getVar('proid')[$a])['pro_bundling'] == 1) {
+
+                // array_push($proidToDelete, $this->request->getVar('proid')[$a]);
+                $id_bundling =  $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$a])->findAll();
+                $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$a])->findAll();
+                for ($aa = 0; $aa < count($id_bundling); $aa++) {
+                    $datastockItemBundlingUpdate[] = array(
+                        'pro_id'                => $id_bundling[$aa]['pro_id_bundling_item'],
+                        'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] - $this->request->getVar('qty')[$a],
+                    );
+                };
+            };
+
 
             $datastockUpdate[] = array(
                 'pro_id'                => $this->request->getVar('proid')[$a],
                 'pro_current_stock'     => $currentstock - $this->request->getVar('qty')[$a],
             );
+
+            unset($datastockUpdate[array_search($this->request->getVar('proid')[$a], $datastockUpdate)]);
 
             $productsStockLog[] = array(
                 'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
@@ -428,6 +450,17 @@ class Sales extends BaseController
 
             $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
         }
+
+        // for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
+
+        // $array = array('apple', 'orange', 'strawberry', 'blueberry', 'kiwi');
+        // unset($array[array_search('strawberry', $array)]);
+
+
+        // for ($a = 0; $a < count($proidToDelete); $a++) {
+        //     unset($proidArray[array_search($proidToDelete[$a], $proidArray)]);
+        // }
+        dd($id_bundling, $datastockItemBundlingUpdate, $proidArray, $datastockUpdate, $productsStockLog);
 
         $dataSales = array(
             'id_sales'              => strtoupper($this->request->getVar('id_sales')),
