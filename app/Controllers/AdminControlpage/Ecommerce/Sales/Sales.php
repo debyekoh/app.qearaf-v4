@@ -4,6 +4,7 @@ namespace App\Controllers\AdminControlpage\Ecommerce\Sales;
 
 use App\Controllers\BaseController;
 use App\Models\ProductsModel;
+use App\Models\ProductsBundlingModel;
 use App\Models\ProductsStockModel;
 use App\Models\ProductsStockLogModel;
 use App\Models\ProductsPriceModel;
@@ -23,6 +24,7 @@ class Sales extends BaseController
     protected $builder;
     protected $builder1;
     protected $productsModel;
+    protected $productsBundlingModel;
     protected $productsstockModel;
     protected $productsstockLogModel;
     protected $productspriceModel;
@@ -41,6 +43,7 @@ class Sales extends BaseController
         helper(['form', 'url']);
         $this->productsModel = new ProductsModel();
         $this->productsstockModel = new ProductsStockModel();
+        $this->productsBundlingModel = new ProductsBundlingModel();
         $this->productsstockLogModel = new ProductsStockLogModel();
         $this->productspriceModel = new ProductsPriceModel();
         $this->productsshowModel = new ProductsShowModel();
@@ -185,7 +188,7 @@ class Sales extends BaseController
     public function list()
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model,pro_price_reseler, pro_price_seller, pro_show, pro_active, pro_current_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_bundling, pro_price_reseler, pro_price_seller, pro_show, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
         $this->builder->notLike('pro_group', 'Consumable');
@@ -207,17 +210,39 @@ class Sales extends BaseController
         $no = 0;
 
         foreach ($query->getResult() as $i) {
+            if ($i->pro_bundling == 1) {
+                $countitembundling = count($this->productsBundlingModel->where('id_bundling', $i->productspro_id)->findAll());
+                $curstockArr = array();
+                $minstockArr = array();
+                $maxstockArr = array();
+                for ($a = 0; $a < $countitembundling; $a++) {
+                    $pro_id         = $this->productsBundlingModel->where('id_bundling', $i->productspro_id)->findAll()[$a]['pro_id_bundling_item'];
+                    $curstockArr[]  = $this->productsstockModel->find($pro_id)['pro_current_stock'];
+                    $minstockArr[]  = $this->productsstockModel->find($pro_id)['pro_min_stock'];
+                    $maxstockArr[]  = $this->productsstockModel->find($pro_id)['pro_max_stock'];
+                }
+                $curstock = min($curstockArr);
+                $minstock = min($minstockArr);
+                $maxstock = max($maxstockArr);
+            } else {
+                $curstock = $i->pro_current_stock;
+                $minstock = $i->pro_min_stock;
+                $maxstock = $i->pro_max_stock;
+            };
+
             $row = [
-                "no" => $no++,
-                "idpro" => $i->productspro_id,
-                "name" => $i->pro_name,
-                "model" => $i->pro_model,
-                "skuno" => $i->pro_part_no,
-                "current_stock" => $i->pro_current_stock,
+                "no"            => $no++,
+                "idpro"         => $i->productspro_id,
+                "name"          => $i->pro_name,
+                "model"         => $i->pro_model,
+                "skuno"         => $i->pro_part_no,
+                "current_stock" => $curstock,
+                "min_stock"     => $minstock,
+                "max_stock"     => $maxstock,
                 "statusproduct" => $i->pro_active,
-                "editable" => $editable,
-                "deletable" => $deletable,
-                "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
+                "editable"      => $editable,
+                "deletable"     => $deletable,
+                "image"         => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
             ];
             $data[] = $row;
         }

@@ -4,6 +4,7 @@ namespace App\Controllers\AdminControlpage\Products;
 
 use App\Controllers\BaseController;
 use App\Models\ProductsModel;
+use App\Models\ProductsBundlingModel;
 use App\Models\ProductsStockModel;
 use App\Models\ProductsPriceModel;
 use App\Models\ProductsShowModel;
@@ -17,6 +18,7 @@ class Products extends BaseController
     protected $db;
     protected $builder;
     protected $productsModel;
+    protected $productsBundlingModel;
     protected $productsstockModel;
     protected $productspriceModel;
     protected $productsshowModel;
@@ -29,6 +31,7 @@ class Products extends BaseController
     {
         helper(['form', 'url']);
         $this->productsModel = new ProductsModel();
+        $this->productsBundlingModel = new ProductsBundlingModel();
         $this->productsstockModel = new ProductsStockModel();
         $this->productspriceModel = new ProductsPriceModel();
         $this->productsshowModel = new ProductsShowModel();
@@ -69,7 +72,7 @@ class Products extends BaseController
     public function show()
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_bundling, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
         $query = $this->builder->get();
@@ -101,23 +104,45 @@ class Products extends BaseController
         $no = 0;
 
         foreach ($query->getResult() as $i) {
+            if ($i->pro_bundling == 1) {
+                $countitembundling = count($this->productsBundlingModel->where('id_bundling', $i->productspro_id)->findAll());
+                $curstockArr = array();
+                $minstockArr = array();
+                $maxstockArr = array();
+                for ($a = 0; $a < $countitembundling; $a++) {
+                    $pro_id         = $this->productsBundlingModel->where('id_bundling', $i->productspro_id)->findAll()[$a]['pro_id_bundling_item'];
+                    $curstockArr[]  = $this->productsstockModel->find($pro_id)['pro_current_stock'];
+                    $minstockArr[]  = $this->productsstockModel->find($pro_id)['pro_min_stock'];
+                    $maxstockArr[]  = $this->productsstockModel->find($pro_id)['pro_max_stock'];
+                }
+                $curstock = min($curstockArr);
+                $minstock = min($minstockArr);
+                $maxstock = max($maxstockArr);
+            } else {
+                $curstock = $i->pro_current_stock;
+                $minstock = $i->pro_min_stock;
+                $maxstock = $i->pro_max_stock;
+            };
+
             $row = [
-                "no" => $no++,
-                "idpro" => $i->productspro_id,
-                "name" => $i->pro_name,
-                "model" => $i->pro_model,
-                "skuno" => $i->pro_part_no,
-                "price" => $i->pro_price_seller,
-                "stock" => $i->pro_current_stock,
-                "minstock" => $i->pro_min_stock,
-                "maxstock" => $i->pro_max_stock,
+                "no"            => $no++,
+                "idpro"         => $i->productspro_id,
+                "name"          => $i->pro_name,
+                "model"         => $i->pro_model,
+                "skuno"         => $i->pro_part_no,
+                "price"         => $i->pro_price_seller,
+                "stock"         => $curstock,
+                "minstock"      => $minstock,
+                "maxstock"      => $maxstock,
                 "statusproduct" => $i->pro_active,
-                "editable" => $editable,
-                "deletable" => $deletable,
-                "image" => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
+                "editable"      => $editable,
+                "deletable"     => $deletable,
+                "image"         => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
             ];
             $data[] = $row;
         }
+
+        // dd($data);
 
         // foreach ($query->getResult() as $i) {
         //     $row[] = $i->pro_model;
@@ -278,10 +303,25 @@ class Products extends BaseController
             );
         }
 
+        if ($this->request->getvar('bundingproduct') == 1) {
+            $count_bdl_pro = count($this->request->getvar('bdl_prosku'));
+            $dataProBundling = array();
+            for ($a = 0; $a < $count_bdl_pro; $a++) {
+                $dataProBundling[] = array(
+                    'id_pro_bundling'       => $this->request->getVar('pro_id') . "/" . $a,
+                    'id_bundling'           => $this->request->getVar('pro_id'),
+                    'pro_id_bundling_item'  => $this->request->getVar('bdl_proid')[$a],
+                );
+            }
+        }
+
+        // dd($dataProduct, $dataPrice, $dataStock, $dataProBundling, $this->request->getFiles());
         ///// Insert to Database
+        $this->db->transBegin();
         $this->productsModel->insert($dataProduct);
         $this->productspriceModel->insert($dataPrice);
         $this->productsstockModel->insert($dataStock);
+        $this->productsBundlingModel->insertBatch($dataProBundling);
         $this->listNotificationModel->insertBatch($dataNotification);
         $a = 1;
         $b = 1;
@@ -301,15 +341,27 @@ class Products extends BaseController
             }
         }
 
+        if ($this->db->transStatus() === false) {
+            $this->db->transRollback();
+            $msg = strtoupper($this->request->getVar('productname')) . ' Gagal di Tambahkan';
+            session()->setFlashdata('error', $msg);
+            return redirect()->to('/myproducts');
+        } else {
+            $this->db->transCommit();
+            $msg = strtoupper($this->request->getVar('productname')) . ' Berhasil di Tambahkan';
+            session()->setFlashdata('success', $msg);
+            return redirect()->to('/myproducts');
+        }
+
 
 
 
         ///// Redirect
-        if ($this->shopModel->affectedRows() > 0 && $this->productspriceModel->affectedRows()) {
-            $msg = $this->request->getVar('productname') . ' Berhasil di Tambahkan';
-            session()->setFlashdata('success', $msg);
-            return redirect()->to('/myproducts');
-        }
+        // if ($this->shopModel->affectedRows() > 0 && $this->productspriceModel->affectedRows()) {
+        //     $msg = $this->request->getVar('productname') . ' Berhasil di Tambahkan';
+        //     session()->setFlashdata('success', $msg);
+        //     return redirect()->to('/myproducts');
+        // }
 
         // return $this->response->setJSON([
         //     'status' => true,
@@ -326,7 +378,12 @@ class Products extends BaseController
             'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
             'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
             'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
-            'price' => '0',
+            // 'curstock' => $this->productsstockModel->find($pro_id)['pro_current_stock'],
+            // 'minstock' => $this->productsstockModel->find($pro_id)['pro_min_stock'],
+            // 'maxstock' => $this->productsstockModel->find($pro_id)['pro_max_stock'],
+            'basicprice' => $this->productspriceModel->find($pro_id)['pro_price_basic'],
+            'reselerprice' => $this->productspriceModel->find($pro_id)['pro_price_reseler'],
+            'sellerprice' => $this->productspriceModel->find($pro_id)['pro_price_seller'],
         );
 
         return $this->response->setJSON([

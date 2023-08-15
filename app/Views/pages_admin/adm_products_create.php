@@ -138,7 +138,7 @@
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" id="rstock">
                                     <div class="col-lg-4">
                                         <div class="mb-3">
                                             <label class="form-label" for="currentstock">Current Stock</label>

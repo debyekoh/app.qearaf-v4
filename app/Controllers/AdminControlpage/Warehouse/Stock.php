@@ -79,6 +79,7 @@ class Stock extends BaseController
             $this->builder->like('pro_group', 'Consumable');
             $this->builder->notLike('pro_name', 'Iklan');
         }
+        $this->builder->notLike('pro_bundling', '1');
         $query = $this->builder->get();
         // dd($query->getResult());
 

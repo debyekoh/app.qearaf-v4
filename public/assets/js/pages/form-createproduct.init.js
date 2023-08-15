@@ -12,6 +12,17 @@ document.addEventListener("DOMContentLoaded", function() {
 document.getElementById('switch').addEventListener('click', event => {
     if(event.target.checked) {
         console.log("Checkbox checked!");
+        $("#currentstock").attr('readonly', true);
+        $("#minstock").attr('readonly', true);
+        $("#maxstock").attr('readonly', true);
+        $("#currentstock").val('0');
+        $("#minstock").val('0');
+        $("#maxstock").val('0');
+        $("#basicprice").attr('readonly', true);
+        $("#resellerprice").attr('readonly', true);
+        $("#sellingprice").attr('readonly', true);
+        // $("#rstock").attr('hidden', true);
+        $('#switch').val(1);
         $('#div_tabel_bundling').append('<div class="mb-2" id="tbl_lpro_bundling"></div>');
         $('#tbl_lpro_bundling').append(
                 '<div class="row mb-3">'+
@@ -59,6 +70,17 @@ document.getElementById('switch').addEventListener('click', event => {
         
     }else{
         console.log("Checkbox Unchecked!");
+        $("#currentstock").attr('readonly', false);
+        $("#minstock").attr('readonly', false);
+        $("#maxstock").attr('readonly', false);
+        $("#currentstock").val('');
+        $("#minstock").val('');
+        $("#maxstock").val('');
+        $("#basicprice").attr('readonly', false);
+        $("#resellerprice").attr('readonly', false);
+        $("#sellingprice").attr('readonly', false);
+        // $("#rstock").attr('hidden', false);
+        $('#switch').val(0);
         $('#tbl_lpro_bundling').remove()
     }
 })
@@ -174,8 +196,9 @@ function addProduct(sku) {
         success: function(respone) {
                 console.log("next: "+nextiprorow);
                 console.log("Modal Closed");
-                $('#adnpm').removeClass("btn-outline-danger");
-
+                // $('#adnpm').removeClass("btn-outline-danger");
+                
+                
                 $('#addNewProduct').modal('hide');
                 if ($("#listsalesproduct > tbody > tr").hasClass("norow")) {
                     $(".norow").remove();
@@ -196,37 +219,23 @@ function addProduct(sku) {
                     '<tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">'+
                         '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
                         '<td>'+
+                            '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" disabled hidden>'+
                             '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                            '<p class="text-muted mb-0">SKU: '+sku+'</p>'+
-                            '<p class="text-muted mb-0">@Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
+                            '<input name="bdl_proid[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.proid+'" hidden>'+
+                            '<input name="bdl_proname[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.name+'" disabled hidden>'+
                         '</td>'+
-                        '<td >'+
-                            '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" hidden></input>'+
-                            '<input class="form-control" type="text" name=proid[] placeholder="0" value="'+respone.results.proid+'" style="display:none;">'+
-                            '<input class="form-control" type="text" name=proimg[] placeholder="0" value="'+respone.results.image+'" style="display:none;">'+
-                            '<input class="form-control" type="text" id="priceR'+nextiprorow+'" name=price[] placeholder="0" value="'+respone.results.price+'" style="display:none;">'+
-                            '<input class="form-control qtyinput" id="qtyR'+nextiprorow+'" type="number" min="0" name=qty[] placeholder="0" value="0">'+
+                        '<td>'+
+                            '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+sku+'</a></h5>'+
+                            '<input name="bdl_prosku[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+sku+'" hidden>'+
+                            '<input name="bdlbasicprice[]" placeholder="Enter Brand Product" type="number" class="form-control Bsp" value="'+respone.results.basicprice+'" hidden>'+
+                            '<input name="bdlpricereseler[]" placeholder="Enter Brand Product" type="number" class="form-control PRl" value="'+respone.results.reselerprice+'" hidden>'+
+                            '<input name="bdlpriceseller[]" placeholder="Enter Brand Product" type="number" class="form-control PSl" value="'+respone.results.sellerprice+'" hidden>'+
                         '</td>'+
                         '<td class="text-center"><button type="button" onclick="delProduct('+stringrow+')" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
                     '</tr>'
                 );
 
-                $(".lstr").before(
-                    '<tr id="RS'+nextiprorow+'" class="listprosummary rowprosalessummary '+sku+'">'+
-                        '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="'+respone.results.image+'" title="'+respone.results.image+'" class="avatar-md"></th>'+
-                        '<td>'+
-                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                            '<p class="text-muted mb-0 RSprice" id="RSprice'+nextiprorow+'" hidden>'+respone.results.price+'</p>'+
-                            '<p class="text-muted mb-0 RSqty" id="RSqty'+nextiprorow+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+nextiprorow+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0" id="RSpricetx'+nextiprorow+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
-                        '</td>'+
-                        '<td id="RSsubprice'+nextiprorow+'">Rp 0</td>'+
-                    '</tr>'
-                );
-
                 
-
 
                 $('#listsalesproduct input[type=number]').each(function() {
                     if ($(this).val() != 0 ) {
@@ -241,10 +250,41 @@ function addProduct(sku) {
                         // return false
                     }
                 });
+
+                calculate_01();
             }
         });
     }
 }
+
+
+function calculate_01(){
+    var basicpriceval = 0;
+    var pricereselerval = 0;
+    var pricesellerval = 0;
+    $('.Bsp').each(function() {
+        basicpriceval += parseInt($(this).val());
+    });
+    $('.PRl').each(function() {
+        pricereselerval += parseInt($(this).val());
+    }); 
+    $('.PSl').each(function() {
+        pricesellerval += parseInt($(this).val());
+    }); 
+
+    $('#basicprice').val(basicpriceval);
+    $('#resellerprice').val(pricereselerval);
+    $('#sellingprice').val(pricesellerval);
+
+    var CurSto = new Array();
+    $('.CurS').each(function(){
+        CurSto.push($(this).val());
+    })
+
+    console.log(CurSto)
+    console.log(Math.min(CurSto))
+
+};
 
 function addCard() {
     const card = document.querySelectorAll('.imagecard').length + 1;
@@ -267,6 +307,14 @@ function addCard() {
     );
     // console.log(image);
 
+}
+
+function delProduct(rID) {
+    console.log(rID);
+    $("#R"+rID.substring(1)).remove();
+    $("#RS"+rID.substring(1)).remove();
+    if($('.listpro').length == 0){$('#listsalesproduct > tbody:last-child').append('<tr class="norow"><td colspan="4" class="text-center">-- NoProduct --</td></tr>')}
+    if($('.listprosummary').length == 0){$(".lstr").before('<tr class="norowsummary"><td colspan="3" class="text-center">-- NoProduct --</td></tr>')}
 }
 
 function imageRemove() {
