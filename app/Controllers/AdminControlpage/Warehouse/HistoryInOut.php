@@ -73,6 +73,7 @@ class HistoryInOut extends BaseController
         //     $this->builder->where('balance_userid_log', user_id());
         // }
         $this->builder->orderBy('created_at', 'DESC');
+        $this->builder->orderBy('log_code', 'DESC');
         $query = $this->builder->get();
 
         $data = array();

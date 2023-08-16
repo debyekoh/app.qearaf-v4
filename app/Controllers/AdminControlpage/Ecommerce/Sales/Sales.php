@@ -386,6 +386,26 @@ class Sales extends BaseController
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
 
+    // static function unique_multidim_arraynew($datastockUpdate, $key, $addedKey)
+    // {
+    //     $temp_array_a = [];
+    //     $key_array_a = [];
+    //     $ia = 0;
+
+    //     foreach ($datastockUpdate as $val) {
+    //         if (!in_array($val[$key], $key_array_a)) {
+    //             $key_array_a[$ia] = $val[$key];
+    //             $temp_array_a[$ia] = $val;
+    //         } else {
+    //             $pkey = array_search($val[$key], $key_array_a);
+    //             $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
+    //             // die;
+    //         }
+    //         $ia++;
+    //     }
+    //     return $temp_array_a;
+    // }
+
     public function save()
     {
         // dd($this->request->getVar());
@@ -393,9 +413,8 @@ class Sales extends BaseController
         $dataSalesDetail = array();
         $datastockUpdate = array();
         $productsStockLog = array();
+        $productsStockLogLast = array();
         $proidArray = array();
-        $proidToDelete = array();
-        $proidToPush = array();
         $priceArray = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
             $dataSalesDetail[] = array(
@@ -415,29 +434,54 @@ class Sales extends BaseController
             $trans_stock = $this->request->getVar('qty')[$a];
             $new_stock = $currentstock - $this->request->getVar('qty')[$a];
 
+            if ($this->productsModel->find($this->request->getVar('proid')[$a])['pro_bundling'] == 0) {
+                $rowstock = array(
+                    'pro_id'                => $this->request->getVar('proid')[$a],
+                    'pro_current_stock'     => $currentstock,
+                    'trans_value'           => $trans_stock,
+                );
+                array_push($datastockUpdate, $rowstock);
 
-            if ($this->productsModel->find($this->request->getVar('proid')[$a])['pro_bundling'] == 1) {
+                $rowstockLog = array(
+                    'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
+                    'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $a),
+                    'log_code'                  => "SALES",
+                    'log_description'           => "SALES " . strtoupper($this->request->getVar('id_sales')),
+                    'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                    'last_value'                => $currentstock,
+                    'trans_value'               => $trans_stock,
+                    'new_value'                 => $new_stock,
+                );
 
-                // array_push($proidToDelete, $this->request->getVar('proid')[$a]);
+                array_push($productsStockLog, $rowstockLog);
+            } else {
                 $id_bundling =  $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$a])->findAll();
                 $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$a])->findAll();
                 for ($aa = 0; $aa < count($id_bundling); $aa++) {
-                    $datastockItemBundlingUpdate[] = array(
+                    $rowstock = array(
                         'pro_id'                => $id_bundling[$aa]['pro_id_bundling_item'],
-                        'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] - $this->request->getVar('qty')[$a],
+                        // 'pro_last_stock'        => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'           => $trans_stock,
                     );
+                    array_push($datastockUpdate, $rowstock);
+
+                    $rowstockLog = array(
+                        'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
+                        'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $a),
+                        'log_code'                  => "SALES",
+                        'log_description'           => "SALES " . strtoupper($this->request->getVar('id_sales')),
+                        'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                        'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'               => $trans_stock,
+                        'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] - $trans_stock,
+                    );
+
+                    array_push($productsStockLog, $rowstockLog);
                 };
-            };
+            }
 
-
-            $datastockUpdate[] = array(
-                'pro_id'                => $this->request->getVar('proid')[$a],
-                'pro_current_stock'     => $currentstock - $this->request->getVar('qty')[$a],
-            );
-
-            unset($datastockUpdate[array_search($this->request->getVar('proid')[$a], $datastockUpdate)]);
-
-            $productsStockLog[] = array(
+            $productsStockLogLast[] = array(
                 'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
                 'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $a),
                 'log_code'                  => "SALES",
@@ -451,16 +495,87 @@ class Sales extends BaseController
             $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
         }
 
-        // for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
+        // dd($datastockUpdate);
 
-        // $array = array('apple', 'orange', 'strawberry', 'blueberry', 'kiwi');
-        // unset($array[array_search('strawberry', $array)]);
+        function unique_multidim_arraynew($datastockUpdate, $key, $addedKey)
+        {
+            $temp_array_a = [];
+            $key_array_a = [];
+            $ia = 0;
+
+            foreach ($datastockUpdate as $val) {
+                if (!in_array($val[$key], $key_array_a)) {
+                    $key_array_a[$ia] = $val[$key];
+                    $temp_array_a[$ia] = $val;
+                } else {
+                    $pkey = array_search($val[$key], $key_array_a);
+                    $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
+                    // die;
+                }
+                $ia++;
+            }
+            return $temp_array_a;
+        }
+        $datastockUpdateUnique = unique_multidim_arraynew($datastockUpdate, "pro_id", "trans_value");   //menjumlahkan item yang sama
+        $datastockUpdateNew = array();
+        $rowdatastockUpdateNew = array();
+        foreach ($datastockUpdateUnique as $il) {                                                       //mengurai curren stock dengan transaction value
+            $rowdatastockUpdateNew = [
+                'pro_id'                => $il['pro_id'],
+                'pro_current_stock'     => $il['pro_current_stock'] - $il['trans_value'],
+            ];
+            $datastockUpdateNew[] = $rowdatastockUpdateNew;
+        }
+        $productsStockLogNew = array();
+        $rowproductsStockLogNew = array();
+        $cn = 0;                                              //mengurai curren stock dengan transaction value
+        foreach ($datastockUpdateUnique as $il) {
+            $rowproductsStockLogNew = [
+                'products_stock_log_proid'  => $il['pro_id'],
+                'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $cn++),
+                'log_code'                  => "SALES",
+                'log_description'           => "SALES " . strtoupper($this->request->getVar('id_sales')),
+                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                'last_value'                => $il['pro_current_stock'],
+                'trans_value'               => $il['trans_value'],
+                'new_value'                 => $il['pro_current_stock'] - $il['trans_value'],
+            ];
+            $productsStockLogNew[] = $rowproductsStockLogNew;
+        }
 
 
-        // for ($a = 0; $a < count($proidToDelete); $a++) {
-        //     unset($proidArray[array_search($proidToDelete[$a], $proidArray)]);
-        // }
-        dd($id_bundling, $datastockItemBundlingUpdate, $proidArray, $datastockUpdate, $productsStockLog);
+        /* $array = [
+            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
+            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
+            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
+            ['serial_no' => '049-BZ', 'name' => 'GEM COIL Z100 0900-CSE', 'qty' => 91, 'trf' => 2, 'newqty' => 0],
+            ['serial_no' => '019-PG', 'name' => 'PGI COIL GL02 0922-ZEE', 'qty' => 18, 'trf' => 2, 'newqty' => 0],
+        ];
+
+        function unique_multidim_array($array, $key, $addedKey)
+        {
+            $temp_array = [];
+            $key_array = [];
+            $i = 0;
+
+            foreach ($array as $val) {
+                if (!in_array($val[$key], $key_array)) {
+                    $key_array[$i] = $val[$key];
+                    $temp_array[$i] = $val;
+                } else {
+                    $pkey = array_search($val[$key], $key_array);
+                    $temp_array[$pkey][$addedKey] += $val[$addedKey];
+                    // die;
+                }
+                $i++;
+            }
+            return $temp_array;
+        }
+        $nArray = unique_multidim_array($array, "serial_no", "trf"); */
+
+
+        // dd($datastockUpdate, $datastockUpdateUnique, $datastockUpdateNew, $productsStockLog, $productsStockLogLast, $productsStockLogNew);
+        // dd($datastockUpdateNew, $productsStockLogNew);
 
         $dataSales = array(
             'id_sales'              => strtoupper($this->request->getVar('id_sales')),
@@ -520,8 +635,8 @@ class Sales extends BaseController
         $this->db->transBegin();
         $this->salesModel->insert($dataSales);
         $this->salesdetailModel->insertBatch($dataSalesDetail);
-        $this->productsstockLogModel->insertBatch($productsStockLog);
-        $this->productsstockModel->updateBatch($datastockUpdate, 'pro_id');
+        $this->productsstockLogModel->insertBatch($productsStockLogNew);
+        $this->productsstockModel->updateBatch($datastockUpdateNew, 'pro_id');
         $this->listNotificationModel->insertBatch($dataNotification);
 
         if ($this->db->transStatus() === false) {
@@ -718,43 +833,113 @@ class Sales extends BaseController
                 $no_sales = $this->salesModel->find($id_sales)['no_sales'];
 
                 $datastockUpdate = array();
-                $productsStockLog = array();
+                // $productsStockLog = array();
                 for ($a = 0; $a < count($this->salesdetailModel->where('no_sales', $no_sales)->orderBy('id_sales_detail', 'asc')->findAll()); $a++) {
                     $pro_id = $this->salesdetailModel->where('no_sales', $no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_id'];
                     $currentstock = $this->productsstockModel->find($pro_id)['pro_current_stock'];
                     $trans_stock = $this->salesdetailModel->where('no_sales', $no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_qty'];
                     $new_stock = $currentstock + $trans_stock;
 
-                    $datastockUpdate[] = array(
-                        'pro_id'                => $pro_id,
-                        'pro_current_stock'     => $new_stock,
-                    );
+                    if ($this->productsModel->find($pro_id)['pro_bundling'] == 0) {
+                        $rowstock = array(
+                            'pro_id'                => $pro_id,
+                            'pro_current_stock'     => $currentstock,
+                            'trans_value'           => $trans_stock,
+                        );
+                        array_push($datastockUpdate, $rowstock);
 
-                    $productsStockLog[] = array(
-                        'products_stock_log_proid'  => $pro_id,
-                        'log_key'                   => date("ymd") . "/" . strtoupper($status_sales) . "-SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/" . strtoupper($status_sales) . "-SALES/")->findAll()) + 1 + $a),
+                        // $rowstockLog = array(
+                        //     'products_stock_log_proid'  => $pro_id,
+                        //     'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                        //     'log_code'                  => "EDIT-SALES-LAST",
+                        //     'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
+                        //     'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
+                        //     'last_value'                => $currentstockLast,
+                        //     'trans_value'               => $trans_stockLast,
+                        //     'new_value'                 => $new_stockLast,
+                        // );
+
+                        // array_push($productsStockLog, $rowstockLog);
+                    } else {
+                        $id_bundling =  $this->productsBundlingModel->where('id_bundling', $pro_id)->findAll();
+                        $this->productsBundlingModel->where('id_bundling', $pro_id)->findAll();
+                        for ($aa = 0; $aa < count($id_bundling); $aa++) {
+                            $rowstock = array(
+                                'pro_id'                => $id_bundling[$aa]['pro_id_bundling_item'],
+                                'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                                'trans_value'           => $trans_stock,
+                            );
+                            array_push($datastockUpdate, $rowstock);
+
+                            // $rowstockLog = array(
+                            //     'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
+                            //     'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                            //     'log_code'                  => "EDIT-SALES-LAST",
+                            //     'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
+                            //     'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
+                            //     'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                            //     'trans_value'               => $trans_stockLast,
+                            //     'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] + $trans_stockLast,
+                            // );
+
+                            // array_push($productsLastStockLog, $rowstockLog);
+                        };
+                    }
+                }
+
+
+
+                function unique_multidim_array_cr($datastockUpdate, $key, $addedKey)
+                {
+                    $temp_array_a = [];
+                    $key_array_a = [];
+                    $ia = 0;
+
+                    foreach ($datastockUpdate as $val) {
+                        if (!in_array($val[$key], $key_array_a)) {
+                            $key_array_a[$ia] = $val[$key];
+                            $temp_array_a[$ia] = $val;
+                        } else {
+                            $pkey = array_search($val[$key], $key_array_a);
+                            $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
+                            // die;
+                        }
+                        $ia++;
+                    }
+                    return $temp_array_a;
+                }
+                $datastockUpdateUnique = unique_multidim_array_cr($datastockUpdate, "pro_id", "trans_value");   //menjumlahkan item yang sama
+
+                // dd($datastockUpdateUnique);
+                $datastockUpdateNew = array();
+                $rowdatastockUpdateNew = array();
+                $productsStockLogNew = array();
+                $rowproductsStockLogNew = array();
+                $cn = 0;                                              //mengurai curren stock dengan transaction value
+                foreach ($datastockUpdateUnique as $il) {                                                       //mengurai curren stock dengan transaction value
+                    $rowdatastockUpdateNew = [
+                        'pro_id'                => $il['pro_id'],
+                        'pro_current_stock'     => $il['pro_current_stock'] + $il['trans_value'],
+                    ];
+                    $datastockUpdateNew[] = $rowdatastockUpdateNew;
+                    // }
+                    // foreach ($datastockUpdateUnique_edit as $il) {
+                    $rowproductsStockLogNew = [
+                        'products_stock_log_proid'  => $il['pro_id'],
+                        'log_key'                   => date("ymd") . "/" . strtoupper($status_sales) . "-SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/" . strtoupper($status_sales) . "-SALES/")->findAll()) + 1 + $cn++),
                         'log_code'                  => strtoupper($status_sales) . "-SALES",
                         'log_description'           => strtoupper($status_sales) . " " . $id_sales,
                         'link'                      => "detail/view/" . substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12),
-                        'last_value'                => $currentstock,
-                        'trans_value'               => $trans_stock,
-                        'new_value'                 => $new_stock,
-                    );
-
-                    // $dataProductDetail[] = array(
-                    //     'pro_id'        => $pro_id,
-                    //     'pro_name'      => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
-                    //     'pro_sku'       => $this->productsModel->find($pro_id)['pro_part_no'],
-                    //     'pro_img'       => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_img'],
-                    //     'pro_price'     => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_price'],
-                    //     'pro_qty'       => $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_qty'],
-                    // );
-                    // $salesArray[] = $this->salesdetailModel->where('no_sales', $i->no_sales)->orderBy('id_sales_detail', 'asc')->findAll()[$a]['pro_price'];
+                        'last_value'                => $il['pro_current_stock'],
+                        'trans_value'               => $il['trans_value'],
+                        'new_value'                 => $il['pro_current_stock'] + $il['trans_value'],
+                    ];
+                    $productsStockLogNew[] = $rowproductsStockLogNew;
                 }
 
                 $this->salesModel->update(['id_sales' => $id_sales], ['payment' => 0]);
-                $this->productsstockLogModel->insertBatch($productsStockLog);
-                $this->productsstockModel->updateBatch($datastockUpdate, 'pro_id');
+                $this->productsstockLogModel->insertBatch($productsStockLogNew);
+                $this->productsstockModel->updateBatch($datastockUpdateNew, 'pro_id');
             }
 
 
@@ -1124,28 +1309,108 @@ class Sales extends BaseController
             $trans_stockLast = $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'];
             $new_stockLast = $currentstockLast + $trans_stockLast;
 
-            $dataLaststockUpdate[] = array(
-                'pro_id'                => $pro_idLast,
-                'pro_current_stock'     => $currentstockLast + $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'],
-            );
+            if ($this->productsModel->find($pro_idLast)['pro_bundling'] == 0) {
+                $rowstock = array(
+                    'pro_id'                => $pro_idLast,
+                    'pro_current_stock'     => $currentstockLast,
+                    'trans_value'           => $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'],
+                );
+                array_push($dataLaststockUpdate, $rowstock);
 
-            $productsLastStockLog[] = array(
-                'products_stock_log_proid'  => $pro_idLast,
-                'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                $rowstockLog = array(
+                    'products_stock_log_proid'  => $pro_idLast,
+                    'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                    'log_code'                  => "EDIT-SALES-LAST",
+                    'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
+                    'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
+                    'last_value'                => $currentstockLast,
+                    'trans_value'               => $trans_stockLast,
+                    'new_value'                 => $new_stockLast,
+                );
+
+                array_push($productsLastStockLog, $rowstockLog);
+            } else {
+                $id_bundling =  $this->productsBundlingModel->where('id_bundling', $pro_idLast)->findAll();
+                $this->productsBundlingModel->where('id_bundling', $pro_idLast)->findAll();
+                for ($aa = 0; $aa < count($id_bundling); $aa++) {
+                    $rowstock = array(
+                        'pro_id'                => $id_bundling[$aa]['pro_id_bundling_item'],
+                        'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'           => $this->salesdetailModel->where('no_sales', $NoSalestoDelete)->findAll()[$a]['pro_qty'],
+                    );
+                    array_push($dataLaststockUpdate, $rowstock);
+
+                    $rowstockLog = array(
+                        'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
+                        'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
+                        'log_code'                  => "EDIT-SALES-LAST",
+                        'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
+                        'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
+                        'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'               => $trans_stockLast,
+                        'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] + $trans_stockLast,
+                    );
+
+                    array_push($productsLastStockLog, $rowstockLog);
+                };
+            }
+        }
+
+        function unique_multidim_arraylast_edit($dataLaststockUpdate, $key, $addedKey)
+        {
+            $temp_array_a = [];
+            $key_array_a = [];
+            $ia = 0;
+
+            foreach ($dataLaststockUpdate as $val) {
+                if (!in_array($val[$key], $key_array_a)) {
+                    $key_array_a[$ia] = $val[$key];
+                    $temp_array_a[$ia] = $val;
+                } else {
+                    $pkey = array_search($val[$key], $key_array_a);
+                    $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
+                    // die;
+                }
+                $ia++;
+            }
+            return $temp_array_a;
+        }
+        $datastockUpdateUnique_edit = unique_multidim_arraylast_edit($dataLaststockUpdate, "pro_id", "trans_value");   //menjumlahkan item yang sama
+        $dataLaststockUpdateNew = array();
+        $rowdataLaststockUpdateNew = array();
+        $productsLastStockLogNew = array();
+        $rowproductsLastStockLogNew = array();
+        $cn = 0;                                              //mengurai curren stock dengan transaction value
+        foreach ($datastockUpdateUnique_edit as $il) {                                                       //mengurai curren stock dengan transaction value
+            $rowdataLaststockUpdateNew = [
+                'pro_id'                => $il['pro_id'],
+                'pro_current_stock'     => $il['pro_current_stock'] + $il['trans_value'],
+            ];
+            $dataLaststockUpdateNew[] = $rowdataLaststockUpdateNew;
+            // }
+            // foreach ($datastockUpdateUnique_edit as $il) {
+            $rowproductsLastStockLogNew = [
+                'products_stock_log_proid'  => $il['pro_id'],
+                'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $cn++),
                 'log_code'                  => "EDIT-SALES-LAST",
                 'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
                 'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
-                'last_value'                => $currentstockLast,
-                'trans_value'               => $trans_stockLast,
-                'new_value'                 => $new_stockLast,
-            );
+                'last_value'                => $il['pro_current_stock'],
+                'trans_value'               => $il['trans_value'],
+                'new_value'                 => $il['pro_current_stock'] + $il['trans_value'],
+            ];
+            $productsLastStockLogNew[] = $rowproductsLastStockLogNew;
         }
 
-        // dd($dataLaststockUpdate, $productsLastStockLog);
+        // dd($dataLaststockUpdate, $dataLaststockUpdateNew, $productsLastStockLog, $datastockUpdateUnique_edit);
+        // dd($dataLaststockUpdateNew, $productsLastStockLogNew);
 
-        $this->productsstockLogModel->insertBatch($productsLastStockLog);
-        $this->productsstockModel->updateBatch($dataLaststockUpdate, 'pro_id');
-        $this->salesdetailModel->delete($NoSalestoDelete);
+        $this->productsstockLogModel->insertBatch($productsLastStockLogNew);                 //OK
+        $this->productsstockModel->updateBatch($dataLaststockUpdateNew, 'pro_id');           //OK
+        $this->salesdetailModel->delete($NoSalestoDelete);                                   //OK
+
+
+        // --------//
 
         $dataNewSalesDetail = array();
         $datastockUpdateNew = array();
@@ -1166,27 +1431,134 @@ class Sales extends BaseController
             $currentstockNew = $this->productsstockModel->find($this->request->getVar('proid')[$b])['pro_current_stock'];
             $trans_stockNew = $this->request->getVar('qty')[$b];
             $new_stockNew = $currentstockNew - $this->request->getVar('qty')[$b];
-            $datastockUpdateNew[] = array(
-                'pro_id'                => $this->request->getVar('proid')[$b],
-                'pro_current_stock'     => $currentstockNew - $this->request->getVar('qty')[$b],
-            );
 
-            $productsStockLogNew[] = array(
-                'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
-                'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
-                'log_code'                  => "EDIT-SALES-NEW",
-                'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
-                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('idsales')), 0, 6) .  substr(strtoupper($this->request->getVar('idsales')), 7, 1) .  substr(strtoupper($this->request->getVar('idsales')), 9, 2) .  substr(strtoupper($this->request->getVar('idsales')), 12),
-                'last_value'                => $currentstockNew,
-                'trans_value'               => $trans_stockNew,
-                'new_value'                 => $new_stockNew,
-            );
+            if ($this->productsModel->find($this->request->getVar('proid')[$b])['pro_bundling'] == 0) {
+                $rowstock = array(
+                    'pro_id'                => $this->request->getVar('proid')[$b],
+                    'pro_current_stock'     => $currentstockNew,
+                    'trans_value'           => $this->request->getVar('qty')[$b],
+                );
+                array_push($datastockUpdateNew, $rowstock);
+
+                $rowstockLog = array(
+                    'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
+                    'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
+                    'log_code'                  => "EDIT-SALES-NEW",
+                    'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                    'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                    'last_value'                => $currentstockNew,
+                    'trans_value'               => $trans_stockNew,
+                    'new_value'                 => $new_stockNew,
+                );
+
+                array_push($productsStockLogNew, $rowstockLog);
+            } else {
+                $id_bundling =  $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$b])->findAll();
+                $this->productsBundlingModel->where('id_bundling', $this->request->getVar('proid')[$b])->findAll();
+                for ($aa = 0; $aa < count($id_bundling); $aa++) {
+                    $rowstock = array(
+                        'pro_id'                => $id_bundling[$aa]['pro_id_bundling_item'],
+                        // 'pro_last_stock'        => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'pro_current_stock'     => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'           => $trans_stockNew,
+                    );
+                    array_push($datastockUpdateNew, $rowstock);
+
+                    $rowstockLog = array(
+                        'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
+                        'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $aa),
+                        'log_code'                  => "EDIT-SALES-NEW",
+                        'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                        'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                        'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
+                        'trans_value'               => $trans_stockNew,
+                        'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] - $trans_stockNew,
+                    );
+
+                    array_push($productsStockLogNew, $rowstockLog);
+                };
+            }
+
+
+
+            // $datastockUpdateNew[] = array(
+            //     'pro_id'                => $this->request->getVar('proid')[$b],
+            //     'pro_current_stock'     => $currentstockNew - $this->request->getVar('qty')[$b],
+            // );
+
+            // $productsStockLogNew[] = array(
+            //     'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
+            //     'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
+            //     'log_code'                  => "EDIT-SALES-NEW",
+            //     'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+            //     'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('idsales')), 0, 6) .  substr(strtoupper($this->request->getVar('idsales')), 7, 1) .  substr(strtoupper($this->request->getVar('idsales')), 9, 2) .  substr(strtoupper($this->request->getVar('idsales')), 12),
+            //     'last_value'                => $currentstockNew,
+            //     'trans_value'               => $trans_stockNew,
+            //     'new_value'                 => $new_stockNew,
+            // );
 
             $priceArray[] = $this->request->getVar('price')[$b] * $this->request->getVar('qty')[$b];
         }
 
-        $this->productsstockLogModel->insertBatch($productsStockLogNew);
-        $this->productsstockModel->updateBatch($datastockUpdateNew, 'pro_id');
+        function unique_multidim_arraynew_edit($datastockUpdateNew, $key, $addedKey)
+        {
+            $temp_array_a = [];
+            $key_array_a = [];
+            $ia = 0;
+
+            foreach ($datastockUpdateNew as $val) {
+                if (!in_array($val[$key], $key_array_a)) {
+                    $key_array_a[$ia] = $val[$key];
+                    $temp_array_a[$ia] = $val;
+                } else {
+                    $pkey = array_search($val[$key], $key_array_a);
+                    $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
+                    // die;
+                }
+                $ia++;
+            }
+            return $temp_array_a;
+        }
+        $datastockUpdateNewUnique_edit = unique_multidim_arraynew_edit($datastockUpdateNew, "pro_id", "trans_value");   //menjumlahkan item yang sama
+        $datastockNewUpdateNew = array();
+        $rowdatastocNewkUpdateNew = array();
+        $productsStockNewLogNew = array();
+        $rowproductsStockNewLogNew = array();
+        $ct = 0;                                              //mengurai curren stock dengan transaction value
+        foreach ($datastockUpdateNewUnique_edit as $il) {                                                       //mengurai curren stock dengan transaction value
+            $rowdatastocNewkUpdateNew = [
+                'pro_id'                => $il['pro_id'],
+                'pro_current_stock'     => $il['pro_current_stock'] - $il['trans_value'],
+            ];
+            $datastockNewUpdateNew[] = $rowdatastocNewkUpdateNew;
+            // }
+            // foreach ($datastockUpdateNewUnique_edit as $il) {
+            $rowproductsStockNewLogNew = [
+                'products_stock_log_proid'  => $il['pro_id'],
+                'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $ct),
+                'log_code'                  => "EDIT-SALES-NEW",
+                'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                'last_value'                => $il['pro_current_stock'],
+                'trans_value'               => $il['trans_value'],
+                'new_value'                 => $il['pro_current_stock'] - $il['trans_value'],
+            ];
+            $productsStockNewLogNew[] = $rowproductsStockNewLogNew;
+        }
+
+
+
+
+
+
+
+
+
+
+        // dd($datastockUpdateNew, $productsStockLogNew, $datastockUpdateNewUnique_edit, $datastockNewUpdateNew, $productsStockNewLogNew);
+
+        $this->productsstockLogModel->insertBatch($productsStockNewLogNew);
+        $this->productsstockModel->updateBatch($datastockNewUpdateNew, 'pro_id');
 
         $dataSales = array(
             'id_sales'              => strtoupper($this->request->getVar('idsales')),
@@ -1206,9 +1578,43 @@ class Sales extends BaseController
         );
         // dd($dataNewSalesDetail, $dataSales);
 
+        $id_shop = $this->request->getVar('shop');
+        $member_id_ownershop = $this->shopModel->where('id_shop', $id_shop)->find()[0]['member_id'];
+        $shopname = $this->shopModel->where('id_shop', $id_shop)->find()[0]['name_shop'] . " " . $this->shopModel->where('id_shop', $id_shop)->find()[0]['marketplace'];
+        $names = ['SuAdmin', 'Admin'];
+        $this->builder = $this->db->table('auth_groups_users');
+        $this->builder->select('member_id, fullname');
+        $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+        $this->builder->join('users', 'users.id= auth_groups_users.user_id');
+        $this->builder->Where('member_id', $member_id_ownershop);
+        $this->builder->orWhereIn('name', $names);
+        $targetgroup = $this->builder->get();
+        $title_notif = strtoupper($this->request->getVar('no_sales'));
+        $notification = "from " . $shopname . " Change Detail";
+        $id_sales = strtoupper($this->request->getVar('idsales'));
+        $key_sales = substr($id_sales, 0, 6) .  substr($id_sales, 7, 1) .  substr($id_sales, 9, 2) .  substr($id_sales, 12);
+        $dataNotification = array();
+        for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
+            $dataNotification[] = array(
+                'path_notif'            => "detail/view/" . $key_sales,
+                'type_notif'            => "Change Sales",
+                'title_notif'           => $title_notif,
+                'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
+                'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
+                'to_user_image'         => null,
+                'from_member_id'        => user()->member_id,
+                'from_fullname'         => user()->fullname,
+                'from_user_image'       => user()->user_image,
+                'notification'          => $notification,
+                'notification_image'    => '',
+                'read_status'           => 1,
+            );
+        }
+
 
         $this->salesdetailModel->insertBatch($dataNewSalesDetail);
         $this->salesModel->update(['id_sales' => $this->request->getVar('idsales')], $dataSales);
+        $this->listNotificationModel->insertBatch($dataNotification);
 
         if ($this->db->transStatus() === false) {
             $this->db->transRollback();
@@ -1252,7 +1658,7 @@ class Sales extends BaseController
         for ($a = 0; $a < $targetgroup->getNumRows(); $a++) {
             $dataNotification[] = array(
                 'path_notif'            => "detail/view/" . $key_sales,
-                'type_notif'            => "New Sales",
+                'type_notif'            => "Change Sales",
                 'title_notif'           => $title_notif,
                 'to_member_id'          => $targetgroup->getResult()[$a]->member_id,
                 'to_fullname'           => $targetgroup->getResult()[$a]->fullname,
