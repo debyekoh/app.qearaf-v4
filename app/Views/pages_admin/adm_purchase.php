@@ -37,7 +37,8 @@
             </div>
 
         </div>
-        <div id="viewPurchase" class="modal fade purchasedetailsModal" tabindex="-1" role="dialog" aria-labelledby="purchasedetailsModalLabel" aria-hidden="true">
+        <div class="modal fade purchasedetailsModal" id="viewPurchase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="purchasedetailsModalLabel" aria-modal="true" role="dialog">
+            <!-- <div id="viewPurchase" class="modal fade purchasedetailsModal" tabindex="-1" role="dialog" aria-labelledby="purchasedetailsModalLabel" aria-hidden="true"> -->
             <div class="modal-dialog modal-fullscreen-sm-down" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -91,17 +92,18 @@
                         </div>
                     </div>
                     <div class="modal-footer" id="ftmod">
-                        <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>
-                        <!-- <div class="container">
-                                <div class="row">
-                                    <div class="col-6 text-start">
-                                        <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <button type="button" class="btn btn-primary bg-gradient waves-effect" data-dismiss="modal">Submit</button>
-                                    </div>
+                        <!-- <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="btnsb" class="btn btn-primary bg-gradient waves-effect">Submit</button> -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6 text-start">
+                                    <button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Cancel</button>
                                 </div>
-                            </div> -->
+                                <div class="col-6 text-end">
+                                    <button type="button" id="btnsb" class="btn btn-primary bg-gradient waves-effect" data-bs-dismiss="modal">Submit</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

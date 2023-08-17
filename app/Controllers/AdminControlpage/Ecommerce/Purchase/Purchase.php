@@ -4,6 +4,7 @@ namespace App\Controllers\AdminControlpage\Ecommerce\Purchase;
 
 use App\Controllers\BaseController;
 use App\Models\ProductsModel;
+use App\Models\ProductsBundlingModel;
 use App\Models\ProductsStockModel;
 use App\Models\ProductsStockLogModel;
 use App\Models\ProductsPriceModel;
@@ -28,6 +29,7 @@ class Purchase extends BaseController
     protected $listSupplierModel;
     protected $listCategoryPurchaseModel;
     protected $productsModel;
+    protected $productsBundlingModel;
     protected $productsstockModel;
     protected $productsstockLogModel;
     protected $productspriceModel;
@@ -46,6 +48,7 @@ class Purchase extends BaseController
         $this->listCategoryPurchaseModel = new ListCategoryPurchaseModel();
         $this->productspriceModel = new ProductsPriceModel();
         $this->productsModel = new ProductsModel();
+        $this->productsBundlingModel = new ProductsBundlingModel();
         $this->productsstockModel = new ProductsStockModel();
         $this->productsstockLogModel = new ProductsStockLogModel();
         $this->productsshowModel = new ProductsShowModel();
@@ -217,6 +220,7 @@ class Purchase extends BaseController
         $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_price_seller, pro_price_basic , pro_show, pro_active, pro_current_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        $this->builder->notLike('pro_bundling', '1');
         if ($params == 1) {
             $key = ['Consumable'];
             $this->builder->whereNotIn('pro_group', $key);

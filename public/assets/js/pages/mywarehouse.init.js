@@ -30,7 +30,7 @@ function rendergridjs1() {
                 if(parseInt(e[0]) > parseInt(e[1]) && parseInt(e[0]) <= (parseInt(e[1])+5)){
                     return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-warning waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
-                if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) < parseInt(e[2])){
+                if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) <= parseInt(e[2])){
                     return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-dark waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
                 if(parseInt(e[0]) > parseInt(e[2])){

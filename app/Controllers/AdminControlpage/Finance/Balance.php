@@ -90,4 +90,27 @@ class Balance extends BaseController
             'results' => $data,
         ]);
     }
+
+    public function paymentTOP()
+    {
+        $nopurchase     = base64_decode(base64_decode(base64_decode($this->request->getVar('np'))));
+        $valpayment     = base64_decode(base64_decode($this->request->getVar('vl')));
+        $currentbalance = $this->ballanceAccount->find(user_id())['value_account'];
+
+        if ($currentbalance >= $valpayment) {
+            return $this->response->setJSON([
+                'status'        => "Success",
+                // 'nopurchase'    => $nopurchase,
+                // 'valpayment'    => $valpayment,
+                // 'balance'       => $currentbalance,
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'        => "Error",
+                'message'      => "You have Insufficient funds in your account..",
+                // 'valpayment'    => $valpayment,
+                // 'balance'       => $currentbalance,
+            ]);
+        }
+    }
 }

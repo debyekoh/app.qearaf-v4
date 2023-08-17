@@ -412,13 +412,19 @@ function vito(s_id , s_name) {
         '<tr>'+
             '<td colspan="3" class="font-size-18 m-0 fw-bold border-bottom-0">'+
                 '<div class="form-floating mb-3">'+
-                    '<input type="text" min="4" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">'+
+                    '<input type="text" min="3" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">'+
                     '<label for="payment">Payment</label>'+
                     '<div class="invalid-feedback">'+
                         'Please Fill in Payment.'+
                     '</div>'+
                     '<input type="number" class="form-control " id="paymentval" name="paymentval" placeholder="Payment Value" hidden>'+
                 '</div>'+
+                '<div class="col-lg-6 mt-3">'+
+                '<div class="form-check form-check-inline p-0 mx-0">'+
+                    '<input type="checkbox" id="switch1" switch="none" >'+
+                    '<label for="switch1" data-on-label="On" data-off-label="Off"></label>'+
+                '</div>'+
+                '<span class="checkboxlabel fw-bold align-top">Payment Auto Input</span></div>'+
             '</td>'+
         '</tr>';
 
@@ -481,34 +487,6 @@ function vito(s_id , s_name) {
                                 'Rp '+subtotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
                             '</td>'+
                         '</tr>'+
-                        // '<tr>'+
-                        //     '<td colspan="2">'+
-                        //         '<h6 class="m-0 text-right">Shipping:</h6>'+
-                        //         '<p class="text-muted mb-0">'+
-                        //         '<img src="./assets/images/services/'+data.detail.ifp.image_services+'" alt="'+data.detail.ifp.image_services+'" style="height: 1.4rem; width: auto;" class="img-fluid">'+
-                        //         '</p>'+
-                        //     ' </td>'+
-                        //     '<td>'+
-                        //         ' Free'+
-                        //     '</td>'+
-                        // '</tr>'+
-                        // '<tr>'+
-                        //     '<td colspan="2">'+
-                        //         '<h6 class="m-0 text-right" id="td_tax">Estimated Tax (10%):</h6>'+
-                        //     ' </td>'+
-                        //     '<td class="text-danger" id="td_tax_val">'+
-                        //         'Rp ('+tax+')'+
-                        //     '</td>'+
-                        // '</tr>'+
-                        // '<tr>'+
-                        //     '<td colspan="2">'+
-                        //         '<h6 class="m-0 text-right">Packaging:</h6>'+
-                        //         '<p class="text-muted mb-0">'+pckgdesc+'</p>'+
-                        //     ' </td>'+
-                        //     '<td>'+
-                        //         ' Rp '+data.detail.ifs.packaging_charge.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
-                        //     '</td>'+
-                        // '</tr>'+
                         '<tr class="border-bottom-0">'+
                             '<td colspan="2">'+
                                 '<h6 class="m-0 text-right">Discount:</h6>'+
@@ -523,6 +501,7 @@ function vito(s_id , s_name) {
                             '</td>'+
                             '<td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">'+
                                 'Rp '+subtotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
+                                '<input type="number" class="form-control " id="billval" name="billval" value="'+subtotal+'" >'+
                             '</td>'+
                         '</tr>'+
                         paymentinput+
@@ -530,128 +509,127 @@ function vito(s_id , s_name) {
                 '</table>'
             )
 
-            // if(data.detail.ifs.status == "Delivery"){
+            document.getElementById('switch1').addEventListener('click', event => {
+                if(event.target.checked) {
+                    console.log("Checkbox checked!");
+                    $('#payment').val($('#billval').val())
+                    $('#paymentval').val($('#billval').val())
+                    $('#payment').attr('disabled', 'disabled')
+                    var masked = IMask(document.getElementById("payment"), {
+                        mask: "Rp. num",
+                        blocks: {
+                            num: {
+                                mask: Number,
+                                thousandsSeparator: " "
+                            }
+                        }
+                    })
+                    // $('#paymentval').val($('#paymentvaldefault').val())
+                    $('.checkboxlabel').removeClass('text-muted')
+                    if ($('#payment').val() != 0 ) {
+                        $('#payment').removeClass("is-invalid");
+                    }
+                    else{
+                        $('#payment').addClass("is-invalid");
+                    }
+                }else{
+                    console.log("Checkbox Unchecked!");
+                    $('#payment').val("")
+                    $('#paymentval').val("")
+                    if ($('#payment').val() != 0 ) {
+                        $('#payment').removeClass("is-invalid");
+                    }
+                    else{
+                        $('#payment').addClass("is-invalid");
+                    }
+                    $('#payment').removeAttr('disabled')
+                    $('.checkboxlabel').addClass('text-muted')
+                }
+            });
+            $("#payment").on('input', function() {
+                console.log($(this).val());
+                var masked = IMask(document.getElementById("payment"), {
+                    mask: "Rp. num",
+                    blocks: {
+                        num: {
+                            mask: Number,
+                            thousandsSeparator: " "
+                        }
+                    }
+                })
+                $('#paymentval').val(masked.unmaskedValue)
+                if ($('#payment').val().length > 4 ) {
+                    $('#payment').removeClass("is-invalid");
+                }
+                else{
+                    $('#payment').addClass("is-invalid");
+                }
+            });
 
-            //     $("#ftmod").html(
-            //         '<div class="container">'+
-            //             '<div class="row">'+
-            //                 '<div class="col-6 text-start">'+
-            //                     '<button type="button" class="btn btn-secondary bg-gradient waves-effect" data-bs-dismiss="modal">Close</button>'+
-            //                 '</div>'+
-            //                 '<div class="col-6 text-end">'+
-            //                     '<button type="button" id="presubmit" class="btn btn-primary bg-gradient waves-effect" data-dismiss="modal">Submit</button>'+
-            //                 '</div>'+
-            //             '</div>'+
-            //         '</div>'
-            //     );
-            // }
+            document.getElementById('btnsb').addEventListener('click', event => {
+                if($('#paymentval').val()!= 0){
+                    console.log("Send"+$('#paymentval').val())
+                    console.log($('#npu').text().substr(1))
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                          confirmButton: 'btn btn-success m-1',
+                          cancelButton: 'btn btn-danger m-1'
+                        },
+                        buttonsStyling: false
+                      })
+                      
+                      swalWithBootstrapButtons.fire({
+                        title: 'Are you sure to pay for this transaction?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Pay it!',
+                        cancelButtonText: 'No, Cancel!',
+                        reverseButtons: true
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "POST",
+                                url: "./payTOP",
+                                dataType: "JSON",
+                                data: {
+                                    np: btoa(btoa(btoa($('#npu').text().substr(1)))),
+                                    vl: btoa(btoa($('#paymentval').val())),
+                                },
+                                success: function(data) {
+                                    if(data.status == "Success")
+                                    swalWithBootstrapButtons.fire(
+                                        'Your Payment Was Successful',
+                                        '',
+                                        'success'
+                                    )
+                                    if(data.status == "Error")
+                                    swalWithBootstrapButtons.fire(
+                                        'Your Payment Failed',
+                                        data.message,
+                                        'error'
+                                      )
+                                }
+                            })
+                                
+                        } else if (
+                          /* Read more about handling dismissals below */
+                          result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                          swalWithBootstrapButtons.fire(
+                            'Your Payment Was Cancelled',
+                            '',
+                            'error'
+                          )
+                        }
+                    })
 
-            // if(data.detail.ifs.status == "Received" || data.detail.ifs.status == "Completed" ){
-            //     let subtotal = 0;
-            //         for (l = 0; l < data.detail.dsl.length; l++) {
-            //             subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
-            //         }
-            //     let pis = data.detail.ifs.payment;
-            //     let as = (parseInt(subtotal)-parseInt(pis-data.detail.ifs.packaging_charge));
-            //     let bs = (parseInt(as) / parseInt(subtotal))*100
-            //     $("#td_tax").html("Tax ("+bs.toFixed(1)+"%)" )
-            //     $("#td_tax_val").html("Rp ("+as.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
-            //     $("#tdesc").html("Payment")
-            //     $("#tval").html("Rp "+pis.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
-            // }
+                }else{
+                    $('#payment').addClass("is-invalid");
+                    console.log("NotSend"+$('#paymentval').val())
+                }
+            })
 
-            // $('#viewSales').on('shown.bs.modal', function () {$("#payment").focus();});
-            
-
-            
-            // $("#payment").on('input', function() {
-            //     console.log("diinput");
-            //     var masked = IMask(document.getElementById("payment"), {
-            //         mask: "Rp. num",
-            //         blocks: {
-            //             num: {
-            //                 mask: Number,
-            //                 thousandsSeparator: " "
-            //             }
-            //         }
-            //     })
-            //     console.log(masked.unmaskedValue);
-            //     if($('#payment').val().length > 4){
-            //         console.log($('#payment').val())
-            //         $('#payment').removeClass("is-invalid");
-            //         $('#payment').addClass("is-valid");
-            //         $('#paymentval').val(masked.unmaskedValue)
-            //         let subtotal = 0;
-            //         for (l = 0; l < data.detail.dsl.length; l++) {
-            //             subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
-            //         }
-            //         let pi = masked.unmaskedValue;
-            //         let a = (parseInt(subtotal)-parseInt(pi-data.detail.ifs.packaging_charge));
-            //         let b = (parseInt(a) / parseInt(subtotal))*100
-            //         console.log(b)
-            //         if(a >= 0 ) {
-            //             $('#profitstring').html("Rp. "+parseInt(a))
-            //             $('#payment').removeClass("is-invalid");
-            //             $('#payment').addClass("is-valid");
-            //             $("#td_tax").html("Tax ("+b.toFixed(1)+"%)" )
-            //             $("#td_tax_val").html("Rp ("+a.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
-            //         }else{
-            //             $('#profitstring').html("Rp. "+parseInt(0))
-            //             $('#payment').removeClass("is-valid");
-            //             $('#payment').addClass("is-invalid");
-            //         }
-            //     }else{
-            //         console.log($('#payment').val())
-            //         $('#payment').removeClass("is-valid");
-            //         $('#payment').addClass("is-invalid");
-            //     }
-            // });
-
-
-            // $("#payment").keydown(function(event){
-            //     if( (event.keyCode == 13)) {
-            //         event.preventDefault();
-            //         console.log("Enter SUBMIT")
-            //         if($('.is-invalid').length == 0) {
-            //             presubmit();
-            //         }
-            //       return false;
-            //     }
-            // });
-
-            // $("#presubmit").on('click', function() {
-            //     console.log("Click SUBMIT")
-            //     console.log($('.is-invalid').length)
-            //     if($('.is-invalid').length == 0) {
-            //         presubmit();
-            //     }
-            // });
-
-            
-            // function presubmit() {
-            //     if($('#payment').val().length > 4){
-            //         $('#payment').removeClass("is-invalid");
-            //         $('#payment').addClass("is-valid");
-            //     }else{
-            //         $('#payment').removeClass("is-valid");
-            //         $('#payment').addClass("is-invalid");
-            //     }
-            
-            //     if($('#payment').val().length > 4){
-            //         console.log("SUBMITED")
-            //         console.log($('#paymentval').val())
-                    
-            //         var s_id = data.detail.ifs.id_sales;
-            //         var s_name = "Received";
-            //         var s_paym = $('#paymentval').val();
-            //         console.log(s_id,s_name,s_paym)
-            //         to(s_id , s_name , s_paym)
-
-            
-            //     }else{
-            //         console.log("Belum Input")
-            //     }
-            // }
         }
 
     })

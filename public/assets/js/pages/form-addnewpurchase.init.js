@@ -522,91 +522,178 @@ $("#adnpm").on('click', function() {
         // $("#table-gridjs").empty();
         $("#table-gridjs").remove();
         $("#divtbl").append('<div id="table-gridjs"></div>');
-        new gridjs.Grid({
-            columns: [{
-                name: "Product",
-                sort: {
-                    enabled: !1
-                },
-                // plugin: {
-                //     component: RowSelection
-                // },
-                formatter: function(e) {
-                    return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
-                    // return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
-                }
-            }, { 
-                name: 'SKU',
-                hidden: true,
-            }, {
-                name: "Description",
-                formatter: function(e) {
-                    // return gridjs.html('<span class="fw-semibold">' + e + "</span>")
-                    return gridjs.html('<h5 class="text-start font-size-12">' + e[0] + '</h5><p class="text-start font-size-12 text-muted mb-0">' + e[1] + "</p>")
-                }
-            }, {
-                name: "Stock",
-                formatter: function(e) {
-                    // return gridjs.html(
-                    //         '<li class="list-inline-item">' +
-                    //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    //         '</li>' 
-                    //     )
-                        if(e!=0){
-                        return gridjs.html(e)}else{
-                        return gridjs.html('<span class="stock badge rounded-pill bg-soft-danger text-danger fw-bold font-size-14">' + e + ' Pcs</span>')}
-                        
-                }
-            }, {
-                name: "Select",
-                formatter: function(e) {
-                    // return gridjs.html(
-                    //         '<li class="list-inline-item">' +
-                    //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    //         '</li>' 
-                    //     )
-                        const string4 = new String("'"+e[1]+"'");
-                        // if(e[0]!=0){
-                        return gridjs.html(
-                            '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
-                                '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
-                            '</button>'
-                        )
-                        // }else{
-                        // return gridjs.html(
-                        //     '<button type="button" class="btn btn-sm btn-soft-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
-                        //         '<i class="mdi mdi-close-box-multiple-outline font-size-12 align-middle me-2"></i> Kosong'+
-                        //     '</button>'
-                        // )}
-                        
-                }
-            }],
-            pagination: {
-                limit: 10
-            },
-            sort: !0,
-            search: {
-                selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.skuno : cell
-              },
-            server: {
-                url: $("#BaseUrl").val()+'listproductp/'+category,
-                then: data => data.results.map(product => [product.image, product.skuno,[product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
-            },
-            style: {
-                table: {
-                },
-                th: {
-                'text-align': 'center'
-                },
-                td: {
-                'text-align': 'center'
-                }
-            } 
-            
-        }).render(document.getElementById("table-gridjs"));
+        rendergridjs(category);
     }
     $('#addNewProduct').on('shown.bs.modal', function () {$(".gridjs-search-input").focus();});
 });
+
+function rendergridjs(category) {
+    const mygrid = new gridjs.Grid({
+        columns: [{
+            name: "Product",
+            sort: {
+                enabled: !1
+            },
+            // plugin: {
+            //     component: RowSelection
+            // },
+            formatter: function(e) {
+                return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
+                // return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
+            }
+        }, { 
+            name: 'SKU',
+            hidden: true,
+        }, {
+            name: "Description",
+            formatter: function(e) {
+                // return gridjs.html('<span class="fw-semibold">' + e + "</span>")
+                return gridjs.html('<h5 class="text-start font-size-12">' + e[0] + '</h5><p class="text-start font-size-12 text-muted mb-0">' + e[1] + "</p>")
+            }
+        }, {
+            name: "Stock",
+            formatter: function(e) {
+                // return gridjs.html(
+                //         '<li class="list-inline-item">' +
+                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                //         '</li>' 
+                //     )
+                    if(e!=0){
+                    return gridjs.html(e)}else{
+                    return gridjs.html('<span class="stock badge rounded-pill bg-soft-danger text-danger fw-bold font-size-14">' + e + ' Pcs</span>')}
+                    
+            }
+        }, {
+            name: "Select",
+            formatter: function(e) {
+                // return gridjs.html(
+                //         '<li class="list-inline-item">' +
+                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                //         '</li>' 
+                //     )
+                    const string4 = new String("'"+e[1]+"'");
+                    // if(e[0]!=0){
+                    return gridjs.html(
+                        '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                            '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
+                        '</button>'
+                    )
+                    // }else{
+                    // return gridjs.html(
+                    //     '<button type="button" class="btn btn-sm btn-soft-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                    //         '<i class="mdi mdi-close-box-multiple-outline font-size-12 align-middle me-2"></i> Kosong'+
+                    //     '</button>'
+                    // )}
+                    
+            }
+        }],
+        pagination: {
+            limit: 10
+        },
+        sort: !0,
+        search: {
+            selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.skuno : cell
+          },
+        server: {
+            url: $("#BaseUrl").val()+'listproductp/'+category,
+            then: data => data.results.map(product => [product.image, product.skuno,[product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
+        },
+        style: {
+            table: {
+            },
+            th: {
+            'text-align': 'center'
+            },
+            td: {
+            'text-align': 'center'
+            }
+        } 
+        
+    }).render(document.getElementById("table-gridjs"));
+
+    mygrid.updateConfig({
+        columns: [{
+            name: "Product",
+            sort: {
+                enabled: !1
+            },
+            // plugin: {
+            //     component: RowSelection
+            // },
+            formatter: function(e) {
+                return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
+                // return gridjs.html('<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar rounded-circle img-thumbnail me-3">')
+            }
+        }, { 
+            name: 'SKU',
+            hidden: true,
+        }, {
+            name: "Description",
+            formatter: function(e) {
+                // return gridjs.html('<span class="fw-semibold">' + e + "</span>")
+                return gridjs.html('<h5 class="text-start font-size-12">' + e[0] + '</h5><p class="text-start font-size-12 text-muted mb-0">' + e[1] + "</p>")
+            }
+        }, {
+            name: "Stock",
+            formatter: function(e) {
+                // return gridjs.html(
+                //         '<li class="list-inline-item">' +
+                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                //         '</li>' 
+                //     )
+                    if(e!=0){
+                    return gridjs.html(e)}else{
+                    return gridjs.html('<span class="stock badge rounded-pill bg-soft-danger text-danger fw-bold font-size-14">' + e + ' Pcs</span>')}
+                    
+            }
+        }, {
+            name: "Select",
+            formatter: function(e) {
+                // return gridjs.html(
+                //         '<li class="list-inline-item">' +
+                //             '<a href="product/'+ e +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
+                //         '</li>' 
+                //     )
+                    const string4 = new String("'"+e[1]+"'");
+                    // if(e[0]!=0){
+                    return gridjs.html(
+                        '<button type="button" onclick="addProduct('+string4+')" class="btn btn-sm btn-soft-info waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                            '<i class="mdi mdi-plus-box-multiple-outline font-size-12 align-middle me-2"></i> Add'+
+                        '</button>'
+                    )
+                    // }else{
+                    // return gridjs.html(
+                    //     '<button type="button" class="btn btn-sm btn-soft-danger waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add">'+
+                    //         '<i class="mdi mdi-close-box-multiple-outline font-size-12 align-middle me-2"></i> Kosong'+
+                    //     '</button>'
+                    // )}
+                    
+            }
+        }],
+        pagination: {
+            limit: 10
+        },
+        sort: !0,
+        search: {
+            selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.skuno : cell
+          },
+        server: {
+            url: $("#BaseUrl").val()+'listproductp/'+category,
+            then: data => data.results.map(product => [product.image, product.skuno,[product.name+' '+product.model,product.skuno], product.current_stock, [product.current_stock,product.skuno]])
+        },
+        style: {
+            table: {
+            },
+            th: {
+            'text-align': 'center'
+            },
+            td: {
+            'text-align': 'center'
+            }
+        } 
+        
+    }).forceRender();
+}
 
 function addProduct(sku) {
     // alert("I want this to appear after the modal has opened! "+ sku);

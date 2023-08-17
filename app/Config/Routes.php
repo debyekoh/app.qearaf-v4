@@ -104,6 +104,7 @@ $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::c
 $routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
+$routes->post('/payTOP', 'AdminControlpage\Finance\Balance::paymentTOP', ['filter' => 'role:SuAdmin,Admin']); //PAYMENT AJAX
 
 
 //Delivery
