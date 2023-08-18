@@ -10,7 +10,15 @@
                     return gridjs.html(
                         // '<div class="fw-semibold">' + e + "</div>"
                         '<p class="mb-0 text-start">'+
-                            '<b>Purchase <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a>  <u>Rp '+e[3]+'</u> </b>, This Balance <b><u>Rp '+e[4]+' </u></b>'+
+                            '<b>Purchase <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a>  <u class="text-danger">Rp '+e[3]+'</u> </b>, This Balance <b><u>Rp '+e[4]+' </u></b>'+
+                        '</p>'
+                        )
+                    }
+                if(e[0]=="OUT-PAYDEBT"){
+                    return gridjs.html(
+                        // '<div class="fw-semibold">' + e + "</div>"
+                        '<p class="mb-0 text-start">'+
+                            '<b>Payment Debt of  <a href="'+$("#BaseUrl").val()+''+e[1]+'">#'+e[2]+'</a>  <u class="text-danger">Rp '+e[3]+'</u> </b>, This Balance <b><u>Rp '+e[4]+' </u></b>'+
                         '</p>'
                         )
                     }

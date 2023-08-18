@@ -310,10 +310,17 @@ class Purchase extends BaseController
             $currentstock = $this->productsstockModel->find($this->request->getVar('proid')[$a])['pro_current_stock'];
             $trans_stock = $this->request->getVar('qty')[$a];
             $new_stock = $currentstock + $this->request->getVar('qty')[$a];
+
+            if ($this->productsModel->find($this->request->getVar('proid')[$a])['pro_category'] == 'IklanAds') {
+                $new_stock = 0;
+            }
+
             $datastockUpdate[] = array(
                 'pro_id'                => $this->request->getVar('proid')[$a],
-                'pro_current_stock'     => $currentstock + $this->request->getVar('qty')[$a],
+                'pro_current_stock'     => $new_stock,
             );
+
+
 
             $productsStockLog[] = array(
                 'products_stock_log_proid'  => $this->request->getVar('proid')[$a],
@@ -548,6 +555,8 @@ class Purchase extends BaseController
 
         $this->builder = $this->db->table('purchase');
         if ($tab == "All") {
+        } else if ($tab == "ListDebt") {
+            $this->builder->where('status', 'Belum Lunas');
         } else {
             $this->builder->join('list_category_purchase', 'list_category_purchase.id = purchase.purch_category');
             if ($tab == "ADSIklan") {
@@ -556,6 +565,7 @@ class Purchase extends BaseController
                 $this->builder->like('category_name', $tab);
             }
         }
+
         $this->builder->orderBy('date_purchase', 'desc');
         $this->builder->orderBy('created_at', 'desc');
         $query = $this->builder->get();

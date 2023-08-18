@@ -130,6 +130,7 @@ $routes->get('/wdnow/(:any)', 'AdminControlpage\Finance\Ewallet::withdrawnow/$1'
 $routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');
 $routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
 $routes->get('/debtList', 'AdminControlpage\Finance\Debt::log_show');
+$routes->get('/debt/listdebt/(:any)', 'AdminControlpage\Finance\Debt::list/$1');
 $routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');
 
 //Users

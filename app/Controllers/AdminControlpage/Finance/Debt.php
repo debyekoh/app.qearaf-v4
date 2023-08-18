@@ -45,6 +45,33 @@ class Debt extends BaseController
         return view('pages_admin/adm_finance_debt', $datapage);
     }
 
+    public function list()
+    {
+        $head_page =
+            '
+            <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
+	
+            ';
+        $js_page =
+            '
+            <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/mydebtlistdetail.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/imask/imask.min.js"></script>
+            
+            ';
+
+        $datapage = array(
+            'titlepage'         => 'Debt',
+            'tabshop'           => $this->tabshop,
+            'head_page'         => $head_page,
+            'js_page'           => $js_page,
+            'datadebtaccount'   => $this->debtAccount->find(user_id()),
+        );
+        return view('pages_admin/adm_finance_debt_list', $datapage);
+    }
+
     public function log_show()
     {
         $this->builder = $this->db->table('debt_account_log');
@@ -61,6 +88,9 @@ class Debt extends BaseController
         foreach ($query->getResult() as $i) {
             if ($i->log_code == "TOP-DEB") {
                 $log_transaction = substr($i->log_description, 9);
+            };
+            if ($i->log_code == "OUT-PAYDEBT") {
+                $log_transaction = substr($i->log_description, 12);
             };
 
             $row = [

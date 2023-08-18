@@ -1,25 +1,7 @@
 
 $(document).ready(function() {
-    // document.querySelector("#toprocess-tab > span.d-none.d-sm-block")
-    $('#purchaseTab').on('click', function () {
-        var regexPattern = /[^A-Za-z]/g;
-        var a = $('button.nav-link.active').prop('id');
-      })
-    var regexPattern = /[^A-Za-z]/g;
-    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
-    $('.gridjs-th-content').text($('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""))
-    var a = $('button.nav-link.active').prop('id');
-    renderPurchase(name)
-    console.log(name)
+    renderPurchase('ListDebt')
 });
-
-$(".nav-link").on('click', function() {
-    var a = $(this).attr('id');
-    var regexPattern = /[^A-Za-z]/g;
-    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
-    console.log(name)
-    renderPurchase(name)
-})
 
 function renderPurchase(name) {
     $("#purchasetabcontent").remove();
@@ -46,7 +28,7 @@ function renderPurchase(name) {
                                 '<div class="flex-shrink-0">'+
                                     '<div class="avatar-md">'+
                                         '<div class="product-img avatar-title img-thumbnail bg-soft-secondary border-0">'+
-                                            '<img src="./assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
+                                            '<img src="'+$("#BaseUrl").val()+'assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -135,7 +117,7 @@ function renderPurchase(name) {
                                                         '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
                                                     '</button>'+
                                                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
-                                                        '<li><a href="detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                                                        '<li><a href="'+$("#BaseUrl").val()+'detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
                                                         btn_gopayment + 
                                                         btn_gocancel +
                                                     '</ul>'+
@@ -159,7 +141,7 @@ function renderPurchase(name) {
             selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
           },
         server: {
-            url: './mypurchase/show/'+name,
+            url: $("#BaseUrl").val()+'mypurchase/show/'+name,
             then: data => data.results.map(purchase => [
                     purchase.no_purchase,          // OK //
                 [   purchase.no_purchase ,         // 0 // OK
@@ -212,7 +194,7 @@ function renderPurchase(name) {
                                 '<div class="flex-shrink-0">'+
                                     '<div class="avatar-md">'+
                                         '<div class="product-img avatar-title img-thumbnail bg-soft-secondary border-0">'+
-                                            '<img src="./assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
+                                            '<img src="'+$("#BaseUrl").val()+'assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -301,7 +283,7 @@ function renderPurchase(name) {
                                                         '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
                                                     '</button>'+
                                                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
-                                                        '<li><a href="detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                                                        '<li><a href="'+$("#BaseUrl").val()+'detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
                                                         btn_gopayment + 
                                                         btn_gocancel +
                                                     '</ul>'+
@@ -325,7 +307,7 @@ function renderPurchase(name) {
             selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
           },
         server: {
-            url: './mypurchase/show/'+name,
+            url: $("#BaseUrl").val()+'mypurchase/show/'+name,
             then: data => data.results.map(purchase => [
                     purchase.no_purchase,          // OK //
                 [   purchase.no_purchase ,         // 0 // OK
@@ -391,7 +373,7 @@ $('#viewSales').modal('hide');
                     if (result.dismiss === Swal.DismissReason.timer) {
                         $.ajax({
                             type: "POST",
-                            url: "./mysales/nextto",
+                            url: $("#BaseUrl").val()+"mysales/nextto",
                             dataType: "JSON",
                             data: {
                                 id: s_id,
@@ -403,7 +385,7 @@ $('#viewSales').modal('hide');
                                 if (data.status == "success") {
                                 var regexPattern = /[^A-Za-z]/g;
                                 var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
-                                renderPurchase(name)
+                                renderPurchase('ListDebt')
                                 if(data.datatab.Process!=0){
                                     $(".proces_span_none").html(
                                         '<i class="mdi mdi-application-settings mdi-24px"></i>'+
@@ -597,7 +579,7 @@ function vito(s_id , s_name) {
     }
     $.ajax({
         type: "POST",
-        url: "./mypurchase/detail",
+        url: $("#BaseUrl").val()+"mypurchase/detail",
         dataType: "JSON",
         data: {
             id: s_id,
@@ -616,7 +598,7 @@ function vito(s_id , s_name) {
                 itemrow += 
                     '<tr>'+
                         '<th scope="row">'+
-                                '<img src="assets/images/product/'+data.detail.dpl[l].pro_img+'" alt="" class="rounded avatar-md">'+
+                                '<img src="'+$("#BaseUrl").val()+'assets/images/product/'+data.detail.dpl[l].pro_img+'" alt="" class="rounded avatar-md">'+
                         '</th>'+
                         '<td>'+
                             ' <div>'+
@@ -771,7 +753,7 @@ function vito(s_id , s_name) {
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: "POST",
-                                url: "./payTOP",
+                                url: $("#BaseUrl").val()+"payTOP",
                                 dataType: "JSON",
                                 data: {
                                     np: btoa(btoa(btoa($('#npu').text().substr(1)))),
@@ -795,7 +777,7 @@ function vito(s_id , s_name) {
                                     var regexPattern = /[^A-Za-z]/g;
                                     var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
                                     console.log(name)
-                                    renderPurchase(name)
+                                    renderPurchase('ListDebt')
                                 }
                             })
                                 
@@ -867,7 +849,7 @@ $("#table-gridjs").on('click', '#btnDel', function() {
     var d = currentRow.find(".skuno").text();
     $.ajax({
         type: "GET",
-        url: "./deleteproduct",
+        url: $("#BaseUrl").val()+"deleteproduct",
         dataType: "JSON",
         data: {
             d: d,
@@ -887,7 +869,7 @@ $("#table-gridjs").on('click', '#btnDel', function() {
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "./deleteproduct",
+                            url: $("#BaseUrl").val()+"deleteproduct",
                             dataType: "JSON",
                             data: {
                                 d: d,

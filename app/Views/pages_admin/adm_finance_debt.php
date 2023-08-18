@@ -20,19 +20,13 @@
                                 <h6 class="mb-0 font-size-15">Debt QEARAF.COM</h6>
                             </div>
 
-                            <!-- <div class="flex-shrink-0">
+                            <div class="flex-shrink-0">
                                 <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="bx bx-dots-horizontal text-muted font-size-22"></i>
+                                    <a href="debt/listdebt/<?= user_id(); ?>">
+                                        <button type="button" class="btn btn-soft-light waves-effect waves-light"><i class="fas fa-expand-arrows-alt font-size-16 align-middle"></i></button>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Yearly</a>
-                                        <a class="dropdown-item" href="#">Monthly</a>
-                                        <a class="dropdown-item" href="#">Weekly</a>
-                                        <a class="dropdown-item" href="#">Today</a>
-                                    </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
 
                         <div>

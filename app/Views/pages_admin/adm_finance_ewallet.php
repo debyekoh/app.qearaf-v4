@@ -23,15 +23,9 @@
 
                                 <div class="flex-shrink-0">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="bx bx-dots-horizontal text-muted font-size-22"></i>
+                                        <a href="ewallet/<?= base64_encode(base64_encode($ds->id_shop)); ?>">
+                                            <button type="button" class="btn btn-soft-light waves-effect waves-light"><i class="fas fa-expand-arrows-alt font-size-16 align-middle"></i></button>
                                         </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a class="dropdown-item" href="ewallet/<?= base64_encode(base64_encode($ds->id_shop)); ?>">Detail E-Wallet</a>
-                                            <!-- <a class="dropdown-item" href="#">Monthly</a>
-                                            <a class="dropdown-item" href="#">Weekly</a>
-                                            <a class="dropdown-item" href="#">Today</a> -->
-                                        </div>
                                     </div>
                                 </div>
                             </div>

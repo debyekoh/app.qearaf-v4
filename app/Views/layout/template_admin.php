@@ -353,9 +353,9 @@
                                 <li><a href="<?= base_url() ?>summaryfinance" data-key="t-finance-summary">Summary Finance</a></li>
                                 <li><a href="<?= base_url() ?>balance" data-key="t-finance-balance">Balance</a></li>
                                 <li><a href="<?= base_url() ?>ewallet" data-key="t-finance-ewallet">E Wallet</a></li>
-                                <li><a href="<?= base_url() ?>incomeprofit" data-key="t-finance-incomeprofit">Income & Profit</a></li>
-                                <li><a href="<?= base_url() ?>debt" data-key="t-finance-debt">Debt</a></li>
                                 <li><a href="<?= base_url() ?>inventoryvalue" data-key="t-finance-inventoryvalue">Inventory Value</a></li>
+                                <li><a href="<?= base_url() ?>debt" data-key="t-finance-debt">Debt</a></li>
+                                <li><a href="<?= base_url() ?>incomeprofit" data-key="t-finance-incomeprofit">Income & Profit</a></li>
                             </ul>
                         </li>
 
