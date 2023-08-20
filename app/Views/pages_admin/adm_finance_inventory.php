@@ -11,19 +11,17 @@
                     <div>
                         <div class="d-flex align-items-center">
                             <div class="avatar bg-light rounded">
-                                <div class="avatar-title rounded bg-soft-success">
-                                    <i class="fas fa-dollar-sign fw-bolder font-size-24 mb-0 text-success"></i>
+                                <div class="avatar-title rounded bg-soft-info">
+                                    <i class="fas fa-warehouse fw-bolder font-size-24 mb-0 text-dark"></i>
                                 </div>
                             </div>
-
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-0 text-white font-size-15">Saldo QEARAF.COM</h6>
+                                <h6 class="mb-0 text-white font-size-15">Inventory QEARAF.COM</h6>
                             </div>
-
                         </div>
 
                         <div>
-                            <h4 class="mt-2 mb-0 text-white fw-bolder font-size-22">Rp <?= number_format($databalanceaccount['value_account'], 0, ",", "."); ?>,-
+                            <h4 class="mt-2 mb-0 text-white fw-bolder font-size-22">Rp <?= number_format($invvalue, 0, ",", "."); ?>,-
                             </h4>
                         </div>
                     </div>

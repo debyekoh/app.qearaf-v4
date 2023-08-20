@@ -10,7 +10,7 @@
             <ul class="nav nav-tabs nav-tabs-custom mt-1 mx-3" id="purchaseTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link p-2 active" id="all-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="all" aria-selected="true">
-                        <span class="d-block d-sm-none"><i class="mdi mdi-order-bool-ascending mdi-24px"></i></span></span>
+                        <span class="d-block d-sm-none">All</span></span>
                         <span class="d-none d-sm-block">All</span>
                     </button>
                 </li>
@@ -18,7 +18,7 @@
                 foreach ($tabpurchase as $tbp) { ?>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link p-2" id="<?= $tbp['id']; ?>-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="<?= $tbp['category_name']; ?>" aria-selected="true">
-                            <span class="d-block d-sm-none"><i class="mdi mdi-order-bool-ascending mdi-24px"></i></span></span>
+                            <span class="d-block d-sm-none"><?= $tbp['category_name']; ?></span></span>
                             <span class="d-none d-sm-block"><?= $tbp['category_name']; ?></span>
                         </button>
                     </li>
@@ -27,11 +27,25 @@
 
 
             <!-- Tab panes -->
-            <div class="justify-content-end p-3" style="position: absolute;right: 0.5rem;top: 2.7rem;">
+            <!-- <div class="justify-content-end p-3" style="position: absolute;right: 0.5rem;top: 2.7rem;">
                 <h5 id="tcard" class="card-title mb-0 pe-1"></h5>
-            </div>
-            <div class="tab-content p-3 text-muted py-0" id="purchaseTabContent">
+            </div> -->
+            <div class="tab-content p-3 text-muted py-0">
                 <div id="tabcontent">
+                    <div class="position-relative">
+                        <div class="modal-button mt-2">
+                            <div class="row align-items-start">
+                                <div class="col-sm-auto">
+                                    <div class="d-flex gap-1">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control font-size-13 bg-soft-warning" style="width: 195px;" id="datepicker-range" placeholder="Date...">
+                                            <span class="input-group-text"><i class="bx bx-calendar-event"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="purchasetabcontent"></div>
                 </div>
             </div>

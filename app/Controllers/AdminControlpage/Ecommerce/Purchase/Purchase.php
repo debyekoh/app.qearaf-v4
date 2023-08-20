@@ -64,16 +64,17 @@ class Purchase extends BaseController
     {
         $head_page =
             '
-            <link href="assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
-	
+            <link href="' . base_url() . 'assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css">
+            <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
             ';
         $js_page =
             '
-            <script src="assets/libs/gridjs/gridjs.umd.js"></script>
-            <script src="assets/js/pages/mypurchase.init.js"></script>
-            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
-            <script src="assets/libs/imask/imask.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/flatpickr/flatpickr.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/mypurchase.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/imask/imask.min.js"></script>
             
             ';
         $datapage = array(
@@ -550,7 +551,7 @@ class Purchase extends BaseController
         // return view('pages_admin/adm_purchase_detailview', $datapage);
     }
 
-    public function show($tab = null, $find = null)
+    public function show($tab = null, $date = null)
     {
 
         $this->builder = $this->db->table('purchase');
@@ -563,6 +564,20 @@ class Purchase extends BaseController
                 $this->builder->like('category_name', 'Iklan');
             } else {
                 $this->builder->like('category_name', $tab);
+            }
+        }
+
+        $string = null;
+        if ($date != '1') {
+            $string = base64_decode(base64_decode($date));
+            if (strlen($string) < 9) {
+                $indate = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $this->builder->where('date_purchase', $indate);
+            } else {
+                $start = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $end = substr($string, 8, 4) . "/" . substr($string, 12, 2) . "/" . substr($string, 14, 2);
+                $this->builder->where('date_purchase >=', $start);
+                $this->builder->where('date_purchase <=', $end);
             }
         }
 

@@ -63,16 +63,19 @@ class Sales extends BaseController
 
         $head_page =
             '
-            <link href="assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
+            <link href="' . base_url() . 'assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css">
+            <link href="' . base_url() . 'assets/libs/gridjs/theme/mermaid.min.css" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.css">
+
 	
             ';
         $js_page =
             '
-            <script src="assets/libs/gridjs/gridjs.umd.js"></script>
-            <script src="assets/js/pages/mysales.init.js"></script>
-            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
-            <script src="assets/libs/imask/imask.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/flatpickr/flatpickr.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/mysales.init.js"></script>
+            <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
+            <script src="' . base_url() . 'assets/libs/imask/imask.min.js"></script>
             
             ';
 
@@ -182,6 +185,7 @@ class Sales extends BaseController
             'js_page'       => $js_page,
             'tabnotif'      => $data_tab,
         );
+
         return view('pages_admin/adm_sales', $datapage);
     }
 
@@ -652,14 +656,26 @@ class Sales extends BaseController
         }
     }
 
-    public function show($tab = null, $find = null)
+    public function show($tab = null, $date = null)
     {
-
         $this->builder = $this->db->table('sales');
         if ($tab == "All") {
             // $this->builder->where('status', null);
         } else {
             $this->builder->where('status', $tab);
+        }
+        $string = null;
+        if ($date != '1') {
+            $string = base64_decode(base64_decode($date));
+            if (strlen($string) < 9) {
+                $indate = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $this->builder->where('date_sales', $indate);
+            } else {
+                $start = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $end = substr($string, 8, 4) . "/" . substr($string, 12, 2) . "/" . substr($string, 14, 2);
+                $this->builder->where('date_sales >=', $start);
+                $this->builder->where('date_sales <=', $end);
+            }
         }
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
@@ -770,7 +786,7 @@ class Sales extends BaseController
             'status' => true,
             'response' => 'Success show data',
             // 'results' => $this->productsModel->findAll(),
-            // 'results' => $query->getResult(),
+            // 'string' => $type,
             'results' => $data,
         ]);
     }

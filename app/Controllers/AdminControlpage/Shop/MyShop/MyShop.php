@@ -12,7 +12,7 @@ class MyShop extends BaseController
             'titlepage' => 'MyShop',
             'tabshop' => $this->tabshop,
         );
-        return view('pages_admin/adm_dashboard', $datapage);
+        return view('pages_admin/adm_shop', $datapage);
     }
 
     public function shops($id_shop)
@@ -25,6 +25,6 @@ class MyShop extends BaseController
             'titlepage' => $shop_name['marketplace'] . ' - ' . $shop_name['name_shop'],
             'tabshop' => $this->tabshop,
         );
-        return view('pages_admin/adm_dashboard', $datapage);
+        return view('pages_admin/adm_shop', $datapage);
     }
 }

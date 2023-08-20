@@ -6,7 +6,7 @@ function rendergridjs1() {
                 enabled: !1
             },
             formatter: function(e) {
-                return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-lg rounded p-1">')
+                return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
                 // return gridjs.html('<div class="form-check font-size-16"><input class="form-check-input" type="checkbox" id="orderidcheck01"><label class="form-check-label" for="orderidcheck01"></label></div>')
             }
         }, {
@@ -25,16 +25,16 @@ function rendergridjs1() {
                 // return gridjs.html('<button type="button" class="btn btn-primary"> 0 pcs</button>')
                 const s_id = new String("'"+e[3]+"'");
                 if(parseInt(e[0]) <= parseInt(e[1]) ){
-                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-danger waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
+                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-danger waves-effect waves-light font-size-14 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
                 if(parseInt(e[0]) > parseInt(e[1]) && parseInt(e[0]) <= (parseInt(e[1])+5)){
-                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-warning waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
+                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-warning waves-effect waves-light font-size-14 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
                 if(parseInt(e[0]) > (parseInt(e[1])+5) && parseInt(e[0]) <= parseInt(e[2])){
-                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-dark waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
+                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-dark waves-effect waves-light font-size-14 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
                 if(parseInt(e[0]) > parseInt(e[2])){
-                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-primary waves-effect waves-light font-size-16 fw-bolder">' + e[0] + ' Pcs</button>')
+                    return gridjs.html('<button type="button" onclick="changestock('+s_id+')" class="stock btn btn-outline-primary waves-effect waves-light font-size-14 fw-bolder">' + e[0] + ' Pcs</button>')
                 }
             }
         }],
@@ -54,11 +54,14 @@ function rendergridjs1() {
             'text-align': 'center'
             },
             td: {
-            'text-align': 'center'
+            'text-align': 'center',
+            'padding': '0px',
+            'font-size': '13px'
             }
         } 
         
     }).render(document.getElementById("table-gridjs-1"));
+    $(".gridjs-td").addClass("text-wrap");
 }
 
 function rendergridjs2() {
@@ -117,11 +120,14 @@ function rendergridjs2() {
             'text-align': 'center'
             },
             td: {
-            'text-align': 'center'
+            'text-align': 'center',
+            'padding': '0px',
+            'font-size': '13px'
             }
         } 
         
     }).render(document.getElementById("table-gridjs-2"));
+    $(".gridjs-td").addClass("text-wrap");
 }
 
 rendergridjs1();

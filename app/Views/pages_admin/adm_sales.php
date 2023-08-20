@@ -7,7 +7,6 @@
 
     <div class="card">
         <div class="card-body p-1">
-
             <ul class="nav nav-tabs nav-tabs-custom mt-1 mx-3" id="salesTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link p-2 active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
@@ -70,28 +69,25 @@
                     </button>
                 </li>
             </ul>
-
-            <!-- Tab panes -->
-            <div class="justify-content-end p-3" style="position: absolute;right: 0.5rem;top: 2.7rem;">
-                <h5 id="tcard" class="card-title mb-0 pe-1"></h5>
-            </div>
             <div class="tab-content p-3 text-muted py-0" id="salesTabContent">
                 <div id="tabcontent">
+                    <div class="position-relative">
+                        <div class="modal-button mt-2">
+                            <div class="row align-items-start">
+                                <div class="col-sm-auto">
+                                    <div class="d-flex gap-1">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control font-size-13 bg-soft-warning" style="width: 195px;" id="datepicker-range" placeholder="Date...">
+                                            <span class="input-group-text"><i class="bx bx-calendar-event"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="salestabcontent"></div>
                 </div>
             </div>
-            <!-- <div id="viewSales" class="modal fade" tabindex="-1" aria-labelledby="viewSalesLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-sm-down">
-                    <div class="modal-content">
-                        <div class="modal-body px-1">
-                            <div id="table-viewSales"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div id="viewSales" class="modal fade salesdetailsModal" tabindex="-1" role="dialog" aria-labelledby="salesdetailsModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-fullscreen-sm-down" role="document">
                     <div class="modal-content">

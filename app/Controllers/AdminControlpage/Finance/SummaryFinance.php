@@ -47,6 +47,8 @@ class SummaryFinance extends BaseController
         $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_bundling, pro_price_basic,  pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        $this->builder->notLike('pro_name', 'Iklan');
+        $this->builder->notLike('pro_bundling', '1');
         $query = $this->builder->get();
 
 

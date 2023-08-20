@@ -11,6 +11,11 @@ $(document).ready(function() {
     var a = $('button.nav-link.active').prop('id');
     renderPurchase(name)
     console.log(name)
+
+    flatpickr("#datepicker-range", {
+        mode: "range"
+    }),
+    flatpickr("#datepicker-invoice");
 });
 
 $(".nav-link").on('click', function() {
@@ -21,7 +26,14 @@ $(".nav-link").on('click', function() {
     renderPurchase(name)
 })
 
-function renderPurchase(name) {
+function renderPurchase(name,date) {
+    if(date == undefined ){
+        dateval = 1
+    }else if(date == ""){
+        dateval = 1
+    }else{
+        dateval = date
+    }
     $("#purchasetabcontent").remove();
     $("#tabcontent").append('<div id="purchasetabcontent"></div>');
     const mygrid = new gridjs.Grid({
@@ -159,7 +171,7 @@ function renderPurchase(name) {
             selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
           },
         server: {
-            url: './mypurchase/show/'+name,
+            url: './mypurchase/show/'+name+'/'+dateval,
             then: data => data.results.map(purchase => [
                     purchase.no_purchase,          // OK //
                 [   purchase.no_purchase ,         // 0 // OK
@@ -190,182 +202,201 @@ function renderPurchase(name) {
           
     }).render(document.getElementById("purchasetabcontent"));
 
-    mygrid.updateConfig({
-        columns: [
-            { 
-                name: 'NO Purchase',
-                hidden: true,
-            },{
-            name: name,
-            formatter: function(e) {
-                var data_item = e[2]
-                let itemdata = "";
-                let paystatus = "";
-                let payval = "";
-                let paymethode = "";
-                let btn_gopayment = "";
-                let btn_gocancel = "";
-                for (i = 0; i < data_item.length; i++) {
-                    itemdata += 
-                        '<div class="row align-items-center p-1">'+
-                            '<div class="d-flex align-items-center p-0">'+
-                                '<div class="flex-shrink-0">'+
-                                    '<div class="avatar-md">'+
-                                        '<div class="product-img avatar-title img-thumbnail bg-soft-secondary border-0">'+
-                                            '<img src="./assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                                '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                    '<h5 class="mb-1 text-truncate"><a class="font-size-15 text-dark">'+data_item[i]['pro_name']+'</a></h5>'+
-                                    '<p class="text-muted fw-semibold mb-0 text-truncate">'+data_item[i]['pro_sku']+'</p>'+
-                                '</div>'+
-                                '<div class="flex-shrink-0">'+
-                                    '<h5 class="font-size-18 mb-0 text-truncate w-xs p-2 rounded text-center">'+
-                                        'X '+data_item[i]['pro_qty']+'</h5>'+
-                                '</div>'+
+    // mygrid.updateConfig({
+    //     columns: [
+    //         { 
+    //             name: 'NO Purchase',
+    //             hidden: true,
+    //         },{
+    //         name: name,
+    //         formatter: function(e) {
+    //             var data_item = e[2]
+    //             let itemdata = "";
+    //             let paystatus = "";
+    //             let payval = "";
+    //             let paymethode = "";
+    //             let btn_gopayment = "";
+    //             let btn_gocancel = "";
+    //             for (i = 0; i < data_item.length; i++) {
+    //                 itemdata += 
+    //                     '<div class="row align-items-center p-1">'+
+    //                         '<div class="d-flex align-items-center p-0">'+
+    //                             '<div class="flex-shrink-0">'+
+    //                                 '<div class="avatar-md">'+
+    //                                     '<div class="product-img avatar-title img-thumbnail bg-soft-secondary border-0">'+
+    //                                         '<img src="./assets/images/product/'+data_item[i]['pro_img']+'" class="img-fluid" alt="'+data_item[i]['pro_img']+'">'+
+    //                                     '</div>'+
+    //                                 '</div>'+
+    //                             '</div>'+
+    //                             '<div class="flex-grow-1 ms-3 overflow-hidden">'+
+    //                                 '<h5 class="mb-1 text-truncate"><a class="font-size-15 text-dark">'+data_item[i]['pro_name']+'</a></h5>'+
+    //                                 '<p class="text-muted fw-semibold mb-0 text-truncate">'+data_item[i]['pro_sku']+'</p>'+
+    //                             '</div>'+
+    //                             '<div class="flex-shrink-0">'+
+    //                                 '<h5 class="font-size-18 mb-0 text-truncate w-xs p-2 rounded text-center">'+
+    //                                     'X '+data_item[i]['pro_qty']+'</h5>'+
+    //                             '</div>'+
                                 
-                            '</div>'+
-                        '</div>'
-                    ;
-                }
+    //                         '</div>'+
+    //                     '</div>'
+    //                 ;
+    //             }
 
-                const id_detailview = new String(e[0].substr(0, 6)+e[0].substr(7, 1)+e[0].substr(9, 2)+e[0].substr(12));
-                const pid = new String("'"+e[0]+"'");
-                const gopayment = new String("'Payment'");
-                const gocancel = new String("'Cancel'");
+    //             const id_detailview = new String(e[0].substr(0, 6)+e[0].substr(7, 1)+e[0].substr(9, 2)+e[0].substr(12));
+    //             const pid = new String("'"+e[0]+"'");
+    //             const gopayment = new String("'Payment'");
+    //             const gocancel = new String("'Cancel'");
                 
-                if(e[4]=="Lunas"){
-                    payval = e[7];
-                    paystatus +=
-                        '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
-                    btn_gocancel +=
-                        '<li><a onclick="to('+pid+','+gocancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
-                }
-                if(e[4]=="Belum Lunas"){
-                    payval = e[3];
-                    paystatus +=
-                        '<span class="badge bg-danger bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
-                    btn_gopayment +=
-                        '<li><a onclick="vito('+pid+','+gopayment+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-cash-check font-size-16 text-primary me-1"></i> Payment</a></li>';
-                    btn_gocancel +=
-                        '<li><a onclick="to('+pid+','+gocancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
-                }
+    //             if(e[4]=="Lunas"){
+    //                 payval = e[7];
+    //                 paystatus +=
+    //                     '<span class="badge bg-success bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
+    //                 btn_gocancel +=
+    //                     '<li><a onclick="to('+pid+','+gocancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+    //             }
+    //             if(e[4]=="Belum Lunas"){
+    //                 payval = e[3];
+    //                 paystatus +=
+    //                     '<span class="badge bg-danger bg-gradient fw-bold font-size-16">' + e[4] + '</span>' ;
+    //                 btn_gopayment +=
+    //                     '<li><a onclick="vito('+pid+','+gopayment+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-cash-check font-size-16 text-primary me-1"></i> Payment</a></li>';
+    //                 btn_gocancel +=
+    //                     '<li><a onclick="to('+pid+','+gocancel+')" role="button" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Cancel</a></li>';
+    //             }
 
-                if(e[5]==1){
-                    paymethode +=
-                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-2 rounded text-center">Online Payment <i class="mdi mdi-credit-card font-size-14 ms-1"></i></h5>' ;
-                }
-                if(e[5]==3){
-                    paymethode +=
-                        '<h5 class="font-size-14 mb-0 text-truncate w-xs p-0 fw-bold rounded text-center">Term Of Payment <i class="fas fa-handshake font-size-14 ms-1"></i></h5>' ;
-                }
+    //             if(e[5]==1){
+    //                 paymethode +=
+    //                     '<h5 class="font-size-14 mb-0 text-truncate w-xs p-2 rounded text-center">Online Payment <i class="mdi mdi-credit-card font-size-14 ms-1"></i></h5>' ;
+    //             }
+    //             if(e[5]==3){
+    //                 paymethode +=
+    //                     '<h5 class="font-size-14 mb-0 text-truncate w-xs p-0 fw-bold rounded text-center">Term Of Payment <i class="fas fa-handshake font-size-14 ms-1"></i></h5>' ;
+    //             }
 
 
-                return gridjs.html(
-                '<div class="card border-secondary border-gradient" style="margin-bottom: 0px;">'+
-				 	'<div class="card-header bg-soft-warning bg-gradient text-white px-2 py-1" >'+
-                        '<div class="d-flex align-items-center p-0">'+
-                            '<div class="flex-grow-1 overflow-hidden">'+
-                                '<p class="fw-bold fst-italic font-size-14 text-dark mb-0">#' + e[0] + '</p>'+
-                            '</div>'+
-                            '<div class="flex-shrink-0 ms-2">'+
-                                paystatus+
-                            '</div>'+
-                        '</div>'+
-    				'</div>'+
-    				'<div class="card-body p-0">'+
-                            '<div class="row align-items-center m-0">'+
-                                '<div class="col-md-4 my-1">'+
-                                    itemdata +
-                                '</div>'+
-                                '<div class="col-md-4 p-0 my-1">'+
-                                    '<div class="d-flex align-items-center p-0">'+
-                                        '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
-                                            '<p class="fw-bold fst-italic text-truncate mb-0">' + e[6] + '</p>'+
-                                        '</div>'+
-                                        '<div class="flex-grow-1 ms-3 overflow-hidden">'+
-                                            '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + payval + '</h5>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                                '<div class="col-md-4 my-1">'+
-                                    '<div class="d-flex align-items-center p-0">'+
-                                        '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
-                                            paymethode +
-                                        '</div>'+
-                                        '<div class="flex-grow-1 ms-3 text-center">'+
-                                            '<span>'+
-                                                '<div class="dropdown">'+
-                                                    '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
-                                                        '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
-                                                    '</button>'+
-                                                    '<ul class="dropdown-menu dropdown-menu-end" style="">'+
-                                                        '<li><a href="detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
-                                                        btn_gopayment + 
-                                                        btn_gocancel +
-                                                    '</ul>'+
-                                                '</div>'+
-                                            '</span>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                    '</div>'+
-				'</div>'
-                )
-            }
-        }],
-        pagination: {
-            limit: 10
-        },
-        // sort: !0,
-        // search: !0,
-        search: {
-            selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
-          },
-        server: {
-            url: './mypurchase/show/'+name,
-            then: data => data.results.map(purchase => [
-                    purchase.no_purchase,          // OK //
-                [   purchase.no_purchase ,         // 0 // OK
-                    purchase.date_purchase ,       // 1 // OK
-                    purchase.item_detail ,         // 2 // OK
-                    purchase.bill,                 // 3 // OK
-                    purchase.statuspurchase,       // 4 // OK
-                    purchase.paymethode,           // 5 // OK
-                    purchase.supplier_detail,      // 6 // OK
-                    purchase.payment,              // 7 // OK
-                ],
-            ]),
-          },
-          style: {
-            table: {
-            },
-            th: {
-              'display': 'none'
-            },
-            td: {
-            //   'text-align': 'center'
-            //   'padding': '0px'
-            }
-          } ,
-          className: {
-            td: 'py-1 px-0'
-          } 
+    //             return gridjs.html(
+    //             '<div class="card border-secondary border-gradient" style="margin-bottom: 0px;">'+
+	// 			 	'<div class="card-header bg-soft-warning bg-gradient text-white px-2 py-1" >'+
+    //                     '<div class="d-flex align-items-center p-0">'+
+    //                         '<div class="flex-grow-1 overflow-hidden">'+
+    //                             '<p class="fw-bold fst-italic font-size-14 text-dark mb-0">#' + e[0] + '</p>'+
+    //                         '</div>'+
+    //                         '<div class="flex-shrink-0 ms-2">'+
+    //                             paystatus+
+    //                         '</div>'+
+    //                     '</div>'+
+    // 				'</div>'+
+    // 				'<div class="card-body p-0">'+
+    //                         '<div class="row align-items-center m-0">'+
+    //                             '<div class="col-md-4 my-1">'+
+    //                                 itemdata +
+    //                             '</div>'+
+    //                             '<div class="col-md-4 p-0 my-1">'+
+    //                                 '<div class="d-flex align-items-center p-0">'+
+    //                                     '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
+    //                                         '<p class="fw-bold fst-italic text-truncate mb-0">' + e[6] + '</p>'+
+    //                                     '</div>'+
+    //                                     '<div class="flex-grow-1 ms-3 overflow-hidden">'+
+    //                                         '<h5 class="font-size-18 fw-bold mb-0 text-truncate w-xs p-1 rounded text-center">' + payval + '</h5>'+
+    //                                     '</div>'+
+    //                                 '</div>'+
+    //                             '</div>'+
+    //                             '<div class="col-md-4 my-1">'+
+    //                                 '<div class="d-flex align-items-center p-0">'+
+    //                                     '<div class="flex-grow-1 ms-3 overflow-hidden text-center">'+
+    //                                         paymethode +
+    //                                     '</div>'+
+    //                                     '<div class="flex-grow-1 ms-3 text-center">'+
+    //                                         '<span>'+
+    //                                             '<div class="dropdown">'+
+    //                                                 '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
+    //                                                     '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
+    //                                                 '</button>'+
+    //                                                 '<ul class="dropdown-menu dropdown-menu-end" style="">'+
+    //                                                     '<li><a href="detail/purchaseview/'+id_detailview+'" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+    //                                                     btn_gopayment + 
+    //                                                     btn_gocancel +
+    //                                                 '</ul>'+
+    //                                             '</div>'+
+    //                                         '</span>'+
+    //                                     '</div>'+
+    //                                 '</div>'+
+    //                             '</div>'+
+    //                         '</div>'+
+    //                 '</div>'+
+	// 			'</div>'
+    //             )
+    //         }
+    //     }],
+    //     pagination: {
+    //         limit: 10
+    //     },
+    //     // sort: !0,
+    //     // search: !0,
+    //     search: {
+    //         selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
+    //       },
+    //     server: {
+    //         url: './mypurchase/show/'+name,
+    //         then: data => data.results.map(purchase => [
+    //                 purchase.no_purchase,          // OK //
+    //             [   purchase.no_purchase ,         // 0 // OK
+    //                 purchase.date_purchase ,       // 1 // OK
+    //                 purchase.item_detail ,         // 2 // OK
+    //                 purchase.bill,                 // 3 // OK
+    //                 purchase.statuspurchase,       // 4 // OK
+    //                 purchase.paymethode,           // 5 // OK
+    //                 purchase.supplier_detail,      // 6 // OK
+    //                 purchase.payment,              // 7 // OK
+    //             ],
+    //         ]),
+    //       },
+    //       style: {
+    //         table: {
+    //         },
+    //         th: {
+    //           'display': 'none'
+    //         },
+    //         td: {
+    //         //   'text-align': 'center'
+    //         //   'padding': '0px'
+    //         }
+    //       } ,
+    //       className: {
+    //         td: 'py-1 px-0'
+    //       } 
           
-    }).forceRender();
+    // }).forceRender();
     // $(".gridjs-container").addClass("row");
-    $("#tcard").text(name);
+    // $("#tcard").text(name);
     // $(".tab-content").css("position", "relative");
     // $(".tab-content").css("top", "-46px");
     $(".gridjs-head").addClass("m-0");
+    $('.gridjs-search').addClass('col-sm-3');
+    $('.gridjs-search').removeClass('gridjs-search');
+    $('.gridjs-search-input').attr('placeholder','Search...');
+    $(".gridjs-search-input").addClass("form-control font-size-13 bg-soft-warning");
+    $(".gridjs-search-input").removeClass("gridjs-input gridjs-search-input")
     // $('.gridjs-search').addClass('float-none float-md-start');
-    $('.gridjs-search-input').attr('placeholder','SEARCH...');
-    $(".gridjs-search-input").addClass("form-control text-uppercase fw-bold bg-soft-warning py-1");
-    $(".gridjs-search-input").css("border-radius", "0.6rem");
+    // $('.gridjs-search-input').attr('placeholder','SEARCH...');
+    // $(".gridjs-search-input").addClass("form-control text-uppercase fw-bold bg-soft-warning py-1");
+    // $(".gridjs-search-input").css("border-radius", "0.6rem");
     
-  }
+}
+
+$('#datepicker-range').change(function ewallchange() {
+    let string = $('#datepicker-range').val()
+    let string_a = ''
+    if(string.length < 11){
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)))
+    }else{
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)+string.substr(14,4)+string.substr(19,2)+string.substr(22,2)))
+    }
+    console.log("full:"+string_a)
+    var regexPattern = /[^A-Za-z]/g;
+    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
+    renderPurchase(name,string_a)
+})
 
 
 function to(s_id , s_name , s_paym) {

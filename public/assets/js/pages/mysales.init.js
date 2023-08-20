@@ -7,10 +7,16 @@ $(document).ready(function() {
       })
     var regexPattern = /[^A-Za-z]/g;
     var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
+    // var name = $('#sessiontabactive').text().replace(regexPattern, "");
     $('.gridjs-th-content').text($('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""))
     var a = $('button.nav-link.active').prop('id');
     renderSales(name)
     console.log(localStorage)
+
+    flatpickr("#datepicker-range", {
+        mode: "range"
+    }),
+    flatpickr("#datepicker-invoice");
 });
 
 $(".nav-link").on('click', function() {
@@ -18,10 +24,19 @@ $(".nav-link").on('click', function() {
     var a = $(this).attr('id');
     var regexPattern = /[^A-Za-z]/g;
     var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
+    $('#datepicker-range').val('')
     renderSales(name)
 })
 
-function renderSales(name) {
+function renderSales(name,date) {
+    console.log("date:"+date)
+    if(date == undefined ){
+        dateval = 1
+    }else if(date == ""){
+        dateval = 1
+    }else{
+        dateval = date
+    }
     $("#salestabcontent").remove();
     $("#tabcontent").append('<div id="salestabcontent"></div>');
     new gridjs.Grid({
@@ -278,7 +293,7 @@ function renderSales(name) {
             selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
           },
         server: {
-            url: './mysales/show/'+name,
+            url: './mysales/show/'+name+'/'+dateval,
             then: data => data.results.map(sales => [
                     sales.id_sales,            
                     sales.no_sales,
@@ -317,16 +332,34 @@ function renderSales(name) {
           
     }).render(document.getElementById("salestabcontent"));
     // $(".gridjs-container").addClass("row");
-    $("#tcard").text(name);
+    // $("#tcard").text(name);
     // $(".tab-content").css("position", "relative");
     // $(".tab-content").css("top", "-46px");
     $(".gridjs-head").addClass("m-0");
-    // $('.gridjs-search').addClass('float-none float-md-start');
-    $('.gridjs-search-input').attr('placeholder','SEARCH...');
-    $(".gridjs-search-input").addClass("form-control text-uppercase fw-bold bg-soft-warning py-1");
-    $(".gridjs-search-input").css("border-radius", "0.6rem");
+    $('.gridjs-search').addClass('col-sm-3');
+    $('.gridjs-search').removeClass('gridjs-search');
+    $('.gridjs-search-input').attr('placeholder','Search...');
+    $(".gridjs-search-input").addClass("form-control font-size-13 bg-soft-warning");
+    $(".gridjs-search-input").removeClass("gridjs-input gridjs-search-input")
+    // $(".gridjs-search-input").css("border-radius", "0.6rem");
+
     
-  }
+    
+}
+
+$('#datepicker-range').change(function ewallchange() {
+    let string = $('#datepicker-range').val()
+    let string_a = ''
+    if(string.length < 11){
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)))
+    }else{
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)+string.substr(14,4)+string.substr(19,2)+string.substr(22,2)))
+    }
+    console.log("full:"+string_a)
+    var regexPattern = /[^A-Za-z]/g;
+    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
+    renderSales(name,string_a)
+})
 
 
 function to(s_id , s_name , s_paym) {

@@ -325,12 +325,12 @@
                         </li>
 
 
-                        <li>
+                        <!-- <li>
                             <a href="<?= base_url() ?>delivery">
                                 <i class="bx bxs-truck icon nav-icon"></i>
                                 <span class="menu-item" data-key="t-delivery">Delivery</span>
                             </a>
-                        </li>
+                        </li> -->
 
 
                         <li>

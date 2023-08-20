@@ -72,7 +72,7 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 
 //Ecommerce 
 //Sales
-$routes->get('/mysales/show/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1'); //Ajax
+$routes->get('/mysales/show/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2'); //Ajax
 $routes->post('/mysales/count', 'AdminControlpage\Ecommerce\Sales\Sales::countSales'); //Ajax
 $routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
@@ -91,7 +91,7 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 
 //Ecommerce 
 //Purchase
-$routes->get('/mypurchase/show/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::show/$1', ['filter' => 'role:SuAdmin,Admin']); //Ajax
+$routes->get('/mypurchase/show/(:any)/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::show/$1/$2', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->get('/purchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::index', ['filter' => 'role:SuAdmin,Admin']);
 $routes->post('/mypurchase/detail', 'AdminControlpage\Ecommerce\Purchase\Purchase::detail', ['filter' => 'role:SuAdmin,Admin']); //Ajax
 $routes->post('/mypurchase/count', 'AdminControlpage\Ecommerce\Purchase\Purchase::countPurchase', ['filter' => 'role:SuAdmin,Admin']); //Ajax
@@ -132,6 +132,7 @@ $routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
 $routes->get('/debtList', 'AdminControlpage\Finance\Debt::log_show');
 $routes->get('/debt/listdebt/(:any)', 'AdminControlpage\Finance\Debt::list/$1');
 $routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');
+$routes->get('/inventorylist', 'AdminControlpage\Finance\InventoryValue::show');
 
 //Users
 $routes->get('/userslist', 'AdminControlpage\Users\UsersList::index', ['filter' => 'role:SuAdmin']);
