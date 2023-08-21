@@ -74,6 +74,7 @@ class Sales extends BaseController
             <script src="' . base_url() . 'assets/libs/flatpickr/flatpickr.min.js"></script>
             <script src="' . base_url() . 'assets/libs/gridjs/gridjs.umd.js"></script>
             <script src="' . base_url() . 'assets/js/pages/mysales.init.js"></script>
+            <script src="' . base_url() . 'assets/js/pages/shop.init.js"></script>
             <script src="' . base_url() . 'assets/libs/sweetalert2/sweetalert2.min.js"></script>
             <script src="' . base_url() . 'assets/libs/imask/imask.min.js"></script>
             

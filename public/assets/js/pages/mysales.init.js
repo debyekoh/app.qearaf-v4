@@ -1,6 +1,9 @@
 
 $(document).ready(function() {
     // document.querySelector("#toprocess-tab > span.d-none.d-sm-block")
+    var param1 = getUrlVars("tab");
+    console.log(param1)
+
     $('#salesTab').on('click', function () {
         var regexPattern = /[^A-Za-z]/g;
         var a = $('button.nav-link.active').prop('id');
@@ -18,6 +21,26 @@ $(document).ready(function() {
     }),
     flatpickr("#datepicker-invoice");
 });
+
+function getUrlVars(param=null)
+{
+	if(param !== null)
+	{
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars[param];
+	} 
+	else 
+	{
+		return null;
+	}
+}
 
 $(".nav-link").on('click', function() {
     // alert($(this).attr('id'));
