@@ -1766,12 +1766,18 @@ class Sales extends BaseController
         if ($range == 'tweek') {
             $count = 7;
         };
+        if ($range == 'lweek') {
+            $count = 7;
+        };
 
 
         for ($a = 0; $a < $count; $a++) {
             $no = 1;
             if ($range == 'tweek') {
                 $no = $this_week_start;
+            };
+            if ($range == 'lweek') {
+                $no = $this_week_start - 7;
             };
             $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
             $row = [
