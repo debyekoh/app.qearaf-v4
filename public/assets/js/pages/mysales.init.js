@@ -1,25 +1,63 @@
 
 $(document).ready(function() {
-    // document.querySelector("#toprocess-tab > span.d-none.d-sm-block")
-    var param1 = getUrlVars("tab");
-    console.log(param1)
-
-    $('#salesTab').on('click', function () {
-        var regexPattern = /[^A-Za-z]/g;
-        var a = $('button.nav-link.active').prop('id');
-      })
-    var regexPattern = /[^A-Za-z]/g;
-    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
-    // var name = $('#sessiontabactive').text().replace(regexPattern, "");
-    $('.gridjs-th-content').text($('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""))
-    var a = $('button.nav-link.active').prop('id');
-    renderSales(name)
-    console.log(localStorage)
-
     flatpickr("#datepicker-range", {
         mode: "range"
     }),
     flatpickr("#datepicker-invoice");
+    // document.querySelector("#toprocess-tab > span.d-none.d-sm-block")
+    var param1 = getUrlVars("tab");
+    // var param2 = getUrlVars("ref");
+    if(param1 == undefined)     {$('#all-tab').trigger( "click" );}
+    if(param1 == "All")     {$('#all-tab').trigger( "click" );}
+    if(param1 == "Process")     {$('#toprocess-tab').trigger( "click" );}
+    if(param1 == "Packaging")   {$('#topackaging-tab').trigger( "click" );}
+    if(param1 == "Ready")       {$('#readytodelivery-tab').trigger( "click" );}
+    if(param1 == "Delivery")    {$('#delivery-tab').trigger( "click" );}
+    if(param1 == "Received")    {$('#received-tab').trigger( "click" );}
+    if(param1 == "Completed")   {$('#completed-tab').trigger( "click" );}
+    if(param1 == "Cancel")      {$('#cancel-tab').trigger( "click" );}
+    if(param1 == "Return")      {$('#return-tab').trigger( "click" );}
+
+    var date = $('#datepicker-range').val()
+    if(date == '' ){
+        dateval = null
+    }else{
+        dateval = date
+    }
+    var shop = getUrlVars("ref");
+    if(shop == undefined ){
+        shopval = null
+    }else{
+        shopval = shop
+    }
+    tabBadge(null,dateval,shopval)
+
+
+    // console.log(param1)
+    // var a = $(this).attr('id');
+    // var regexPattern = /[^A-Za-z]/g;
+    // var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
+    // var date = $('#datepicker-range').val('')
+    // if(date == undefined ){dateval = null}else if(date == ""){dateval = null}else{dateval = date}
+    // console.log("Load name:"+name)
+    // console.log("Load date:"+date)
+    // console.log("Load shop:"+shop)
+
+    // $('#salesTab').on('click', function () {
+    //     var regexPattern = /[^A-Za-z]/g;
+    //     var a = $('button.nav-link.active').prop('id');
+    //   })
+    // var regexPattern = /[^A-Za-z]/g;
+    // var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
+    // var name = $('#sessiontabactive').text().replace(regexPattern, "");
+    // $('.gridjs-th-content').text($('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, ""))
+    // var a = $('button.nav-link.active').prop('id');
+    // if(param1 == undefined && param2 == undefined){
+        // renderSales(name)
+    // }
+    // console.log(localStorage)
+
+    
 });
 
 function getUrlVars(param=null)
@@ -44,22 +82,73 @@ function getUrlVars(param=null)
 
 $(".nav-link").on('click', function() {
     // alert($(this).attr('id'));
-    var a = $(this).attr('id');
+    // var a = $(this).attr('id');
     var regexPattern = /[^A-Za-z]/g;
-    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
+    var tabname = $(this).text().replace(regexPattern, "");
+    $(this).addClass("active");
+    // var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "");
     $('#datepicker-range').val('')
-    renderSales(name)
-})
-
-function renderSales(name,date) {
-    console.log("date:"+date)
-    if(date == undefined ){
-        dateval = 1
-    }else if(date == ""){
-        dateval = 1
+    var date = $('#datepicker-range').val()
+    if(date == '' ){
+        dateval = null
     }else{
         dateval = date
     }
+    // var nametab = getUrlVars("tab");
+    var shop = getUrlVars("ref");
+    if(shop == undefined ){
+        shopval = null
+    }else{
+        shopval = shop
+    }
+    // if(getUrlVars("ref") == undefined ){var tab = "";}else{var tab = getUrlVars("tab");}
+    console.log("Click name:"+tabname)
+    console.log("Click date:"+dateval)
+    console.log("Click shop:"+shopval)
+    renderSales(tabname,dateval,shopval)
+    // tabBadge(tabname,dateval,shopval)
+
+    const nextURL = $("#BaseUrl").val()+"sales?tab="+tabname+"&ref="+shopval;
+    // const nextTitle = 'My new page title';
+    const nextState = { additionalInformation: 'Updated the URL with JS' };
+
+    // This will create a new entry in the browser's history, without reloading
+    // window.history.pushState(nextState, {}, nextURL);
+
+    // This will replace the current entry in the browser's history, without reloading
+    window.history.replaceState(nextState, {}, nextURL);
+})
+
+$('#datepicker-range').change(function ewallchange() {
+    let string = $('#datepicker-range').val()
+    let string_a = ''
+    if(string.length < 11){
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)))
+    }else{
+        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)+string.substr(14,4)+string.substr(19,2)+string.substr(22,2)))
+    }
+    console.log("full:"+string_a)
+    var regexPattern = /[^A-Za-z]/g;
+    var tabname = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
+    var shop = getUrlVars("ref");
+    if(shop == undefined ){
+        shopval = null
+    }else{
+        shopval = shop
+    }
+    // renderSales(name,string_a)
+    renderSales(tabname,string_a,shopval)
+    
+    
+})
+
+function renderSales(name,date,shop) {
+    // console.log("name:"+name)
+    // console.log("date:"+date)
+    // console.log("shop:"+shop)
+    if(date == null ){dateval = 1}else if(date == ""){dateval = 1}else{dateval = date}
+    if(shop == null ){shopval = 1}else if(shop == ""){shopval = 1}else{shopval = shop}
+    
     $("#salestabcontent").remove();
     $("#tabcontent").append('<div id="salestabcontent"></div>');
     new gridjs.Grid({
@@ -316,7 +405,7 @@ function renderSales(name,date) {
             selector: (cell, rowIndex, cellIndex) => cellIndex === 0 ? cell.id_sales : cell
           },
         server: {
-            url: './mysales/show/'+name+'/'+dateval,
+            url: './mysales/show/'+name+'/'+dateval+'/'+shopval,
             then: data => data.results.map(sales => [
                     sales.id_sales,            
                     sales.no_sales,
@@ -370,19 +459,157 @@ function renderSales(name,date) {
     
 }
 
-$('#datepicker-range').change(function ewallchange() {
-    let string = $('#datepicker-range').val()
-    let string_a = ''
-    if(string.length < 11){
-        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)))
-    }else{
-        string_a = btoa(btoa(string.substr(0,4)+string.substr(5,2)+string.substr(8,2)+string.substr(14,4)+string.substr(19,2)+string.substr(22,2)))
-    }
-    console.log("full:"+string_a)
-    var regexPattern = /[^A-Za-z]/g;
-    var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
-    renderSales(name,string_a)
-})
+function tabBadge(name,date,shop) {
+    $.ajax({
+        type: "POST",
+        url: "./mysales/tabbadge",
+        dataType: "JSON",
+        data: {
+            date: date,
+            name: shop,
+        },
+        success: function(data) {
+            console.log(data.tabbadge)
+            if(data.tabbadge.Process!=0){
+                $(".proces_span_none").html(
+                    '<i class="mdi mdi-application-settings mdi-24px"></i>'+
+                    '<span class="process rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Process+'</span>'
+                    );
+                $(".proces_span_block").html(
+                    'Process <span class="process rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Process+'</span>'
+                    );
+            }else{
+                $(".proces_span_none").html('<i class="mdi mdi-application-settings mdi-24px"></i>');
+                $(".proces_span_block").html('Process');
+            }
+            // $('.packaging').text(data.datatab.Packaging);
+            if(data.tabbadge.Packaging!=0){
+                $(".packaging_span_none").html(
+                    '<i class="mdi mdi-package-variant mdi-24px"></i>'+
+                    '<span class="packaging rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Packaging+'</span>'
+                    );
+                $(".packaging_span_block").html(
+                    'Packaging <span class="packaging rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Packaging+'</span>'
+                    );
+            }else{
+                $(".packaging_span_none").html('<i class="mdi mdi-package-variant mdi-24px"></i>');
+                $(".packaging_span_block").html('Packaging');
+            }
+            // $('.ready').text(data.datatab.Ready);
+            if(data.tabbadge.Ready!=0){
+                $(".ready_span_none").html(
+                    '<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>'+
+                    '<span class="ready rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Ready+'</span>'
+                    );
+                $(".ready_span_block").html(
+                    'Ready <span class="ready rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Ready+'</span>'
+                    );
+            }else{
+                $(".ready_span_none").html('<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>');
+                $(".ready_span_block").html('Ready');
+            }
+            // $('.delivery').text(data.datatab.Delivery);
+            if(data.tabbadge.Delivery!=0){
+                $(".delivery_span_none").html(
+                    '<i class="mdi mdi-truck-fast-outline mdi-24px"></i>'+
+                    '<span class="delivery rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Delivery+'</span>'
+                    );
+                $(".delivery_span_block").html(
+                    'Delivery <span class="delivery rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Delivery+'</span>'
+                    );
+            }else{
+                $(".delivery_span_none").html('<i class="mdi mdi-truck-fast-outline mdi-24px"></i>');
+                $(".delivery_span_block").html('Delivery');
+            }
+            // $('.received').text(data.datatab.Received);
+            if(data.tabbadge.Received!=0){
+                $(".received_span_none").html(
+                    '<i class="mdi mdi-progress-check mdi-24px"></i>'+
+                    '<span class="received rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Received+'</span>'
+                    );
+                $(".received_span_block").html(
+                    'Received <span class="received rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Received+'</span>'
+                    );
+            }else{
+                $(".received_span_none").html('<i class="mdi mdi-progress-check mdi-24px"></i>');
+                $(".received_span_block").html('Received');
+            }
+            // $('.completed').text(data.datatab.Completed);
+            if(data.tabbadge.Completed!=0){
+                $(".completed_span_none").html(
+                    '<i class="mdi mdi-check-decagram mdi-24px"></i>'+
+                    '<span class="completed rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Completed+'</span>'
+                    );
+                $(".completed_span_block").html(
+                    'Completed <span class="completed rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Completed+'</span>'
+                    );
+            }else{
+                $(".completed_span_none").html('<i class="mdi mdi-check-decagram mdi-24px"></i>');
+                $(".completed_span_block").html('Completed');
+            }
+            // $('.cancel').text(data.datatab.Cancel);
+            if(data.tabbadge.Cancel!=0){
+                $(".cancel_span_none").html(
+                    '<i class="mdi mdi-progress-close mdi-24px"></i>'+
+                    '<span class="cancel rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Cancel+'</span>'
+                    );
+                $(".cancel_span_block").html(
+                    'Cancel <span class="cancel rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Cancel+'</span>'
+                    );
+            }else{
+                $(".cancel_span_none").html('<i class="mdi mdi-progress-close mdi-24px"></i>');
+                $(".cancel_span_block").html('Cancel');
+            }
+            // $('.return').text(data.datatab.Return);
+            if(data.tabbadge.Return!=0){
+                $(".return_span_none").html(
+                    '<i class="mdi mdi-backup-restore mdi-24px"></i>'+
+                    '<span class="return rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
+                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
+                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.tabbadge.Return+'</span>'
+                    );
+                $(".return_span_block").html(
+                    'Return <span class="return rounded-pill bg-primary bg-gradient" '+
+                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
+                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.tabbadge.Return+'</span>'
+                    );
+            }else{
+                $(".return_span_none").html('<i class="mdi mdi-backup-restore mdi-24px"></i>');
+                $(".return_span_block").html('Return');
+            }
+        }
+    });
+
+}
+
 
 
 function to(s_id , s_name , s_paym) {
@@ -418,143 +645,22 @@ Swal.fire({
                             // console.log(data)
                             if (data.status == "success") {
                             var regexPattern = /[^A-Za-z]/g;
-                            var name = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
-                            renderSales(name)
-                            if(data.datatab.Process!=0){
-                                $(".proces_span_none").html(
-                                    '<i class="mdi mdi-application-settings mdi-24px"></i>'+
-                                    '<span class="process rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Process+'</span>'
-                                    );
-                                $(".proces_span_block").html(
-                                    'Process <span class="process rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Process+'</span>'
-                                    );
+                            var tabname = $('button.nav-link.active > span.d-none.d-sm-block').text().replace(regexPattern, "")
+                            // renderSales(name)
+                            var date = $('#datepicker-range').val()
+                            if(date == '' ){
+                                dateval = null
                             }else{
-                                $(".proces_span_none").html('<i class="mdi mdi-application-settings mdi-24px"></i>');
-                                $(".proces_span_block").html('Process');
+                                dateval = date
                             }
-                            // $('.packaging').text(data.datatab.Packaging);
-                            if(data.datatab.Packaging!=0){
-                                $(".packaging_span_none").html(
-                                    '<i class="mdi mdi-package-variant mdi-24px"></i>'+
-                                    '<span class="packaging rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Packaging+'</span>'
-                                    );
-                                $(".packaging_span_block").html(
-                                    'Packaging <span class="packaging rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Packaging+'</span>'
-                                    );
+                            var shop = getUrlVars("ref");
+                            if(shop == undefined ){
+                                shopval = null
                             }else{
-                                $(".packaging_span_none").html('<i class="mdi mdi-package-variant mdi-24px"></i>');
-                                $(".packaging_span_block").html('Packaging');
+                                shopval = shop
                             }
-                            // $('.ready').text(data.datatab.Ready);
-                            if(data.datatab.Ready!=0){
-                                $(".ready_span_none").html(
-                                    '<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>'+
-                                    '<span class="ready rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Ready+'</span>'
-                                    );
-                                $(".ready_span_block").html(
-                                    'Ready <span class="ready rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Ready+'</span>'
-                                    );
-                            }else{
-                                $(".ready_span_none").html('<i class="mdi mdi-clipboard-check-multiple-outline mdi-24px"></i>');
-                                $(".ready_span_block").html('Ready');
-                            }
-                            // $('.delivery').text(data.datatab.Delivery);
-                            if(data.datatab.Delivery!=0){
-                                $(".delivery_span_none").html(
-                                    '<i class="mdi mdi-truck-fast-outline mdi-24px"></i>'+
-                                    '<span class="delivery rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Delivery+'</span>'
-                                    );
-                                $(".delivery_span_block").html(
-                                    'Delivery <span class="delivery rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Delivery+'</span>'
-                                    );
-                            }else{
-                                $(".delivery_span_none").html('<i class="mdi mdi-truck-fast-outline mdi-24px"></i>');
-                                $(".delivery_span_block").html('Delivery');
-                            }
-                            // $('.received').text(data.datatab.Received);
-                            if(data.datatab.Received!=0){
-                                $(".received_span_none").html(
-                                    '<i class="mdi mdi-progress-check mdi-24px"></i>'+
-                                    '<span class="received rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Received+'</span>'
-                                    );
-                                $(".received_span_block").html(
-                                    'Received <span class="received rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Received+'</span>'
-                                    );
-                            }else{
-                                $(".received_span_none").html('<i class="mdi mdi-progress-check mdi-24px"></i>');
-                                $(".received_span_block").html('Received');
-                            }
-                            // $('.completed').text(data.datatab.Completed);
-                            if(data.datatab.Completed!=0){
-                                $(".completed_span_none").html(
-                                    '<i class="mdi mdi-check-decagram mdi-24px"></i>'+
-                                    '<span class="completed rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Completed+'</span>'
-                                    );
-                                $(".completed_span_block").html(
-                                    'Completed <span class="completed rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Completed+'</span>'
-                                    );
-                            }else{
-                                $(".completed_span_none").html('<i class="mdi mdi-check-decagram mdi-24px"></i>');
-                                $(".completed_span_block").html('Completed');
-                            }
-                            // $('.cancel').text(data.datatab.Cancel);
-                            if(data.datatab.Cancel!=0){
-                                $(".cancel_span_none").html(
-                                    '<i class="mdi mdi-progress-close mdi-24px"></i>'+
-                                    '<span class="cancel rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Cancel+'</span>'
-                                    );
-                                $(".cancel_span_block").html(
-                                    'Cancel <span class="cancel rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Cancel+'</span>'
-                                    );
-                            }else{
-                                $(".cancel_span_none").html('<i class="mdi mdi-progress-close mdi-24px"></i>');
-                                $(".cancel_span_block").html('Cancel');
-                            }
-                            // $('.return').text(data.datatab.Return);
-                            if(data.datatab.Return!=0){
-                                $(".return_span_none").html(
-                                    '<i class="mdi mdi-backup-restore mdi-24px"></i>'+
-                                    '<span class="return rounded-pill bg-primary bg-gradient" style="position: absolute;padding: 0.25em 0.6em;'+
-                                    'font-size: 70%;font-weight: 500;line-height: 1;color: #fff;text-align: center;'+
-                                    'white-space: nowrap;vertical-align: baseline;top: 0;right: 1px;">'+data.datatab.Return+'</span>'
-                                    );
-                                $(".return_span_block").html(
-                                    'Return <span class="return rounded-pill bg-primary bg-gradient" '+
-                                    'style="padding: 0.25em 0.6em;font-size: 75%;font-weight: 500;'+
-                                    'line-height: 1;color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;">'+data.datatab.Return+'</span>'
-                                    );
-                            }else{
-                                $(".return_span_none").html('<i class="mdi mdi-backup-restore mdi-24px"></i>');
-                                $(".return_span_block").html('Return');
-                            }
+                            renderSales(tabname,dateval,shopval)
+                            tabBadge(null,dateval,shopval)
                             }
                             toastr.options = {
                                 "closeButton": true,

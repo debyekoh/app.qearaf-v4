@@ -13,81 +13,81 @@
                     <div class="text-center">
                         <ul class="list-inline m-0">
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" onclick=" clickTab('Process')" role="button">
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Process'] != 0) { ?> onclick=" clickTab('Process')" <?php } ?> role="button">
                                     <?php if ($item['Process'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder">0</div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Process']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Process</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
-                                    <?php if ($item['Process'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Process']; ?></div>
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Packaging'] != 0) { ?> onclick=" clickTab('Packaging')" <?php } ?> role="button">
+                                    <?php if ($item['Packaging'] != 0) { ?>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Packaging']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Packaging</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Ready'] != 0) { ?> onclick=" clickTab('Ready')" <?php } ?> role="button">
                                     <?php if ($item['Ready'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Ready']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Ready']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Ready</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Delivery'] != 0) { ?> onclick=" clickTab('Delivery')" <?php } ?> role="button">
                                     <?php if ($item['Delivery'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Delivery']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Delivery']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Delivery</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Received'] != 0) { ?> onclick=" clickTab('Received')" <?php } ?> role="button">
                                     <?php if ($item['Received'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Received']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Received']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Received</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Completed'] != 0) { ?> onclick=" clickTab('Completed')" <?php } ?> role="button">
                                     <?php if ($item['Completed'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Completed']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Completed']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Completed</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" <?php if ($item['Cancel'] != 0) { ?> onclick=" clickTab('Cancel')" <?php } ?> role="button">
                                     <?php if ($item['Cancel'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Cancel']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Cancel']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Cancel</strong>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" href="<?= base_url(); ?>sales" role="button">
+                                <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" <?php if ($item['Return'] != 0) { ?> onclick=" clickTab('Return')" <?php } ?> role="button">
                                     <?php if ($item['Return'] != 0) { ?>
-                                        <div class="font-size-20 fw-bolder"><?= $item['Return']; ?></div>
+                                        <div class="font-size-26 fw-bolder"><?= $item['Return']; ?></div>
                                     <?php } else { ?>
-                                        <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <div class="font-size-26 text-muted fw-bolder">0</div>
                                     <?php } ?>
                                     <strong>Return</strong>
                                 </a>

@@ -72,7 +72,9 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 
 //Ecommerce 
 //Sales
-$routes->get('/mysales/show/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2'); //Ajax
+// $routes->get('/mysales/show/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2'); //Ajax
+$routes->get('/mysales/show/(:any)/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2/$3'); //Ajax
+$routes->post('/mysales/tabbadge', 'AdminControlpage\Ecommerce\Sales\Sales::tabbadge'); //Ajax
 $routes->post('/mysales/count', 'AdminControlpage\Ecommerce\Sales\Sales::countSales'); //Ajax
 $routes->post('/mysales/nextto', 'AdminControlpage\Ecommerce\Sales\Sales::nextto', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax
 $routes->post('/mysales/detail', 'AdminControlpage\Ecommerce\Sales\Sales::detail', ['filter' => 'role:SuAdmin,Admin,Reseller']); //Ajax

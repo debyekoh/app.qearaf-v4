@@ -54,6 +54,7 @@ class MyShop extends BaseController
         $datapage = array(
             'titlepage' => $shop_name['marketplace'] . ' - ' . $shop_name['name_shop'],
             'tabshop'   => $this->tabshop,
+            'shop'      => base64_encode(base64_encode($id_shop)),
             'item'      => $countitem,
             'js_page'   => $js_page,
         );

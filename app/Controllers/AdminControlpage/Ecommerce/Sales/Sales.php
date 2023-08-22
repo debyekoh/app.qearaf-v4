@@ -657,7 +657,7 @@ class Sales extends BaseController
         }
     }
 
-    public function show($tab = null, $date = null)
+    public function show($tab = null, $date = null, $shop = null)
     {
         $this->builder = $this->db->table('sales');
         if ($tab == "All") {
@@ -677,17 +677,27 @@ class Sales extends BaseController
                 $this->builder->where('date_sales >=', $start);
                 $this->builder->where('date_sales <=', $end);
             }
-        }
+        };
+        $shopstring = null;
+        if ($shop != '1') {
+            $shopstring = base64_decode(base64_decode($shop));
+            $this->builder->where('sales.id_shop', $shopstring);
+        };
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
         // $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+
+
+
         if (in_groups('3') == true || in_groups('4') == true) {
             $this->builder->like('member_id', user()->member_id);
-        }
+        };
         $this->builder->orderBy('date_sales', 'DESC');
         $this->builder->orderBy('id_sales', 'DESC');
         $query = $this->builder->get();
+
+        // dd($query->getResult());
 
         // if($id != null) {
         //     $this->db->where('id_std_dies', $id);
@@ -782,13 +792,57 @@ class Sales extends BaseController
             $data[] = $row;
         }
         // dd($data, $query->getResult());
+        $idshopstring = base64_decode(base64_decode($shop));
+        if ($idshopstring != '1') {
+            $shpid = $idshopstring;
+        } else {
+            $shpid = '';
+        }
+        $data_tab = array(
+            // 'All'           => $QueryAll->getNumRows(),
+            'Process'       => count($this->salesModel->where('status', 'Process')->like('id_shop', $shpid)->findAll()),
+            'Packaging'     => count($this->salesModel->where('status', 'Packaging')->like('id_shop', $shpid)->findAll()),
+            'Ready'         => count($this->salesModel->where('status', 'Ready')->like('id_shop', $shpid)->findAll()),
+            'Delivery'      => count($this->salesModel->where('status', 'Delivery')->like('id_shop', $shpid)->findAll()),
+            'Received'      => count($this->salesModel->where('status', 'Received')->like('id_shop', $shpid)->findAll()),
+            'Completed'     => count($this->salesModel->where('status', 'Completed')->like('id_shop', $shpid)->findAll()),
+            'Cancel'        => count($this->salesModel->where('status', 'Cancel')->like('id_shop', $shpid)->findAll()),
+            'Return'        => count($this->salesModel->where('status', 'Return')->like('id_shop', $shpid)->findAll()),
+        );
 
         return $this->response->setJSON([
             'status' => true,
             'response' => 'Success show data',
-            // 'results' => $this->productsModel->findAll(),
-            // 'string' => $type,
+            // 'results1' => $sds,
+            'tabbadge' => $data_tab,
             'results' => $data,
+        ]);
+    }
+
+    public function tabbadge()
+    {
+        $date = $this->request->getVar('date');
+        $shop = $this->request->getVar('name');
+        $idshopstring = base64_decode(base64_decode($shop));
+        if ($idshopstring != '1') {
+            $shpid = $idshopstring;
+        } else {
+            $shpid = '';
+        }
+        $data_tab = array(
+            // 'All'           => $QueryAll->getNumRows(),
+            'Process'       => count($this->salesModel->where('status', 'Process')->like('id_shop', $shpid)->findAll()),
+            'Packaging'     => count($this->salesModel->where('status', 'Packaging')->like('id_shop', $shpid)->findAll()),
+            'Ready'         => count($this->salesModel->where('status', 'Ready')->like('id_shop', $shpid)->findAll()),
+            'Delivery'      => count($this->salesModel->where('status', 'Delivery')->like('id_shop', $shpid)->findAll()),
+            'Received'      => count($this->salesModel->where('status', 'Received')->like('id_shop', $shpid)->findAll()),
+            'Completed'     => count($this->salesModel->where('status', 'Completed')->like('id_shop', $shpid)->findAll()),
+            'Cancel'        => count($this->salesModel->where('status', 'Cancel')->like('id_shop', $shpid)->findAll()),
+            'Return'        => count($this->salesModel->where('status', 'Return')->like('id_shop', $shpid)->findAll()),
+        );
+
+        return $this->response->setJSON([
+            'tabbadge' => $data_tab,
         ]);
     }
 
