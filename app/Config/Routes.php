@@ -90,6 +90,8 @@ $routes->post('/groupshop', 'AdminControlpage\Ecommerce\Sales\Sales::checkGroupS
 $routes->post('/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
 $routes->post('editsales/selected', 'AdminControlpage\Ecommerce\Sales\Sales::selectedP'); //AjaxModal
 $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::selectedPckg'); //AjaxModal
+$routes->get('/chartsales', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales'); //AjaxModal
+$routes->get('/chartsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales/$1'); //AjaxModal
 
 //Ecommerce 
 //Purchase

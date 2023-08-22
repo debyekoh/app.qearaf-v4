@@ -1746,4 +1746,55 @@ class Sales extends BaseController
         // dd($dataNotification);
         $this->listNotificationModel->insertBatch($dataNotification);
     }
+
+    public function seriessales($range = null)
+    {
+        $day = date("d");
+        if ($range == 'lmonth') {
+            $month = date("m") - 1;
+        } else {
+            $month = date("m");
+        }
+        $years = date("Y");
+        $count = cal_days_in_month(CAL_GREGORIAN, $month, $years);
+        $series = array();
+
+        $monday = strtotime("last monday");
+        $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
+        $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
+        $this_week_start = date("d", $monday);
+        if ($range == 'tweek') {
+            $count = 7;
+        };
+
+
+        for ($a = 0; $a < $count; $a++) {
+            $no = 1;
+            if ($range == 'tweek') {
+                $no = $this_week_start;
+            };
+            $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
+            $row = [
+                "x"    => $a + $no,
+                "y"    => count($this->salesModel->where('date_sales', $date)->findAll()),
+            ];
+            $series[] = $row;
+        }
+
+        // dd($series);
+
+
+        // $data_series = array(
+        //     // 'All'           => $QueryAll->getNumRows(),
+        //     'x'       => $day,
+        //     'y'       => $month,
+        //     'o'       => $cal_DIM,
+        // );
+
+        return $this->response->setJSON([
+            'data_series'       => $series,
+            'this_week_start'   => $this_week_start,
+            // 'this_week_end'     => $this_week_end
+        ]);
+    }
 }

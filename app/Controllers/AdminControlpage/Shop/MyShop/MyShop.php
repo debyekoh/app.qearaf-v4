@@ -36,8 +36,15 @@ class MyShop extends BaseController
         if (!$shop_name) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
+        $head_page =
+            '
+            <link href="' . base_url() . 'assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+	
+            ';
         $js_page =
             '
+            <script src="' . base_url() . 'assets/libs/apexcharts/apexcharts.min.js"></script>
             <script src="' . base_url() . 'assets/js/pages/shop.init.js"></script>
             
             ';
@@ -56,6 +63,7 @@ class MyShop extends BaseController
             'tabshop'   => $this->tabshop,
             'shop'      => base64_encode(base64_encode($id_shop)),
             'item'      => $countitem,
+            // 'head_page' => $head_page,
             'js_page'   => $js_page,
         );
         return view('pages_admin/adm_shop', $datapage);
