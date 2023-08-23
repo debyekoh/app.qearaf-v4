@@ -1750,7 +1750,9 @@ class Sales extends BaseController
     public function seriessales($range = null)
     {
         $day = date("d");
-        if ($range == 'lmonth') {
+        if ($range == 'tmonth') {
+            $month = date("m");
+        } else if ($range == 'lmonth') {
             $month = date("m") - 1;
         } else {
             $month = date("m");
@@ -1763,6 +1765,7 @@ class Sales extends BaseController
         $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
         $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
         $this_week_start = date("d", $monday);
+        // $this_week_end = date("d", $monday);
         if ($range == 'tweek') {
             $count = 7;
         };
@@ -1785,22 +1788,65 @@ class Sales extends BaseController
                 "y"    => count($this->salesModel->where('date_sales', $date)->findAll()),
             ];
             $series[] = $row;
+        };
+
+        if ($range == null) {
+            $title = "";
+        };
+        if ($range == "tweek") {
+            $title = "by Weeks";
+        };
+        if ($range == "tmonth") {
+            $title = "by Months";
+        };
+        if ($range == "tyears") {
+            $title = "by Years";
+        };
+        if ($range == "lweek") {
+            $title = "by Last Weeks";
+        };
+        if ($range == "lmonth") {
+            $title = "by Last Months";
+        };
+
+        // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------ 
+        $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+        $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+        $tsalesArray = array();
+        $torderArray = array();
+        for ($a = 0; $a < count($this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()); $a++) {
+            $tsalesArray[] = $this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['payment'];
+            $torderArray[] = $this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['bill'];
         }
-
-        // dd($series);
-
-
-        // $data_series = array(
-        //     // 'All'           => $QueryAll->getNumRows(),
-        //     'x'       => $day,
-        //     'y'       => $month,
-        //     'o'       => $cal_DIM,
-        // );
+        $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+        $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+        $lsalesArray = array();
+        $lorderArray = array();
+        for ($a = 0; $a < count($this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()); $a++) {
+            $lsalesArray[] = $this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['payment'];
+            $lorderArray[] = $this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['bill'];
+        }
+        $total_sales = array(
+            'thisvalue'       => array_sum($tsalesArray),
+            // 'thisvalue1'       => $tsalesArray,
+            'lastvalue'       => array_sum($lsalesArray),
+            // 'lastvalue1'       => $lsalesArray,
+        );
+        $total_order = array(
+            'thisvalue'       => array_sum($torderArray),
+            // 'thisvalue1'       => $tsalesArray,
+            'lastvalue'       => array_sum($lorderArray),
+            // 'lastvalue1'       => $lsalesArray,
+        );
+        // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------
 
         return $this->response->setJSON([
             'data_series'       => $series,
-            'this_week_start'   => $this_week_start,
-            // 'this_week_end'     => $this_week_end
+            'data_sort'         => $title,
+            'tesdate'           => $tesdate,
+            'teddate'           => $teddate,
+            'total_sales'       => $total_sales,
+            'total_order'       => $total_order
         ]);
     }
 }

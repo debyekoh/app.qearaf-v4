@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    showcharts()
+    updatecharts()
 })
 function clickTab(params) {
     console.log(params)
@@ -214,71 +214,12 @@ sparklineoptions1 = {
 };
 (sparklinechart1 = new ApexCharts(document.querySelector("#mini-4"),sparklineoptions1)).render();
 
-
-
-// var options = {
-//     series: [
-//     //     {
-//     //     data: [4, 6, 10, 17, 15, 19, 23, 27, 29, 25, 32, 35]
-//     // }
-// ],
-//     chart: {
-//         toolbar: {
-//             show: !1
-//         },
-//         height: 323,
-//         type: "bar",
-//         events: {
-//             click: function(e, r, t) {}
-//         }
-//     },
-//     plotOptions: {
-//         bar: {
-//             columnWidth: "80%",
-//             distributed: !0,
-//             borderRadius: 8
-//         }
-//     },
-//     fill: {
-//         opacity: 1
-//     },
-//     stroke: {
-//         show: !1
-//     },
-//     dataLabels: {
-//         enabled: !1
-//     },
-//     legend: {
-//         show: !1
-//     },
-//     // colors: barchartColors = getChartColorsArray("overview"),
-//     // xaxis: {
-//     //     categories: ["Jan", "Feb", "Mar", "Apr", "May", "jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-//     // }
-// }
-//   , chart = new ApexCharts(document.querySelector("#overview"),options);
-// chart.render();
-
-$("#drop").change(function () {
-    var end = this.value;
-    var firstDropVal = $('#pick').val();
-});
-
-
-function showcharts(e) {
-    
-    
 var options = {
-    // chart: {
-    //     height: 350,
-    //     type: 'bar',
-        
-    // },
     chart: {
         toolbar: {
             show: !1
         },
-        height: 323,
+        height: 340.5,
         type: "bar",
         events: {
             click: function(e, r, t) {}
@@ -292,7 +233,7 @@ var options = {
     },
     plotOptions: {
         bar: {
-            columnWidth: "50%",
+            columnWidth: "80%",
             // distributed: !0,
             borderRadius: 3
         }
@@ -301,28 +242,46 @@ var options = {
         enabled: false
     },
     series: [],
-    // title: {
-    //     text: 'Ajax Example',
-    // },
+    title: {
+        text: 'Overview',
+    },
     noData: {
       text: 'Loading...'
-    }
-  }
-  
-  var chart = new ApexCharts(document.querySelector("#overview"),options);
-  chart.render();
+    },
+    xaxis: {
+        type: 'category',
+        tickPlacement: 'on',
+        // labels: {
+        //   rotate: -45,
+        //   rotateAlways: true
+        // }
+      }
+}
 
+var chart = new ApexCharts(
+document.querySelector("#overview"),
+options
+);
+
+chart.render();
+
+$('#sortby').change(function sortby() {
+    updatecharts($(this).val())
+})
+
+function updatecharts(e) {
 if(e != undefined){
   $range = "/"+e
 }else{
     $range = ""
 }
 var url = $("#BaseUrl").val()+'chartsales'+$range;
-
 $.getJSON(url, function(response) {
+  $("#tsl").html('Rp. '+response.total_sales.thisvalue+' <span class="text-success fw-medium font-size-13 align-middle"> <i class="mdi mdi-arrow-up"></i> 8.34% </span>');
   chart.updateSeries([{
     name: 'Sales',
     data: response.data_series
   }])
-});
+}
+);
 }

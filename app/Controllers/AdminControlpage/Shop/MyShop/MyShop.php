@@ -39,8 +39,6 @@ class MyShop extends BaseController
         $head_page =
             '
             <link href="' . base_url() . 'assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
-
-	
             ';
         $js_page =
             '
