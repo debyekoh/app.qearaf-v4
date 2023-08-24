@@ -6,7 +6,9 @@
 
 
     <div class="row">
+
         <div class="col-lg-12">
+            <p id="shid" hidden><?= $shop; ?></p>
             <div class="card">
                 <div class="card-body p-0" style="background-image: url(<?= base_url(); ?>assets/images/login-img.png);background-position: center;background-repeat: no-repeat;background-size: cover;">
                     <!-- <div class="card-body p-0"> -->

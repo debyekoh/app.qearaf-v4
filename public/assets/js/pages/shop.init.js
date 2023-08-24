@@ -234,12 +234,8 @@ var options = {
     plotOptions: {
         bar: {
             columnWidth: "80%",
-            // distributed: !0,
             borderRadius: 3
         }
-    },
-    dataLabels: {
-        enabled: false
     },
     series: [],
     title: {
@@ -251,10 +247,10 @@ var options = {
     xaxis: {
         type: 'category',
         tickPlacement: 'on',
-        // labels: {
-        //   rotate: -45,
-        //   rotateAlways: true
-        // }
+        labels: {
+          rotate: -45,
+          rotateAlways: true
+        },
       }
 }
 
@@ -275,7 +271,8 @@ if(e != undefined){
 }else{
     $range = ""
 }
-var url = $("#BaseUrl").val()+'chartsales'+$range;
+var shid = "/"+$("#shid").text()
+var url = $("#BaseUrl").val()+'chartsales'+shid+$range;
 $.getJSON(url, function(response) {
   $("#tsl").html('Rp. '+response.total_sales.thisvalue+' <span class="text-success fw-medium font-size-13 align-middle"> <i class="mdi mdi-arrow-up"></i> 8.34% </span>');
   chart.updateSeries([{

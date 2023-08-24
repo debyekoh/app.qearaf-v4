@@ -92,6 +92,7 @@ $routes->post('editsales/selected', 'AdminControlpage\Ecommerce\Sales\Sales::sel
 $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::selectedPckg'); //AjaxModal
 $routes->get('/chartsales', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales'); //AjaxModal
 $routes->get('/chartsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales/$1'); //AjaxModal
+$routes->get('/chartsales/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales/$1/$2'); //AjaxModal
 
 //Ecommerce 
 //Purchase

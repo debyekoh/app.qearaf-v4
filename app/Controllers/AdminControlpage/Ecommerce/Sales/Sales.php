@@ -1747,8 +1747,9 @@ class Sales extends BaseController
         $this->listNotificationModel->insertBatch($dataNotification);
     }
 
-    public function seriessales($range = null)
+    public function seriessales($idshop = null, $range = null)
     {
+        $id_shop = base64_decode(base64_decode($idshop));
         $day = date("d");
         if ($range == 'tmonth') {
             $month = date("m");
@@ -1757,8 +1758,10 @@ class Sales extends BaseController
         } else {
             $month = date("m");
         }
+
         $years = date("Y");
         $count = cal_days_in_month(CAL_GREGORIAN, $month, $years);
+        $row = array();
         $series = array();
 
         $monday = strtotime("last monday");
@@ -1772,10 +1775,15 @@ class Sales extends BaseController
         if ($range == 'lweek') {
             $count = 7;
         };
+        if ($range == 'tyears') {
+            $count = 12;
+        };
 
 
+        $m = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         for ($a = 0; $a < $count; $a++) {
             $no = 1;
+            $noa = 2021;
             if ($range == 'tweek') {
                 $no = $this_week_start;
             };
@@ -1783,11 +1791,21 @@ class Sales extends BaseController
                 $no = $this_week_start - 7;
             };
             $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
-            $row = [
-                "x"    => $a + $no,
-                "y"    => count($this->salesModel->where('date_sales', $date)->findAll()),
-            ];
-            $series[] = $row;
+            $date_for_like = $years . "-" . sprintf("%02d", $a + $no);
+
+            if ($range == 'tyears') {
+                $row = [
+                    "x"    => $m[$a],
+                    "y"    => count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $date_for_like)->findAll()),
+                ];
+                $series[] = $row;
+            } else {
+                $row = [
+                    "x"    => $a + $no,
+                    "y"    => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales', $date)->findAll()),
+                ];
+                $series[] = $row;
+            }
         };
 
         if ($range == null) {
@@ -1814,17 +1832,17 @@ class Sales extends BaseController
         $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
         $tsalesArray = array();
         $torderArray = array();
-        for ($a = 0; $a < count($this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()); $a++) {
-            $tsalesArray[] = $this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['payment'];
-            $torderArray[] = $this->salesModel->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['bill'];
+        for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()); $a++) {
+            $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['payment'];
+            $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['bill'];
         }
         $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
         $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
         $lsalesArray = array();
         $lorderArray = array();
-        for ($a = 0; $a < count($this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()); $a++) {
-            $lsalesArray[] = $this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['payment'];
-            $lorderArray[] = $this->salesModel->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['bill'];
+        for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()); $a++) {
+            $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['payment'];
+            $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['bill'];
         }
         $total_sales = array(
             'thisvalue'       => array_sum($tsalesArray),
@@ -1846,7 +1864,8 @@ class Sales extends BaseController
             'tesdate'           => $tesdate,
             'teddate'           => $teddate,
             'total_sales'       => $total_sales,
-            'total_order'       => $total_order
+            'total_order'       => $total_order,
+            'id_shop'           => $count
         ]);
     }
 }
