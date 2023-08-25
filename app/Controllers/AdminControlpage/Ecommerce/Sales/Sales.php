@@ -1768,7 +1768,7 @@ class Sales extends BaseController
         $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
         $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
         $this_week_start = date("d", $monday);
-        // $this_week_end = date("d", $monday);
+        $this_week_end = date("d", $sunday);
         if ($range == 'tweek') {
             $count = 7;
         };
@@ -1780,10 +1780,9 @@ class Sales extends BaseController
         };
 
 
-        $m = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         for ($a = 0; $a < $count; $a++) {
             $no = 1;
-            $noa = 2021;
             if ($range == 'tweek') {
                 $no = $this_week_start;
             };
@@ -1791,6 +1790,7 @@ class Sales extends BaseController
                 $no = $this_week_start - 7;
             };
             $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
+            $datetocategory = sprintf("%02d", $a + $no);
             $date_for_like = $years . "-" . sprintf("%02d", $a + $no);
 
             if ($range == 'tyears') {
@@ -1801,7 +1801,7 @@ class Sales extends BaseController
                 $series[] = $row;
             } else {
                 $row = [
-                    "x"    => $a + $no,
+                    "x"    => $datetocategory,
                     "y"    => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales', $date)->findAll()),
                 ];
                 $series[] = $row;
@@ -1827,34 +1827,192 @@ class Sales extends BaseController
             $title = "by Last Months";
         };
 
+
+
+
+
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------ 
+        $groups = ['Return', 'Cancel'];
+        $groups1 = ['Received', 'Completed'];
         $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
         $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
-        $tsalesArray = array();
-        $torderArray = array();
-        for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()); $a++) {
-            $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['payment'];
-            $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->findAll()[$a]['bill'];
-        }
         $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
         $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+        if ($range == "tweek") {
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_end);
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_start - 7);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_end - 7);
+        };
+        if ($range == "lweek") {
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start - 7);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_end - 7);
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_start - 14);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_end - 14);
+        };
+        $tsalesArray = array();
+        $torderArray = array();
+        $tallpaymentArray = array();
+        $tallpriceBasicArray = array();
         $lsalesArray = array();
         $lorderArray = array();
-        for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()); $a++) {
-            $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['payment'];
-            $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->findAll()[$a]['bill'];
+        $lallpaymentArray = array();
+        $lallpriceBasicArray = array();
+        // $no_salestest = array();
+
+        if ($range == "tyears") {
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()); $a++) {
+                $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+                $rowbasic = array();
+                for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                    $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                    $rowbasic[] = $rowbasicdata;
+                }
+                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()); $a++) {
+                $lallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+                $rowbasic = array();
+                for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                    $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                    $rowbasic[] = $rowbasicdata;
+                }
+                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+            }
+        } else {
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()); $a++) {
+                $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+                $rowbasic = array();
+                for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                    $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                    $rowbasic[] = $rowbasicdata;
+                }
+                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+            }
+            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()); $a++) {
+                $lallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+                $rowbasic = array();
+                for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                    $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                    $rowbasic[] = $rowbasicdata;
+                }
+                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+            }
         }
+
+
+
+
+
+        $SUMthissalesArray = array_sum($tsalesArray);
+        $SUMlastsalesArray = array_sum($lsalesArray);
+        // dd($SUMthissalesArray, $SUMlastsalesArray);
+        if (array_sum($tsalesArray) >= array_sum($lsalesArray)) {  // SALES  Jika jumlah Sales Sekarang >= jumlah Sales yang lalu
+            $salesval      = array_sum($tsalesArray);
+            $saleskey      = "success";
+            $salessym      = "up";
+            if ($tsalesArray != null && $lsalesArray != null) {
+                $salespcg  = (array_sum($tsalesArray) - array_sum($lsalesArray)) / array_sum($tsalesArray) * 100;
+            } else {
+                $salespcg  = 0;
+            }
+        } else {
+            $salesval  = array_sum($tsalesArray);
+            $saleskey  = "danger";
+            $salessym  = "down";
+            if ($tsalesArray != null && $lsalesArray != null) {
+                $salespcg  = (array_sum($lsalesArray) - array_sum($tsalesArray)) / array_sum($tsalesArray) * 100;
+            } else {
+                $salespcg  = 0;
+            }
+        }
+
+        $orderpcg = 0;
+        if (array_sum($torderArray) >= array_sum($lorderArray)) {  // ORDER
+            $orderval  = array_sum($torderArray);
+            $orderkey  = "success";
+            $ordersym  = "up";
+            if ($torderArray != null && $lorderArray != null) {
+                $orderpcg  = (array_sum($torderArray) - array_sum($lorderArray)) / array_sum($torderArray) * 100;
+            } else {
+                $orderpcg  = 0;
+            }
+        } else {
+            $orderval  = array_sum($torderArray);
+            $orderkey  = "danger";
+            $ordersym  = "down";
+            if ($torderArray != null && $lorderArray != null) {
+                $orderpcg  = (array_sum($lorderArray) - array_sum($torderArray)) / array_sum($torderArray) * 100;
+            } else {
+                $orderpcg  = 0;
+            }
+        }
+
+        $profitpcg = 0;
+        $profitval_this = array_sum($tallpaymentArray) - array_sum($tallpriceBasicArray);
+        $profitval_last = array_sum($lallpaymentArray) - array_sum($lallpriceBasicArray);
+        if ($profitval_this >= $profitval_last) {  // PROFIT
+            $profitval  = $profitval_this;
+            $profitkey  = "success";
+            $profitsym  = "up";
+            if ($profitval_this != null && $profitval_last != null) {
+                $profitpcg  = ($profitval_this - $profitval_last) / $profitval_this * 100;
+            } else {
+                $profitpcg  = 0;
+            }
+        } else {
+            $profitval  = $profitval_this;
+            $profitkey  = "danger";
+            $profitsym  = "down";
+            if ($profitval_this != null && $profitval_last != null) {
+                $profitpcg  = ($profitval_last - $profitval_this) / $profitval_this * 100;
+            } else {
+                $profitpcg  = 0;
+            }
+        }
+
+
         $total_sales = array(
-            'thisvalue'       => array_sum($tsalesArray),
-            // 'thisvalue1'       => $tsalesArray,
-            'lastvalue'       => array_sum($lsalesArray),
-            // 'lastvalue1'       => $lsalesArray,
+            'tkey'       => $saleskey,
+            'tsym'       => $salessym,
+            'tvalue'     => $salesval,
+            'tpcg'       => number_format($salespcg, 0),
+            'thisvalue'  => array_sum($tsalesArray),
+            'lastvalue'  => array_sum($lsalesArray),
         );
         $total_order = array(
-            'thisvalue'       => array_sum($torderArray),
-            // 'thisvalue1'       => $tsalesArray,
-            'lastvalue'       => array_sum($lorderArray),
-            // 'lastvalue1'       => $lsalesArray,
+            'tkey'       => $orderkey,
+            'tsym'       => $ordersym,
+            'tvalue'     => $orderval,
+            'tpcg'       => number_format($orderpcg, 0),
+            'thisvalue'  => array_sum($torderArray),
+            'lastvalue'  => array_sum($lsalesArray),
+        );
+        $total_profit = array(
+            'tkey'       => $profitkey,
+            'tsym'       => $profitsym,
+            'tvalue'     => $profitval,
+            'tpcg'       => number_format($profitpcg, 0),
         );
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1865,6 +2023,7 @@ class Sales extends BaseController
             'teddate'           => $teddate,
             'total_sales'       => $total_sales,
             'total_order'       => $total_order,
+            'total_profit'      => $total_profit,
             'id_shop'           => $count
         ]);
     }

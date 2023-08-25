@@ -10,210 +10,6 @@ function clickTab(params) {
 }
 
 
-
-function getChartColorsArray(e) {
-    if (null !== document.getElementById(e)) {
-        var r = document.getElementById(e).getAttribute("data-colors");
-        return (r = JSON.parse(r)).map(function(e) {
-            var r = e.replace(" ", "");
-            if (-1 == r.indexOf("--"))
-                return r;
-            var t = getComputedStyle(document.documentElement).getPropertyValue(r);
-            return t || void 0
-        })
-    }
-}
-var barchartColors = getChartColorsArray("mini-1")
-  , sparklineoptions1 = {
-    series: [{
-        data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14]
-    }],
-    chart: {
-        type: "area",
-        width: 110,
-        height: 35,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shadeIntensity: 1,
-            inverseColors: !1,
-            opacityFrom: .45,
-            opacityTo: .05,
-            stops: [20, 100, 100, 100]
-        }
-    },
-    stroke: {
-        curve: "smooth",
-        width: 2
-    },
-    colors: barchartColors,
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function(e) {
-                    return ""
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-}
-  , sparklinechart1 = new ApexCharts(document.querySelector("#mini-1"),sparklineoptions1);
-sparklinechart1.render();
-sparklineoptions1 = {
-    series: [{
-        data: [65, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14]
-    }],
-    chart: {
-        type: "area",
-        width: 110,
-        height: 35,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shadeIntensity: 1,
-            inverseColors: !1,
-            opacityFrom: .45,
-            opacityTo: .05,
-            stops: [20, 100, 100, 100]
-        }
-    },
-    stroke: {
-        curve: "smooth",
-        width: 2
-    },
-    colors: barchartColors = getChartColorsArray("mini-2"),
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function(e) {
-                    return ""
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-};
-(sparklinechart1 = new ApexCharts(document.querySelector("#mini-2"),sparklineoptions1)).render();
-sparklineoptions1 = {
-    series: [{
-        data: [12, 75, 2, 47, 42, 15, 47, 75, 65, 19, 14]
-    }],
-    chart: {
-        type: "area",
-        width: 110,
-        height: 35,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shadeIntensity: 1,
-            inverseColors: !1,
-            opacityFrom: .45,
-            opacityTo: .05,
-            stops: [20, 100, 100, 100]
-        }
-    },
-    stroke: {
-        curve: "smooth",
-        width: 2
-    },
-    colors: barchartColors = getChartColorsArray("mini-3"),
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function(e) {
-                    return ""
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-};
-(sparklinechart1 = new ApexCharts(document.querySelector("#mini-3"),sparklineoptions1)).render();
-sparklineoptions1 = {
-    series: [{
-        data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 70]
-    }],
-    chart: {
-        type: "area",
-        width: 110,
-        height: 35,
-        sparkline: {
-            enabled: !0
-        }
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shadeIntensity: 1,
-            inverseColors: !1,
-            opacityFrom: .45,
-            opacityTo: .05,
-            stops: [20, 100, 100, 100]
-        }
-    },
-    stroke: {
-        curve: "smooth",
-        width: 2
-    },
-    colors: barchartColors = getChartColorsArray("mini-4"),
-    tooltip: {
-        fixed: {
-            enabled: !1
-        },
-        x: {
-            show: !1
-        },
-        y: {
-            title: {
-                formatter: function(e) {
-                    return ""
-                }
-            }
-        },
-        marker: {
-            show: !1
-        }
-    }
-};
-(sparklinechart1 = new ApexCharts(document.querySelector("#mini-4"),sparklineoptions1)).render();
-
 var options = {
     chart: {
         toolbar: {
@@ -233,25 +29,82 @@ var options = {
     },
     plotOptions: {
         bar: {
-            columnWidth: "80%",
-            borderRadius: 3
+            borderRadius: 3,
+            dataLabels: {
+            position: 'center', // top, center, bottom
+            },
         }
     },
-    series: [],
+    dataLabels: {
+        enabled: true,
+        enabledOnSeries: undefined,
+        formatter: function (val, opts) {
+            return val
+        },
+        textAnchor: 'middle',
+        distributed: false,
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+            fontSize: '18px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 'bold',
+        },
+    },
     title: {
         text: 'Overview',
     },
     noData: {
-      text: 'Loading...'
+        text: 'Loading...'
     },
+    series: [],
     xaxis: {
         type: 'category',
+        categories: [],
         tickPlacement: 'on',
+        position: 'bottom',
         labels: {
-          rotate: -45,
-          rotateAlways: true
+            show: true,
+            style: {
+                fontSize: '14px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                fontWeight: 'bold',
+                colors: undefined
+            },
         },
-      }
+        axisBorder: {
+            show: true,
+            color: '#78909C',
+            height: 1,
+            width: '100%',
+            offsetX: 0,
+            offsetY: 0
+        },
+        axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            height: 6,
+            offsetX: 0,
+            offsetY: 0
+        },
+    },
+    yaxis: {
+        axisBorder: {
+            show: false
+        },
+        axisTicks: {
+            show: false,
+        },
+        labels: {
+            show: false,
+            formatter: function (val) {
+            return val;
+            }
+        }
+
+    },
+
 }
 
 var chart = new ApexCharts(
@@ -274,7 +127,9 @@ if(e != undefined){
 var shid = "/"+$("#shid").text()
 var url = $("#BaseUrl").val()+'chartsales'+shid+$range;
 $.getJSON(url, function(response) {
-  $("#tsl").html('Rp. '+response.total_sales.thisvalue+' <span class="text-success fw-medium font-size-13 align-middle"> <i class="mdi mdi-arrow-up"></i> 8.34% </span>');
+  $("#tsl").html('Rp. '+response.total_sales.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_sales.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_sales.tpcg+'%</span>');
+  $("#tod").html('Rp. '+response.total_order.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_order.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_order.tpcg+'%</span>');
+  $("#tpr").html('Rp. '+response.total_profit.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_profit.tkey+' font-size-18"><i class="bx bx-'+response.total_profit.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_profit.tpcg+'%</span>');
   chart.updateSeries([{
     name: 'Sales',
     data: response.data_series
