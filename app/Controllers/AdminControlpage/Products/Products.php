@@ -251,6 +251,11 @@ class Products extends BaseController
 
 
         ///// Parameter Product
+        if ($this->request->getVar('bundingproduct') != null) {
+            $var_bundling = 1;
+        } else {
+            $var_bundling = 0;
+        }
         $dataProduct = array(
             'pro_id'            => $this->request->getVar('pro_id'),
             'pro_name'          => $this->request->getGetPost('productname'),
@@ -261,7 +266,7 @@ class Products extends BaseController
             'pro_show'          => $this->request->getVar('choicesproductshow'),
             'pro_brand'         => $this->request->getVar('brandproduct'),
             'pro_spec'          => $this->request->getVar('spesification'),
-            'pro_bundling'      => $this->request->getGetPost('bundingproduct'),
+            'pro_bundling'      => $var_bundling,
             'pro_description'   => $this->request->getVar('productdesc'),
         );
         $dataPrice = array(
@@ -313,6 +318,8 @@ class Products extends BaseController
                     'pro_id_bundling_item'  => $this->request->getVar('bdl_proid')[$a],
                 );
             }
+        } else {
+            $dataProBundling = null;
         }
 
         // dd($dataProduct, $dataPrice, $dataStock, $dataProBundling, $this->request->getFiles());
@@ -321,7 +328,9 @@ class Products extends BaseController
         $this->productsModel->insert($dataProduct);
         $this->productspriceModel->insert($dataPrice);
         $this->productsstockModel->insert($dataStock);
-        $this->productsBundlingModel->insertBatch($dataProBundling);
+        if ($dataProBundling != null) {
+            $this->productsBundlingModel->insertBatch($dataProBundling);
+        }
         $this->listNotificationModel->insertBatch($dataNotification);
         $a = 1;
         $b = 1;
@@ -632,10 +641,12 @@ class Products extends BaseController
         $dataStock = array(
             'pro_id_stock'      => $this->request->getVar('pro_id') . '-S-' . str_replace(' ', '', $this->request->getVar('skunumber')),
             'pro_id'            => $this->request->getVar('pro_id'),
-            'pro_current_stock' => $this->request->getVar('currentstock'),
+            // 'pro_current_stock' => $this->request->getVar('currentstock'),
             'pro_min_stock'     => $this->request->getVar('minstock'),
             'pro_max_stock'     => $this->request->getVar('maxstock'),
         );
+
+        // dd($dataProduct, $dataPrice, $dataStock);
 
         // $this->productsModel->insert($dataProduct);
         // $this->productspriceModel->insert($dataPrice);

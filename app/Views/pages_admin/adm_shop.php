@@ -235,9 +235,49 @@
                                                     <p class="text-muted text-truncate mb-0 mt-2">Total Expense</p>
                                                 </div>
                                                 <div class="avatar-md">
-                                                    <div class="avatar-title rounded bg-soft-primary">
+                                                    <div class="avatar-title rounded bg-soft-danger">
                                                         <!-- <i class="bx bx-check-shield h2 mb-0 text-primary"></i> -->
-                                                        <i class="bx bx-rocket h2 mb-0 text-primary"></i>
+                                                        <i class="bx bx-rocket h2 mb-0 text-danger"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h4 class="mb-0" id="aa"></h4>
+                                                    <p class="text-muted text-truncate mb-0 mt-2">Total Consumable</p>
+                                                </div>
+                                                <div class="avatar-md">
+                                                    <div class="avatar-title rounded bg-soft-danger">
+                                                        <!-- <i class="bx bx-check-shield h2 mb-0 text-primary"></i> -->
+                                                        <i class="bx bx-package h2 mb-0 text-danger"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xl-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <h4 class="mb-0" id="texp">9,454 <span class="fw-medium text-success font-size-18"><i class="bx bx-up-arrow-alt font-size-16 align-middle"></i> 16%</span></h4>
+                                                    <p class="text-muted text-truncate mb-0 mt-2">Total Ads</p>
+                                                </div>
+                                                <div class="avatar-md">
+                                                    <div class="avatar-title rounded bg-soft-danger">
+                                                        <!-- <i class="bx bx-check-shield h2 mb-0 text-primary"></i> -->
+                                                        <i class="bx bx-rocket h2 mb-0 text-danger"></i>
                                                     </div>
                                                 </div>
                                             </div>

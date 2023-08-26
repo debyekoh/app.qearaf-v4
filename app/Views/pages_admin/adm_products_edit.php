@@ -215,7 +215,7 @@
                                             <label class="form-label" for="price">Bundling Product</label>
                                             <div class="mt-2">
                                                 <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                                <input type="checkbox" id="switch" name="bundingproduct" switch="bool" checked value="1" />
+                                                <input type="checkbox" id="switch" name="bundingproduct" switch="bool" <?= $DataStock['pro_max_stock'] == "1" ? "checked" : "" ?> value="<?= $DataStock['pro_max_stock']; ?>" />
                                                 <label for="switch" data-on-label="Yes" data-off-label="No"></label>
                                             </div>
                                         </div>

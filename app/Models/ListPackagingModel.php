@@ -10,6 +10,6 @@ class ListPackagingModel extends Model
     protected $primaryKey = 'id_packaging';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'id_packaging', 'name_packaging', 'price_packaging', 'stock_packaging',
+        'id_packaging', 'proid_pck', 'name_packaging', 'price_packaging', 'stock_packaging',
     ];
 }

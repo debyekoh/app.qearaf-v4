@@ -16,6 +16,9 @@ use App\Models\SalesModel;
 use App\Models\SalesDetailModel;
 use App\Models\ShopModel;
 use App\Models\UserProfileModel;
+use App\Models\ListPackagingModel;
+use App\Models\PurchaseModel;
+use App\Models\PurchaseDetailModel;
 use App\Models\ListNotificationModel;
 
 class Sales extends BaseController
@@ -36,6 +39,9 @@ class Sales extends BaseController
     protected $salesdetailModel;
     protected $shopModel;
     protected $userProfileModel;
+    protected $listPackagingModel;
+    protected $purchaseModel;
+    protected $purchaseDetailModel;
     protected $listNotificationModel;
 
     public function __construct()
@@ -54,6 +60,9 @@ class Sales extends BaseController
         $this->salesdetailModel = new SalesDetailModel();
         $this->shopModel = new ShopModel();
         $this->userProfileModel = new UserProfileModel();
+        $this->listPackagingModel = new ListPackagingModel();
+        $this->purchaseModel = new PurchaseModel();
+        $this->purchaseDetailModel = new PurchaseDetailModel();
         $this->listNotificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
     }
@@ -500,6 +509,8 @@ class Sales extends BaseController
             $priceArray[] = $this->request->getVar('price')[$a] * $this->request->getVar('qty')[$a];
         }
 
+
+
         // dd($datastockUpdate);
 
         function unique_multidim_arraynew($datastockUpdate, $key, $addedKey)
@@ -531,12 +542,14 @@ class Sales extends BaseController
             ];
             $datastockUpdateNew[] = $rowdatastockUpdateNew;
         }
+
         $productsStockLogNew = array();
         $rowproductsStockLogNew = array();
         $cn = 0;                                              //mengurai curren stock dengan transaction value
         foreach ($datastockUpdateUnique as $il) {
             $rowproductsStockLogNew = [
                 'products_stock_log_proid'  => $il['pro_id'],
+                'date_log'                  => $this->request->getVar('date_sales'),
                 'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $cn++),
                 'log_code'                  => "SALES",
                 'log_description'           => "SALES " . strtoupper($this->request->getVar('id_sales')),
@@ -548,39 +561,30 @@ class Sales extends BaseController
             $productsStockLogNew[] = $rowproductsStockLogNew;
         }
 
+        if ($this->request->getVar('packagingmethod') != 0) {
+            $pckg = $this->request->getVar('packagingmethod');
+            $rowstockpackaging = array(
+                'pro_id'                => $this->listPackagingModel->find($pckg)['proid_pck'],
+                'pro_current_stock'     => $this->productsstockModel->find($this->listPackagingModel->find($pckg)['proid_pck'])['pro_current_stock'] - 1
+            );
+            array_push($datastockUpdateNew, $rowstockpackaging);
 
-        /* $array = [
-            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
-            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
-            ['serial_no' => '009-AZ', 'name' => 'BSI COIL Z009 1000-PCE', 'qty' => 102, 'trf' => 2, 'newqty' => 0],
-            ['serial_no' => '049-BZ', 'name' => 'GEM COIL Z100 0900-CSE', 'qty' => 91, 'trf' => 2, 'newqty' => 0],
-            ['serial_no' => '019-PG', 'name' => 'PGI COIL GL02 0922-ZEE', 'qty' => 18, 'trf' => 2, 'newqty' => 0],
-        ];
-
-        function unique_multidim_array($array, $key, $addedKey)
-        {
-            $temp_array = [];
-            $key_array = [];
-            $i = 0;
-
-            foreach ($array as $val) {
-                if (!in_array($val[$key], $key_array)) {
-                    $key_array[$i] = $val[$key];
-                    $temp_array[$i] = $val;
-                } else {
-                    $pkey = array_search($val[$key], $key_array);
-                    $temp_array[$pkey][$addedKey] += $val[$addedKey];
-                    // die;
-                }
-                $i++;
-            }
-            return $temp_array;
+            $rowproductsStockLogPck = [
+                'products_stock_log_proid'  => $this->listPackagingModel->find($pckg)['proid_pck'],
+                'date_log'                  => $this->request->getVar('date_sales'),
+                'log_key'                   => date("ymd") . "/SALES/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/SALES/")->findAll()) + 1 + $cn++),
+                'log_code'                  => "SALES",
+                'log_description'           => "SALES " . strtoupper($this->request->getVar('id_sales')),
+                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                'last_value'                => $this->productsstockModel->find($this->listPackagingModel->find($pckg)['proid_pck'])['pro_current_stock'],
+                'trans_value'               => 1,
+                'new_value'                 => $this->productsstockModel->find($this->listPackagingModel->find($pckg)['proid_pck'])['pro_current_stock'] - 1,
+            ];
+            array_push($productsStockLogNew, $rowproductsStockLogPck);
         }
-        $nArray = unique_multidim_array($array, "serial_no", "trf"); */
 
 
-        // dd($datastockUpdate, $datastockUpdateUnique, $datastockUpdateNew, $productsStockLog, $productsStockLogLast, $productsStockLogNew);
-        // dd($datastockUpdateNew, $productsStockLogNew);
+
 
         $dataSales = array(
             'id_sales'              => strtoupper($this->request->getVar('id_sales')),
@@ -634,8 +638,8 @@ class Sales extends BaseController
             );
         }
 
-        // dd($productsStockLog, $datastockUpdate, $dataSalesDetail, $dataSales, $member_id_ownershop, $dataNotification, $targetgroup->getResult());
-
+        // dd($this->request->getVar(), $productsStockLog, $datastockUpdate, $dataSalesDetail, $dataSales, $member_id_ownershop, $dataNotification, $targetgroup->getResult());
+        // dd($datastockUpdateNew, $productsStockLogNew);
 
         $this->db->transBegin();
         $this->salesModel->insert($dataSales);
@@ -1834,6 +1838,10 @@ class Sales extends BaseController
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------ 
         $groups = ['Return', 'Cancel'];
         $groups1 = ['Received', 'Completed'];
+        $groups2 = array();
+        for ($a = 0; $a < count($this->listPackagingModel->notLike('id_packaging', "0")->findAll()); $a++) {
+            array_push($groups2, $this->listPackagingModel->notLike('id_packaging', "0")->findAll()[$a]['proid_pck']);
+        }
         $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
         $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
         $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
@@ -1854,20 +1862,62 @@ class Sales extends BaseController
         $torderArray = array();
         $tallpaymentArray = array();
         $tallpriceBasicArray = array();
+        $tpricepckg = array();
+        $taddsArray = array();
+        // $tconsumableArray = array();
         $lsalesArray = array();
         $lorderArray = array();
         $lallpaymentArray = array();
         $lallpriceBasicArray = array();
-        // $no_salestest = array();
+        $lpricepckg = array();
+        $laddsArray = array();
+
+        $tridpckg = array();
+        $lridpckg = array();
+
+        // for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
+        //     $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
+        // }
+
+        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
+        //     $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
+        // }
+
+        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
+        //     $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+        //     $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl[$a])->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+        //     $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
+        // }
+
+        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
+        //     $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+        //     $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl[$a])->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+        //     $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
+        // }
+
 
         if ($range == "tyears") {
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
                 $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
                 $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+
+                $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+                $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
+            }
+            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years)->findAll()); $a++) {
+                $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years)->findAll()[$a]['payment'];
             }
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
                 $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
                 $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+
+                $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+                $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
+            }
+            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years - 1)->findAll()); $a++) {
+                $laddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years - 1)->findAll()[$a]['payment'];
             }
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()); $a++) {
                 $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['payment'];
@@ -1893,10 +1943,24 @@ class Sales extends BaseController
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()); $a++) {
                 $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
                 $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+
+                $idsl = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+                $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
+            }
+            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
+                $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
             }
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
                 $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
                 $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+
+                $idsl = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
+                $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
+            }
+            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()); $a++) {
+                $laddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()[$a]['payment'];
             }
             for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()); $a++) {
                 $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
@@ -1923,48 +1987,41 @@ class Sales extends BaseController
 
 
 
-
-        $SUMthissalesArray = array_sum($tsalesArray);
-        $SUMlastsalesArray = array_sum($lsalesArray);
-        // dd($SUMthissalesArray, $SUMlastsalesArray);
-        if (array_sum($tsalesArray) >= array_sum($lsalesArray)) {  // SALES  Jika jumlah Sales Sekarang >= jumlah Sales yang lalu
-            $salesval      = array_sum($tsalesArray);
+        $salespcg = 0;
+        $salesval_this = array_sum($tsalesArray);
+        $salesval_last = array_sum($lsalesArray);
+        if ($salesval_this >= $salesval_last) {  // SALES  Jika jumlah Sales Sekarang >= jumlah Sales yang lalu
+            $salesval      = $salesval_this;
             $saleskey      = "success";
             $salessym      = "up";
-            if ($tsalesArray != null && $lsalesArray != null) {
-                $salespcg  = (array_sum($tsalesArray) - array_sum($lsalesArray)) / array_sum($tsalesArray) * 100;
-            } else {
-                $salespcg  = 0;
+            if ($salesval_this != 0 && $salesval_last != 0) {
+                $salespcg  = ($salesval_this - $salesval_last) / $salesval_this * 100;
             }
         } else {
-            $salesval  = array_sum($tsalesArray);
+            $salesval  = $salesval_this;
             $saleskey  = "danger";
             $salessym  = "down";
-            if ($tsalesArray != null && $lsalesArray != null) {
-                $salespcg  = (array_sum($lsalesArray) - array_sum($tsalesArray)) / array_sum($tsalesArray) * 100;
-            } else {
-                $salespcg  = 0;
+            if ($salesval_last != 0 && $salesval_this != 0) {
+                $salespcg  = ($salesval_last - $salesval_this) / $salesval_last * 100;
             }
         }
 
         $orderpcg = 0;
-        if (array_sum($torderArray) >= array_sum($lorderArray)) {  // ORDER
-            $orderval  = array_sum($torderArray);
+        $orderval_this = array_sum($torderArray);
+        $orderval_last = array_sum($lorderArray);
+        if ($orderval_this >= $orderval_last) {  // ORDER
+            $orderval  = $orderval_this;
             $orderkey  = "success";
             $ordersym  = "up";
-            if ($torderArray != null && $lorderArray != null) {
-                $orderpcg  = (array_sum($torderArray) - array_sum($lorderArray)) / array_sum($torderArray) * 100;
-            } else {
-                $orderpcg  = 0;
+            if ($orderval_this != 0 && $orderval_last != 0) {
+                $orderpcg  = ($orderval_this - $orderval_last) / $orderval_this * 100;
             }
         } else {
             $orderval  = array_sum($torderArray);
             $orderkey  = "danger";
             $ordersym  = "down";
-            if ($torderArray != null && $lorderArray != null) {
-                $orderpcg  = (array_sum($lorderArray) - array_sum($torderArray)) / array_sum($torderArray) * 100;
-            } else {
-                $orderpcg  = 0;
+            if ($orderval_last != 0 && $orderval_this != 0) {
+                $orderpcg  = ($orderval_last - $orderval_this) / $orderval_last * 100;
             }
         }
 
@@ -1975,19 +2032,15 @@ class Sales extends BaseController
             $profitval  = $profitval_this;
             $profitkey  = "success";
             $profitsym  = "up";
-            if ($profitval_this != null && $profitval_last != null) {
+            if ($profitval_this != 0 && $profitval_last != 0) {
                 $profitpcg  = ($profitval_this - $profitval_last) / $profitval_this * 100;
-            } else {
-                $profitpcg  = 0;
             }
         } else {
             $profitval  = $profitval_this;
             $profitkey  = "danger";
             $profitsym  = "down";
-            if ($profitval_this != null && $profitval_last != null) {
-                $profitpcg  = ($profitval_last - $profitval_this) / $profitval_this * 100;
-            } else {
-                $profitpcg  = 0;
+            if ($profitval_last != 0 && $profitval_this != 0) {
+                $profitpcg  = ($profitval_last - $profitval_this) / $profitval_last * 100;
             }
         }
 
@@ -1997,16 +2050,16 @@ class Sales extends BaseController
             'tsym'       => $salessym,
             'tvalue'     => $salesval,
             'tpcg'       => number_format($salespcg, 0),
-            'thisvalue'  => array_sum($tsalesArray),
-            'lastvalue'  => array_sum($lsalesArray),
+            'thisvalue'  => $salesval_this,
+            'lastvalue'  => $salesval_last,
         );
         $total_order = array(
             'tkey'       => $orderkey,
             'tsym'       => $ordersym,
             'tvalue'     => $orderval,
             'tpcg'       => number_format($orderpcg, 0),
-            'thisvalue'  => array_sum($torderArray),
-            'lastvalue'  => array_sum($lsalesArray),
+            'thisvalue'  => $orderval_this,
+            'lastvalue'  => $orderval_last,
         );
         $total_profit = array(
             'tkey'       => $profitkey,
@@ -2024,7 +2077,10 @@ class Sales extends BaseController
             'total_sales'       => $total_sales,
             'total_order'       => $total_order,
             'total_profit'      => $total_profit,
-            'id_shop'           => $count
+            'id_shop'           => $taddsArray,
+            'id_shop1'           => $laddsArray,
+            // 't1'           => $tridpckg,
+            // 't2'           => $lridpckg,
         ]);
     }
 }

@@ -1,6 +1,4 @@
-$(document).ready(function() {
-    updatecharts()
-})
+
 function clickTab(params) {
     console.log(params)
     var url = window.location.href;
@@ -9,6 +7,13 @@ function clickTab(params) {
     location.href = $("#BaseUrl").val()+'sales?tab='+params+'&ref='+shop;
 }
 
+// console.log(window.location.href.split("/")[window.location.href.split("/").length-2])
+var pagecek = window.location.href.split("/")[window.location.href.split("/").length-2]
+if(pagecek == 'myshops')
+{
+$(document).ready(function() {
+    updatecharts()
+})
 
 var options = {
     chart: {
@@ -136,4 +141,5 @@ $.getJSON(url, function(response) {
   }])
 }
 );
+}
 }
