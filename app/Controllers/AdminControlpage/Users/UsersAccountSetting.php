@@ -4,16 +4,22 @@ namespace App\Controllers\AdminControlpage\Users;
 
 use App\Controllers\BaseController;
 use App\Models\UserProfileModel;
+use App\Models\UserAuthGroupsUsersModel;
 
 
 class UsersAccountSetting extends BaseController
 {
     protected $helpers = ['form'];
+    protected $db;
+    protected $builder;
     protected $userProfileModel;
+    protected $userAuthGroupsUsersModel;
 
     public function __construct()
     {
         $this->userProfileModel = new userProfileModel();
+        $this->userAuthGroupsUsersModel = new UserAuthGroupsUsersModel();
+        $this->db      = \Config\Database::connect();
     }
 
     public function index()
@@ -130,12 +136,39 @@ class UsersAccountSetting extends BaseController
             'address_shop'  => $this->request->getVar('address_shop'),
         );
 
+        $this->builder = $this->db->table('users');
+        $this->builder->where('member_id', $this->request->getVar('member_id'));
+        $user_id = $this->builder->get()->getRow()->id;
+        // dd($user_id);
+
+        $datauserAuthGroupsUsers = array(
+            'group_id'     => 3,
+        );
+
+        $this->db->transBegin();
         $this->shopModel->insert($data);
-        if ($this->shopModel->affectedRows() > 0) {
-            $msg = $this->request->getVar('name_shop') . ' Berhasil di Tambahkan';
+        $this->userAuthGroupsUsersModel->update(['user_id' => $user_id], $datauserAuthGroupsUsers);
+
+        if ($this->db->transStatus() === false) {
+            $this->db->transRollback();
+            $msg = strtoupper($this->request->getVar('name_shop')) . ' Gagal di Tambahkan';
+            session()->setFlashdata('error', $msg);
+            return redirect()->to('/setting_account');
+        } else {
+            $this->db->transCommit();
+            $msg = strtoupper($this->request->getVar('name_shop')) . ' Berhasil di Tambahkan';
             session()->setFlashdata('success', $msg);
             return redirect()->to('/setting_account');
         }
+
+
+        // $this->userAuthGroupsUsersModel->update(['user_id ' => $user_id], ['group_id' => '3']);
+        // $this->$this->shopModel->insert($data);
+        // if ($this->shopModel->affectedRows() > 0) {
+        //     $msg = $this->request->getVar('name_shop') . ' Berhasil di Tambahkan';
+        //     session()->setFlashdata('success', $msg);
+        //     return redirect()->to('/setting_account');
+        // }
     }
 
     public function editshop()

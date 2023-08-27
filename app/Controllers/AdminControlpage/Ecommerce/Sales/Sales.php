@@ -19,6 +19,7 @@ use App\Models\UserProfileModel;
 use App\Models\ListPackagingModel;
 use App\Models\PurchaseModel;
 use App\Models\PurchaseDetailModel;
+use App\Models\ConsumableLogModel;
 use App\Models\ListNotificationModel;
 
 class Sales extends BaseController
@@ -42,6 +43,7 @@ class Sales extends BaseController
     protected $listPackagingModel;
     protected $purchaseModel;
     protected $purchaseDetailModel;
+    protected $consumableLogModel;
     protected $listNotificationModel;
 
     public function __construct()
@@ -64,6 +66,7 @@ class Sales extends BaseController
         $this->purchaseModel = new PurchaseModel();
         $this->purchaseDetailModel = new PurchaseDetailModel();
         $this->listNotificationModel = new ListNotificationModel();
+        $this->consumableLogModel = new ConsumableLogModel();
         $this->db      = \Config\Database::connect();
     }
 
@@ -428,6 +431,7 @@ class Sales extends BaseController
         $datastockUpdate = array();
         $productsStockLog = array();
         $productsStockLogLast = array();
+        $dataPackaging = array();
         $proidArray = array();
         $priceArray = array();
         for ($a = 0; $a < count($this->request->getVar('proid')); $a++) {
@@ -563,8 +567,9 @@ class Sales extends BaseController
 
         if ($this->request->getVar('packagingmethod') != 0) {
             $pckg = $this->request->getVar('packagingmethod');
+            $pckgid = $this->listPackagingModel->find($pckg)['proid_pck'];
             $rowstockpackaging = array(
-                'pro_id'                => $this->listPackagingModel->find($pckg)['proid_pck'],
+                'pro_id'                => $pckgid,
                 'pro_current_stock'     => $this->productsstockModel->find($this->listPackagingModel->find($pckg)['proid_pck'])['pro_current_stock'] - 1
             );
             array_push($datastockUpdateNew, $rowstockpackaging);
@@ -581,6 +586,14 @@ class Sales extends BaseController
                 'new_value'                 => $this->productsstockModel->find($this->listPackagingModel->find($pckg)['proid_pck'])['pro_current_stock'] - 1,
             ];
             array_push($productsStockLogNew, $rowproductsStockLogPck);
+
+            $dataPackaging = [
+                'date'                      => $this->request->getVar('date_sales'),
+                'procon_id'                 => $this->listPackagingModel->find($pckg)['proid_pck'],
+                'id_sales_consum'           => strtoupper($this->request->getVar('id_sales')),
+                'consum_qty'                => 1,
+                'consum_price'              => $this->productspriceModel->find($pckgid)['pro_price_basic'],
+            ];
         }
 
 
@@ -639,7 +652,7 @@ class Sales extends BaseController
         }
 
         // dd($this->request->getVar(), $productsStockLog, $datastockUpdate, $dataSalesDetail, $dataSales, $member_id_ownershop, $dataNotification, $targetgroup->getResult());
-        // dd($datastockUpdateNew, $productsStockLogNew);
+        // dd($datastockUpdateNew, $productsStockLogNew, $dataPackaging);
 
         $this->db->transBegin();
         $this->salesModel->insert($dataSales);
@@ -647,6 +660,10 @@ class Sales extends BaseController
         $this->productsstockLogModel->insertBatch($productsStockLogNew);
         $this->productsstockModel->updateBatch($datastockUpdateNew, 'pro_id');
         $this->listNotificationModel->insertBatch($dataNotification);
+        if ($this->request->getVar('packagingmethod') != 0) {
+            $this->consumableLogModel->insert($dataPackaging);
+        }
+
 
         if ($this->db->transStatus() === false) {
             $this->db->transRollback();
@@ -1754,6 +1771,23 @@ class Sales extends BaseController
     public function seriessales($idshop = null, $range = null)
     {
         $id_shop = base64_decode(base64_decode($idshop));
+        // dd($id_shop);
+        if ($id_shop != "reseller") {
+            $shop_group = [$id_shop];
+        } else {
+            $this->builder = $this->db->table('users');
+            $this->builder->join('auth_groups_users', 'auth_groups_users.user_id= users.id');
+            $this->builder->join('shop', 'shop.member_id= users.member_id');
+            $this->builder->where('group_id', '3');
+            $query = $this->builder->get();
+            $shop_reselerArray = array();
+            foreach ($query->getResult() as $i) {
+                array_push($shop_reselerArray, $i->id_shop);
+            };
+            $shop_group = $shop_reselerArray;
+        }
+
+
         $day = date("d");
         if ($range == 'tmonth') {
             $month = date("m");
@@ -1773,6 +1807,9 @@ class Sales extends BaseController
         $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
         $this_week_start = date("d", $monday);
         $this_week_end = date("d", $sunday);
+        if ($range == 'today') {
+            $count = 1;
+        };
         if ($range == 'tweek') {
             $count = 7;
         };
@@ -1787,6 +1824,9 @@ class Sales extends BaseController
         $m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         for ($a = 0; $a < $count; $a++) {
             $no = 1;
+            if ($range == 'today') {
+                $no = $day;
+            };
             if ($range == 'tweek') {
                 $no = $this_week_start;
             };
@@ -1800,13 +1840,13 @@ class Sales extends BaseController
             if ($range == 'tyears') {
                 $row = [
                     "x"    => $m[$a],
-                    "y"    => count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $date_for_like)->findAll()),
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->findAll()),
                 ];
                 $series[] = $row;
             } else {
                 $row = [
                     "x"    => $datetocategory,
-                    "y"    => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales', $date)->findAll()),
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->findAll()),
                 ];
                 $series[] = $row;
             }
@@ -1814,6 +1854,9 @@ class Sales extends BaseController
 
         if ($range == null) {
             $title = "";
+        };
+        if ($range == "today") {
+            $title = "by Today";
         };
         if ($range == "tweek") {
             $title = "by Weeks";
@@ -1846,6 +1889,12 @@ class Sales extends BaseController
         $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
         $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
         $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+        if ($range == "today") {
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+        };
         if ($range == "tweek") {
             $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start);
             $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_end);
@@ -1864,7 +1913,6 @@ class Sales extends BaseController
         $tallpriceBasicArray = array();
         $tpricepckg = array();
         $taddsArray = array();
-        // $tconsumableArray = array();
         $lsalesArray = array();
         $lorderArray = array();
         $lallpaymentArray = array();
@@ -1872,115 +1920,87 @@ class Sales extends BaseController
         $lpricepckg = array();
         $laddsArray = array();
 
-        $tridpckg = array();
-        $lridpckg = array();
-
-        // for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
-        //     $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
-        // }
-
-        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
-        //     $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
-        // }
-
-        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
-        //     $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-        //     $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl[$a])->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-        //     $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
-        // }
-
-        // for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
-        //     $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-        //     $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl[$a])->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-        //     $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
-        // }
-
-
         if ($range == "tyears") {
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
-                $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
-                $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $tsalesArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $torderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
-                $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-                $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
+                $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
-            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years)->findAll()); $a++) {
-                $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years)->findAll()[$a]['payment'];
+            for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years)->findAll()); $a++) {
+                $taddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years)->findAll()[$a]['payment'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
-                $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
-                $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $lsalesArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $lorderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
-                $idsl = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-                $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
+                $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $lpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
-            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years - 1)->findAll()); $a++) {
-                $laddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->like('date_purchase', $years - 1)->findAll()[$a]['payment'];
+            for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years - 1)->findAll()); $a++) {
+                $laddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years - 1)->findAll()[$a]['payment'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()); $a++) {
-                $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['payment'];
-                $no_sales = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()); $a++) {
+                $tallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
                 $rowbasic = array();
                 for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
                     $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
                     $rowbasic[] = $rowbasicdata;
                 }
-                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()); $a++) {
-                $lallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['payment'];
-                $no_sales = $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()); $a++) {
+                $lallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
                 $rowbasic = array();
                 for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
                     $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
                     $rowbasic[] = $rowbasicdata;
                 }
-                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
         } else {
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()); $a++) {
-                $tsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
-                $torderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $tsalesArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $torderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
-                $idsl = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $tridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-                $tpricepckg[] = $this->productspriceModel->find($tridpckg[$a])['pro_price_basic'];
+                $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
-            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
-                $taddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
+            for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
+                $taddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
-                $lsalesArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
-                $lorderArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()); $a++) {
+                $lsalesArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
+                $lorderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
-                $idsl = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $lridpckg[] = $this->productsstockLogModel->like('log_description', $idsl)->havingIn('products_stock_log_proid', $groups2)->findAll()[0]['products_stock_log_proid'];
-                $lpricepckg[] = $this->productspriceModel->find($lridpckg[$a])['pro_price_basic'];
+                $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+                $lpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
-            for ($a = 0; $a < count($this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()); $a++) {
-                $laddsArray[] = $this->purchaseModel->where('supplier_id', $id_shop)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()[$a]['payment'];
+            for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()); $a++) {
+                $laddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()[$a]['payment'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()); $a++) {
-                $tallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
-                $no_sales = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()); $a++) {
+                $tallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
                 $rowbasic = array();
                 for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
                     $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
                     $rowbasic[] = $rowbasicdata;
                 }
-                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+                $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
-            for ($a = 0; $a < count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()); $a++) {
-                $lallpaymentArray[] = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
-                $no_sales = $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
+            for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()); $a++) {
+                $lallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['payment'];
+                $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['no_sales'];
                 $rowbasic = array();
                 for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
                     $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
                     $rowbasic[] = $rowbasicdata;
                 }
-                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
+                $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
         }
 
@@ -1994,14 +2014,14 @@ class Sales extends BaseController
             $salesval      = $salesval_this;
             $saleskey      = "success";
             $salessym      = "up";
-            if ($salesval_this != 0 && $salesval_last != 0) {
+            if ($salesval_this != 0) {
                 $salespcg  = ($salesval_this - $salesval_last) / $salesval_this * 100;
             }
         } else {
             $salesval  = $salesval_this;
             $saleskey  = "danger";
             $salessym  = "down";
-            if ($salesval_last != 0 && $salesval_this != 0) {
+            if ($salesval_last != 0) {
                 $salespcg  = ($salesval_last - $salesval_this) / $salesval_last * 100;
             }
         }
@@ -2013,33 +2033,93 @@ class Sales extends BaseController
             $orderval  = $orderval_this;
             $orderkey  = "success";
             $ordersym  = "up";
-            if ($orderval_this != 0 && $orderval_last != 0) {
+            if ($orderval_this != 0) {
                 $orderpcg  = ($orderval_this - $orderval_last) / $orderval_this * 100;
             }
         } else {
             $orderval  = array_sum($torderArray);
             $orderkey  = "danger";
             $ordersym  = "down";
-            if ($orderval_last != 0 && $orderval_this != 0) {
+            if ($orderval_last != 0) {
                 $orderpcg  = ($orderval_last - $orderval_this) / $orderval_last * 100;
             }
         }
 
+        $consumpcg = 0;
+        $consum_this = array_sum($tpricepckg);
+        $consum_last = array_sum($lpricepckg);
+        if ($consum_this >= $consum_last) {  // CONSUMABLE
+            $consumval  = $consum_this;
+            $consumkey  = "danger";
+            $consumsym  = "up";
+            if ($consum_this != 0) {
+                $consumpcg  = ($consum_this - $consum_last) / $consum_this * 100;
+            }
+        } else {
+            $consumval  = $consum_this;
+            $consumkey  = "success";
+            $consumsym  = "down";
+            if ($consum_last != 0) {
+                $consumpcg  = ($consum_last - $consum_this) / $consum_last * 100;
+            }
+        }
+
+        $adspcg = 0;
+        $ads_this = array_sum($taddsArray);
+        $ads_last = array_sum($laddsArray);
+        if ($ads_this >= $ads_last) {  // ADS(IKLAN)
+            $adsval  = $ads_this;
+            $adskey  = "danger";
+            $adssym  = "up";
+            if ($ads_this != 0) {
+                $adspcg  = ($ads_this - $ads_last) / $ads_this * 100;
+            }
+        } else {
+            $adsval  = $ads_this;
+            $adskey  = "success";
+            $adssym  = "down";
+            if ($ads_last != 0) {
+                $adspcg  = ($ads_last - $ads_this) / $ads_last * 100;
+            }
+        }
+
+        $exppcg = 0;
+        $exp_this = $consum_this + $ads_this;
+        $exp_last = $consum_last + $ads_last;
+        if ($exp_this >= $exp_last) {  // EXPENSE(PENGELUARAN)
+            $expval  = $exp_this;
+            $expkey  = "danger";
+            $expsym  = "up";
+            if ($exp_this != 0) {
+                $exppcg  = ($exp_this - $exp_last) / $exp_this * 100;
+            }
+        } else {
+            $expval  = $exp_this;
+            $expkey  = "success";
+            $expsym  = "down";
+            if ($exp_last != 0) {
+                $exppcg  = ($exp_last - $exp_this) / $exp_last * 100;
+            }
+        }
+
+
+
+
         $profitpcg = 0;
-        $profitval_this = array_sum($tallpaymentArray) - array_sum($tallpriceBasicArray);
-        $profitval_last = array_sum($lallpaymentArray) - array_sum($lallpriceBasicArray);
+        $profitval_this = array_sum($tallpaymentArray) - array_sum($tallpriceBasicArray) - $consum_this - $ads_this;
+        $profitval_last = array_sum($lallpaymentArray) - array_sum($lallpriceBasicArray) - $consum_last - $ads_last;
         if ($profitval_this >= $profitval_last) {  // PROFIT
             $profitval  = $profitval_this;
             $profitkey  = "success";
             $profitsym  = "up";
-            if ($profitval_this != 0 && $profitval_last != 0) {
+            if ($profitval_this != 0) {
                 $profitpcg  = ($profitval_this - $profitval_last) / $profitval_this * 100;
             }
         } else {
             $profitval  = $profitval_this;
             $profitkey  = "danger";
             $profitsym  = "down";
-            if ($profitval_last != 0 && $profitval_this != 0) {
+            if ($profitval_last != 0) {
                 $profitpcg  = ($profitval_last - $profitval_this) / $profitval_last * 100;
             }
         }
@@ -2050,8 +2130,11 @@ class Sales extends BaseController
             'tsym'       => $salessym,
             'tvalue'     => $salesval,
             'tpcg'       => number_format($salespcg, 0),
-            'thisvalue'  => $salesval_this,
-            'lastvalue'  => $salesval_last,
+            // 'thisvalue'  => $salesval_this,
+            // 'lastvalue'  => $salesval_last,
+            'thisvalue'  => $tsalesArray,
+            'lastvalue'  => $lsalesArray,
+
         );
         $total_order = array(
             'tkey'       => $orderkey,
@@ -2061,11 +2144,37 @@ class Sales extends BaseController
             'thisvalue'  => $orderval_this,
             'lastvalue'  => $orderval_last,
         );
+        $total_consum = array(
+            'tkey'       => $consumkey,
+            'tsym'       => $consumsym,
+            'tvalue'     => $consumval,
+            'tpcg'       => number_format($consumpcg, 0),
+            'thisvalue'  => $consum_this,
+            'lastvalue'  => $consum_last,
+        );
+        $total_ads = array(
+            'tkey'       => $adskey,
+            'tsym'       => $adssym,
+            'tvalue'     => $adsval,
+            'tpcg'       => number_format($adspcg, 0),
+            'thisvalue'  => $ads_this,
+            'lastvalue'  => $ads_last,
+        );
+        $total_expense = array(
+            'tkey'       => $expkey,
+            'tsym'       => $expsym,
+            'tvalue'     => $expval,
+            'tpcg'       => number_format($exppcg, 0),
+            'thisvalue'  => $exp_this,
+            'lastvalue'  => $exp_last,
+        );
         $total_profit = array(
             'tkey'       => $profitkey,
             'tsym'       => $profitsym,
             'tvalue'     => $profitval,
             'tpcg'       => number_format($profitpcg, 0),
+            'thisvalue'  => $profitval_this,
+            'lastvalue'  => $profitval_last,
         );
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2074,13 +2183,20 @@ class Sales extends BaseController
             'data_sort'         => $title,
             'tesdate'           => $tesdate,
             'teddate'           => $teddate,
+            'lesdate'           => $lesdate,
+            'leddate'           => $leddate,
             'total_sales'       => $total_sales,
             'total_order'       => $total_order,
+            'total_consum'      => $total_consum,
+            'total_ads'         => $total_ads,
+            'total_expense'     => $total_expense,
             'total_profit'      => $total_profit,
-            'id_shop'           => $taddsArray,
-            'id_shop1'           => $laddsArray,
-            // 't1'           => $tridpckg,
-            // 't2'           => $lridpckg,
+            // 'this_ADS'           => $taddsArray,
+            // 'last_ADS'           => $laddsArray,
+            // 'this_Consum'        => $tpricepckg,
+            // 'last_Consum'        => $lpricepckg,
+            'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
+            'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
         ]);
     }
 }

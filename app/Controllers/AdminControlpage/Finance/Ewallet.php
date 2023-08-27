@@ -297,10 +297,19 @@ class Ewallet extends BaseController
             $no = 0;
 
             foreach ($query->getResult() as $i) {
+                if ($i->log_code == "OP-EWAL") {
+                    $log_transaction = substr($i->log_description, 9);
+                };
+                if ($i->log_code == "IN-SALES") {
+                    $log_transaction = substr($i->log_description, 14);
+                };
+                if ($i->log_code == "OUT-EWAL") {
+                    $log_transaction = $i->log_description;
+                };
                 $row = [
                     "no"                => $no++,
                     "log_code"          => $i->log_code,
-                    "log_transaction"   => substr($i->log_description, 14),
+                    "log_transaction"   => $log_transaction,
                     "link"              => $i->link,
                     'last_value'        => number_format($i->last_value, 0, ",", ".") . ",-",
                     'trans_value'       => number_format($i->trans_value, 0, ",", ".") . ",-",

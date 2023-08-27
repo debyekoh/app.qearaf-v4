@@ -287,6 +287,9 @@
                                     <?php foreach ($tabshop as $shop) : ?>
                                         <li><a href="<?= base_url() ?>myshops/<?= $shop['id_shop'] ?>" data-key="t-myshop-<?= $shop['marketplace'] ?>-<?= $shop['name_shop'] ?>"><?= $shop['marketplace'] ?> <?= $shop['name_shop'] ?></a></li>
                                     <?php endforeach; ?>
+                                    <?php if (in_groups('1') == true || in_groups('2') == true) : ?>
+                                        <li><a href="<?= base_url() ?>myshops/<?= base64_encode(base64_encode('reseller')); ?>" data-key="t-myshop-reseller">Reseller</a></li>
+                                    <?php endif; ?>
                                 </ul>
                             </li>
                         <?php } ?>
