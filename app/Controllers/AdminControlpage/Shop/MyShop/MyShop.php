@@ -42,6 +42,8 @@ class MyShop extends BaseController
             <script src="' . base_url() . 'assets/js/pages/shop.init.js"></script>
             
             ';
+
+        dd("AA");
         if (base64_decode(base64_decode($id_shop)) == 'reseller') {
             $idshop = $id_shop;
             $shop_name = "Reseller";
@@ -50,11 +52,16 @@ class MyShop extends BaseController
             $this->builder->join('shop', 'shop.member_id= users.member_id');
             $this->builder->where('group_id', '3');
             $query = $this->builder->get();
-            $shop_reselerArray = array();
-            foreach ($query->getResult() as $i) {
-                array_push($shop_reselerArray, $i->id_shop);
-            };
-            $shop_group = $shop_reselerArray;
+            if ($query->getResult() != null) {
+                $shop_reselerArray = array();
+                foreach ($query->getResult() as $i) {
+                    array_push($shop_reselerArray, $i->id_shop);
+                };
+                $shop_group = $shop_reselerArray;
+            } else {
+
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
         } elseif (!$this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->find($id_shop)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         } else {
