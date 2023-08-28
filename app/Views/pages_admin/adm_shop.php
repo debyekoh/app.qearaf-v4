@@ -163,6 +163,22 @@
                         <div class="col-xl-6">
                             <div class="card">
                                 <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4 class="text-primary font-size-22" id="totpck"></h4>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <ul class="list-inline main-chart text-md-end mb-0">
+                                                <li class="list-inline-item chart-border-left me-0 border-0">
+                                                    <h4 class="text-primary font-size-22" id="totinpr"></h4>
+                                                </li>
+                                                <li class="list-inline-item chart-border-left me-0">
+                                                    <h4 class="font-size-22" id="totcmpl"></span>
+                                                    </h4>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div id="overview" data-colors='["#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9","#e6ecf9","#e6ecf9","#1f58c7","#1f58c7", "#1f58c7"]' class="apex-chart"></div>
                                 </div>
                             </div>

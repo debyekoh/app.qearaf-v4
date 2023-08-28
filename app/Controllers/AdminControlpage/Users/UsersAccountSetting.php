@@ -5,6 +5,7 @@ namespace App\Controllers\AdminControlpage\Users;
 use App\Controllers\BaseController;
 use App\Models\UserProfileModel;
 use App\Models\UserAuthGroupsUsersModel;
+use App\Models\BallanceEWallet;
 
 
 class UsersAccountSetting extends BaseController
@@ -14,11 +15,13 @@ class UsersAccountSetting extends BaseController
     protected $builder;
     protected $userProfileModel;
     protected $userAuthGroupsUsersModel;
+    protected $ballanceEWallet;
 
     public function __construct()
     {
         $this->userProfileModel = new userProfileModel();
         $this->userAuthGroupsUsersModel = new UserAuthGroupsUsersModel();
+        $this->ballanceEWallet = new BallanceEWallet();
         $this->db      = \Config\Database::connect();
     }
 
@@ -136,6 +139,14 @@ class UsersAccountSetting extends BaseController
             'address_shop'  => $this->request->getVar('address_shop'),
         );
 
+        $data_ewallet = array(
+            'ewallet_shopid'    => $this->request->getVar('id_shop'),
+            'value_ewallet'     => 0,
+            'active'            => 0,
+        );
+
+        // dd($data_ewallet);
+
         $this->builder = $this->db->table('users');
         $this->builder->where('member_id', $this->request->getVar('member_id'));
         $user_id = $this->builder->get()->getRow()->id;
@@ -147,6 +158,7 @@ class UsersAccountSetting extends BaseController
 
         $this->db->transBegin();
         $this->shopModel->insert($data);
+        $this->ballanceEWallet->insert($data_ewallet);
         $this->userAuthGroupsUsersModel->update(['user_id' => $user_id], $datauserAuthGroupsUsers);
 
         if ($this->db->transStatus() === false) {
@@ -226,6 +238,7 @@ class UsersAccountSetting extends BaseController
         }
         if ($id_shop != null && $PostresponeGET != null) {
             $this->shopModel->delete($id_shop);
+            $this->ballanceAccount->delete($id_shop);
             if ($this->shopModel->affectedRows() > 0) {
                 echo json_encode($responePOST);
             }

@@ -3,44 +3,45 @@ function clickTab(params) {
     console.log(params)
     var url = window.location.href;
     var parts = url.split("/");
-    if(atob(atob(parts[parts.length-1])) == "reseller"){
+    var _a = parts[parts.length-1];
+    // console.log(_a)
+    // console.log(atob(_a))
+    if(_a == "Y21WelpXeHNaWEk9"){
         var shop = parts[parts.length-1];
-    }else{
+    }else if(_a == "dashboards"){
+        var shop = 1;
+    }
+    else{
         var shop = btoa(btoa(parts[parts.length-1]));
     }
     location.href = $("#BaseUrl").val()+'sales?tab='+params+'&ref='+shop;
 }
 
-// console.log(window.location.href.split("/")[window.location.href.split("/").length-2])
-var pagecek = window.location.href.split("/")[window.location.href.split("/").length-2]
-if(pagecek == 'myshops'){
+// console.log(window.location.href.split("/")[5])
+// var pagecek = window.location.href.split("/")[window.location.href.split("/").length-2]
+var pagecek = window.location.href.split("/")[5]
+if(pagecek == 'myshops' || pagecek == 'dashboards'){
+// if(pagecek == 'myshops'){
     $(document).ready(function() {
         updatecharts()
     })
 
     var options = {
+       
+        series: [],
         chart: {
+        height: 350,
+        type: 'bar',
             toolbar: {
-                show: !1
+                show: false,
             },
-            height: 340.5,
-            type: "bar",
-            events: {
-                click: function(e, r, t) {}
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        stroke: {
-            show: !1
         },
         plotOptions: {
             bar: {
-                borderRadius: 3,
-                dataLabels: {
+            borderRadius: 5,
+            dataLabels: {
                 position: 'center', // top, center, bottom
-                },
+            },
             }
         },
         dataLabels: {
@@ -49,37 +50,19 @@ if(pagecek == 'myshops'){
             formatter: function (val, opts) {
                 return val
             },
-            textAnchor: 'middle',
-            distributed: false,
-            offsetX: 0,
-            offsetY: 0,
+            offsetY: -20,
             style: {
-                fontSize: '18px',
-                fontFamily: 'Helvetica, Arial, sans-serif',
-                fontWeight: 'bold',
-            },
-        },
-        title: {
-            text: 'Overview',
+            fontSize: '12px',
+            // colors: ["#304758"]
+            }
         },
         noData: {
             text: 'Loading...'
         },
-        series: [],
+      
         xaxis: {
-            type: 'category',
             categories: [],
-            tickPlacement: 'on',
             position: 'bottom',
-            labels: {
-                show: true,
-                style: {
-                    fontSize: '14px',
-                    fontFamily: 'Helvetica, Arial, sans-serif',
-                    fontWeight: 'bold',
-                    colors: undefined
-                },
-            },
             axisBorder: {
                 show: true,
                 color: '#78909C',
@@ -96,31 +79,54 @@ if(pagecek == 'myshops'){
                 offsetX: 0,
                 offsetY: 0
             },
+            crosshairs: {
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                    colorFrom: '#D8E3F0',
+                    colorTo: '#BED1E6',
+                    stops: [0, 100],
+                    opacityFrom: 0.4,
+                    opacityTo: 0.5,
+                    }
+                }
+            },
         },
         yaxis: {
             axisBorder: {
-                show: false
+            show: false
             },
             axisTicks: {
-                show: false,
+            show: false,
             },
             labels: {
-                show: false,
+            show: false,
                 formatter: function (val) {
-                return val;
+                    return val + "%";
                 }
             }
-
+        
         },
+        // title: {
+        //     text: 'Monthly Inflation in Argentina, 2002',
+        //     floating: true,
+        //     offsetY: 320,
+        //     align: 'center',
+        //     style: {
+        //     color: '#444'
+        //     }
+        // }
+      };
 
-    }
+      var chart = new ApexCharts(document.querySelector("#overview"), options);
+      chart.render();
 
-    var chart = new ApexCharts(
-        document.querySelector("#overview"),
-        options
-    );
+    // var chart = new ApexCharts(
+    //     document.querySelector("#overview"),
+    //     options
+    // );
 
-    chart.render();
+    // chart.render();
 
     $('#sortby').change(function sortby() {
         updatecharts($(this).val())
@@ -141,6 +147,10 @@ if(pagecek == 'myshops'){
         var tex_percent =  response.total_expense.tpcg
         var tcs_percent =  response.total_consum.tpcg
         var tad_percent =  response.total_ads.tpcg
+        var totpck = response.data_report.totalpackage
+        var totinpr = response.data_report.totalinprocess
+        var totcmpl = response.data_report.totalcompleted
+        console.log(totpck,totinpr,totcmpl)
         if(tsl_percent !=0){tsl_html = ' <span class="fw-bold text-'+response.total_sales.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_sales.tpcg+'%'}else{tsl_html =''}
         $("#tsl").html('Rp. '+response.total_sales.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tsl_html);
 
@@ -160,6 +170,9 @@ if(pagecek == 'myshops'){
         if(tad_percent !=0){tad_html =' <span class="fw-bold text-'+response.total_ads.tkey+' font-size-18"><i class="bx bx-'+response.total_ads.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_ads.tpcg+'%</span>'}else{tad_html =''}
         $("#tad").html('Rp. '+response.total_ads.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tad_html);
 
+        $("#totpck").html(totpck+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span>');
+        $("#totinpr").html(totinpr+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span>');
+        $("#totcmpl").html(totcmpl+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed');
         console.log(response.total_ads.tpcg)
 
         // $("#tsl").html('Rp. '+response.total_sales.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_sales.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_sales.tpcg+'%</span>');

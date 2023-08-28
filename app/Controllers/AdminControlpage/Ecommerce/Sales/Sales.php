@@ -680,6 +680,23 @@ class Sales extends BaseController
 
     public function show($tab = null, $date = null, $shop = null)
     {
+        $shop_group = array();
+        if (base64_decode(base64_decode($shop)) != "reseller") {
+            $shop_group = [base64_decode(base64_decode($shop))];
+        } else {
+            $this->builder = $this->db->table('users');
+            $this->builder->join('auth_groups_users', 'auth_groups_users.user_id= users.id');
+            $this->builder->join('shop', 'shop.member_id= users.member_id');
+            $this->builder->where('group_id', '3');
+            $query = $this->builder->get();
+            $shop_reselerArray = array();
+            foreach ($query->getResult() as $i) {
+                array_push($shop_reselerArray, $i->id_shop);
+            };
+            $shop_group = $shop_reselerArray;
+        }
+
+
         $this->builder = $this->db->table('sales');
         if ($tab == "All") {
             // $this->builder->where('status', null);
@@ -699,15 +716,21 @@ class Sales extends BaseController
                 $this->builder->where('date_sales <=', $end);
             }
         };
-        $shopstring = null;
+
+
         if ($shop != '1') {
-            $shopstring = base64_decode(base64_decode($shop));
-            $this->builder->where('sales.id_shop', $shopstring);
+            $this->builder->whereIn('sales.id_shop', $shop_group);
         };
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
         $this->builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
         // $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+
+
+
+
+
+
 
 
 
@@ -939,19 +962,6 @@ class Sales extends BaseController
                             'trans_value'           => $trans_stock,
                         );
                         array_push($datastockUpdate, $rowstock);
-
-                        // $rowstockLog = array(
-                        //     'products_stock_log_proid'  => $pro_id,
-                        //     'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
-                        //     'log_code'                  => "EDIT-SALES-LAST",
-                        //     'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
-                        //     'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
-                        //     'last_value'                => $currentstockLast,
-                        //     'trans_value'               => $trans_stockLast,
-                        //     'new_value'                 => $new_stockLast,
-                        // );
-
-                        // array_push($productsStockLog, $rowstockLog);
                     } else {
                         $id_bundling =  $this->productsBundlingModel->where('id_bundling', $pro_id)->findAll();
                         $this->productsBundlingModel->where('id_bundling', $pro_id)->findAll();
@@ -962,19 +972,6 @@ class Sales extends BaseController
                                 'trans_value'           => $trans_stock,
                             );
                             array_push($datastockUpdate, $rowstock);
-
-                            // $rowstockLog = array(
-                            //     'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
-                            //     'log_key'                   => date("ymd") . "/EDIT-SALES-LAST/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-LAST/")->findAll()) + 1 + $a),
-                            //     'log_code'                  => "EDIT-SALES-LAST",
-                            //     'log_description'           => "EDIT-SALES-LAST " . $IDSalestoDelete,
-                            //     'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
-                            //     'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
-                            //     'trans_value'               => $trans_stockLast,
-                            //     'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] + $trans_stockLast,
-                            // );
-
-                            // array_push($productsLastStockLog, $rowstockLog);
                         };
                     }
                 }
@@ -1536,8 +1533,10 @@ class Sales extends BaseController
                     'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
                     'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
                     'log_code'                  => "EDIT-SALES-NEW",
-                    'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
-                    'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                    // 'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                    // 'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                    'log_description'           => "EDIT-SALES-NEW " . $IDSalestoDelete,
+                    'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
                     'last_value'                => $currentstockNew,
                     'trans_value'               => $trans_stockNew,
                     'new_value'                 => $new_stockNew,
@@ -1560,8 +1559,10 @@ class Sales extends BaseController
                         'products_stock_log_proid'  => $id_bundling[$aa]['pro_id_bundling_item'],
                         'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $aa),
                         'log_code'                  => "EDIT-SALES-NEW",
-                        'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
-                        'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                        // 'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                        // 'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                        'log_description'           => "EDIT-SALES-NEW " . $IDSalestoDelete,
+                        'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
                         'last_value'                => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'],
                         'trans_value'               => $trans_stockNew,
                         'new_value'                 => $this->productsstockModel->find($id_bundling[$aa]['pro_id_bundling_item'])['pro_current_stock'] - $trans_stockNew,
@@ -1572,22 +1573,6 @@ class Sales extends BaseController
             }
 
 
-
-            // $datastockUpdateNew[] = array(
-            //     'pro_id'                => $this->request->getVar('proid')[$b],
-            //     'pro_current_stock'     => $currentstockNew - $this->request->getVar('qty')[$b],
-            // );
-
-            // $productsStockLogNew[] = array(
-            //     'products_stock_log_proid'  => $this->request->getVar('proid')[$b],
-            //     'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $b),
-            //     'log_code'                  => "EDIT-SALES-NEW",
-            //     'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
-            //     'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('idsales')), 0, 6) .  substr(strtoupper($this->request->getVar('idsales')), 7, 1) .  substr(strtoupper($this->request->getVar('idsales')), 9, 2) .  substr(strtoupper($this->request->getVar('idsales')), 12),
-            //     'last_value'                => $currentstockNew,
-            //     'trans_value'               => $trans_stockNew,
-            //     'new_value'                 => $new_stockNew,
-            // );
 
             $priceArray[] = $this->request->getVar('price')[$b] * $this->request->getVar('qty')[$b];
         }
@@ -1629,8 +1614,10 @@ class Sales extends BaseController
                 'products_stock_log_proid'  => $il['pro_id'],
                 'log_key'                   => date("ymd") . "/EDIT-SALES-NEW/" . sprintf("%04d", count($this->productsstockLogModel->like('log_key', date("ymd") . "/EDIT-SALES-NEW/")->findAll()) + 1 + $ct),
                 'log_code'                  => "EDIT-SALES-NEW",
-                'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
-                'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                // 'log_description'           => "EDIT-SALES-NEW " . strtoupper($this->request->getVar('idsales')),
+                // 'link'                      => "detail/view/" . substr(strtoupper($this->request->getVar('id_sales')), 0, 6) .  substr(strtoupper($this->request->getVar('id_sales')), 7, 1) .  substr(strtoupper($this->request->getVar('id_sales')), 9, 2) .  substr(strtoupper($this->request->getVar('id_sales')), 12),
+                'log_description'           => "EDIT-SALES-NEW " . $IDSalestoDelete,
+                'link'                      => "detail/view/" . substr($IDSalestoDelete, 0, 6) .  substr($IDSalestoDelete, 7, 1) .  substr($IDSalestoDelete, 9, 2) .  substr($IDSalestoDelete, 12),
                 'last_value'                => $il['pro_current_stock'],
                 'trans_value'               => $il['trans_value'],
                 'new_value'                 => $il['pro_current_stock'] - $il['trans_value'],
@@ -1771,21 +1758,28 @@ class Sales extends BaseController
     public function seriessales($idshop = null, $range = null)
     {
         $id_shop = base64_decode(base64_decode($idshop));
-        // dd($id_shop);
-        if ($id_shop != "reseller") {
-            $shop_group = [$id_shop];
-        } else {
+        $shop_group = array();
+        if ($id_shop == "reseller" || $id_shop == "dashboards") {
             $this->builder = $this->db->table('users');
             $this->builder->join('auth_groups_users', 'auth_groups_users.user_id= users.id');
             $this->builder->join('shop', 'shop.member_id= users.member_id');
-            $this->builder->where('group_id', '3');
+            if ($id_shop != "dashboards") {
+                $this->builder->where('group_id', '3');
+            }
             $query = $this->builder->get();
+
             $shop_reselerArray = array();
             foreach ($query->getResult() as $i) {
                 array_push($shop_reselerArray, $i->id_shop);
             };
             $shop_group = $shop_reselerArray;
+            // dd("reseller/dashboards");
+        } else {
+            $shop_group = [$id_shop];
+            // dd("shop_group");
         }
+
+
 
 
         $day = date("d");
@@ -1852,6 +1846,8 @@ class Sales extends BaseController
             }
         };
 
+
+
         if ($range == null) {
             $title = "";
         };
@@ -1878,10 +1874,12 @@ class Sales extends BaseController
 
 
 
+
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------ 
         $groups = ['Return', 'Cancel'];
         $groups1 = ['Received', 'Completed'];
         $groups2 = array();
+        $groups3 = ['Return', 'Cancel', 'Completed'];
         for ($a = 0; $a < count($this->listPackagingModel->notLike('id_packaging', "0")->findAll()); $a++) {
             array_push($groups2, $this->listPackagingModel->notLike('id_packaging', "0")->findAll()[$a]['proid_pck']);
         }
@@ -1961,6 +1959,9 @@ class Sales extends BaseController
                 }
                 $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
+            $totalpackage = count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll());
+            $totalinprocess = count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups3)->findAll());
+            $totalcompleted = count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->where('status', 'Completed')->findAll());
         } else {
             for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()); $a++) {
                 $tsalesArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['payment'];
@@ -2002,10 +2003,17 @@ class Sales extends BaseController
                 }
                 $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->whereIn('status', $groups1)->findAll()[$a]['packaging_charge'];
             }
+            $totalpackage = count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll());
+            $totalinprocess = count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups3)->findAll());
+            $totalcompleted = count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->where('status', "Completed")->findAll());
         }
 
-
-
+        $data_report = array(
+            'title'       => $title,
+            'totalpackage'      => $totalpackage,
+            'totalinprocess'     => $totalinprocess,
+            'totalcompleted'     => $totalcompleted,
+        );
 
         $salespcg = 0;
         $salesval_this = array_sum($tsalesArray);
@@ -2176,10 +2184,13 @@ class Sales extends BaseController
             'thisvalue'  => $profitval_this,
             'lastvalue'  => $profitval_last,
         );
+
+
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------
 
         return $this->response->setJSON([
             'data_series'       => $series,
+            'data_report'       => $data_report,
             'data_sort'         => $title,
             'tesdate'           => $tesdate,
             'teddate'           => $teddate,
@@ -2195,8 +2206,9 @@ class Sales extends BaseController
             // 'last_ADS'           => $laddsArray,
             // 'this_Consum'        => $tpricepckg,
             // 'last_Consum'        => $lpricepckg,
-            'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
-            'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
+            'test'        => $idshop,
+            // 'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
+            // 'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
         ]);
     }
 }

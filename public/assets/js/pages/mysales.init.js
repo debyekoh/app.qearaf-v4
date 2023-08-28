@@ -370,7 +370,7 @@ function renderSales(name,date,shop) {
                                         '</div>'+
                                         '<div class="flex-grow-1 ms-3 text-center">'+
                                             '<span>'+
-                                                '<div class="dropdown">'+
+                                                '<div class="dropstart">'+
                                                     '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
                                                         '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
                                                     '</button>'+
@@ -447,6 +447,8 @@ function renderSales(name,date,shop) {
     // $("#tcard").text(name);
     // $(".tab-content").css("position", "relative");
     // $(".tab-content").css("top", "-46px");
+    // document.getElementsByClassName("gridjs-wrapper").style.minHeight = "300px";
+    $(".gridjs-wrapper").css("min-height", "200px");
     $(".gridjs-head").addClass("m-0");
     $('.gridjs-search').addClass('col-sm-3');
     $('.gridjs-search').removeClass('gridjs-search');
