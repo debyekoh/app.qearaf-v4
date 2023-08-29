@@ -75,6 +75,8 @@ class Products extends BaseController
         $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_bundling, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        $this->builder->orderBy('pro_group', 'ASC');
+        $this->builder->orderBy('pro_name', 'ASC');
         $query = $this->builder->get();
         // dd($query->getResult());
 
@@ -137,7 +139,7 @@ class Products extends BaseController
                 "statusproduct" => $i->pro_active,
                 "editable"      => $editable,
                 "deletable"     => $deletable,
-                "image"         => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.png',
+                "image"         => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.avif',
             ];
             $data[] = $row;
         }
@@ -337,7 +339,7 @@ class Products extends BaseController
         if ($imagefile = $this->request->getFiles()) {
             foreach ($imagefile['image'] as $img) {
                 if ($img->isValid() && !$img->hasMoved()) {
-                    $newName = $this->request->getVar('pro_id') . '-picture-' . $a++ . '.png';
+                    $newName = $this->request->getVar('pro_id') . '-picture-' . $a++ . '.avif';
                     $no_image = $b++;
                     $img->move('assets/images/product', $newName);
                     $dataImage = array(
@@ -385,7 +387,7 @@ class Products extends BaseController
         $pro_id = $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'];
         $dataselect = array(
             'proid' => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
-            'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.png',
+            'image' => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($pro_id)['pro_image_name'] : 'no_image.avif',
             'name' => $this->productsModel->find($pro_id)['pro_name'] . ' ' . $this->productsModel->find($pro_id)['pro_model'],
             // 'curstock' => $this->productsstockModel->find($pro_id)['pro_current_stock'],
             // 'minstock' => $this->productsstockModel->find($pro_id)['pro_min_stock'],
@@ -659,7 +661,7 @@ class Products extends BaseController
         // if ($imagefile = $this->request->getFiles()) {
         //     foreach ($imagefile['image'] as $img) {
         //         if ($img->isValid() && !$img->hasMoved()) {
-        //             $newName = $this->request->getVar('pro_id') . '-picture-' . $a++ . '.png';
+        //             $newName = $this->request->getVar('pro_id') . '-picture-' . $a++ . '.avif';
         //             $no_image = $b++;
         //             $img->move('assets/images/product', $newName);
         //             $dataImage = array(

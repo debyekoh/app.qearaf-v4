@@ -209,6 +209,8 @@ class Sales extends BaseController
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
         $this->builder->notLike('pro_group', 'Consumable');
+        $this->builder->orderBy('pro_group', 'ASC');
+        $this->builder->orderBy('pro_name', 'ASC');
         $query = $this->builder->get();
 
         if (in_groups('1') == true || in_groups('2') == true) {

@@ -210,17 +210,78 @@
                                             <input id="spesification" name="spesification" placeholder="Enter Spesification" type="text" class="form-control" value="<?= (old('spesification')) ? (old('spesification')) : $DataProduct['pro_spec']; ?>">
                                         </div>
                                     </div>
-                                    <?php if (in_groups('1') == true) : ?>
-                                        <div class="col-lg-4">
-                                            <label class="form-label" for="price">Bundling Product</label>
-                                            <div class="mt-2">
-                                                <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
-                                                <input type="checkbox" id="switch" name="bundingproduct" switch="bool" <?= $DataStock['pro_max_stock'] == "1" ? "checked" : "" ?> value="<?= $DataStock['pro_max_stock']; ?>" />
-                                                <label for="switch" data-on-label="Yes" data-off-label="No"></label>
+
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="price">Bundling Product</label>
+                                        <div class="mt-2">
+                                            <!-- <input id="price" name="price" placeholder="Enter Price" type="text" class="form-control"> -->
+                                            <input type="checkbox" id="switch" name="bundingproduct" switch="bool" <?= $DataProduct['pro_bundling'] == "1" ? "checked" : "" ?> value="<?= $DataProduct['pro_bundling']; ?>" />
+                                            <label for="switch" data-on-label="Yes" data-off-label="No"></label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <?php if ($DataProduct['pro_bundling'] == "1") : ?>
+                                    <div class="row" id="row_bundling">
+                                        <div id="div_tabel_bundling">
+                                            <div class="mb-2" id="tbl_lpro_bundling">
+                                                <div class="row mb-3">
+                                                    <div class="table-responsive ">
+                                                        <table id="listsalesproduct" class="table table-sm rounded rounded-3 overflow-hidden table-striped table-hover align-middle mb-0">
+                                                            <thead class="table-info">
+                                                                <tr>
+                                                                    <th class="border-top-0" scope="col">Picture</th>
+                                                                    <th class="border-top-0" scope="col">Product Name</th>
+                                                                    <th class="border-top-0" scope="col">SKU No</th>
+                                                                    <th class="border-top-0  text-center" scope="col"><i class="mdi mdi-apps"></i></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!-- '<tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">'+
+                                                                    '<th scope="row"><img src="'+$(" #BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
+                                                                    '<td>'+
+                                                                        '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" disabled hidden>'+
+                                                                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
+                                                                        '<input name="bdl_proid[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.proid+'" hidden>'+
+                                                                        '<input name="bdl_proname[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.name+'" disabled hidden>'+
+                                                                        '</td>'+
+                                                                    '<td>'+
+                                                                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+sku+'</a></h5>'+
+                                                                        '<input name="bdl_prosku[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+sku+'" hidden>'+
+                                                                        '<input name="bdlbasicprice[]" placeholder="Enter Brand Product" type="number" class="form-control Bsp" value="'+respone.results.basicprice+'" hidden>'+
+                                                                        '<input name="bdlpricereseler[]" placeholder="Enter Brand Product" type="number" class="form-control PRl" value="'+respone.results.reselerprice+'" hidden>'+
+                                                                        '<input name="bdlpriceseller[]" placeholder="Enter Brand Product" type="number" class="form-control PSl" value="'+respone.results.sellerprice+'" hidden>'+
+                                                                        '</td>'+
+                                                                    '<td class="text-center"><button type="button" onclick="delProduct('+stringrow+')" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
+                                                                    '</tr>' -->
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col text-center">
+                                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                                        <button type="button" class="btn btn-outline-primary" id="adnpm">Add New Product</button>
+                                                    </div>
+                                                </div>
+                                                <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-fullscreen-sm-down">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body px-1">
+                                                                <div id="table-gridjs"></div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    <?php endif; ?>
-                                </div>
+                                    </div>
+                                <?php endif; ?>
 
 
                                 <div class="mb-0">
