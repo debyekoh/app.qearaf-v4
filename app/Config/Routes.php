@@ -49,8 +49,8 @@ $routes->post('/notification', 'Notification::index');
 $routes->post('/notification/read', 'Notification::read');
 
 // Shop
-$routes->get('/myshop', 'AdminControlpage\Shop\Myshop\Myshop::index');
-$routes->get('/myshops/(:any)', 'AdminControlpage\Shop\Myshop\Myshop::shops/$1');
+$routes->get('/myshop', 'AdminControlpage\Shop\MyShop\MyShop::index');
+$routes->get('/myshops/(:any)', 'AdminControlpage\Shop\MyShop\MyShop::shops/$1');
 $routes->post('/setting_account/addshop/(:any)', 'AdminControlpage\Users\UsersAccountSetting::addshop/$1');
 $routes->post('/setting_account/csp', 'AdminControlpage\Users\UsersAccountSetting::changeshopstatus'); //AjaxModal
 $routes->match(['get', 'post'], '/setting_account/eds', 'AdminControlpage\Users\UsersAccountSetting::editshop'); //AjaxModal

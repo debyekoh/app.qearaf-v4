@@ -43,7 +43,8 @@ class MyShop extends BaseController
             
             ';
 
-        dd("AA");
+        // dd("AA");
+        $shop_group = array();
         if (base64_decode(base64_decode($id_shop)) == 'reseller') {
             $idshop = $id_shop;
             $shop_name = "Reseller";
@@ -59,7 +60,6 @@ class MyShop extends BaseController
                 };
                 $shop_group = $shop_reselerArray;
             } else {
-
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
         } elseif (!$this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->find($id_shop)) {

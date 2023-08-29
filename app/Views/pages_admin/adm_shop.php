@@ -95,40 +95,6 @@
                                 </a>
                             </li>
                         </ul>
-                        <!-- <div class="row">
-                            <div class="col-12">
-                                <div class="col-sm-2">
-                                    <div class="card">
-                                        <a href="<?= base_url(); ?>sales">
-                                            <div class="card-body">
-                                                <div>
-
-                                                    <div>
-                                                        <h4 class="mt-2 mb-0 fw-bolder text-primary font-size-22">0</h4>
-                                                    </div>
-                                                    <h6 class="mb-0 font-size-15">Process</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-1">
-                                    <div class="card">
-                                        <a href="<?= base_url(); ?>sales">
-                                            <div class="card-body">
-                                                <div>
-
-                                                    <div>
-                                                        <h4 class="mt-2 mb-0 fw-bolder text-primary font-size-22">0</h4>
-                                                    </div>
-                                                    <h6 class="mb-0 font-size-15">Process</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -165,15 +131,15 @@
                                 <div class="card-body pb-0">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 class="text-primary font-size-22" id="totpck"></h4>
+                                            <h4 class="text-primary font-size-22" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <ul class="list-inline main-chart text-md-end mb-0">
                                                 <li class="list-inline-item chart-border-left me-0 border-0">
-                                                    <h4 class="text-primary font-size-22" id="totinpr"></h4>
+                                                    <h4 class="text-primary font-size-22" id="totinpr">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span></h4>
                                                 </li>
                                                 <li class="list-inline-item chart-border-left me-0">
-                                                    <h4 class="font-size-22" id="totcmpl"></span>
+                                                    <h4 class="font-size-22" id="totcmpl">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed</span></span>
                                                     </h4>
                                                 </li>
                                             </ul>
@@ -190,7 +156,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tsl"></h4>
+                                                    <h4 class="mb-0" id="tsl">Rp. 0</h4>
                                                     <p class="text-muted text-truncate mb-0 mt-2">Total Sales</p>
                                                 </div>
                                                 <div class="avatar-md">
@@ -208,7 +174,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tod"></h4>
+                                                    <h4 class="mb-0" id="tod">Rp. 0</h4>
                                                     <p class="text-muted text-truncate mb-0 mt-2">Total Orders</p>
                                                 </div>
                                                 <div class="avatar-md">
@@ -228,7 +194,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tpr"></h4>
+                                                    <h4 class="mb-0" id="tpr">Rp. 0</h4>
                                                     <p class="text-muted text-truncate mb-0 mt-2">Total Profit</p>
                                                 </div>
                                                 <div class="avatar-md">
@@ -248,7 +214,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tex"></h4>
+                                                    <h4 class="mb-0" id="tex">Rp. 0</h4>
                                                     <p class="text-truncate mb-0 mt-2">Total Expense</p>
                                                 </div>
                                                 <div class="avatar-md">
@@ -268,7 +234,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tcs"></h4>
+                                                    <h4 class="mb-0" id="tcs">Rp. 0</h4>
                                                     <p class="text-truncate mb-0 mt-2">Total Consumable</p>
                                                 </div>
                                                 <div class="avatar-md">
@@ -288,7 +254,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <h4 class="mb-0" id="tad"></h4>
+                                                    <h4 class="mb-0" id="tad">Rp. 0</h4>
                                                     <p class="text-truncate mb-0 mt-2">Total Ads</p>
                                                 </div>
                                                 <div class="avatar-md">

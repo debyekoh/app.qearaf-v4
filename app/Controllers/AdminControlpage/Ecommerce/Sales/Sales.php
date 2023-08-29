@@ -403,26 +403,6 @@ class Sales extends BaseController
         return view('pages_admin/adm_sales_add_new_sales', $datapage);
     }
 
-    // static function unique_multidim_arraynew($datastockUpdate, $key, $addedKey)
-    // {
-    //     $temp_array_a = [];
-    //     $key_array_a = [];
-    //     $ia = 0;
-
-    //     foreach ($datastockUpdate as $val) {
-    //         if (!in_array($val[$key], $key_array_a)) {
-    //             $key_array_a[$ia] = $val[$key];
-    //             $temp_array_a[$ia] = $val;
-    //         } else {
-    //             $pkey = array_search($val[$key], $key_array_a);
-    //             $temp_array_a[$pkey][$addedKey] += $val[$addedKey];
-    //             // die;
-    //         }
-    //         $ia++;
-    //     }
-    //     return $temp_array_a;
-    // }
-
     public function save()
     {
         // dd($this->request->getVar());
@@ -652,7 +632,7 @@ class Sales extends BaseController
         }
 
         // dd($this->request->getVar(), $productsStockLog, $datastockUpdate, $dataSalesDetail, $dataSales, $member_id_ownershop, $dataNotification, $targetgroup->getResult());
-        // dd($datastockUpdateNew, $productsStockLogNew, $dataPackaging);
+        // dd($dataSales, $dataSalesDetail, $productsStockLogNew, $datastockUpdateNew, $dataPackaging, $dataNotification);
 
         $this->db->transBegin();
         $this->salesModel->insert($dataSales);
@@ -1968,6 +1948,7 @@ class Sales extends BaseController
                 $torderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
+
                 $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {

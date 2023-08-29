@@ -10,6 +10,6 @@ class SalesModel extends Model
     protected $primaryKey = 'id_sales';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'id_sales', 'no_sales', 'date_sales', 'id_shop', 'deliveryservices', 'marketplace', 'resi', 'note', 'packaging', 'packaging', 'packaging_charge', 'bill', 'payment', 'paymethod', 'status',
+        'id_sales', 'no_sales', 'date_sales', 'id_shop', 'deliveryservices', 'marketplace', 'resi', 'note', 'packaging', 'packaging_charge', 'bill', 'payment', 'paymethod', 'status',
     ];
 }

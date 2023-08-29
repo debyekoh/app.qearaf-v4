@@ -159,7 +159,9 @@ class UsersAccountSetting extends BaseController
         $this->db->transBegin();
         $this->shopModel->insert($data);
         $this->ballanceEWallet->insert($data_ewallet);
-        $this->userAuthGroupsUsersModel->update(['user_id' => $user_id], $datauserAuthGroupsUsers);
+        if ($user_id != 1) {
+            $this->userAuthGroupsUsersModel->update(['user_id' => $user_id], $datauserAuthGroupsUsers);
+        }
 
         if ($this->db->transStatus() === false) {
             $this->db->transRollback();

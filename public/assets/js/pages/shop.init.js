@@ -19,7 +19,12 @@ function clickTab(params) {
 
 // console.log(window.location.href.split("/")[5])
 // var pagecek = window.location.href.split("/")[window.location.href.split("/").length-2]
-var pagecek = window.location.href.split("/")[5]
+
+if(window.location.href.split("/")[5]==""){
+    location.href = $("#BaseUrl").val()+'dashboards'
+}else{
+    var pagecek = window.location.href.split("/")[5]
+}
 if(pagecek == 'myshops' || pagecek == 'dashboards'){
 // if(pagecek == 'myshops'){
     $(document).ready(function() {
@@ -30,7 +35,7 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
        
         series: [],
         chart: {
-        height: 350,
+        height: 300,
         type: 'bar',
             toolbar: {
                 show: false,
