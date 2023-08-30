@@ -584,9 +584,9 @@ function addProduct(sku) {
                     '<tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">'+
                         '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
                         '<td>'+
-                            '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                            '<p class="text-muted mb-0">SKU: '+sku+'</p>'+
-                            '<p class="text-muted mb-0">@Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
+                            '<p class="text-truncate mb-0 fw-bold font-size-12 text-wrap">'+respone.results.name+'</p>'+
+                            '<p class="text-muted mb-0 font-size-10 text-wrap">SKU: '+sku+'</p>'+
+                            '<p class="text-muted font-size-10 mb-0">@Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
                         '<td >'+
                             '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" hidden></input>'+

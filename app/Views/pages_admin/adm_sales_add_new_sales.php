@@ -8,11 +8,11 @@
             <div class="col-xl-8">
                 <div class="card">
                     <div class="card-body px-1">
-                        <ol class="activity-checkout mb-0 px-4 mt-2">
-                            <li class="checkout-item pb-0" id="li1">
-                                <div class="avatar checkout-icon p-1">
+                        <ol class="activity-checkout mb-0 px-2 mt-2">
+                            <li class="checkout-item pb-0 ps-3" id="li1">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title newsalesinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">01</h5>
+                                        <h5 class="text-white font-size-12 mb-0">01</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
@@ -68,10 +68,10 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" id="li2" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb-1 ps-3" id="li2" style="border-color: #1f58c7;">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title productinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">02</h5>
+                                        <h5 class="text-white font-size-12 mb-0">02</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
@@ -85,7 +85,6 @@
                                                             <tr>
                                                                 <th class="border-top-0" scope="col">Product</th>
                                                                 <th class="border-top-0" scope="col">Product Desc</th>
-                                                                <!-- <th class="border-top-0" scope="col">Price</th> -->
                                                                 <th class="border-top-0" scope="col">Qty</th>
                                                                 <th class="border-top-0  text-center" scope="col"><i class="mdi mdi-apps"></i></th>
                                                             </tr>
@@ -93,7 +92,6 @@
                                                         <tbody>
                                                             <tr class="norow">
                                                                 <td colspan="4" class="text-center">-- NoProduct --
-                                                                    <!-- <input class="prorow" type="number" value="1212"> -->
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -104,8 +102,6 @@
                                             </div>
                                             <div class="col text-center">
                                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                                    <!-- <button type="button" class="btn btn-outline-danger">Delete Last Item</button> -->
-                                                    <!-- <button type="button" class="btn btn-outline-primary" id="adnpm" data-bs-toggle="modal" data-bs-target="#addNewProduct">Add New Product</button> -->
                                                     <button type="button" class="btn btn-outline-primary" id="adnpm">Add New Product</button>
                                                 </div>
                                             </div>
@@ -125,10 +121,10 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" id="li3" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb-1 ps-3" id="li3" style="border-color: #1f58c7;">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title deliveryinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">03</h5>
+                                        <h5 class="text-white font-size-12 mb-0">03</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list" style="border-color: #f5f6f8;">
@@ -174,10 +170,10 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" id="li4" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb-1 ps-3" id="li4" style="border-color: #1f58c7;">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title packaginginfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">04</h5>
+                                        <h5 class="text-white font-size-12 mb-0">04</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
@@ -226,10 +222,10 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1 pb-2" id="li5">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb-1 pb-2 ps-3" id="li5">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title payinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">05</h5>
+                                        <h5 class="text-white font-size-12 mb-0">05</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
@@ -283,8 +279,6 @@
                             </div>
                             <div class="col-md-6">
                                 <h5 id="nso" class="font-size-16 mb-0"></h5>
-                                <!-- <h5 class="font-size-16 mb-0"><span id="nso" class="float-end ms-2"></span></h5> -->
-
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -327,10 +321,7 @@
                                     <tr class="pckg">
                                         <td colspan="2">
                                             <h5 class="font-size-14 m-0">Packaging :</h5>
-                                            <!-- <input hidden class="form-control pckginfo" id="pckginfo" type="text" name="pckginfo" value=""> -->
                                             <p class="text-muted mb-0 pckgdesc"></p>
-                                            <!-- <p class="text-muted mb-0 pckginfo"></p> -->
-                                            <!-- <p hidden class="text-muted mb-0 pckgval"></p> -->
                                             <input type="text" class="form-control pckgval" id="pckgval" name="pckgval" value="0" hidden>
                                         </td>
                                         <td id="pckg">
@@ -379,72 +370,4 @@
 </div>
 
 <script src="<?= base_url(); ?>assets/libs/jquery/jquery-1.12.4.js"></script>
-<!-- <script>
-    $("#adnpm").on('click', function() {
-        console.log("test");
-        // get the current row
-        // var currentRow = $(this).closest("tr");
-        // var s = currentRow.find(".switch").val();
-        // if (s != 0) {
-        //     var ss = 0;
-        // } else {
-        //     var ss = 1;
-        // }
-        // var d = currentRow.find(".d").text();
-        // $.ajax({
-        //     // type: "GET",
-        //     url: "<?= base_url() ?>assets/js/pages/gridjs.init.js",
-        //     // data: {
-        //     //     d: d,
-        //     //     ss: ss,
-        //     // },
-        //     success: function(data) {
-        //         $('#btn-more').html("No Data");
-        //     }
-        // });
-        new gridjs.Grid({
-            columns: ["Name", "Email", "Position", "Company", "Country"],
-            pagination: {
-                limit: 5
-            },
-            sort: !0,
-            search: !0,
-            data: [
-                ["Jonathan", "jonathan@example.com", "Senior Implementation Architect", "Hauck Inc", "Holy See"],
-                ["Harold", "harold@example.com", "Forward Creative Coordinator", "Metz Inc", "Iran"],
-                ["Shannon", "shannon@example.com", "Legacy Functionality Associate", "Zemlak Group", "South Georgia"],
-                ["Robert", "robert@example.com", "Product Accounts Technician", "Hoeger", "San Marino"],
-                ["Noel", "noel@example.com", "Customer Data Director", "Howell - Rippin", "Germany"],
-                ["Traci", "traci@example.com", "Corporate Identity Director", "Koelpin - Goldner", "Vanuatu"],
-                ["Kerry", "kerry@example.com", "Lead Applications Associate", "Feeney, Langworth and Tremblay", "Niger"],
-                ["Patsy", "patsy@example.com", "Dynamic Assurance Director", "Streich Group", "Niue"],
-                ["Cathy", "cathy@example.com", "Customer Data Director", "Ebert, Schamberger and Johnston", "Mexico"],
-                ["Tyrone", "tyrone@example.com", "Senior Response Liaison", "Raynor, Rolfson and Daugherty", "Qatar"]
-            ]
-        }).render(document.getElementById("table-gridjs"));
-    });
-    $("#table_addnewproduct").on('click', function() {
-        console.log("test");
-        // get the current row
-        // var currentRow = $(this).closest("tr");
-        // var s = currentRow.find(".switch").val();
-        // if (s != 0) {
-        //     var ss = 0;
-        // } else {
-        //     var ss = 1;
-        // }
-        // var d = currentRow.find(".d").text();
-        // $.ajax({
-        //     type: "POST",
-        //     url: "<?= base_url() ?>setting_account/csp",
-        //     data: {
-        //         d: d,
-        //         ss: ss,
-        //     },
-        //     success: function(data) {
-        //         location.reload();
-        //     }
-        // });
-    });
-</script> -->
 <?= $this->endSection(); ?>
