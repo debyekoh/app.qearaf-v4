@@ -19,16 +19,25 @@ new gridjs.Grid({
         }
     }, {
         name: "Product Name",
+        sort: {
+            enabled: !1
+        },
         formatter: function(e) {
             return gridjs.html('<span class="fw-semibold">' + e + "</span>")
         }
     },{
         name: "SKU N0",
+        sort: {
+            enabled: !1
+        },
         formatter: function(e) {
             return gridjs.html('<span class="skuno">' + e + "</span>")
         }
     }, {
         name: "Price",
+        sort: {
+            enabled: !1
+        },
         formatter: function(e) {
             return gridjs.html('<span class="price">Rp ' + e.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + "</span>")
             // switch (e) {
@@ -40,6 +49,9 @@ new gridjs.Grid({
         }
     }, {
         name: "Stock",
+        sort: {
+            enabled: !1
+        },
         formatter: function(e) {
             // return gridjs.html('<span class="stock">' + e[0] + "</span>")
             if(parseInt(e[0]) <= parseInt(e[1]) ){
@@ -63,6 +75,9 @@ new gridjs.Grid({
         }
     }, {
         name: "Status",
+        sort: {
+            enabled: !1
+        },
         formatter: function(e) {
             switch (e) {
             case "1":
