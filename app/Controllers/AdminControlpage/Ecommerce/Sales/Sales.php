@@ -1796,21 +1796,26 @@ class Sales extends BaseController
             $count = 12;
         };
 
-
+        $sd = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
         $m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         for ($a = 0; $a < $count; $a++) {
             $no = 1;
             if ($range == 'today') {
                 $no = $day;
+                $sd = date("Y-m-d");
             };
             if ($range == 'tweek') {
                 $no = $this_week_start;
+                $sd = date("Y-m-d", $monday);
             };
             if ($range == 'lweek') {
                 $no = $this_week_start - 7;
+                $sd = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start - 7);
             };
-            $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
-            $datetocategory = sprintf("%02d", $a + $no);
+            // $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
+            $date = date("Y-m-d", strtotime("+" . $a . " day", strtotime($sd)));
+            // $datetocategory = sprintf("%02d", $a + $no);
+            $datetocategory = date("d", strtotime("+" . $a . " day", strtotime($sd)));
             $date_for_like = $years . "-" . sprintf("%02d", $a + $no);
 
             if ($range == 'tyears') {
@@ -1826,6 +1831,7 @@ class Sales extends BaseController
                 ];
                 $series[] = $row;
             }
+            $arraydate[] = $date;
         };
 
 
@@ -1855,7 +1861,7 @@ class Sales extends BaseController
 
 
 
-
+        $t = 7;
 
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------ 
         $groups = ['Return', 'Cancel'];
@@ -1877,15 +1883,15 @@ class Sales extends BaseController
         };
         if ($range == "tweek") {
             $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start);
-            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_end);
-            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_start - 7);
-            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_end - 7);
+            $teddate = date("Y-m-d", strtotime("+6 day", strtotime($tesdate)));
+            $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
+            $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
         if ($range == "lweek") {
             $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start - 7);
-            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_end - 7);
-            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_start - 14);
-            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $this_week_end - 14);
+            $teddate = date("Y-m-d", strtotime("+6 day", strtotime($tesdate)));
+            $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
+            $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
         $tsalesArray = array();
         $torderArray = array();
@@ -1992,7 +1998,7 @@ class Sales extends BaseController
         }
 
         $data_report = array(
-            'title'       => $title,
+            'title'             => $title,
             'totalpackage'      => $totalpackage,
             'totalinprocess'     => $totalinprocess,
             'totalcompleted'     => $totalcompleted,
@@ -2190,6 +2196,10 @@ class Sales extends BaseController
             // 'this_Consum'        => $tpricepckg,
             // 'last_Consum'        => $lpricepckg,
             'test'        => $idshop,
+            'test1'        => $id_shop,
+            'test2'        => $shop_group,
+            'sd'    => $datetocategory,
+            'arraydate' => $arraydate,
             // 'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
             // 'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
         ]);
