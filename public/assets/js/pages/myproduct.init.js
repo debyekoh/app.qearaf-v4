@@ -116,8 +116,6 @@ new gridjs.Grid({
                         '</button>'+
                         '<ul class="dropdown-menu dropdown-menu-end" style="">'+
                             '<li><a href="product/'+ e[0] +'" id="btnView" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
-                            '<li><a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
-                            '<li><a href="duplicateproduct/'+ e[0] +'"  id="btnCop" role="button" class="dropdown-item fw-bold"><i class="far fa-copy font-size-16 text-info me-1"></i> Duplicate</a></li>'+
                         '</ul>'+
                     '</div>'
                 )
@@ -131,7 +129,10 @@ new gridjs.Grid({
     search: !0,
     server: {
         url: './myproducts/show',
-        then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price , [product.stock, product.minstock , product.maxstock], product.statusproduct , [product.skuno,product.editable,product.deletable]])
+        then: data => {
+            return data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price , [product.stock, product.minstock , product.maxstock], product.statusproduct , [product.skuno,product.editable,product.deletable]])
+        }
+        // then: data => data.results.map(product => [product.image, product.name+' '+product.model, product.skuno, product.price , [product.stock, product.minstock , product.maxstock], product.statusproduct , [product.skuno,product.editable,product.deletable]])
       },
       style: {
         table: {

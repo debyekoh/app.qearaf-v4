@@ -72,9 +72,12 @@ class Products extends BaseController
     public function show()
     {
         $this->builder = $this->db->table('products');
-        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_bundling, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
+        $this->builder->select('products.pro_id as productspro_id, pro_part_no, pro_name, pro_model, pro_group, pro_bundling, pro_price_basic, pro_price_reseler, pro_price_seller, pro_active, pro_current_stock , pro_min_stock , pro_max_stock');
         $this->builder->join('products_price', 'products_price.pro_id = products.pro_id');
         $this->builder->join('products_stock', 'products_stock.pro_id = products.pro_id');
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $this->builder->notLike('pro_group', 'Consumable');
+        }
         $this->builder->orderBy('pro_group', 'ASC');
         $this->builder->orderBy('pro_name', 'ASC');
         $query = $this->builder->get();
@@ -126,20 +129,32 @@ class Products extends BaseController
                 $maxstock = $i->pro_max_stock;
             };
 
+            if (in_groups('1') == true) {
+                // $basic_price = $i->pro_price_basic;
+                // $reseller_price = $i->pro_price_reseler;
+                $price = $i->pro_price_seller;
+            } else if (in_groups('2') == true) {
+                $price = $i->pro_price_seller;
+            } else if (in_groups('3') == true) {
+                $price = $i->pro_price_reseler;
+            } else {
+                $price = $i->pro_price_seller;
+            };
+
             $row = [
-                "no"            => $no++,
-                "idpro"         => $i->productspro_id,
-                "name"          => $i->pro_name,
-                "model"         => $i->pro_model,
-                "skuno"         => $i->pro_part_no,
-                "price"         => $i->pro_price_seller,
-                "stock"         => $curstock,
-                "minstock"      => $minstock,
-                "maxstock"      => $maxstock,
-                "statusproduct" => $i->pro_active,
-                "editable"      => $editable,
-                "deletable"     => $deletable,
-                "image"         => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.avif',
+                "no"                => $no++,
+                "idpro"             => $i->productspro_id,
+                "name"              => $i->pro_name,
+                "model"             => $i->pro_model,
+                "skuno"             => $i->pro_part_no,
+                "price"             => $price,
+                "stock"             => $curstock,
+                "minstock"          => $minstock,
+                "maxstock"          => $maxstock,
+                "statusproduct"     => $i->pro_active,
+                "editable"          => $editable,
+                "deletable"         => $deletable,
+                "image"             => isset($this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name']) ? $this->productsimageModel->orderBy('pro_image_no', 'asc')->limit(1)->find($i->productspro_id)['pro_image_name'] : 'no_image.avif',
             ];
             $data[] = $row;
         }

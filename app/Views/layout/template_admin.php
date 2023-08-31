@@ -301,7 +301,7 @@
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
                                 <li><a href="<?= base_url() ?>myproducts" data-key="t-myproducts">MyProducts</a></li>
-                                <?php if (has_permission('Create')) : ?>
+                                <?php if (in_groups('SuAdmin')) : ?>
                                     <li><a href="<?= base_url() ?>createproduct" data-key="t-createproduct">Create Product</a></li>
                                 <?php endif; ?>
                             </ul>
@@ -335,17 +335,18 @@
                             </a>
                         </li> -->
 
-
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow">
-                                <i class="bx bxs-factory icon nav-icon"></i>
-                                <span class="menu-item" data-key="t-ecommerce">Warehouse</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="<?= base_url() ?>stock" data-key="t-sales">Stock</a></li>
-                                <li><a href="<?= base_url() ?>historyinout" data-key="t-inputsales">History InOut</a></li>
-                            </ul>
-                        </li>
+                        <?php if (in_groups('SuAdmin') || in_groups('Admin')) : ?>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow">
+                                    <i class="bx bxs-factory icon nav-icon"></i>
+                                    <span class="menu-item" data-key="t-ecommerce">Warehouse</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="<?= base_url() ?>stock" data-key="t-sales">Stock</a></li>
+                                    <li><a href="<?= base_url() ?>historyinout" data-key="t-inputsales">History InOut</a></li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
 
                         <li>
                             <a href="javascript: void(0);" class="has-arrow">
@@ -353,12 +354,16 @@
                                 <span class="menu-item" data-key="t-contacts">Finances</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="<?= base_url() ?>summaryfinance" data-key="t-finance-summary">Summary Finance</a></li>
-                                <li><a href="<?= base_url() ?>balance" data-key="t-finance-balance">Balance</a></li>
+                                <?php if (in_groups('SuAdmin') || in_groups('Admin')) : ?>
+                                    <li><a href="<?= base_url() ?>summaryfinance" data-key="t-finance-summary">Summary Finance</a></li>
+                                    <li><a href="<?= base_url() ?>balance" data-key="t-finance-balance">Balance</a></li>
+                                <?php endif; ?>
                                 <li><a href="<?= base_url() ?>ewallet" data-key="t-finance-ewallet">E Wallet</a></li>
-                                <li><a href="<?= base_url() ?>inventoryvalue" data-key="t-finance-inventoryvalue">Inventory Value</a></li>
-                                <li><a href="<?= base_url() ?>debt" data-key="t-finance-debt">Debt</a></li>
-                                <li><a href="<?= base_url() ?>incomeprofit" data-key="t-finance-incomeprofit">Income & Profit</a></li>
+                                <?php if (in_groups('SuAdmin') || in_groups('Admin')) : ?>
+                                    <li><a href="<?= base_url() ?>inventoryvalue" data-key="t-finance-inventoryvalue">Inventory Value</a></li>
+                                    <li><a href="<?= base_url() ?>debt" data-key="t-finance-debt">Debt</a></li>
+                                    <li><a href="<?= base_url() ?>incomeprofit" data-key="t-finance-incomeprofit">Income & Profit</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
 

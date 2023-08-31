@@ -62,7 +62,7 @@ $routes->get('/myproducts', 'AdminControlpage\Products\Products::index');
 $routes->get('/myproducts/show', 'AdminControlpage\Products\Products::show');
 $routes->post('/selectedcp', 'AdminControlpage\Products\Products::selected'); //AjaxModal
 $routes->get('/createproduct', 'AdminControlpage\Products\Products::create', ['filter' => 'role:SuAdmin']);
-$routes->get('/product/(:any)', 'AdminControlpage\Products\Products::detail/$1', ['filter' => 'role:SuAdmin']);
+$routes->get('/product/(:any)', 'AdminControlpage\Products\Products::detail/$1');
 $routes->post('/saveproduct', 'AdminControlpage\Products\Products::save', ['filter' => 'role:SuAdmin']);
 $routes->get('/editproduct/(:any)', 'AdminControlpage\Products\Products::edit/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->post('/updateproduct/(:any)', 'AdminControlpage\Products\Products::update/$1', ['filter' => 'role:SuAdmin,Admin']);
@@ -116,12 +116,12 @@ $routes->post('/payTOP', 'AdminControlpage\Finance\Balance::paymentTOP', ['filte
 $routes->get('/delivery', 'AdminControlpage\Delivery\Delivery::index');
 
 //Warehouse
-$routes->get('/stock', 'AdminControlpage\Warehouse\Stock::index');
-$routes->get('/stockShow/(:any)', 'AdminControlpage\Warehouse\Stock::show/$1');
-$routes->get('/gcs/(:any)', 'AdminControlpage\Warehouse\Stock::get_current_stock/$1');
-$routes->post('/ucs/(:any)', 'AdminControlpage\Warehouse\Stock::update_current_stock/$1');
-$routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index');
-$routes->get('/historyinoutLog', 'AdminControlpage\Warehouse\HistoryInOut::historyLog');
+$routes->get('/stock', 'AdminControlpage\Warehouse\Stock::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/stockShow/(:any)', 'AdminControlpage\Warehouse\Stock::show/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/gcs/(:any)', 'AdminControlpage\Warehouse\Stock::get_current_stock/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->post('/ucs/(:any)', 'AdminControlpage\Warehouse\Stock::update_current_stock/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/historyinout', 'AdminControlpage\Warehouse\HistoryInOut::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/historyinoutLog', 'AdminControlpage\Warehouse\HistoryInOut::historyLog', ['filter' => 'role:SuAdmin,Admin']);
 
 //Finance
 $routes->get('/summaryfinance', 'AdminControlpage\Finance\SummaryFinance::index');
@@ -133,11 +133,11 @@ $routes->get('/ewalletList/(:any)', 'AdminControlpage\Finance\Ewallet::ewalet_sh
 $routes->get('/wd/(:any)/(:any)', 'AdminControlpage\Finance\Ewallet::withdraw/$1/$2', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/wdnow/(:any)', 'AdminControlpage\Finance\Ewallet::withdrawnow/$1', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/incomeprofit', 'AdminControlpage\Finance\IncomeProfit::index');
-$routes->get('/debt', 'AdminControlpage\Finance\Debt::index');
-$routes->get('/debtList', 'AdminControlpage\Finance\Debt::log_show');
-$routes->get('/debt/listdebt/(:any)', 'AdminControlpage\Finance\Debt::list/$1');
-$routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index');
-$routes->get('/inventorylist', 'AdminControlpage\Finance\InventoryValue::show');
+$routes->get('/debt', 'AdminControlpage\Finance\Debt::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/debtList', 'AdminControlpage\Finance\Debt::log_show', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/debt/listdebt/(:any)', 'AdminControlpage\Finance\Debt::list/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/inventoryvalue', 'AdminControlpage\Finance\InventoryValue::index', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/inventorylist', 'AdminControlpage\Finance\InventoryValue::show', ['filter' => 'role:SuAdmin,Admin']);
 
 //Users
 $routes->get('/userslist', 'AdminControlpage\Users\UsersList::index', ['filter' => 'role:SuAdmin']);
