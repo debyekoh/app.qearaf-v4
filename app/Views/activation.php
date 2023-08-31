@@ -131,7 +131,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                            <img src="http://localhost/app.qearaf-v4/public/assets/images/Logo Admin Dark 40px.webp" width="300" height="400" style="display: block; border: 0px;" />
+                            <img src="https://admin.qearaf.com/assets/images/Logo Admin Dark 40px.webp" width="300" height="400" style="display: block; border: 0px;" />
                         </td>
                     </tr>
                 </table>
