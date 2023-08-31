@@ -23,15 +23,15 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<span class="fw-semibold">' + e + "</span>")
+            return gridjs.html('<span class="fw-semibold font-size-12">' + e + "</span>")
         }
     },{
-        name: "SKU N0",
+        name: "Sku No",
         sort: {
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<span class="skuno">' + e + "</span>")
+            return gridjs.html('<span class="skuno font-size-12">' + e + "</span>")
         }
     }, {
         name: "Price",
@@ -39,7 +39,7 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<span class="price">Rp ' + e.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + "</span>")
+            return gridjs.html('<span class="price font-size-12">Rp ' + e.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") + "</span>")
             // switch (e) {
             // case ">= 1":
             //     return gridjs.html('<span class="badge badge-pill badge-soft-success font-size-12">Active</span>');
@@ -75,6 +75,7 @@ new gridjs.Grid({
         }
     }, {
         name: "Status",
+        hidden: true,
         sort: {
             enabled: !1
         },
