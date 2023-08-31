@@ -14,7 +14,7 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-lg rounded p-1">')
+            return gridjs.html('<img src="./assets/images/product/'+ e +'" alt="pic_'+ e +'" class="avatar-md rounded p-1">')
             // return gridjs.html('<div class="form-check font-size-16"><input class="form-check-input" type="checkbox" id="orderidcheck01"><label class="form-check-label" for="orderidcheck01"></label></div>')
         }
     }, {
@@ -80,33 +80,30 @@ new gridjs.Grid({
             console.log(e);
             if(e[1]==true && e[2]==true){
             return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="duplicateproduct/'+ e[0] +'"  id="btnCop" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate" class="px-3 btn btn-sm btn-soft-warning btn-rounded waves-effect waves-dark" data-bs-original-title="Duplicate" aria-label="Duplicate"><i class="far fa-copy font-size-12"></i></a>' +
-                    '</li>'+
-                    '<li class="list-inline-item">' +
-                        '<a href="javascript:void(0);" id="btnDel" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-3 btn btn-sm btn-soft-danger btn-rounded waves-effect waves-dark" data-bs-original-title="Delete" aria-label="Delete"><i class="far fa-trash-alt font-size-12"></i></a>' +
-                    '</li>'
-                )
-            } else if(e[1]==true){
-                return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' +
-                    '<li class="list-inline-item">' +
-                        '<a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-3 btn btn-sm btn-soft-primary btn-rounded waves-effect waves-dark" data-bs-original-title="Edit" aria-label="Edit"><i class="bx bx-edit-alt font-size-12"></i></a>'+
-                    '</li>'
-                )
+                '<div class="dropstart">'+
+                    '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
+                        '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
+                    '</button>'+
+                    '<ul class="dropdown-menu dropdown-menu-end" style="">'+
+                        '<li><a href="product/'+ e[0] +'" id="btnView" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                        '<li><a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
+                        '<li><a href="duplicateproduct/'+ e[0] +'"  id="btnCop" role="button" class="dropdown-item fw-bold"><i class="far fa-copy font-size-16 text-info me-1"></i> Duplicate</a></li>'+
+                        '<li><a href="javascript:void(0);" id="btnDel" role="button" class="dropdown-item fw-bold"><i class="far fa-trash-alt font-size-16 text-danger me-1"></i> Delete</a></li>'+
+                    '</ul>'+
+                '</div>'
+            )
             }else{
                 return gridjs.html(
-                    '<li class="list-inline-item">' +
-                        '<a href="product/'+ e[0] +'" id="btnEdit" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail" class="px-3 btn btn-sm btn-soft-dark btn-rounded waves-effect waves-dark" data-bs-original-title="Detail" aria-label="Detail"><i class="bx bxs-detail font-size-12"></i></a>'+
-                    '</li>' 
+                    '<div class="dropstart">'+
+                        '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
+                            '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
+                        '</button>'+
+                        '<ul class="dropdown-menu dropdown-menu-end" style="">'+
+                            '<li><a href="product/'+ e[0] +'" id="btnView" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-arrow-expand-all font-size-16 me-1"></i> View</a></li>'+
+                            '<li><a href="editproduct/'+ e[0] +'" id="btnEdit" role="button" class="dropdown-item fw-bold"><i class="mdi mdi-pencil font-size-16 text-primary me-1"></i> Edit</a></li>'+
+                            '<li><a href="duplicateproduct/'+ e[0] +'"  id="btnCop" role="button" class="dropdown-item fw-bold"><i class="far fa-copy font-size-16 text-info me-1"></i> Duplicate</a></li>'+
+                        '</ul>'+
+                    '</div>'
                 )
             }
         }
