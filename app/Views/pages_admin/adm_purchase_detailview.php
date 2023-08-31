@@ -5,38 +5,9 @@
 <div class="container-fluid ps-0 pe-0">
 
     <div class="row">
-        <!-- <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-center">
-
-                        <div class="row justify-content-center mt-5">
-                            <div class="col-sm-6">
-                                <div class="maintenance-img">
-                                    <img src="<?= base_url() ?>assets/images/coming-soon.png" alt="" class="img-fluid mx-auto d-block">
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="mt-5"><?= ucfirst($titlepage) ?> page is coming soon</h4>
-                        <p class="text-muted">Look forward to its presence, and in the meantime visit another page.</p>
-
-                        <div class="row justify-content-center mt-5">
-                            <div class="col-md-9">
-                                <div id="countdown" class="countdownlist"></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="col-xl-8">
             <div class="card">
-                <!-- <div class="modal-content"> -->
-                <!-- <div class="modal-header">
-                        <h5 class="modal-title" id="salesdetailsModalLabel">Sales Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div> -->
+
                 <div class="card-body py-3">
                     <table class="table align-middle table-sm table-nowrap table-borderless border-bottom table-centered p-1 mb-0">
                         <tbody>
@@ -79,14 +50,6 @@
                                 </td>
                             </tr>
 
-                            <!-- <tr class="py-0">
-                                <th class="py-0 fw-bold" style="width:1%;" hidden>3</th>
-                                <td class="py-0 fw-bold" style="width:10%;">Sales ID</td>
-                                <td class="py-0 fw-bold" style="width:1%;">:</td>
-                                <td class="py-0 text-muted">
-                                    <h6 class="mb-0"><span id="ids" class="text-primary"></span></span></h6>
-                                </td>
-                            </tr> -->
                         </tbody>
                     </table>
                     <div id="tabel_viewsales">
@@ -110,7 +73,7 @@
                                         <td scope="row"><img src="<?= base_url(); ?>assets/images/product/<?= $ds->pro_img; ?>" alt="<?= $ds->pro_img; ?>" class="rounded avatar-md"></td>
                                         <td>
                                             <div>
-                                                <h5 class="text-truncate fw-bold font-size-14 mb-0"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-truncate mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
+                                                <h5 class="text-truncate fw-bold font-size-14 mb-0 text-wrap"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-muted mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
                                                 </h5>
                                             </div>
                                         </td>
@@ -118,20 +81,6 @@
                                     </tr>
 
                                 <?php } ?>
-                                <!-- <tr>
-                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Sub Total:</h6>
-                                    </td>
-                                    <td>Rp <?= number_format($subtotal, 0, ",", "."); ?></td>
-                                </tr> -->
-                                <!-- <tr class="border-bottom-0">
-                                    <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
-                                    <td colspan="2">
-                                        <h6 class="m-0 text-right">Discount:</h6>
-                                    </td>
-                                    <td>Rp <?= number_format($subtotal - $datadetail['ifp']->payment, 0, ",", "."); ?></td>
-                                </tr> -->
                                 <tr>
                                     <th class="py-0 fw-bold" style="width:1%;" hidden>1</th>
                                     <td colspan="2" class="border-bottom-0">
@@ -180,7 +129,7 @@
                                         <tr class="listprosummary rowprosalessummary TW21RHB-00">
                                             <td scope="row"><img src="<?= base_url(); ?>assets/images/product/<?= $ds->pro_img; ?>" alt="<?= $ds->pro_img; ?>" class="rounded avatar-md"></td>
                                             <td>
-                                                <h5 class="text-truncate fw-bold font-size-14 mb-0"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?></h5>
+                                                <h5 class="text-truncate fw-bold font-size-14 mb-0 text-wrap"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?></h5>
                                                 <!-- <p class="text-muted mb-0 RSprice" id="RSprice0" hidden="">40000</p>
                                                 <p class="text-muted mb-0 RSqty" id="RSqty0" hidden="">6</p>
                                                 <p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval0" hidden="">240000</p> -->

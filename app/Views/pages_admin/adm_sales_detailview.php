@@ -86,7 +86,7 @@
                                         <td scope="row"><img src="<?= base_url(); ?>assets/images/product/<?= $ds->pro_img; ?>" alt="<?= $ds->pro_img; ?>" class="rounded avatar-md"></td>
                                         <td>
                                             <div>
-                                                <h5 class="text-truncate fw-bold font-size-14 mb-0"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-truncate mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
+                                                <h5 class="text-truncate fw-bolder font-size-14 mb-0 text-wrap"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-muted mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
                                                 </h5>
                                             </div>
                                         </td>
@@ -210,7 +210,7 @@
                                         <tr>
                                             <th scope="row"><img src="<?= base_url(); ?>assets/images/product/<?= $ds->pro_img; ?>" alt="<?= $ds->pro_img; ?>" class="avatar-md"></th>
                                             <td>
-                                                <h5 class="text-truncate fw-bold font-size-14 mb-0"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-truncate mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
+                                                <h5 class="text-truncate fw-bold font-size-14 mb-0 text-wrap"><?= $ds->pro_name; ?> <?= $ds->pro_model; ?><p class="text-muted mb-0"><?= $ds->pro_qty; ?> x Rp <?= number_format($ds->pro_price, 0, ",", "."); ?></p>
                                             </td>
                                             <td>Rp <?= number_format(($ds->pro_qty) * ($ds->pro_price), 0, ",", "."); ?></td>
                                         </tr>

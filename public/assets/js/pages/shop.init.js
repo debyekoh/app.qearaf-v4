@@ -55,7 +55,10 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
             formatter: function (val, opts) {
                 return val
             },
-            offsetY: -20,
+            textAnchor: 'middle',
+            distributed: false,
+            offsetX: 0,
+            offsetY: 0,
             style: {
             fontSize: '12px',
             // colors: ["#304758"]
@@ -68,6 +71,16 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
         xaxis: {
             categories: [],
             position: 'bottom',
+            labels: {
+                style: {
+                    fontSize: '30px',
+                    fontWeight: 400,
+                },
+                show: true,
+                    formatter: function (val) {
+                        return val;
+                    }
+                },
             axisBorder: {
                 show: true,
                 color: '#78909C',
