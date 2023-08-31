@@ -8,16 +8,16 @@
             <div class="col-xl-8">
                 <div class="card">
                     <div class="card-body px-1">
-                        <ol class="activity-checkout mb-0 px-4 mt-2" id="ol">
-                            <li class="checkout-item pb-0" id="li1">
-                                <div class="avatar checkout-icon p-1">
+                        <ol class="activity-checkout mb-0 px-2 mt-2" id="ol">
+                            <li class="checkout-item pb-0 ps-3" id="li1">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title newpurchaseinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">01</h5>
+                                        <h5 class="text-white font-size-12 mb-0">01</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>New Purchase Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>New Purchase Info</u></h5>
                                         <div>
                                             <div>
                                                 <div class="row">
@@ -86,15 +86,15 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="checkout-item pb-1" id="li2" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb- ps-3" id="li2" style="border-color: #1f58c7;">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title productinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">02</h5>
+                                        <h5 class="text-white font-size-12 mb-0">02</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Product Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Product Info</u></h5>
                                         <div class="mb-2">
                                             <div class="row mb-3">
                                                 <div class="table-responsive ">
@@ -144,7 +144,7 @@
                                 </div>
                             </li>
                             <!-- <li class="checkout-item pb-1" id="li3" style="border-color: #1f58c7;">
-                                    <div class="avatar checkout-icon p-1">
+                                    <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                         <div class="avatar-title deliveryinfo rounded-circle bg-primary">
                                             <h5 class="text-white font-size-16 mb-0">03</h5>
                                         </div>
@@ -189,7 +189,7 @@
                                     </div>
                                 </li> -->
                             <!-- <li class="checkout-item pb-1" id="li4" style="border-color: #1f58c7;">
-                                <div class="avatar checkout-icon p-1">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title packaginginfo rounded-circle bg-primary">
                                         <h5 class="text-white font-size-16 mb-0">04</h5>
                                     </div>
@@ -240,15 +240,15 @@
                                     </div>
                                 </div>
                             </li> -->
-                            <li class="checkout-item pb-1" id="li3">
-                                <div class="avatar checkout-icon p-1">
+                            <li class="checkout-item pb-0 ps-3" id="li3">
+                                <div class="avatar checkout-icon p-1" style="height: 2rem; width: 2rem; left:-16px;">
                                     <div class="avatar-title payinfo rounded-circle bg-primary">
-                                        <h5 class="text-white font-size-16 mb-0">03</h5>
+                                        <h5 class="text-white font-size-12 mb-0">03</h5>
                                     </div>
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Payment Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Payment Info</u></h5>
                                     </div>
                                     <div id="pi3">
                                         <div class="row">

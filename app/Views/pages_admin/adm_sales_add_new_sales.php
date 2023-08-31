@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>New Sales Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>New Sales Info</u></h5>
                                         <div>
                                             <div>
                                                 <div class="row">
@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Product Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Product Info</u></h5>
                                         <div class="mb-2">
                                             <div class="row mb-3">
                                                 <div class="table-responsive ">
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="feed-item-list" style="border-color: #f5f6f8;">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Delivery Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Delivery Info</u></h5>
                                         <div class="mb-2">
                                             <div class="row">
                                                 <div class="col-lg-4">
@@ -178,7 +178,7 @@
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Packaging Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Packaging Info</u></h5>
                                     </div>
                                     <div>
                                         <div class="row">
@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="feed-item-list">
                                     <div>
-                                        <h5 class="font-size-20 pt-2 mb-2 text-muted"><u>Payment Info</u></h5>
+                                        <h5 class="font-size-20 pt-0 mb-2 text-muted"><u>Payment Info</u></h5>
                                     </div>
                                     <div>
                                         <div class="row">
