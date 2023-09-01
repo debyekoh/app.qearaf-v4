@@ -231,52 +231,69 @@
                                                         <table id="listsalesproduct" class="table table-sm rounded rounded-3 overflow-hidden table-striped table-hover align-middle mb-0">
                                                             <thead class="table-info">
                                                                 <tr>
-                                                                    <th class="border-top-0" scope="col">Picture</th>
-                                                                    <th class="border-top-0" scope="col">Product Name</th>
-                                                                    <th class="border-top-0" scope="col">SKU No</th>
-                                                                    <th class="border-top-0  text-center" scope="col"><i class="mdi mdi-apps"></i></th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">Picture</th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">Product Name</th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">SKU No</th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">Basic Price</th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">Reseller</th>
+                                                                    <th class="border-top-0 font-size-12" scope="col">Price</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <!-- '<tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">'+
-                                                                    '<th scope="row"><img src="'+$(" #BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="product-img" title="product-img" class="avatar-md"></th>'+
-                                                                    '<td>'+
-                                                                        '<input class="prorow" type="text" name="iprorow[]" value="'+nextiprorow+'" disabled hidden>'+
-                                                                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                                                                        '<input name="bdl_proid[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.proid+'" hidden>'+
-                                                                        '<input name="bdl_proname[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+respone.results.name+'" disabled hidden>'+
-                                                                        '</td>'+
-                                                                    '<td>'+
-                                                                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+sku+'</a></h5>'+
-                                                                        '<input name="bdl_prosku[]" placeholder="Enter Brand Product" type="text" class="form-control" value="'+sku+'" hidden>'+
-                                                                        '<input name="bdlbasicprice[]" placeholder="Enter Brand Product" type="number" class="form-control Bsp" value="'+respone.results.basicprice+'" hidden>'+
-                                                                        '<input name="bdlpricereseler[]" placeholder="Enter Brand Product" type="number" class="form-control PRl" value="'+respone.results.reselerprice+'" hidden>'+
-                                                                        '<input name="bdlpriceseller[]" placeholder="Enter Brand Product" type="number" class="form-control PSl" value="'+respone.results.sellerprice+'" hidden>'+
-                                                                        '</td>'+
-                                                                    '<td class="text-center"><button type="button" onclick="delProduct('+stringrow+')" class="btn btn-soft-danger waves-effect waves-light"><i class="mdi mdi-trash-can"></i></button></td>'+
-                                                                    '</tr>' -->
+                                                                <?php
+                                                                $sum_basic_price = 0;
+                                                                $sum_reseller_price = 0;
+                                                                $sum_seller_price = 0;
+                                                                foreach ($DataBundling as $item) {
+                                                                    $sum_basic_price += $item['basic_price'];
+                                                                    $sum_reseller_price += $item['reseller_price'];
+                                                                    $sum_seller_price += $item['seller_price'];
+                                                                ?>
+
+                                                                    <tr id="R'+nextiprorow+'" class="listpro rowprosales '+sku+'">
+                                                                        <td scope="row"><img src="<?= base_url('assets/images/product/')  . $item['picture']; ?>" alt="product-img" title="product-img" class="avatar-sm"></td>
+                                                                        <td>
+                                                                            <p class="text-truncate mb-0 font-size-12 text-wrap"><?= $item['product_name']; ?></p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-truncate mb-0 font-size-10 text-wrap"><?= $item['sku_no']; ?></p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-truncate mb-0 font-size-12 text-wrap"><?= $item['basic_price']; ?></p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-truncate mb-0 font-size-12 text-wrap"><?= $item['reseller_price']; ?></p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-truncate mb-0 font-size-12 text-wrap"><?= $item['seller_price']; ?></p>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                <?php }
+                                                                ?>
                                                             </tbody>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-truncate mb-0 fw-bold font-size-14 text-wrap">Total</p>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <p class="text-truncate mb-0 fw-bold font-size-13 text-wrap"><?= number_format($sum_basic_price, 0, ',', '.'); ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="text-truncate mb-0 fw-bold font-size-13 text-wrap"><?= number_format($sum_reseller_price, 0, ',', '.'); ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="text-truncate mb-0 fw-bold font-size-13 text-wrap"><?= number_format($sum_seller_price, 0, ',', '.'); ?></p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
 
                                                     </div>
 
-                                                </div>
-                                                <div class="col text-center">
-                                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                                        <button type="button" class="btn btn-outline-primary" id="adnpm">Add New Product</button>
-                                                    </div>
-                                                </div>
-                                                <div id="addNewProduct" class="modal fade" tabindex="-1" aria-labelledby="addNewProductLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-fullscreen-sm-down">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body px-1">
-                                                                <div id="table-gridjs"></div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Cancel</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

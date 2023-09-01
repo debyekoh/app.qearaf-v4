@@ -505,6 +505,8 @@ class Products extends BaseController
             ';
 
             $test = $this->productsModel->get();
+
+
             $dataProduct = array(
                 'pro_id'            => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_id'],
                 'pro_name'          => $this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_name'],
@@ -531,6 +533,21 @@ class Products extends BaseController
             );
             $dataImage = $this->productsimageModel->where('pro_id', $proid)->findAll();
 
+            $dataProBundling = array();
+            if ($this->productsModel->where('pro_part_no', $skuno)->find()[0]['pro_bundling'] == '1') {
+                $data_bundlingArray = $this->productsBundlingModel->where('id_bundling', $proid)->findAll();
+                for ($a = 0; $a < count($data_bundlingArray); $a++) {
+                    $dataProBundling[] = array(
+                        'picture'           => $this->productsimageModel->where('pro_id', $data_bundlingArray[$a]['pro_id_bundling_item'])->findAll()[0]['pro_image_name'],
+                        'product_name'      => $this->productsModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_name'] . " " . $this->productsModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_model'],
+                        'sku_no'            => $this->productsModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_part_no'],
+                        'basic_price'       => $this->productspriceModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_price_basic'],
+                        'reseller_price'    => $this->productspriceModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_price_reseler'],
+                        'seller_price'      => $this->productspriceModel->find($data_bundlingArray[$a]['pro_id_bundling_item'])['pro_price_seller'],
+                    );
+                }
+            };
+
 
 
 
@@ -541,6 +558,7 @@ class Products extends BaseController
                 'js_page' => $js_page,
                 'DataEdit' => $this->productsimageModel->where('pro_id', $proid)->findAll(),
                 'DataProduct' => $dataProduct,
+                'DataBundling' => $dataProBundling,
                 'DataPrice' => $dataPrice,
                 'DataStock' => $dataStock,
                 'DataImage' => $dataImage,
