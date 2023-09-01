@@ -23,7 +23,7 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<span class="fw-semibold font-size-12">' + e + "</span>")
+            return gridjs.html('<span class="fw-semibold font-size-11">' + e + "</span>")
         }
     },{
         name: "Sku No",
@@ -31,10 +31,11 @@ new gridjs.Grid({
             enabled: !1
         },
         formatter: function(e) {
-            return gridjs.html('<span class="skuno font-size-12">' + e + "</span>")
+            return gridjs.html('<span class="skuno font-size-11">' + e + "</span>")
         }
     }, {
         name: "Price",
+        hidden: true,
         sort: {
             enabled: !1
         },
@@ -49,6 +50,7 @@ new gridjs.Grid({
         }
     }, {
         name: "Stock",
+        hidden: true,
         sort: {
             enabled: !1
         },
@@ -97,7 +99,7 @@ new gridjs.Grid({
             if(e[1]==true && e[2]==true){
             return gridjs.html(
                 '<div class="dropstart">'+
-                    '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
+                    '<button type="button" class="btn btn-sm btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
                         '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
                     '</button>'+
                     '<ul class="dropdown-menu dropdown-menu-end" style="">'+
@@ -111,7 +113,7 @@ new gridjs.Grid({
             }else{
                 return gridjs.html(
                     '<div class="dropstart">'+
-                        '<button type="button" class="btn btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
+                        '<button type="button" class="btn btn-sm btn-soft-dark waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">'+
                             '<i class="mdi mdi-format-list-bulleted-square font-size-16 align-middle me-2"></i> Detail'+
                         '</button>'+
                         '<ul class="dropdown-menu dropdown-menu-end" style="">'+
