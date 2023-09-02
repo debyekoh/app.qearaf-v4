@@ -33,84 +33,108 @@
                         <div class="text-center">
                             <ul class="list-inline m-0">
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Process'] != 0) { ?> onclick=" clickTab('Process')" <?php } ?> role="button">
-                                        <?php if ($item['Process'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Process']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Process</strong>
-                                    </a>
+                                    <?php if ($item['Process'] != 0) { ?>
+                                        <a class="btn btn-soft-warning waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Process')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Process']; ?></div>
+                                            <strong>Process</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Process</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Packaging'] != 0) { ?> onclick=" clickTab('Packaging')" <?php } ?> role="button">
-                                        <?php if ($item['Packaging'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Packaging']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Packaging</strong>
-                                    </a>
+                                    <?php if ($item['Packaging'] != 0) { ?>
+                                        <a class="btn btn-soft-info waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Packaging')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Packaging']; ?></div>
+                                            <strong>Packaging</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Packaging</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Ready'] != 0) { ?> onclick=" clickTab('Ready')" <?php } ?> role="button">
-                                        <?php if ($item['Ready'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Ready']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Ready</strong>
-                                    </a>
+                                    <?php if ($item['Ready'] != 0) { ?>
+                                        <a class="btn btn-soft-success waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Ready')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Ready']; ?></div>
+                                            <strong>Ready</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Ready</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Delivery'] != 0) { ?> onclick=" clickTab('Delivery')" <?php } ?> role="button">
-                                        <?php if ($item['Delivery'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Delivery']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Delivery</strong>
-                                    </a>
+                                    <?php if ($item['Delivery'] != 0) { ?>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Delivery')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Delivery']; ?></div>
+                                            <strong>Delivery</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Delivery</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Received'] != 0) { ?> onclick=" clickTab('Received')" <?php } ?> role="button">
-                                        <?php if ($item['Received'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Received']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Received</strong>
-                                    </a>
+                                    <?php if ($item['Received'] != 0) { ?>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Received')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Received']; ?></div>
+                                            <strong>Received</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Received</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm" <?php if ($item['Completed'] != 0) { ?> onclick=" clickTab('Completed')" <?php } ?> role="button">
-                                        <?php if ($item['Completed'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Completed']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Completed</strong>
-                                    </a>
+                                    <?php if ($item['Completed'] != 0) { ?>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Completed')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Completed']; ?></div>
+                                            <strong>Completed</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Completed</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" <?php if ($item['Cancel'] != 0) { ?> onclick=" clickTab('Cancel')" <?php } ?> role="button">
-                                        <?php if ($item['Cancel'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Cancel']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Cancel</strong>
-                                    </a>
+                                    <?php if ($item['Cancel'] != 0) { ?>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Cancel')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Cancel']; ?></div>
+                                            <strong>Cancel</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Cancel</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm" <?php if ($item['Return'] != 0) { ?> onclick=" clickTab('Return')" <?php } ?> role="button">
-                                        <?php if ($item['Return'] != 0) { ?>
-                                            <div class="font-size-26 fw-bolder"><?= $item['Return']; ?></div>
-                                        <?php } else { ?>
-                                            <div class="font-size-26 text-muted fw-bolder">0</div>
-                                        <?php } ?>
-                                        <strong>Return</strong>
-                                    </a>
+                                    <?php if ($item['Return'] != 0) { ?>
+                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Return')" role="button">
+                                            <div class="font-size-20 fw-bolder"><?= $item['Return']; ?></div>
+                                            <strong>Return</strong>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
+                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                            <strong>Return</strong>
+                                        </a>
+                                    <?php } ?>
                                 </li>
                             </ul>
                         </div>
@@ -121,15 +145,15 @@
                                 <div class="card-body pb-0">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 class="text-primary font-size-22" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span></h4>
+                                            <h4 class="text-primary font-size-18" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <ul class="list-inline main-chart text-md-end mb-0">
                                                 <li class="list-inline-item chart-border-left me-0 border-0">
-                                                    <h4 class="text-primary font-size-22" id="totinpr">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span></h4>
+                                                    <h4 class="text-primary font-size-18" id="totinpr">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span></h4>
                                                 </li>
                                                 <li class="list-inline-item chart-border-left me-0">
-                                                    <h4 class="font-size-22" id="totcmpl">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed</span></span>
+                                                    <h4 class="font-size-18" id="totcmpl">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed</span></span>
                                                     </h4>
                                                 </li>
                                             </ul>
