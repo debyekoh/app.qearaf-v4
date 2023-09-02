@@ -112,7 +112,7 @@
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Cancel'] != 0) { ?>
-                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Cancel')" role="button">
+                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Cancel')" role="button">
                                             <div class="font-size-20 fw-bolder"><?= $item['Cancel']; ?></div>
                                             <strong>Cancel</strong>
                                         </a>
@@ -145,7 +145,7 @@
                                 <div class="card-body pb-0">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 class="text-primary font-size-18" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span></h4>
+                                            <h4 class="text-primary font-size-18" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Total Package</span></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <ul class="list-inline main-chart text-md-end mb-0">

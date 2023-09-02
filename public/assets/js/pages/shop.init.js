@@ -188,7 +188,7 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
         if(tad_percent !=0){tad_html =' <span class="fw-bold text-'+response.total_ads.tkey+' font-size-18"><i class="bx bx-'+response.total_ads.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_ads.tpcg+'%</span>'}else{tad_html =''}
         $("#tad").html('Rp. '+response.total_ads.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tad_html);
 
-        $("#totpck").html(totpck+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Package</span>');
+        $("#totpck").html(totpck+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Total Package</span>');
         $("#totinpr").html(totinpr+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span>');
         $("#totcmpl").html(totcmpl+'<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed');
         console.log(response.total_ads.tpcg)
