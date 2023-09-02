@@ -32,109 +32,109 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
     })
 
     var options = {
-       
-        series: [],
-        chart: {
-        height: 300,
-        type: 'bar',
-            toolbar: {
-                show: false,
-            },
+    
+    series: [],
+    chart: {
+    height: 300,
+    type: 'area',
+        toolbar: {
+            show: false,
         },
-        plotOptions: {
-            bar: {
-            borderRadius: 5,
-            dataLabels: {
-                position: 'center', // top, center, bottom
-            },
-            }
-        },
+    },
+    plotOptions: {
+        area: {
+        borderRadius: 5,
+        distributed: false,
         dataLabels: {
-            enabled: true,
-            enabledOnSeries: undefined,
-            formatter: function (val, opts) {
-                return val
-            },
-            textAnchor: 'middle',
-            distributed: false,
-            offsetX: 0,
-            offsetY: 0,
+            position: 'center', // top, center, bottom
+        },
+        }
+    },
+    dataLabels: {
+        enabled: false,
+        formatter: function (val, opts) {
+            return val
+        },
+        textAnchor: 'middle',
+        distributed: false,
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+        fontSize: '12px',
+        // colors: ["#304758"]
+        }
+    },
+    noData: {
+        text: 'Loading...'
+    },
+    
+    xaxis: {
+        categories: [],
+        position: 'bottom',
+        labels: {
+            maxHeight: 20,
             style: {
-            fontSize: '12px',
-            // colors: ["#304758"]
-            }
-        },
-        noData: {
-            text: 'Loading...'
-        },
-      
-        xaxis: {
-            categories: [],
-            position: 'bottom',
-            labels: {
-                style: {
-                    fontSize: '30px',
-                    fontWeight: 400,
-                },
-                show: true,
-                    formatter: function (val) {
-                        return val;
-                    }
-                },
-            axisBorder: {
-                show: true,
-                color: '#78909C',
-                height: 1,
-                width: '100%',
-                offsetX: 0,
-                offsetY: 0
+                fontSize: '30px',
             },
-            axisTicks: {
-                show: true,
-                borderType: 'solid',
-                color: '#78909C',
-                height: 6,
-                offsetX: 0,
-                offsetY: 0
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                    colorFrom: '#D8E3F0',
-                    colorTo: '#BED1E6',
-                    stops: [0, 100],
-                    opacityFrom: 0.4,
-                    opacityTo: 0.5,
-                    }
-                }
-            },
-        },
-        yaxis: {
-            axisBorder: {
-            show: false
-            },
-            axisTicks: {
-            show: false,
-            },
-            labels: {
-            show: false,
+            show: true,
                 formatter: function (val) {
-                    return val + "%";
+                    return val;
+                }
+            },
+        axisBorder: {
+            show: true,
+            color: '#78909C',
+            height: 1,
+            width: '100%',
+            offsetX: 0,
+            offsetY: 0
+        },
+        axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#78909C',
+            height: 6,
+            offsetX: 0,
+            offsetY: 0
+        },
+        crosshairs: {
+            fill: {
+                type: 'gradient',
+                gradient: {
+                colorFrom: '#D8E3F0',
+                colorTo: '#BED1E6',
+                stops: [0, 100],
+                opacityFrom: 0.4,
+                opacityTo: 0.5,
                 }
             }
-        
         },
-        // title: {
-        //     text: 'Monthly Inflation in Argentina, 2002',
-        //     floating: true,
-        //     offsetY: 320,
-        //     align: 'center',
-        //     style: {
-        //     color: '#444'
-        //     }
-        // }
-      };
+    },
+    yaxis: {
+        axisBorder: {
+        show: false
+        },
+        axisTicks: {
+        show: false,
+        },
+        labels: {
+        show: false,
+            formatter: function (val) {
+                return val;
+            }
+        }
+    
+    },
+    // title: {
+    //     text: 'Monthly Inflation in Argentina, 2002',
+    //     floating: true,
+    //     offsetY: 320,
+    //     align: 'center',
+    //     style: {
+    //     color: '#444'
+    //     }
+    // }
+    };
 
       var chart = new ApexCharts(document.querySelector("#overview"), options);
       chart.render();
