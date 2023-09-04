@@ -1821,13 +1821,13 @@ class Sales extends BaseController
             if ($range == 'tyears') {
                 $row = [
                     "x"    => $m[$a],
-                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->findAll()),
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
                 ];
                 $series[] = $row;
             } else {
                 $row = [
                     "x"    => $datetocategory,
-                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->findAll()),
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
                 ];
                 $series[] = $row;
             }
