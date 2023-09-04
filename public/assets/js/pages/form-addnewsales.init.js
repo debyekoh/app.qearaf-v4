@@ -603,11 +603,11 @@ function addProduct(sku) {
                     '<tr id="RS'+nextiprorow+'" class="listprosummary rowprosalessummary '+sku+'">'+
                         '<th scope="row"><img src="'+$("#BaseUrl").val()+'assets/images/product/'+respone.results.image+'" alt="'+respone.results.image+'" title="'+respone.results.image+'" class="avatar-md"></th>'+
                         '<td>'+
-                        '<h5 class="text-truncate mb-0"><a href="javascript: void(0);" class="font-size-14 text-dark">'+respone.results.name+'</a></h5>'+
-                            '<p class="text-muted mb-0 RSprice" id="RSprice'+nextiprorow+'" hidden>'+respone.results.price+'</p>'+
-                            '<p class="text-muted mb-0 RSqty" id="RSqty'+nextiprorow+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0 RSsubpriceval" id="RSsubpriceval'+nextiprorow+'" hidden>0</p>'+
-                            '<p class="text-muted mb-0" id="RSpricetx'+nextiprorow+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
+                            '<p class="text-truncate fw-bold font-size-14 text-wrap mb-0">'+respone.results.name+'</p>'+
+                            '<p class="text-muted mb-0 font-size-12 RSprice" id="RSprice'+nextiprorow+'" hidden>'+respone.results.price+'</p>'+
+                            '<p class="text-muted mb-0 font-size-12 RSqty" id="RSqty'+nextiprorow+'" hidden>0</p>'+
+                            '<p class="text-muted mb-0 font-size-12 RSsubpriceval" id="RSsubpriceval'+nextiprorow+'" hidden>0</p>'+
+                            '<p class="text-muted mb-0 font-size-12 " id="RSpricetx'+nextiprorow+'" >0 x Rp '+respone.results.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                         '</td>'+
                         '<td id="RSsubprice'+nextiprorow+'">Rp 0</td>'+
                     '</tr>'
