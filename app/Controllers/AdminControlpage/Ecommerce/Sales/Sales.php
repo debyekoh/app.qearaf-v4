@@ -1909,10 +1909,10 @@ class Sales extends BaseController
             $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
         if ($range == "tmonth") {
-            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
             $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
-            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
-            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
         };
         if ($range == "lweek") {
             $tesdate = date("Y-m-d", strtotime("-7 day", strtotime(date("Y-m-d", $monday))));
