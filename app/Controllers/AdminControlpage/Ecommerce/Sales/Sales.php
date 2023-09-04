@@ -1782,6 +1782,7 @@ class Sales extends BaseController
         $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
         $sunday = strtotime(date("Y-m-d", $monday) . " +6 days");
         $this_week_start = date("d", $monday);
+        $this_week_start_fulldate = date("Y-m-d", $monday);
         $this_week_end = date("d", $sunday);
         if ($range == 'today') {
             $count = 1;
@@ -1810,7 +1811,7 @@ class Sales extends BaseController
             };
             if ($range == 'lweek') {
                 $no = $this_week_start - 7;
-                $sd = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start - 7);
+                $sd = date("Y-m-d", strtotime("-7 day", strtotime(date("Y-m-d", $monday))));
             };
             // $date = $years . "-" . $month . "-" . sprintf("%02d", $a + $no);
             $date = date("Y-m-d", strtotime("+" . $a . " day", strtotime($sd)));
@@ -1824,6 +1825,22 @@ class Sales extends BaseController
                     "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
                 ];
                 $series[] = $row;
+            } else if ($range == 'today') {
+                $row = array(
+                    [
+                        "x"    => date("d", strtotime("-1 day", strtotime($sd))),
+                        "y"    => 0,
+                    ],
+                    [
+                        "x"    => $datetocategory,
+                        "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
+                    ],
+                    [
+                        "x"    => date("d", strtotime("+1 day", strtotime($sd))),
+                        "y"    => 0,
+                    ],
+                );
+                $series = $row;
             } else {
                 $row = [
                     "x"    => $datetocategory,
@@ -1871,15 +1888,19 @@ class Sales extends BaseController
         for ($a = 0; $a < count($this->listPackagingModel->notLike('id_packaging', "0")->findAll()); $a++) {
             array_push($groups2, $this->listPackagingModel->notLike('id_packaging', "0")->findAll()[$a]['proid_pck']);
         }
-        $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+        // $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+        // $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+        // $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+        // $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+        $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
         $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
-        $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
-        $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+        $lesdate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
+        $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         if ($range == "today") {
             $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
             $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
-            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
-            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+            $lesdate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
+            $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
         if ($range == "tweek") {
             $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start);
@@ -1887,8 +1908,14 @@ class Sales extends BaseController
             $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
             $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
+        if ($range == "tmonth") {
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day - 1);
+        };
         if ($range == "lweek") {
-            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $this_week_start - 7);
+            $tesdate = date("Y-m-d", strtotime("-7 day", strtotime(date("Y-m-d", $monday))));
             $teddate = date("Y-m-d", strtotime("+6 day", strtotime($tesdate)));
             $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
             $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
@@ -2198,8 +2225,12 @@ class Sales extends BaseController
             'test'        => $idshop,
             'test1'        => $id_shop,
             'test2'        => $shop_group,
-            'sd'    => $datetocategory,
+            'sd'    => $sd,
             'arraydate' => $arraydate,
+            'range' => $range,
+            'tsalesArray' => $tsalesArray,
+            'lsalesArray' => $lsalesArray,
+            'this_week_start_fulldate' => $this_week_start_fulldate,
             // 'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
             // 'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
         ]);
