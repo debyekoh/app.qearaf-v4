@@ -29,109 +29,109 @@
                     </div>
                 </div>
                 <div class="card-body pt-2">
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="text-center">
                             <ul class="list-inline m-0">
                                 <li class="list-inline-item">
                                     <?php if ($item['Process'] != 0) { ?>
-                                        <a class="btn btn-soft-warning waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Process')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Process']; ?></div>
+                                        <a class="btn btn-soft-warning waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Process')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Process']; ?></div>
                                             <strong>Process</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Process</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Packaging'] != 0) { ?>
-                                        <a class="btn btn-soft-info waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Packaging')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Packaging']; ?></div>
+                                        <a class="btn btn-soft-info waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Packaging')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Packaging']; ?></div>
                                             <strong>Packaging</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Packaging</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Ready'] != 0) { ?>
-                                        <a class="btn btn-soft-success waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Ready')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Ready']; ?></div>
+                                        <a class="btn btn-soft-success waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Ready')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Ready']; ?></div>
                                             <strong>Ready</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Ready</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Delivery'] != 0) { ?>
-                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Delivery')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Delivery']; ?></div>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Delivery')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Delivery']; ?></div>
                                             <strong>Delivery</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Delivery</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Received'] != 0) { ?>
-                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Received')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Received']; ?></div>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Received')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Received']; ?></div>
                                             <strong>Received</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Received</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Completed'] != 0) { ?>
-                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Completed')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Completed']; ?></div>
+                                        <a class="btn btn-soft-dark waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Completed')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Completed']; ?></div>
                                             <strong>Completed</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Completed</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Cancel'] != 0) { ?>
-                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Cancel')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Cancel']; ?></div>
+                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Cancel')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Cancel']; ?></div>
                                             <strong>Cancel</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Cancel</strong>
                                         </a>
                                     <?php } ?>
                                 </li>
                                 <li class="list-inline-item">
                                     <?php if ($item['Return'] != 0) { ?>
-                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-sm font-size-14 shadow-lg" onclick=" clickTab('Return')" role="button">
-                                            <div class="font-size-20 fw-bolder"><?= $item['Return']; ?></div>
+                                        <a class="btn btn-soft-danger waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg" onclick=" clickTab('Return')" role="button">
+                                            <div class="font-size-16 fw-bolder"><?= $item['Return']; ?></div>
                                             <strong>Return</strong>
                                         </a>
                                     <?php } else { ?>
-                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-sm font-size-14 shadow-lg text-muted " role="button">
-                                            <div class="font-size-20 text-muted fw-bolder">0</div>
+                                        <a class="btn btn-soft-light waves-effect waves-light m-1 w-xs px-0 font-size-12 shadow-lg text-muted " role="button">
+                                            <div class="font-size-16 text-muted fw-bolder">0</div>
                                             <strong>Return</strong>
                                         </a>
                                     <?php } ?>
@@ -141,19 +141,19 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-6">
-                            <div class="card">
-                                <div class="card-body pb-0">
+                            <div class="card mb-1">
+                                <div class="card-body p-2 pb-0">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 class="text-primary font-size-18" id="totpck">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Total Package</span></h4>
+                                            <h4 class="text-primary font-size-14 ms-3 mb-0" id="totpck">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Total Package</span></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <ul class="list-inline main-chart text-md-end mb-0">
                                                 <li class="list-inline-item chart-border-left me-0 border-0">
-                                                    <h4 class="text-primary font-size-18" id="totinpr">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Process</span></h4>
+                                                    <h4 class="text-primary font-size-14 ms-3 mb-0" id="totinpr">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Process</span></h4>
                                                 </li>
                                                 <li class="list-inline-item chart-border-left me-0">
-                                                    <h4 class="font-size-18" id="totcmpl">0<span class="text-muted d-inline-block font-size-14 align-middle ms-2">Completed</span></span>
+                                                    <h4 class="font-size-14 mb-0" id="totcmpl">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Completed</span></span>
                                                     </h4>
                                                 </li>
                                             </ul>
@@ -166,8 +166,8 @@
                         <div class="col-xl-6">
                             <div class="row">
                                 <div class="col-xl-6">
-                                    <div class="card">
-                                        <div class="card-body">
+                                    <div class="card mb-1">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tsl">Rp. 0</h4>
@@ -184,8 +184,8 @@
                                 </div>
 
                                 <div class="col-xl-6">
-                                    <div class="card">
-                                        <div class="card-body">
+                                    <div class="card mb-1">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tod">Rp. 0</h4>
@@ -204,8 +204,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-xl-6">
-                                    <div class="card">
-                                        <div class="card-body">
+                                    <div class="card mb-1">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tpr">Rp. 0</h4>
@@ -224,8 +224,8 @@
                                 </div>
 
                                 <div class="col-xl-6">
-                                    <div class="card bg-soft-danger bg-gradient">
-                                        <div class="card-body">
+                                    <div class="card mb-1 bg-soft-danger bg-gradient">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tex">Rp. 0</h4>
@@ -244,8 +244,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-xl-6">
-                                    <div class="card bg-soft-danger bg-gradient">
-                                        <div class="card-body">
+                                    <div class="card mb-1 bg-soft-danger bg-gradient">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tcs">Rp. 0</h4>
@@ -264,8 +264,8 @@
                                 </div>
 
                                 <div class="col-xl-6">
-                                    <div class="card bg-soft-danger bg-gradient">
-                                        <div class="card-body">
+                                    <div class="card mb-1 bg-soft-danger bg-gradient">
+                                        <div class="card-body py-2">
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <h4 class="mb-0" id="tad">Rp. 0</h4>
