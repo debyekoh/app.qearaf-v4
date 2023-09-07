@@ -26,7 +26,7 @@ class Dashboards extends BaseController
     // "expire_in":14311,"request_id":"99118c0d4f55691efa739cec0e032520","error":"","message":""}
     public function __construct()
     {
-        helper(['form', 'url']);
+        helper(['form', 'url', 'array']);
         $this->salesModel = new SalesModel();
         $this->listNotificationModel = new ListNotificationModel();
         $this->db      = \Config\Database::connect();
@@ -62,6 +62,13 @@ class Dashboards extends BaseController
             'Cancel'        => count($this->salesModel->where('status', "Cancel")->findAll()),
         );
 
+        // $this->builder = $this->db->table('sales');
+        // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+        // if (in_groups('3') == true || in_groups('4') == true) {
+        //     $this->builder->like('member_id', user()->member_id);
+        // }
+        // $QueryAll = $this->builder->get();
+
         $datapage = array(
             'titlepage' => "Dashboard",
             'tabshop'   => $this->tabshop,
@@ -69,9 +76,25 @@ class Dashboards extends BaseController
             'item'      => $countitem,
             // 'head_page' => $head_page,
             'js_page'   => $js_page,
-            // 'test'      => $test,
+            'topseller'      => $this->getTopSeller(),
         );
         return view('pages_admin/adm_dashboard', $datapage);
+    }
+
+
+    public function getTopSeller()
+    {
+        $totalSales = "SELECT sales_detail.pro_id AS salesproid,pro_name,pro_model,pro_part_no,pro_image_name,pro_price_seller, sum(pro_qty) as total_qty 
+                    FROM sales_detail 
+                    JOIN products ON products.pro_id=sales_detail.pro_id
+                    JOIN products_price ON products_price.pro_id=sales_detail.pro_id
+                    JOIN products_image ON products_image.pro_id=sales_detail.pro_id
+                    GROUP BY salesproid 
+                    ORDER BY total_qty DESC
+                    LIMIT 5";
+        $this->builder = $this->db->query($totalSales);
+        $result = $this->builder;
+        return $result->getResult();
     }
 
 

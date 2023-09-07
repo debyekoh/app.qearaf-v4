@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <p id="shid" hidden><?= $shop; ?></p>
-            <div class="card">
+            <div class="card mb-2">
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
@@ -285,6 +285,61 @@
                         </div>
 
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap align-items-center mb-0">
+                        <h5 class="card-title">Top Selling Product</h5>
+                    </div>
+                    <div class="mx-n4 px-4">
+                        <div class="simplebar-wrapper" style="margin: 0px -24px;">
+                            <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll; padding-right: 20px; padding-bottom: 0px;">
+                                <?php $i = 1; ?>
+                                <?php foreach ($topseller as $top) : ?>
+                                    <?php $no = $i++; ?>
+                                    <?php if ($no == 1) {
+                                        $cs = "danger";
+                                    } else if ($no == 2) {
+                                        $cs = "warning";
+                                    } else if ($no == 3) {
+                                        $cs = "primary";
+                                    } else {
+                                        $cs = "secondary";
+                                    };; ?>
+                                    <div class="simplebar-content p-1 px-3">
+                                        <div style="position: absolute;">
+                                            <span class="badge bg-<?= $cs; ?> font-size-14 fw-bolder">TOP <?= $no; ?></span>
+                                        </div>
+                                        <div class="popular-product-box rounded bg-soft-<?= $cs; ?>" id="best-<?= $cs; ?>">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-md shadow-lg rounded">
+                                                        <img src="assets/images/product/<?= $top->pro_image_name; ?>" class="img-fluid rounded" alt="<?= $top->pro_image_name; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3 overflow-hidden">
+                                                    <h5 class="mb-1 text-truncate"><a href="#" class="font-size-12 text-wrap text-dark"><?= $top->pro_name; ?> <?= $top->pro_model; ?></a></h5>
+                                                    <!-- <p class="text-muted fw-semibold mb-0 text-truncate">$230.00</p> -->
+                                                </div>
+                                                <div class="flex-shrink-0 text-end ms-3">
+                                                    <h5 class="mb-1"><a href="" class="font-size-14 fw-bold text-dark">Rp <?= number_format($top->pro_price_seller * $top->total_qty, 0, ',', '.'); ?></a></h5>
+                                                    <p class="text-dark fw-semibold mb-0"><u><?= $top->total_qty; ?> Sold</u></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
