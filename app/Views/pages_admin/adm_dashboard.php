@@ -11,7 +11,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Overview</h5>
+                            <h5 class="card-title mb-0">Overview <?= $titlepage; ?></h5>
                         </div>
                         <div class="flex-shrink-0">
                             <div class="input-group input-group-sm mb-3">
@@ -319,7 +319,7 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0">
                                                     <div class="avatar-md shadow-lg rounded">
-                                                        <img src="assets/images/product/<?= $top->pro_image_name; ?>" class="img-fluid rounded" alt="<?= $top->pro_image_name; ?>">
+                                                        <img src="<?= base_url(); ?>assets/images/product/<?= $top->pro_image_name; ?>" class="img-fluid rounded" alt="<?= $top->pro_image_name; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1 ms-3 overflow-hidden">

@@ -87,7 +87,39 @@ class MyShop extends BaseController
             // 'head_page' => $head_page,
             'js_page'   => $js_page,
             // 'test'      => $test,
+            'topseller'      => $this->getTopSeller(base64_decode(base64_decode($idshop))),
         );
-        return view('pages_admin/adm_shop', $datapage);
+        // return view('pages_admin/adm_shop', $datapage);
+        return view('pages_admin/adm_dashboard', $datapage);
+    }
+
+    public function getTopSeller($idshop)
+    {
+        // $month = date("Y-m");
+        $month = "2023-09";
+        $totalSales = "SELECT   sales_detail.pro_id AS salesproid,
+                                pro_name,
+                                pro_model,
+                                pro_part_no,
+                                pro_image_name,
+                                pro_price_seller, 
+                                -- sales.status AS salesstatus,
+                                -- sales.id_shop AS id_shop,
+                                sum(pro_qty) as total_qty 
+                    FROM sales_detail
+                    JOIN sales ON sales.no_sales=sales_detail.no_sales 
+                    JOIN products ON products.pro_id=sales_detail.pro_id
+                    JOIN products_price ON products_price.pro_id=sales_detail.pro_id
+                    JOIN products_image ON products_image.pro_id=sales_detail.pro_id
+                    WHERE (sales.id_shop='$idshop') 
+                    OR (sales.date_sales LIKE '$month')
+                    -- AND (sales.status NOT LIKE 'Delivery')
+                    -- AND (sales.status NOT LIKE 'Ready')
+                    GROUP BY salesproid 
+                    ORDER BY total_qty DESC
+                    LIMIT 5";
+        $this->builder = $this->db->query($totalSales);
+        $result = $this->builder;
+        return $result->getResult();
     }
 }
