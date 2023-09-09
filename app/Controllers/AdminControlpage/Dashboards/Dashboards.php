@@ -69,16 +69,26 @@ class Dashboards extends BaseController
         // }
         // $QueryAll = $this->builder->get();
 
-        $datapage = array(
-            'titlepage' => "Dashboard",
-            'tabshop'   => $this->tabshop,
-            'shop'      => base64_encode(base64_encode("dashboards")),
-            'item'      => $countitem,
-            // 'head_page' => $head_page,
-            'js_page'   => $js_page,
-            'topseller'      => $this->getTopSeller(),
-        );
-        return view('pages_admin/adm_dashboard', $datapage);
+
+        if (in_groups('1') == true || in_groups('2') == true) {
+            $datapage = array(
+                'titlepage' => "Dashboard",
+                'tabshop'   => $this->tabshop,
+                'shop'      => base64_encode(base64_encode("dashboards")),
+                'item'      => $countitem,
+                // 'head_page' => $head_page,
+                'js_page'   => $js_page,
+                'topseller'      => $this->getTopSeller(),
+            );
+            return view('pages_admin/adm_dashboard', $datapage);
+        } else {
+            $datapage = array(
+                'titlepage' => "Dashboard",
+                'tabshop'   => $this->tabshop,
+                // 'item'      => $countitem,
+            );
+            return view('pages_admin/adm_blankpage', $datapage);
+        }
     }
 
 
