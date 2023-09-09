@@ -89,37 +89,37 @@
                 </div>
             </div>
             <div id="viewSales" class="modal fade salesdetailsModal" tabindex="-1" role="dialog" aria-labelledby="salesdetailsModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen-sm-down" role="document">
+                <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="salesdetailsModalLabel">Sales Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body py-1">
+                        <div class="modal-body font-size-12 py-1">
                             <table class="table align-middle table-sm table-nowrap table-borderless border-bottom table-centered p-1 mb-0">
                                 <tbody>
                                     <tr class="py-0">
-                                        <th class="py-0 fw-bold" style="width:10%;">
+                                        <th class="py-0 ps-0 fw-bold" style="width:10%;">
                                             Shop</th>
                                         <td class="py-0 fw-bold" style="width:1%;">:</td>
                                         <td class="py-0 text-muted">
-                                            <h6 class="mb-0"><span id="shp" class="text-truncate">#Martin Gurley</span></h6>
+                                            <h6 class="mb-0"><span id="shp" class="text-dark font-size-13"></span></h6>
                                         </td>
                                     </tr>
                                     <tr class="py-0">
-                                        <th class="py-0 fw-bold">
+                                        <th class="py-0 ps-0 fw-bold">
                                             No Sales</th>
                                         <td class="py-0 fw-bold">:</td>
                                         <td class="py-0 text-muted">
-                                            <h6 class="mb-0"><span id="nos" class="text-primary">#Martin Gurley</span></h6>
+                                            <h6 class="mb-0"><span id="nos" class="text-primary font-size-13"></span></h6>
                                         </td>
                                     </tr>
                                     <tr class="py-0">
-                                        <th class="py-0 fw-bold">
+                                        <th class="py-0 ps-0 fw-bold">
                                             Sales ID</th>
                                         <td class="py-0 fw-bold">:</td>
                                         <td class="py-0 text-muted">
-                                            <h6 class="mb-0"><span id="ids" class="text-primary">#Martin Gurley</span></h6>
+                                            <h6 class="mb-0"><span id="ids" class="text-primary font-size-13"></span></h6>
                                         </td>
                                     </tr>
                                 </tbody>

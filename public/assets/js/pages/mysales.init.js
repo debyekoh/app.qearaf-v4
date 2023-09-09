@@ -740,7 +740,7 @@ function vito(s_id , s_name) {
                         '</th>'+
                         '<td>'+
                             ' <div>'+
-                                '<h5 class="text-truncate fw-bold font-size-14 mb-0">'+data.detail.dsl[l].pro_name+' '+data.detail.dsl[l].pro_model+''+
+                                '<h5 class="text-truncate fw-bold font-size-12 mb-0 text-wrap">'+data.detail.dsl[l].pro_name+' '+data.detail.dsl[l].pro_model+'</h5>'+
                                 ' <p class="text-truncate mb-0">'+data.detail.dsl[l].pro_qty+' x Rp '+data.detail.dsl[l].pro_price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</p>'+
                             '</div>'+
                         ' </td>'+
@@ -767,7 +767,7 @@ function vito(s_id , s_name) {
                         
                         '<tr>'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right">Sub Total:</h6>'+
+                                '<h6 class="m-0 text-right font-size-12">Sub Total:</h6>'+
                             '</td>'+
                             '<td>'+
                                 'Rp '+subtotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
@@ -775,7 +775,7 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr>'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right">Shipping:</h6>'+
+                                '<h6 class="m-0 text-right font-size-12">Shipping:</h6>'+
                                 '<p class="text-muted mb-0">'+
                                 '<img src="./assets/images/services/'+data.detail.ifs.image_services+'" alt="'+data.detail.ifs.image_services+'" style="height: 1.4rem; width: auto;" class="img-fluid">'+
                                 '</p>'+
@@ -786,7 +786,7 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr>'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right" id="td_tax">Estimated Tax (10%):</h6>'+
+                                '<h6 class="m-0 text-right font-size-12" id="td_tax">Estimated Tax (10%):</h6>'+
                             ' </td>'+
                             '<td class="text-danger" id="td_tax_val">'+
                                 'Rp ('+tax+')'+
@@ -794,7 +794,7 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr>'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right">Packaging:</h6>'+
+                                '<h6 class="m-0 text-right font-size-12">Packaging:</h6>'+
                                 '<p class="text-muted mb-0">'+pckgdesc+'</p>'+
                             ' </td>'+
                             '<td>'+
@@ -803,7 +803,7 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr class="border-bottom-0">'+
                             '<td colspan="2">'+
-                                '<h6 class="m-0 text-right">Discount:</h6>'+
+                                '<h6 class="m-0 text-right font-size-12">Discount:</h6>'+
                             ' </td>'+
                             '<td>'+
                                 ' Free'+
@@ -811,7 +811,7 @@ function vito(s_id , s_name) {
                         '</tr>'+
                         '<tr >'+
                             ' <td colspan="2" class="border-bottom-0">'+
-                                '<h6 class="m-0 text-right" id="tdesc">Billing Information:</h6>'+
+                                '<h6 class="m-0 text-right font-size-12" id="tdesc">Billing Information:</h6>'+
                             '</td>'+
                             '<td class="font-size-18 m-0 fw-bold border-bottom-0" id="tval">'+
                                 'Rp '+((subtotal-((10/100)*subtotal))+parseInt(data.detail.ifs.packaging_charge)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+''+
