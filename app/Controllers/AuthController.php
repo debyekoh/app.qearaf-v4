@@ -146,9 +146,31 @@ class AuthController extends Controller
         $users = model(UserModel::class);
 
         // Validate basics first since some password rules rely on these fields
+        // $rules = config('Validation')->registrationRules ?? [
+        //     'username' => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
+        //     'email'    => 'required|valid_email|is_unique[users.email]',
+        //     'member_id' => 'required|is_unique[users.member_id]',
+        // ];
+
+
+
         $rules = config('Validation')->registrationRules ?? [
-            'username' => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
-            'email'    => 'required|valid_email|is_unique[users.email]',
+            // 'username' => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
+            'username' => [
+                'rules'  => 'required|alpha_numeric_space|min_length[3]|max_length[30]|is_unique[users.username]',
+                'errors' => [
+                    'required' => 'You must choose a Username.',
+                    'is_unique' => 'Username is already in use',
+                ],
+            ],
+            // 'email'    => 'required|valid_email|is_unique[users.email]',
+            'email' => [
+                'rules'  => 'required|valid_email|is_unique[users.email]',
+                'errors' => [
+                    'required' => 'You must choose a Email.',
+                    'is_unique' => 'Email is already in use',
+                ],
+            ],
             'member_id' => 'required|is_unique[users.member_id]',
         ];
 
