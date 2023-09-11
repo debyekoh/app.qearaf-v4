@@ -1777,6 +1777,8 @@ class Sales extends BaseController
         $count = cal_days_in_month(CAL_GREGORIAN, $month, $years);
         $row = array();
         $series = array();
+        $row_completed = array();
+        $series_completed = array();
 
         $monday = strtotime("last monday");
         $monday = date('w', $monday) == date('w') ? $monday + 7 * 86400 : $monday;
@@ -1824,7 +1826,12 @@ class Sales extends BaseController
                     "x"    => $m[$a],
                     "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
                 ];
+                $row_completed = [
+                    "x"    => $m[$a],
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $date_for_like)->havingIn('status', ['Completed'])->findAll()),
+                ];
                 $series[] = $row;
+                $series_completed[] = $row_completed;
             } else if ($range == 'today') {
                 $row = array(
                     [
@@ -1840,13 +1847,33 @@ class Sales extends BaseController
                         "y"    => 0,
                     ],
                 );
+                $row_completed = array(
+                    [
+                        "x"    => date("d", strtotime("-1 day", strtotime($sd))),
+                        "y"    => 0,
+                    ],
+                    [
+                        "x"    => $datetocategory,
+                        "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->havingIn('status', ['Completed'])->findAll()),
+                    ],
+                    [
+                        "x"    => date("d", strtotime("+1 day", strtotime($sd))),
+                        "y"    => 0,
+                    ],
+                );
                 $series = $row;
+                $series_completed[] = $row_completed;
             } else {
                 $row = [
                     "x"    => $datetocategory,
                     "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->havingNotIn('status', ['Return', 'Cancel'])->findAll()),
                 ];
+                $row_completed = [
+                    "x"    => $datetocategory,
+                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales', $date)->havingIn('status', ['Completed'])->findAll()),
+                ];
                 $series[] = $row;
+                $series_completed[] = $row_completed;
             }
             $arraydate[] = $date;
         };
@@ -1939,7 +1966,7 @@ class Sales extends BaseController
                 $torderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
+                $tpricepckg[] = isset($this->consumableLogModel->find($idsl)['consum_price']) ? $this->consumableLogModel->find($idsl)['consum_price'] : 0;
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years)->findAll()); $a++) {
                 $taddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years)->findAll()[$a]['payment'];
@@ -1949,7 +1976,7 @@ class Sales extends BaseController
                 $lorderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $years - 1)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $lpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
+                $lpricepckg[] = isset($this->consumableLogModel->find($idsl)['consum_price']) ? $this->consumableLogModel->find($idsl)['consum_price'] : 0;
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years - 1)->findAll()); $a++) {
                 $laddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->like('date_purchase', $years - 1)->findAll()[$a]['payment'];
@@ -1984,7 +2011,7 @@ class Sales extends BaseController
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
 
-                $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
+                $tpricepckg[] = isset($this->consumableLogModel->find($idsl)['consum_price']) ? $this->consumableLogModel->find($idsl)['consum_price'] : 0;
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
                 $taddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
@@ -1994,7 +2021,7 @@ class Sales extends BaseController
                 $lorderArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['bill'];
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
-                $lpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
+                $lpricepckg[] = isset($this->consumableLogModel->find($idsl)['consum_price']) ? $this->consumableLogModel->find($idsl)['consum_price'] : 0;
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()); $a++) {
                 $laddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $lesdate)->where('date_purchase <=', $leddate)->findAll()[$a]['payment'];
@@ -2205,7 +2232,8 @@ class Sales extends BaseController
         // Total Sales & Order ------------------------------------------------------------------------------------------------------------------------------------------------
 
         return $this->response->setJSON([
-            'data_series'       => $series,
+            'data_series'               => $series,
+            'data_series_completed'     => $series_completed,
             'data_report'       => $data_report,
             'data_sort'         => $title,
             'tesdate'           => $tesdate,

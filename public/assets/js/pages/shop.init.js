@@ -125,15 +125,7 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
         }
     
     },
-    // title: {
-    //     text: 'Monthly Inflation in Argentina, 2002',
-    //     floating: true,
-    //     offsetY: 320,
-    //     align: 'center',
-    //     style: {
-    //     color: '#444'
-    //     }
-    // }
+    
     };
 
       var chart = new ApexCharts(document.querySelector("#overview"), options);
@@ -197,8 +189,12 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
         // $("#tod").html('Rp. '+response.total_order.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_order.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_order.tpcg+'%</span>');
         // $("#tpr").html('Rp. '+response.total_profit.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+' <span class="fw-medium text-'+response.total_profit.tkey+' font-size-18"><i class="bx bx-'+response.total_profit.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_profit.tpcg+'%</span>');
         chart.updateSeries([{
-            name: 'Sales',
+            name: 'Total',
             data: response.data_series
+        },
+        {
+            name: 'Completed',
+            data: response.data_series_completed
         }])
         }
         );
