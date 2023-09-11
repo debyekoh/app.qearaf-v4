@@ -2011,7 +2011,7 @@ class Sales extends BaseController
 
                 $idsl = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()[$a]['id_sales'];
 
-                $tpricepckg[] = isset($this->consumableLogModel->find($idsl)['consum_price']) ? $this->consumableLogModel->find($idsl)['consum_price'] : 0;
+                $tpricepckg[] = $this->consumableLogModel->find($idsl)['consum_price'];
             }
             for ($a = 0; $a < count($this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()); $a++) {
                 $taddsArray[] = $this->purchaseModel->whereIn('supplier_id', $shop_group)->where('date_purchase >=', $tesdate)->where('date_purchase <=', $teddate)->findAll()[$a]['payment'];
