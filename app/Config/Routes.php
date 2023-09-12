@@ -47,6 +47,8 @@ $routes->get('/dashboards', 'AdminControlpage\Dashboards\Dashboards::index');
 // Template
 $routes->post('/notification', 'Notification::index');
 $routes->post('/notification/read', 'Notification::read');
+$routes->get('/allnotification', 'Notification::allnotification');
+$routes->get('/listnotif', 'Notification::list');
 
 // Shop
 $routes->get('/myshop', 'AdminControlpage\Shop\MyShop\MyShop::index');

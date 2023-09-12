@@ -169,40 +169,9 @@
                                 </div>
                             </div>
                             <div data-simplebar id="listNotif">
-                                <!-- <a href="#!" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 avatar-sm me-3">
-                                            <span class="avatar-title bg-success rounded-circle font-size-16">
-                                                <i class="bx bx-badge-check"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">Your item is shipped</h6>
-                                            <div class="font-size-13 text-muted">
-                                                <p class="mb-1">If several languages coalesce the grammar</p>
-                                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>3 min ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#!" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 me-3">
-                                            <img src="assets/images/users/avatar-6.jpg" class="rounded-circle avatar-sm" alt="user-pic">
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">Salena Layfield</h6>
-                                            <div class="font-size-13 text-muted">
-                                                <p class="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>1 hour ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a> -->
                             </div>
                             <div class="p-1 border-top d-grid">
-                                <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="javascript:void(0)">
+                                <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="<?= base_url() ?>allnotification">
                                     <i class="uil-arrow-circle-right me-1"></i> <span>View More..</span>
                                 </a>
                             </div>
