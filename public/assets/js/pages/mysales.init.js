@@ -883,7 +883,7 @@ function vito(s_id , s_name) {
                     let a = (parseInt(subtotal)-parseInt(pi-data.detail.ifs.packaging_charge));
                     let b = (parseInt(a) / parseInt(subtotal))*100
                     console.log(b)
-                    if(a >= 0 ) {
+                    if(b >= -200 && b <= 200 ) {
                         $('#profitstring').html("Rp. "+parseInt(a))
                         $('#payment').removeClass("is-invalid");
                         $('#payment').addClass("is-valid");
@@ -891,6 +891,8 @@ function vito(s_id , s_name) {
                         $("#td_tax_val").html("Rp ("+a.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
                     }else{
                         $('#profitstring').html("Rp. "+parseInt(0))
+                        $("#td_tax").html("Tax ("+b.toFixed(1)+"%)" )
+                        $("#td_tax_val").html("Rp ("+a.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+")" )
                         $('#payment').removeClass("is-valid");
                         $('#payment').addClass("is-invalid");
                     }

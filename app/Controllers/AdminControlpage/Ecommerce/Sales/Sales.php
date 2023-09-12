@@ -70,7 +70,7 @@ class Sales extends BaseController
         $this->db      = \Config\Database::connect();
     }
 
-    public function getTabNotif($tab, $groups)
+    public function getTabNotif($tab, $groups, $shpid)
     {
         $this->builder = $this->db->table('sales');
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
@@ -79,6 +79,9 @@ class Sales extends BaseController
         }
         if ($groups == '3') {
             $this->builder->where('shop.member_id', user()->member_id);
+        }
+        if ($shpid != null) {
+            $this->builder->like('shop.id_shop', $shpid);
         }
 
         $Query = $this->builder->get();
@@ -121,16 +124,18 @@ class Sales extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $shpid = null;
+
         $data_tab = array(
-            'All'           => $this->getTabNotif(null, $groups),
-            'Process'       => $this->getTabNotif('Process', $groups),
-            'Packaging'     => $this->getTabNotif('Packaging', $groups),
-            'Ready'         => $this->getTabNotif('Ready', $groups),
-            'Delivery'      => $this->getTabNotif('Delivery', $groups),
-            'Received'      => $this->getTabNotif('Received', $groups),
-            'Completed'     => $this->getTabNotif('Completed', $groups),
-            'Cancel'        => $this->getTabNotif('Cancel', $groups),
-            'Return'        => $this->getTabNotif('Return', $groups),
+            'All'           => $this->getTabNotif(null, $groups, $shpid),
+            'Process'       => $this->getTabNotif('Process', $groups, $shpid),
+            'Packaging'     => $this->getTabNotif('Packaging', $groups, $shpid),
+            'Ready'         => $this->getTabNotif('Ready', $groups, $shpid),
+            'Delivery'      => $this->getTabNotif('Delivery', $groups, $shpid),
+            'Received'      => $this->getTabNotif('Received', $groups, $shpid),
+            'Completed'     => $this->getTabNotif('Completed', $groups, $shpid),
+            'Cancel'        => $this->getTabNotif('Cancel', $groups, $shpid),
+            'Return'        => $this->getTabNotif('Return', $groups, $shpid),
         );
 
         $datapage = array(
@@ -764,7 +769,7 @@ class Sales extends BaseController
         if ($idshopstring != '1') {
             $shpid = $idshopstring;
         } else {
-            $shpid = '';
+            $shpid = null;
         }
         // $data_tab = array(
         //     // 'All'           => $QueryAll->getNumRows(),
@@ -792,14 +797,14 @@ class Sales extends BaseController
 
         $data_tab = array(
             // 'All'           => $this->getTabNotif(null, $groups),
-            'Process'       => $this->getTabNotif('Process', $groups),
-            'Packaging'     => $this->getTabNotif('Packaging', $groups),
-            'Ready'         => $this->getTabNotif('Ready', $groups),
-            'Delivery'      => $this->getTabNotif('Delivery', $groups),
-            'Received'      => $this->getTabNotif('Received', $groups),
-            'Completed'     => $this->getTabNotif('Completed', $groups),
-            'Cancel'        => $this->getTabNotif('Cancel', $groups),
-            'Return'        => $this->getTabNotif('Return', $groups),
+            'Process'       => $this->getTabNotif('Process', $groups, $shpid),
+            'Packaging'     => $this->getTabNotif('Packaging', $groups, $shpid),
+            'Ready'         => $this->getTabNotif('Ready', $groups, $shpid),
+            'Delivery'      => $this->getTabNotif('Delivery', $groups, $shpid),
+            'Received'      => $this->getTabNotif('Received', $groups, $shpid),
+            'Completed'     => $this->getTabNotif('Completed', $groups, $shpid),
+            'Cancel'        => $this->getTabNotif('Cancel', $groups, $shpid),
+            'Return'        => $this->getTabNotif('Return', $groups, $shpid),
         );
 
         return $this->response->setJSON([
@@ -816,10 +821,12 @@ class Sales extends BaseController
         $date = $this->request->getVar('date');
         $shop = $this->request->getVar('name');
         $idshopstring = base64_decode(base64_decode($shop));
+        // $idshopstring = $this->salesModel->find($id_sales)['id_shop'];
+        // dd($idshopstring);
         if ($idshopstring != '1') {
             $shpid = $idshopstring;
         } else {
-            $shpid = '';
+            $shpid = null;
         }
         // $data_tab = array(
         //     // 'All'           => $QueryAll->getNumRows(),
@@ -847,14 +854,14 @@ class Sales extends BaseController
 
         $data_tab = array(
             // 'All'           => $this->getTabNotif(null, $groups),
-            'Process'       => $this->getTabNotif('Process', $groups),
-            'Packaging'     => $this->getTabNotif('Packaging', $groups),
-            'Ready'         => $this->getTabNotif('Ready', $groups),
-            'Delivery'      => $this->getTabNotif('Delivery', $groups),
-            'Received'      => $this->getTabNotif('Received', $groups),
-            'Completed'     => $this->getTabNotif('Completed', $groups),
-            'Cancel'        => $this->getTabNotif('Cancel', $groups),
-            'Return'        => $this->getTabNotif('Return', $groups),
+            'Process'       => $this->getTabNotif('Process', $groups, $shpid),
+            'Packaging'     => $this->getTabNotif('Packaging', $groups, $shpid),
+            'Ready'         => $this->getTabNotif('Ready', $groups, $shpid),
+            'Delivery'      => $this->getTabNotif('Delivery', $groups, $shpid),
+            'Received'      => $this->getTabNotif('Received', $groups, $shpid),
+            'Completed'     => $this->getTabNotif('Completed', $groups, $shpid),
+            'Cancel'        => $this->getTabNotif('Cancel', $groups, $shpid),
+            'Return'        => $this->getTabNotif('Return', $groups, $shpid),
         );
 
         return $this->response->setJSON([
@@ -1055,105 +1062,140 @@ class Sales extends BaseController
 
 
 
-            //
+            // //
+            // // $this->builder = $this->db->table('sales');
+            // // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // // $this->builder->like('member_id', user()->member_id);
+
+            // //Query All//
             // $this->builder = $this->db->table('sales');
             // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            // $this->builder->like('member_id', user()->member_id);
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryAll = $this->builder->get();
+            // // $All = $QueryAll->getNumRows();
 
-            //Query All//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
+            // //Query Proces//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryProcess = $this->builder->where('status', 'Process')->get();
+            // // $Process = $QueryProcess->getNumRows();
+
+            // //Query Packaging//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryPackaging = $this->builder->where('status', 'Packaging')->get();
+            // // $Packaging = $QueryPackaging->getResult();
+
+            // //Query Ready//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryReady = $this->builder->where('status', 'Ready')->get();
+            // // $Ready = $QueryReady->getResult();
+
+            // //Query Delivery//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryDelivery = $this->builder->where('status', 'Delivery')->get();
+            // // $Delivery = $QueryDelivery->getResult();
+
+            // //Query Received//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryReceived = $this->builder->where('status', 'Received')->get();
+            // // $Received = $QueryReceived->getResult();
+
+            // //Query Completed//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryCompleted = $this->builder->where('status', 'Completed')->get();
+            // // $Completed = $QueryCompleted->getResult();
+
+            // //Query Cancel//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryCancel = $this->builder->where('status', 'Cancel')->get();
+            // // $Cancel = $QueryCancel->getResult();
+
+            // //Query Return//
+            // $this->builder = $this->db->table('sales');
+            // $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
+            // if (in_groups('3') == true || in_groups('4') == true) {
+            //     $this->builder->like('member_id', user()->member_id);
+            // }
+            // $QueryReturn = $this->builder->where('status', 'Return')->get();
+            // // $Return = $QueryReturn->getResult();
+
+
+            // $data_tab = array(
+            //     'All'           => $QueryAll->getNumRows(),
+            //     'Process'       => $QueryProcess->getNumRows(),
+            //     'Packaging'     => $QueryPackaging->getNumRows(),
+            //     'Ready'         => $QueryReady->getNumRows(),
+            //     'Delivery'      => $QueryDelivery->getNumRows(),
+            //     'Received'      => $QueryReceived->getNumRows(),
+            //     'Completed'     => $QueryCompleted->getNumRows(),
+            //     'Cancel'        => $QueryCancel->getNumRows(),
+            //     'Return'        => $QueryReturn->getNumRows(),
+            // );
+            // $id_shop = $this->salesModel->find($id_sales)['id_shop'];
+            // $shop = $this->request->getVar('name');
+            // $idshopstring = base64_decode(base64_decode($shop));
+            $idshopstring = $this->salesModel->find($id_sales)['id_shop'];
+            // dd($idshopstring);
+            if ($idshopstring != '1') {
+                $shpid = $idshopstring;
+            } else {
+                $shpid = null;
             }
-            $QueryAll = $this->builder->get();
-            // $All = $QueryAll->getNumRows();
 
-            //Query Proces//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
+            if (in_groups('1') == true) {
+                $groups = 1; //SuAdmin
+            } else if (in_groups('2') == true) {
+                $groups = 2; //Admin
+            } else if (in_groups('3') == true) {
+                $groups = 3; //Reseller
+            } else if (in_groups('4') == true) {
+                $groups = 4; //User
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
-            $QueryProcess = $this->builder->where('status', 'Process')->get();
-            // $Process = $QueryProcess->getNumRows();
-
-            //Query Packaging//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryPackaging = $this->builder->where('status', 'Packaging')->get();
-            // $Packaging = $QueryPackaging->getResult();
-
-            //Query Ready//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryReady = $this->builder->where('status', 'Ready')->get();
-            // $Ready = $QueryReady->getResult();
-
-            //Query Delivery//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryDelivery = $this->builder->where('status', 'Delivery')->get();
-            // $Delivery = $QueryDelivery->getResult();
-
-            //Query Received//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryReceived = $this->builder->where('status', 'Received')->get();
-            // $Received = $QueryReceived->getResult();
-
-            //Query Completed//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryCompleted = $this->builder->where('status', 'Completed')->get();
-            // $Completed = $QueryCompleted->getResult();
-
-            //Query Cancel//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryCancel = $this->builder->where('status', 'Cancel')->get();
-            // $Cancel = $QueryCancel->getResult();
-
-            //Query Return//
-            $this->builder = $this->db->table('sales');
-            $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
-            if (in_groups('3') == true || in_groups('4') == true) {
-                $this->builder->like('member_id', user()->member_id);
-            }
-            $QueryReturn = $this->builder->where('status', 'Return')->get();
-            // $Return = $QueryReturn->getResult();
-
 
             $data_tab = array(
-                'All'           => $QueryAll->getNumRows(),
-                'Process'       => $QueryProcess->getNumRows(),
-                'Packaging'     => $QueryPackaging->getNumRows(),
-                'Ready'         => $QueryReady->getNumRows(),
-                'Delivery'      => $QueryDelivery->getNumRows(),
-                'Received'      => $QueryReceived->getNumRows(),
-                'Completed'     => $QueryCompleted->getNumRows(),
-                'Cancel'        => $QueryCancel->getNumRows(),
-                'Return'        => $QueryReturn->getNumRows(),
+                'All'           => $this->getTabNotif(null, $groups, $shpid),
+                'Process'       => $this->getTabNotif('Process', $groups, $shpid),
+                'Packaging'     => $this->getTabNotif('Packaging', $groups, $shpid),
+                'Ready'         => $this->getTabNotif('Ready', $groups, $shpid),
+                'Delivery'      => $this->getTabNotif('Delivery', $groups, $shpid),
+                'Received'      => $this->getTabNotif('Received', $groups, $shpid),
+                'Completed'     => $this->getTabNotif('Completed', $groups, $shpid),
+                'Cancel'        => $this->getTabNotif('Cancel', $groups, $shpid),
+                'Return'        => $this->getTabNotif('Return', $groups, $shpid),
             );
-            //
+
+
             $status = "success";
 
             if ($this->db->transStatus() === false) {
@@ -1745,10 +1787,8 @@ class Sales extends BaseController
                 array_push($shop_reselerArray, $i->id_shop);
             };
             $shop_group = $shop_reselerArray;
-            // dd("reseller/dashboards");
         } else {
             $shop_group = [$id_shop];
-            // dd("shop_group");
         }
 
 
@@ -2252,5 +2292,11 @@ class Sales extends BaseController
             // 'tstart'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $tesdate)->where('date_sales <=', $teddate)->havingNotIn('status', $groups)->findAll()),
             // 'tend'           => count($this->salesModel->where('id_shop', $id_shop)->where('date_sales >=', $lesdate)->where('date_sales <=', $leddate)->havingNotIn('status', $groups)->findAll()),
         ]);
+    }
+
+    public function getSERIES()
+    {
+
+        // return $Query->getNumRows();
     }
 }
