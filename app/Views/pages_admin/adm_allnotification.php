@@ -135,16 +135,16 @@
                                                 <?php foreach ($result['sales'] as $list_sales) : ?>
                                                     <tr>
                                                         <td class="p-0">
-                                                            <a href="http://localhost/app.qearaf-v4/public/detail/view/230911S0703EE8754" onclick="readNotif('507')" class="text-reset notification-item">
+                                                            <a href="<?= base_url() . $list_sales['path_notif']; ?>" onclick="readNotif('<?= $list_sales['id_notif']; ?>')" class="text-reset notification-item">
                                                                 <div class="d-flex list-group-item list-group-item-action list-group-item-warning py-1">
                                                                     <div class="flex-shrink-0 align-self-center avatar-sm me-3"><span class="avatar-title bg-success rounded-circle font-size-16"><i class="bx bx-badge-check"></i></span></div>
                                                                     <div class="flex-grow-1">
-                                                                        <p class="mb-1 fw-bolder">New Sales</p>
+                                                                        <p class="mb-1 fw-bolder"><?= $list_sales['type_notif']; ?></p>
                                                                         <div class="font-size-12">
-                                                                            <p class="mb-0 font-size-13"><strong class="text-primary"><u>GDDAGGAG</u> </strong>from Millio Tokopedia Confirmed</p>
+                                                                            <p class="mb-0 font-size-13"><strong class="text-primary"><u><?= $list_sales['title_notif']; ?></u> </strong><?= $list_sales['notification']; ?></p>
                                                                         </div>
                                                                     </div>
-                                                                    <p class="mb-0 fst-italic text-end"><span class="">2023-09-11 14:33:09</span></p>
+                                                                    <p class="mb-0 fst-italic text-end"><span class=""><?= $list_sales['created_at']; ?></span></p>
                                                                 </div>
                                                             </a>
                                                         </td>
