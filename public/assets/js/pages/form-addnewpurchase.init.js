@@ -437,20 +437,27 @@ function spayonhange(){
     document.getElementById('paysource').addEventListener('change',function spayhange() {
         console.log(id_shop)
         console.log($(this).val());
+        var supplierText = $('#supplier').find(":selected").text();
+        var supplierVal = $('#supplier').find(":selected").val();
+        console.log(supplierText);
+        console.log(supplierVal);
         if($(this).val() == "ewallet"){
-            $.ajax({
-                type: "GET",
-                url: $("#BaseUrl").val()+'listmarketplace',
-                success: function(data) {
+            // $.ajax({
+            //     type: "GET",
+            //     url: $("#BaseUrl").val()+'listmarketplace',
+            //     success: function(data) {
                     $('#paysource').removeClass("is-invalid")
-                    console.log(data.l[0])
+                    // console.log(data.l[0])
 
                     let selop = "";
-                    for (i = 0; i < data.l.length; i++) {
-                        selop += 
-                        '<option class="op_datashop" value="'+data.l[i]['id_shop']+'" >'+data.l[i]['name_shop']+' - '+data.l[i]['marketplace']+'</option>'
+                    selop += 
+                        '<option class="op_datashop" value="'+supplierVal+'" selected>'+supplierText+'</option>'
                         ;
-                    }
+                    // for (i = 0; i < data.l.length; i++) {
+                        // selop += 
+                        // '<option class="op_datashop" value="'+data.l[i]['id_shop']+'" >'+data.l[i]['name_shop']+' - '+data.l[i]['marketplace']+'</option>'
+                        // ;
+                    // }
 
                     console.log(selop)
 
@@ -487,8 +494,8 @@ function spayonhange(){
                             // return false
                         }
                     });
-                }
-            });
+                // }
+            // });
         }
         if($(this).val() == "balanceaccount"){
             $("#li4ewallet").remove()
