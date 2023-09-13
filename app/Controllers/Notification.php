@@ -103,39 +103,15 @@ class Notification extends BaseController
                 <script src="assets/js/pages/allnotification.init.js"></script>
             ';
 
-        // $this->builder = $this->db->table('list_notification');
-        // $this->builder->where('to_member_id', user()->member_id);
-        // $this->builder->orderBy('created_at', 'desc');
-        // $this->builder->limit(100);
-        // $query = $this->builder->get();
-
-        // $data = array();
-        // $row = array();
-        // foreach ($query->getResult() as $i) {
-        //     $row = [
-        //         'id_notif'              => $i->id_notif,
-        //         'type_notif'            => $i->type_notif,
-        //         'path_notif'            => $i->path_notif,
-        //         'title_notif'           => $i->title_notif,
-        //         'to_member_id'          => $i->to_member_id,
-        //         'to_fullname'           => $i->to_fullname,
-        //         'to_user_image'         => $i->to_user_image,
-        //         'from_member_id'        => $i->from_member_id,
-        //         'from_fullname'         => $i->from_fullname,
-        //         'from_user_image'       => $i->from_user_image,
-        //         'notification'          => $i->notification,
-        //         'notification_image'    => $i->notification_image,
-        //         'read_status'           => $i->read_status,
-        //         'created_at'            => $i->created_at,
-        //     ];
-        //     $data[] = $row;
-        // };
-
         $dataresult = array(
-            'sales'           => $this->list('sales'),
-            'purchase'        => $this->list('purchase'),
-            'product'         => $this->list('product'),
-            'finance'         => $this->list('Withdraw'),
+            'sales'                         => $this->list('sales'),
+            'purchase'                      => $this->list('purchase'),
+            'product'                       => $this->list('new product'),
+            'finance'                       => $this->list('Withdraw'),
+            'countunreadsales'              => count($this->notificationModel->where('to_member_id', user()->member_id)->where('read_status', 1)->like('type_notif', 'sales')->findAll()),
+            'countunreadpurchase'           => count($this->notificationModel->where('to_member_id', user()->member_id)->where('read_status', 1)->like('type_notif', 'purchase')->findAll()),
+            'countunreadproduct'            => count($this->notificationModel->where('to_member_id', user()->member_id)->where('read_status', 1)->like('type_notif', 'new product')->findAll()),
+            'countunreadfinance'            => count($this->notificationModel->where('to_member_id', user()->member_id)->where('read_status', 1)->like('type_notif', 'Withdraw')->findAll()),
         );
 
         $datapage = array(
