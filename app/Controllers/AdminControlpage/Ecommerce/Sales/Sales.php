@@ -668,6 +668,7 @@ class Sales extends BaseController
         };
         $this->builder->orderBy('date_sales', 'DESC');
         $this->builder->orderBy('id_sales', 'DESC');
+        $this->builder->limit(100);
         $query = $this->builder->get();
 
         // dd($query->getResult());
