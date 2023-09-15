@@ -161,23 +161,23 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
         var totinpr = response.data_report.totalinprocess
         var totcmpl = response.data_report.totalcompleted
         console.log(totpck,totinpr,totcmpl)
-        if(tsl_percent !=0){tsl_html = ' <span class="fw-bold text-'+response.total_sales.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_sales.tpcg+'%'}else{tsl_html =''}
+        if(tsl_percent !=0){tsl_html = ' <span class="fw-bold text-'+response.total_sales.tkey+' font-size-12"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_sales.tpcg+'%'}else{tsl_html =''}
         $("#tsl").html('Rp. '+response.total_sales.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tsl_html);
 
-        if(tod_percent !=0){tod_html =' <span class="fw-bold text-'+response.total_order.tkey+' font-size-18"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_order.tpcg+'%</span>'}else{tod_html=''}
+        if(tod_percent !=0){tod_html =' <span class="fw-bold text-'+response.total_order.tkey+' font-size-12"><i class="bx bx-'+response.total_order.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_order.tpcg+'%</span>'}else{tod_html=''}
         $("#tod").html('Rp. '+response.total_order.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tod_html);
 
-        if(tpr_percent !=0){tpr_html =' <span class="fw-bold text-'+response.total_profit.tkey+' font-size-18"><i class="bx bx-'+response.total_profit.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_profit.tpcg+'%</span>'}else{tpr_html =''}
+        if(tpr_percent !=0){tpr_html =' <span class="fw-bold text-'+response.total_profit.tkey+' font-size-12"><i class="bx bx-'+response.total_profit.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_profit.tpcg+'%</span>'}else{tpr_html =''}
         $("#tpr").html('Rp. '+response.total_profit.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tpr_html);
         if(response.total_profit.tvalue < 0){$("#tpr").addClass("text-danger")}else{$("#tpr").removeClass("text-danger")}
 
-        if(tex_percent !=0){tex_html =' <span class="fw-bold text-'+response.total_expense.tkey+' font-size-18"><i class="bx bx-'+response.total_expense.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_expense.tpcg+'%</span>'}else{tex_html =''}
+        if(tex_percent !=0){tex_html =' <span class="fw-bold text-'+response.total_expense.tkey+' font-size-12"><i class="bx bx-'+response.total_expense.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_expense.tpcg+'%</span>'}else{tex_html =''}
         $("#tex").html('Rp. '+response.total_expense.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tex_html);
 
-        if(tcs_percent !=0){tcs_html =' <span class="fw-bold text-'+response.total_consum.tkey+' font-size-18"><i class="bx bx-'+response.total_consum.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_consum.tpcg+'%</span>'}else{tcs_html =''}
+        if(tcs_percent !=0){tcs_html =' <span class="fw-bold text-'+response.total_consum.tkey+' font-size-12"><i class="bx bx-'+response.total_consum.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_consum.tpcg+'%</span>'}else{tcs_html =''}
         $("#tcs").html('Rp. '+response.total_consum.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tcs_html);
 
-        if(tad_percent !=0){tad_html =' <span class="fw-bold text-'+response.total_ads.tkey+' font-size-18"><i class="bx bx-'+response.total_ads.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_ads.tpcg+'%</span>'}else{tad_html =''}
+        if(tad_percent !=0){tad_html =' <span class="fw-bold text-'+response.total_ads.tkey+' font-size-12"><i class="bx bx-'+response.total_ads.tsym+'-arrow-alt font-size-16 align-middle"></i>'+response.total_ads.tpcg+'%</span>'}else{tad_html =''}
         $("#tad").html('Rp. '+response.total_ads.tvalue.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+tad_html);
 
         $("#totpck").html(totpck+'<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Total Package</span>');
