@@ -36,6 +36,7 @@ $routes->get('/CApishopee', 'AdminControlpage\Dashboards\Dashboards::code_apisho
 $routes->get('/TCApishopee', 'AdminControlpage\Dashboards\Dashboards::token_apishopee');
 $routes->get('/Shopeinfo', 'AdminControlpage\Dashboards\Dashboards::shopinfo');
 $routes->get('/test', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
+$routes->get('/pdf/cetak', 'PdfController::cetak');
 
 
 /* --------------------------------------------------------------------
