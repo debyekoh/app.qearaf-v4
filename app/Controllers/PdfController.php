@@ -45,6 +45,11 @@ class PdfController extends BaseController
         // set image scale factor
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
+        if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+            require_once(dirname(__FILE__) . '/lang/eng.php');
+            $pdf->setLanguageArray($l);
+        }
+
         // set default font subsetting mode
         $pdf->setFontSubsetting(true);
 
