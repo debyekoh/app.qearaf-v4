@@ -19,11 +19,11 @@ class MY_TCPDF extends TCPDF
         // Set font
         // Title
         // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
-        $this->Image($image_file, '', '', 80, '', '', 'https://admin.qearaf.com');
+        $this->Image($image_file, '', 9, 90, '', '', 'https://admin.qearaf.com');
         $this->SetFont('helvetica', '', 10);
-        $this->setY(16);
+        $this->setY(22);
         $this->Cell(0, 2, 'Jl. Beruang IX , No 86 , Cikarang Pusat', 0, 1, '', 0, '', 0);
-        $this->setY(20);
+        $this->setY(26);
         $this->Cell(0, 2, 'Telp. 0857 1638 7955', 0, 1, '', 0, '', 0);
         // $this->setY(21);
         // $this->Cell(0, 2, 'https://qearaf.com/', 0, 1, '', 0, '', 0);

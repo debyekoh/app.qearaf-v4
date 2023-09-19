@@ -27,14 +27,6 @@ class PdfController extends BaseController
 
         $no_purchase = substr($link, 0, 6) . "/" . substr($link, 6, 1) . "/" . substr($link, 7, 2) . "/" . substr($link, 9);
         // dd($no_purchase);
-
-
-
-
-
-
-
-
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -86,10 +78,10 @@ class PdfController extends BaseController
         $pdf->AddPage();
 
         // QRCODE,H : QR-CODE Best error correction
-        $linkbarcode = base_url() . 'print/po/230907P020D8E6EEF';
-        $pdf->write2DBarcode($linkbarcode, 'QRCODE,H', 0, 3, 20, 20, ['position' => 'R'], 'N');
+        $linkbarcode = base_url() . 'print/po/' . $link;
+        $pdf->write2DBarcode($linkbarcode, 'QRCODE,H', 0, 5, 25, 25, ['position' => 'R'], 'N');
         $style = array('width' => 0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
-        $pdf->Line(15, 25, 195, 25, $style);
+        $pdf->Line(15, 32, 195, 32, $style);
         $pdf->Write(0, '', '', 0, 'C', true, 0, false, false, 0);
         //view mengarah ke invoice.php
 
@@ -103,7 +95,7 @@ class PdfController extends BaseController
         $this->response->setContentType('application/pdf');
         // Close and output PDF document
         // This method has several options, check the source code documentation for more information.
-        $pdf->Output('invoice-pos-sobatcoding.pdf', 'I');
+        $pdf->Output('Purchase Order ' . $link . '.pdf', 'I');
     }
 
     public function htlmPO($no_purchase)
@@ -113,6 +105,16 @@ class PdfController extends BaseController
         // dd($datapo);
         // dd($datapo['ifp']->name_supplier);
         // number_format($i->bill, 0, ',', '.')
+
+        if ($datapo['ifp']->purch_category == 2) {
+            $name_Sup = $datapo['ifp']->name_shop . ' ' . $datapo['ifp']->marketplace;
+            $address_Sup = '';
+            $phone_Sup = '';
+        } else {
+            $name_Sup = $datapo['ifp']->name_supplier;
+            $address_Sup = $datapo['ifp']->address_supplier;
+            $phone_Sup = $datapo['ifp']->phone_supplier;
+        }
 
         for ($a = 0; $a < count($datapo['dpl']); $a++) {
             $row[] = '
@@ -142,11 +144,11 @@ class PdfController extends BaseController
                     <p>Purchase From :
                         <br/>
                         <br/>
-                        <strong>' . $datapo['ifp']->name_supplier . '</strong>
+                        <strong>' . $name_Sup . '</strong>
                         <br />
-                        Jl. Jababeka XI Kawasan Industri Jababeka No.12, Harja Mekar, Kec. Cikarang Utara, Kabupaten Bekasi, Jawa Barat 17530
+                        ' . $address_Sup . '
                         <br />
-                        Telp. (021) 89830143
+                        ' . $phone_Sup . '
                     </p>
                     </th>
                     <th width="20%"></th>
@@ -166,7 +168,7 @@ class PdfController extends BaseController
             </table>
             <p></p>
             <table id="tb-item" cellpadding="4">
-                <tr style="background-color:#a9a9a9">
+                <tr style="background-color:LightBlue;">
                     <th width="35%" style="height: 20px"><strong>Nama Barang</strong></th>
                     <th width="8%" style="height: 20px;text-align:center"><strong>Qty</strong></th>
                     <th width="12%" style="height: 20px"><strong>Satuan</strong></th>
@@ -175,7 +177,7 @@ class PdfController extends BaseController
                     <th width="15%" style="height: 20px"><strong>Total</strong></th>
                 </tr>
                 ' . implode($row) . '
-                <tr style="border:1px solid #000">
+                <tr style="border:1px solid #000; background-color:LightGray;">
                     <td colspan="5" style="height: 20px"><strong>Grand Total</strong></td>
                     <td style="height: 20px;text-align:right"><strong>' . number_format(array_sum($arraytotal), 0, ',', '.') . '</strong></td>
                 </tr>
@@ -191,11 +193,10 @@ class PdfController extends BaseController
                         <p></p>
                         <p></p>
                         <p></p>
-                        <p><u>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</u></p>
+                        <p>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</p>
                     </td>
                 </tr>
             </table>
-
             <style>
                 p,
                 span,

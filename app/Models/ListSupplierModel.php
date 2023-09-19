@@ -10,6 +10,6 @@ class ListSupplierModel extends Model
     protected $primaryKey = 'id';
     protected $useTimestamps = true;
     protected $allowedFields  = [
-        'id', 'type', 'name_supplier',
+        'id', 'type', 'name_supplier', 'address_supplier', 'phone_supplier',
     ];
 }
