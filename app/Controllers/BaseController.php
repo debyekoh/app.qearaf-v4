@@ -77,6 +77,7 @@ abstract class BaseController extends Controller
         $this->ListMarketplaceModel = new \App\Models\ListMarketplaceModel();
         $this->ListDeliveryServicesModel = new \App\Models\ListDeliveryServicesModel();
         $this->listNotificationModel = new \App\Models\ListNotificationModel();
-        $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll();
+        isset(user()->member_id) ? $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll() : '';
+        // $this->tabshop = $this->shopModel->asArray()->where('member_id', user()->member_id)->where('active', 1)->orderBy('marketplace', 'asc')->findAll();
     }
 }

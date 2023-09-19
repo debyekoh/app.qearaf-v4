@@ -17,6 +17,7 @@ use App\Models\PurchaseDetailModel;
 use App\Models\ListSupplierModel;
 use App\Models\ListCategoryPurchaseModel;
 use App\Models\ListNotificationModel;
+// use App\Libraries\MY_TCPDF as TCPDF;
 
 
 class Purchase extends BaseController
@@ -531,10 +532,15 @@ class Purchase extends BaseController
             );
 
             // dd($data_detail);
+            $js_page =
+                '
+            <script src="' . base_url() . 'assets/js/pages/printPurchaseOrder.init.js"></script>
+            ';
 
             $datapage = array(
                 'titlepage' => 'Detail Purchase #' . $no_purchase,
                 'tabshop' => $this->tabshop,
+                'js_page'       => $js_page,
                 'datadetail' => $data_detail,
             );
             return view('pages_admin/adm_purchase_detailview', $datapage);
@@ -710,6 +716,43 @@ class Purchase extends BaseController
         }
     }
 
+    public function getdata_print($nopurchase)
+    {
+        $no_purchase = $nopurchase;
+        if ($this->purchaseModel->find($no_purchase) == null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } else {
+            // $no_sales = $this->salesModel->find($id_sales)['no_sales'];
+            $purchcategory = $this->purchaseModel->find($no_purchase)['purch_category'];
+            $this->builder = $this->db->table('purchase');
+            if ($purchcategory == 2) {
+                $this->builder->join('shop', 'shop.id_shop= purchase.supplier_id');
+            } else {
+                $this->builder->join('list_supplier', 'list_supplier.id= purchase.supplier_id');
+            }
+
+            $query = $this->builder->getWhere(['no_purchase' => $no_purchase]);
+
+            $this->builder1 = $this->db->table('purchase_detail');
+            $this->builder1->join('products', 'products.pro_id= purchase_detail.pro_id');
+            $query1 = $this->builder1->getWhere(['no_purchase' => $no_purchase]);
+
+
+            $data_detail = array(
+                'test'           => $this->purchaseModel->find($no_purchase)['purch_category'],                // 'INFO PURCHASE' 
+                'ifp'           => $query->getRow(),               // 'INFO PURCHASE' 
+                'dpl'           => $query1->getResult(),         // 'DETAIL PURCHASE'
+            );
+
+            // dd($data_detail);
+            return $data_detail;
+            // return $this->response->setJSON([
+            //     'status' => 'success',
+            //     'detail' => $data_detail
+            // ]);
+        }
+    }
+
     // public function detail()
     // {
     //     $no_purchase = $this->request->getVar('id');
@@ -739,5 +782,167 @@ class Purchase extends BaseController
     //         'status' => 'success',
     //         'detail' => $data_detail
     //     ]);
+    // }
+
+    // public function print_PO($link = null)
+    // {
+
+    //     // dd($link);
+
+    //     // create new PDF document
+    //     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    //     // set document information
+    //     $pdf->SetCreator(PDF_CREATOR);
+    //     $pdf->SetAuthor('admin.qearaf.com');
+    //     $pdf->SetTitle('PDF Sobatcoding.com');
+    //     $pdf->SetSubject('TCPDF Tutorial');
+    //     $pdf->SetKeywords('TCPDF, PDF, example, sobatcoding.com');
+
+    //     // set default header data
+    //     $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . ' 001', PDF_HEADER_STRING, array(0, 64, 255), array(0, 64, 128));
+    //     $pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
+
+    //     // set header and footer fonts
+    //     $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    //     $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+    //     // set default monospaced font
+    //     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    //     // set margins
+    //     $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    //     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    //     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    //     // set auto page breaks
+    //     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    //     // set image scale factor
+    //     $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    //     if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+    //         require_once(dirname(__FILE__) . '/lang/eng.php');
+    //         $pdf->setLanguageArray($l);
+    //     }
+
+    //     // set default font subsetting mode
+    //     $pdf->setFontSubsetting(true);
+
+    //     // Set font
+    //     // dejavusans is a UTF-8 Unicode font, if you only need to
+    //     // print standard ASCII chars, you can use core fonts like
+    //     // helvetica or times to reduce file size.
+    //     $pdf->SetFont('dejavusans', '', 14, '', true);
+
+    //     // Add a page
+    //     // This method has several options, check the source code documentation for more information.
+    //     $pdf->AddPage();
+
+    //     // QRCODE,H : QR-CODE Best error correction
+
+    //     $pdf->write2DBarcode('https://qearaf.com/detail/purchaseview/230907P020D8E6EEF', 'QRCODE,H', 0, 3, 20, 20, ['position' => 'R'], 'N');
+    //     $style = array('width' => 0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
+    //     $pdf->Line(15, 25, 195, 25, $style);
+    //     $pdf->Write(0, '', '', 0, 'C', true, 0, false, false, 0);
+    //     //view mengarah ke invoice.php
+
+    //     // $html = view('pages_admin/pdf_form_purchase_order');
+    //     $html = $this->htlmPO();
+
+    //     // Print text using writeHTMLCell()
+    //     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+    //     // ---------------------------------------------------------
+    //     $this->response->setContentType('application/pdf');
+    //     // Close and output PDF document
+    //     // This method has several options, check the source code documentation for more information.
+    //     $pdf->Output('invoice-pos-sobatcoding.pdf', 'I');
+    // }
+
+    // public function htlmPO()
+    // {
+
+
+    //     $data = '
+    //     <p style="font-size:18pt;text-align:right">PURCHASE ORDER</p>
+    //         <table cellpadding="0">
+    //             <tr>
+    //                 <th width="50%">
+    //                 <p>Bill To :</p>
+    //                 <p><strong>KOPERASI MENARA ABADI</strong></p>
+    //                 <p>Jl. Jababeka XI Kawasan Industri Jababeka No.12, Harja Mekar, Kec. Cikarang Utara, Kabupaten Bekasi, Jawa Barat 17530</p>
+    //                 </th>
+    //                 <th width="50%">
+    //                 <p>Bill To :</p>
+    //                 <p><strong>KOPERASI MENARA ABADI</strong></p>
+    //                 <p>Jl. Jababeka XI Kawasan Industri Jababeka No.12, Harja Mekar, Kec. Cikarang Utara, Kabupaten Bekasi, Jawa Barat 17530</p>
+    //                 </th>
+    //             </tr>
+
+    //         </table>
+    //         <p></p>
+    //         <table id="tb-item" cellpadding="4">
+    //             <tr style="background-color:#a9a9a9">
+    //                 <th width="35%" style="height: 20px"><strong>Nama Barang</strong></th>
+    //                 <th width="8%" style="height: 20px;text-align:center"><strong>Qty</strong></th>
+    //                 <th width="12%" style="height: 20px"><strong>Satuan</strong></th>
+    //                 <th width="15%" style="height: 20px"><strong>Harga</strong></th>
+    //                 <th width="15%" style="height: 20px"><strong>Diskon</strong></th>
+    //                 <th width="15%" style="height: 20px"><strong>Total</strong></th>
+    //             </tr>
+    //             <tr>
+    //                 <td style="height: 20px">Pembuatan website E-commerce</td>
+    //                 <td style="height: 20px;text-align:center">1</td>
+    //                 <td style="height: 20px;">PCS</td>
+    //                 <td style="height: 20px;text-align:right">1.500.000</td>
+    //                 <td style="height: 20px;text-align:right">0</td>
+    //                 <td style="height: 20px;text-align:right">1.500.000</td>
+    //             </tr>
+    //             <tr style="border:1px solid #000">
+    //                 <td colspan="5" style="height: 20px"><strong>Grand Total</strong></td>
+    //                 <td style="height: 20px;text-align:right"><strong>1.500.000</strong></td>
+    //             </tr>
+    //         </table>
+    //         <p>Terbilang: Satu Juta Lima Ratus Ribu Rupiah</p>
+    //         <p><u>TRANSFER VIA</u></p>
+    //         <p>BCA: IDR<br />A/C : 164-800-3325<br />A/N : SOBATCODING.COM</p>
+    //         <p>&nbsp;</p>
+    //         <table cellpadding="4">
+    //             <tr>
+    //                 <td width="50%" style="height: 20px;text-align:center">
+    //                     <p>&nbsp;</p>
+    //                 </td>
+    //                 <td width="50%" style="height: 20px;text-align:center">
+    //                     <p>Malang, 28 Sept 2021</p>
+    //                     <p>Hormat kami,</p>
+    //                     <p></p>
+    //                     <p></p>
+    //                     <p></p>
+    //                     <p>sobatcoding.com</p>
+    //                 </td>
+    //             </tr>
+    //         </table>
+
+    //         <style>
+    //             p,
+    //             span,
+    //             table {
+    //                 font-size: 12px
+    //             }
+
+    //             table {
+    //                 width: 100%;
+    //                 border: 1px solid #dee2e6;
+    //             }
+
+    //             table#tb-item tr th,
+    //             table#tb-item tr td {
+    //                 border: 1px solid #000
+    //             }
+    //         </style>
+    //         ';
+
+    //     return $data;
     // }
 }

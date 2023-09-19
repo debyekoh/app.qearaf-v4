@@ -92,6 +92,10 @@
 
                         </table>
                     </div>
+                    <!-- <div class="float-end">
+                        <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                        <a href="#" class="btn btn-primary w-md">Send</a>
+                    </div> -->
                 </div>
                 <!-- </div> -->
             </div>
@@ -191,6 +195,14 @@
                             </table>
 
                         </div>
+                        <div class="float-end mt-3">
+                            <!-- <button onclick="PrintPO()" class="btn btn-dark me-1"> <i class="mdi mdi-printer"></i> Print</button> -->
+                            <a href="<?= base_url('/print/po/' .
+                                            substr(strtoupper($datadetail['ifp']->no_purchase), 0, 6) .
+                                            substr(strtoupper($datadetail['ifp']->no_purchase), 7, 1) .
+                                            substr(strtoupper($datadetail['ifp']->no_purchase), 9, 2) .
+                                            substr(strtoupper($datadetail['ifp']->no_purchase), 12)); ?>" class="btn btn-dark btn-sm w-md"><i class="mdi mdi-printer"></i> Print</a>
+                        </div>
 
                     </div>
                     <div class="d-flex justify-content-center">
@@ -204,6 +216,7 @@
                             <h1 style="position: absolute;bottom: 170px;rotate: -40deg;opacity: 100%;font-size: 65px;"><span class="badge badge-soft-dark fw-bolder">CANCEL</span></h1>
                         <?php } ?>
                     </div>
+
                 </div>
             </div>
         </div>

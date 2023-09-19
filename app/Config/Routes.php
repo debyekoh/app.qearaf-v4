@@ -36,8 +36,12 @@ $routes->get('/CApishopee', 'AdminControlpage\Dashboards\Dashboards::code_apisho
 $routes->get('/TCApishopee', 'AdminControlpage\Dashboards\Dashboards::token_apishopee');
 $routes->get('/Shopeinfo', 'AdminControlpage\Dashboards\Dashboards::shopinfo');
 $routes->get('/test', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
-$routes->get('/pdf/cetak', 'PdfController::cetak');
 
+
+/* --------------------------------------------------------------------
+ * Route Print Document
+ */
+$routes->get('/print/po/(:any)', 'PrintingDoc\PdfController::print_PO/$1');
 
 /* --------------------------------------------------------------------
  * Route AdminControlpage
@@ -111,6 +115,7 @@ $routes->get('/listmarketplace', 'AdminControlpage\Ecommerce\Purchase\Purchase::
 $routes->get('/addnewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::create', ['filter' => 'role:SuAdmin,Admin']);
 $routes->post('/savenewpurchase', 'AdminControlpage\Ecommerce\Purchase\Purchase::save', ['filter' => 'role:SuAdmin,Admin']);
 $routes->get('/detail/purchaseview/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::detailview/$1', ['filter' => 'role:SuAdmin,Admin']);
+$routes->get('/purchase_print/(:any)', 'AdminControlpage\Ecommerce\Purchase\Purchase::print_PO/$1');
 $routes->get('/invoice', 'AdminControlpage\Ecommerce\Invoice\Invoice::index');
 $routes->post('/payTOP', 'AdminControlpage\Finance\Balance::paymentTOP', ['filter' => 'role:SuAdmin,Admin']); //PAYMENT AJAX
 
