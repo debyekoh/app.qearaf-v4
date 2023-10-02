@@ -1966,17 +1966,28 @@ class Sales extends BaseController
             $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
             $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
         };
-        if ($range == "tmonth") {
-            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
-            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
-            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
-            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
-        };
         if ($range == "lweek") {
             $tesdate = date("Y-m-d", strtotime("-7 day", strtotime(date("Y-m-d", $monday))));
             $teddate = date("Y-m-d", strtotime("+6 day", strtotime($tesdate)));
             $lesdate = date("Y-m-d", strtotime("-7 day", strtotime($tesdate)));
             $leddate = date("Y-m-d", strtotime("-1 day", strtotime($tesdate)));
+        };
+        if ($range == "tmonth") {
+            // $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+            // $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", $day);
+            // $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+            // $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", $day);
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", cal_days_in_month(CAL_GREGORIAN, $month, $years));
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", cal_days_in_month(CAL_GREGORIAN, $month - 1, $years));
+        };
+
+        if ($range == "lmonth") {
+            $tesdate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", 1);
+            $teddate = $years . "-" . sprintf("%02d", $month) . "-" . sprintf("%02d", cal_days_in_month(CAL_GREGORIAN, $month, $years));
+            $lesdate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", 1);
+            $leddate = $years . "-" . sprintf("%02d", $month - 1) . "-" . sprintf("%02d", cal_days_in_month(CAL_GREGORIAN, $month - 1, $years));
         };
         $tsalesArray = array();
         $torderArray = array();
@@ -2281,7 +2292,7 @@ class Sales extends BaseController
             // 'last_ADS'           => $laddsArray,
             // 'this_Consum'        => $tpricepckg,
             // 'last_Consum'        => $lpricepckg,
-            'test'        => $idshop,
+            'test'        => $count,
             'test1'        => $id_shop,
             'test2'        => $shop_group,
             'sd'    => $sd,
