@@ -151,19 +151,17 @@
 
                     <div class="card-body p-2 pb-0">
                         <div class="row">
-                            <div class="col-md-4">
-                                <h4 class="text-primary font-size-14 ms-3 mb-0" id="totpck">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Total Package</span></h4>
+                            <div class="col-6">
+                                <h4 class="text-primary font-size-12 ms-3 mb-0" id="totpck">0<span class="text-muted d-inline-block font-size-10 align-middle ms-2">Total Package</span></h4>
+                                <h4 class="text-primary font-size-12 ms-3 mb-0" id="totinpr">0<span class="text-muted d-inline-block font-size-10 align-middle ms-2">Process</span></h4>
+                                <h4 class="font-size-12 ms-3 mb-0" id="totcmpl">0<span class="text-muted d-inline-block font-size-10 align-middle ms-2">Completed</span></span></h4>
                             </div>
-                            <div class="col-md-8">
-                                <ul class="list-inline main-chart text-md-end mb-0">
-                                    <li class="list-inline-item chart-border-left me-0 border-0">
-                                        <h4 class="text-primary font-size-14 ms-3 mb-0" id="totinpr">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Process</span></h4>
-                                    </li>
-                                    <li class="list-inline-item chart-border-left me-0">
-                                        <h4 class="font-size-14 mb-0" id="totcmpl">0<span class="text-muted d-inline-block font-size-12 align-middle ms-2">Completed</span></span>
-                                        </h4>
-                                    </li>
-                                </ul>
+                            <div class="col-6">
+                                <div class="input-group input-group-sm mb-3">
+                                    <label class="input-group-text" style="font-size: 8px;" for="sortby"><i class="mdi mdi-calendar-month mb-0"></i></label>
+                                    <input class="form-select" style="font-size: 8px;" type="text" name="daterange" value="" />
+                                </div>
+
                             </div>
                         </div>
                         <div id="overview" data-colors='["#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9","#e6ecf9","#e6ecf9","#1f58c7","#1f58c7", "#1f58c7"]' class="apex-chart"></div>
@@ -339,5 +337,7 @@
     </div>
 
 </div>
+
+
 
 <?= $this->endSection(); ?>
