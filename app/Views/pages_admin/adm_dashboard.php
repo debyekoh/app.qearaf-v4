@@ -8,22 +8,25 @@
         <div class="col-sm-12">
             <p id="shid" hidden><?= $shop; ?></p>
             <div class="card mb-2">
-                <div class="card-header pb-0">
+                <div class="card-header pb-0 pe-1">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
                             <h5 class="card-title mb-0">Overview <?= $titlepage; ?></h5>
                         </div>
-                        <div class="flex-shrink-0">
-                            <div class="input-group input-group-sm mb-3">
-                                <label class="input-group-text" for="sortby">Sort By:</label>
-                                <select class="form-select" id="sortby">
+                        <!-- <div class="flex-shrink-0"> -->
+                        <div class="flex-grow-1">
+                            <div class="input-group input-group-sm mb-3 text-wrap">
+                                <label class="input-group-text" style="font-size: 8px;" for="sortby">Sort By:</label>
+                                <input class="form-select text-wrap" style="font-size: 8px;" type="text" name="daterange" value="" readonly></input>
+                                <!-- <textarea name="daterange" rows="2" cols="10" wrap="soft"> </textarea> -->
+                                <!-- <select class="form-select" id="sortby">
                                     <option selected value="today">Today</option>
                                     <option value="tweek">This Weeks</option>
                                     <option value="tmonth">This Monthly</option>
                                     <option value="tyears">This Years</option>
                                     <option value="lweek">Last Weeks</option>
                                     <option value="lmonth">Last Monthly</option>
-                                </select>
+                                </select> -->
                             </div>
                         </div>
                     </div>
@@ -156,13 +159,13 @@
                                 <h4 class="text-primary font-size-12 ms-3 mb-0" id="totinpr">0<span class="text-muted d-inline-block font-size-10 align-middle ms-2">Process</span></h4>
                                 <h4 class="font-size-12 ms-3 mb-0" id="totcmpl">0<span class="text-muted d-inline-block font-size-10 align-middle ms-2">Completed</span></span></h4>
                             </div>
-                            <div class="col-6">
+                            <!-- <div class="col-6">
                                 <div class="input-group input-group-sm mb-3">
                                     <label class="input-group-text" style="font-size: 8px;" for="sortby"><i class="mdi mdi-calendar-month mb-0"></i></label>
-                                    <input class="form-select" style="font-size: 8px;" type="text" name="daterange" value="" />
+                                    <input class="form-select" style="font-size: 8px;" type="text" name="daterange" value="" readonly>
                                 </div>
 
-                            </div>
+                            </div> -->
                         </div>
                         <div id="overview" data-colors='["#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9", "#e6ecf9", "#e6ecf9","#e6ecf9","#e6ecf9","#e6ecf9","#1f58c7","#1f58c7", "#1f58c7"]' class="apex-chart"></div>
                     </div>

@@ -36,6 +36,7 @@ $routes->get('/CApishopee', 'AdminControlpage\Dashboards\Dashboards::code_apisho
 $routes->get('/TCApishopee', 'AdminControlpage\Dashboards\Dashboards::token_apishopee');
 $routes->get('/Shopeinfo', 'AdminControlpage\Dashboards\Dashboards::shopinfo');
 $routes->get('/test', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
+$routes->get('/test', 'AdminControlpage\Dashboards\Dashboards::code_apishopee');
 
 
 /* --------------------------------------------------------------------
@@ -79,6 +80,7 @@ $routes->match(['get', 'post'], '/deleteproduct', 'AdminControlpage\Products\Pro
 
 //Ecommerce 
 //Sales
+$routes->get('/updatedate', 'AdminControlpage\Ecommerce\Sales\Sales::updatedate');
 // $routes->get('/mysales/show/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2'); //Ajax
 $routes->get('/mysales/show/(:any)/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::show/$1/$2/$3'); //Ajax
 $routes->post('/mysales/tabbadge', 'AdminControlpage\Ecommerce\Sales\Sales::tabbadge'); //Ajax
@@ -100,6 +102,7 @@ $routes->get('/selectedpackaging', 'AdminControlpage\Ecommerce\Sales\Sales::sele
 $routes->get('/chartsales', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales'); //AjaxModal
 $routes->get('/chartsales/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales/$1'); //AjaxModal
 $routes->get('/chartsales/(:any)/(:any)', 'AdminControlpage\Ecommerce\Sales\Sales::seriessales/$1/$2'); //AjaxModal
+$routes->post('/overview', 'AdminControlpage\Ecommerce\Sales\Sales::overviewdata'); //AjaxModal_SalesData
 
 //Ecommerce 
 //Purchase
