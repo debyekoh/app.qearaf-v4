@@ -16,8 +16,8 @@
                         <!-- <div class="flex-shrink-0"> -->
                         <div class="flex-grow-1">
                             <div class="input-group input-group-sm mb-3 text-wrap">
-                                <label class="input-group-text" style="font-size: 8px;" for="sortby">Sort By:</label>
-                                <input class="form-select text-wrap" style="font-size: 8px;" type="text" name="daterange" value="" readonly></input>
+                                <label class="input-group-text" style="font-size: 9px;" for="sortby">Sort By:</label>
+                                <input class="form-select text-wrap" style="font-size: 9px;" type="text" name="daterange" value="" readonly></input>
                                 <!-- <textarea name="daterange" rows="2" cols="10" wrap="soft"> </textarea> -->
                                 <!-- <select class="form-select" id="sortby">
                                     <option selected value="today">Today</option>

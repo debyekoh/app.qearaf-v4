@@ -109,7 +109,7 @@ class Dashboards extends BaseController
                     JOIN products_image ON products_image.pro_id=sales_detail.pro_id
                     GROUP BY salesproid 
                     ORDER BY total_qty DESC
-                    LIMIT 5";
+                    LIMIT 10";
         $this->builder = $this->db->query($totalSales);
         $result = $this->builder;
         return $result->getResult();
