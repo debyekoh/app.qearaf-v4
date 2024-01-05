@@ -78,9 +78,9 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
             position: 'bottom',
             tickPlacement: 'on',
             labels: {
-                maxHeight: 20,
+                maxHeight: 30,
                 style: {
-                    fontSize: '50px',
+                    fontSize: '30px',
                 },
                 show: true,
                     formatter: function (val) {
