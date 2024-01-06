@@ -86,7 +86,7 @@ class Dashboards extends BaseController
                 'item'      => $countitem,
                 // 'head_page' => $head_page,
                 'js_page'   => $js_page,
-                'topseller'      => $this->getTopSeller(),
+                // 'topseller'      => $this->getTopSeller(),
             );
             return view('pages_admin/adm_dashboard', $datapage);
         } else {
