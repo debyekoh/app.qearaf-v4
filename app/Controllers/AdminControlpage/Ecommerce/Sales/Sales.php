@@ -2350,9 +2350,9 @@ class Sales extends BaseController
             $startdateBefore = date("Y-m-d", strtotime("-1 week -2 day"));
             $enddateBefore = date("Y-m-d", strtotime("-1 week +4 day"));
         }
-        if ($labelrange == "Last 3 Month") {
-            $startdateBefore = date("Y-m-d", strtotime("-6 month"));
-            $enddateBefore = date("Y-m-d", strtotime("-3 month"));
+        if ($labelrange == "Last Week") {
+            $startdateBefore = date("Y-m-d", strtotime("-1 week -2 day"));
+            $enddateBefore = date("Y-m-d", strtotime("-1 week +4 day"));
         }
         if ($labelrange == "This Month") {
             $startdateBefore = date("Y-m-01", strtotime("-1 month"));
@@ -2361,6 +2361,10 @@ class Sales extends BaseController
         if ($labelrange == "Last Month") {
             $startdateBefore = date("Y-m-01", strtotime("-2 month"));
             $enddateBefore = date("Y-m-t", strtotime("-2 month"));
+        }
+        if ($labelrange == "Last 3 Month") {
+            $startdateBefore = date("Y-m-d", strtotime("-6 month"));
+            $enddateBefore = date("Y-m-d", strtotime("-3 month"));
         }
         if ($labelrange == "This Year") {
             $startdateBefore = date("Y-01-01", strtotime("-1 year"));
@@ -2439,6 +2443,7 @@ class Sales extends BaseController
             'total_ads'         => $this->totalads($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_expense'     => $this->totalexpense($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_profit'      => $this->totalprofit($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
+            'top_seller'        => $this->getTopSeller($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             // 'test'#              => $this->dataseries($startdate, $enddate, $labelrange, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             // 'test1'#        => $id_shop,
             // 'test2'#        => $shop_group,
@@ -2926,9 +2931,6 @@ class Sales extends BaseController
             }
         }
 
-
-
-
         $total_profit = array(
             'tkey'       => $profitkey,
             'tsym'       => $profitsym,
@@ -2948,13 +2950,24 @@ class Sales extends BaseController
         return $total_profit;
     }
 
-
-
-
-    public function updatedate()
+    public function getTopSeller($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)
     {
+        $tbuilder = $this->db->table('sales_detail');
+        $tbuilder->select('sales_detail.pro_id AS salesproid,pro_name,pro_model,pro_part_no,pro_image_name,pro_price_seller, sum(pro_qty) as total_qty');
+        $tbuilder->join('products', 'products.pro_id=sales_detail.pro_id', 'left');
+        $tbuilder->join('products_price', 'products_price.pro_id=sales_detail.pro_id', 'left');
+        $tbuilder->join('products_image', 'products_image.pro_id=sales_detail.pro_id', 'left');
+        $tbuilder->join('sales', 'sales.no_sales=sales_detail.no_sales', 'left');
+        $tbuilder->where('sales.date_sales >=', $startdate);
+        $tbuilder->where('sales.date_sales <=', $enddate);
+        $tbuilder->wherein('id_shop', $shop_group);
+        $tbuilder->wherenotin('sales.status', $this->groups);
+        $tbuilder->groupBy('salesproid');
+        $tbuilder->orderBy('total_qty', 'DESC');
+        $tbuilder->limit(10);
+        $data = $tbuilder->get()->getResult();
 
-        // return $Query->getNumRows();
+        return $data;
     }
 
 
