@@ -299,7 +299,7 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
 
     function topseller(data) {
         let itemrow = '';
-        for (a = 1; a < data.length; a++) {
+        for (a = 0; a < data.length; a++) {
             if (a == 1) {
                 cs = "danger";
             } else if (a == 2) {
@@ -312,13 +312,13 @@ if(pagecek == 'myshops' || pagecek == 'dashboards'){
             itemrow += 
             '<div class="simplebar-content p-1 px-3">'+
                 '<div style="position: absolute;">'+
-                    '<span class="badge bg-'+ cs +' font-size-14 fw-bolder">TOP '+ a +'</span>'+
+                    '<span class="badge bg-'+ cs +' font-size-14 fw-bolder">TOP '+ (a+1) +'</span>'+
                 '</div>'+
                 '<div class="popular-product-box py-1 rounded bg-soft-'+ cs +'" id="best-'+ cs +'">'+
                     '<div class="d-flex align-items-center">'+
                         '<div class="flex-shrink-0">'+
                             '<div class="avatar-md shadow-lg rounded">'+
-                                '<img src="assets/images/product/'+ data[a].pro_image_name +'" class="img-fluid rounded" alt="'+ data[a].pro_image_name +'">'+
+                                '<img src="'+$("#BaseUrl").val()+'assets/images/product/'+ data[a].pro_image_name +'" class="img-fluid rounded" alt="'+ data[a].pro_image_name +'">'+
                             '</div>'+
                         '</div>'+
                         '<div class="flex-grow-1 ms-3 overflow-hidden">'+
