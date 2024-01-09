@@ -617,6 +617,190 @@ class Sales extends BaseController
 
     public function show($tab = null, $date = null, $shop = null)
     {
+
+        $idshopstring = base64_decode(base64_decode($shop));
+        if ($idshopstring != '1') {
+            $shpid = $idshopstring;
+        } else {
+            $shpid = null;
+        }
+
+        // ______________________________________________________________________________________
+
+        if (in_groups('1') == true) {
+            $groups = 1; //SuAdmin
+            $editable = true;
+            $deletable = true;
+        } else if (in_groups('2') == true) {
+            $groups = 2; //Admin
+            $editable = true;
+            $deletable = true;
+        } else if (in_groups('3') == true) {
+            $groups = 3; //Reseller
+            $editable = true;
+            $deletable = true;
+        } else if (in_groups('4') == true) {
+            $groups = 4; //User
+            $editable = false;
+            $deletable = false;
+        } else {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        // ______________________________________________________________________________________
+
+        $builder = $this->db->table('sales');
+        $builder->select("users.id , auth_groups.name , shop.name_shop , shop.marketplace , sales.no_sales , id_sales , date_sales , image_services , resi , packaging , paymethod ,  bill , payment , sales.id_shop , shop.member_id , sales.status");
+        if ($tab == "All") {
+            // $this->builder->where('status', null);
+        } else {
+            $builder->where('sales.status', $tab);
+        }
+        $string = null;
+        if ($date != '1') {
+            $string = base64_decode(base64_decode($date));
+            if (strlen($string) < 9) {
+                $indate = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $builder->where('date_sales', $indate);
+            } else {
+                $start = substr($string, 0, 4) . "/" . substr($string, 4, 2) . "/" . substr($string, 6, 2);
+                $end = substr($string, 8, 4) . "/" . substr($string, 12, 2) . "/" . substr($string, 14, 2);
+                $builder->where('date_sales >=', $start);
+                $builder->where('date_sales <=', $end);
+            }
+        };
+
+        if ($shop != '1') {
+            // $this->builder->whereIn('sales.id_shop', $shop_group);
+            $builder->whereIn('sales.id_shop', $this->shopgroup($shop));
+        };
+        $builder->join('shop', 'shop.id_shop= sales.id_shop');
+        $builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
+        $builder->join('list_pay_methode', 'list_pay_methode.id= sales.paymethod');
+        $builder->join('users', 'users.member_id= shop.member_id');
+        $builder->join('auth_groups_users', 'auth_groups_users.user_id= users.id');
+        $builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+        // $this->builder->join('auth_groups', 'auth_groups.id= auth_groups_users.group_id');
+
+        if (in_groups('3') == true || in_groups('4') == true) {
+            $builder->like('member_id', user()->member_id);
+        };
+        $builder->orderBy('date_sales', 'DESC');
+        $builder->orderBy('id_sales', 'DESC');
+        // $builder->limit(100);
+        $query = $builder->get();
+
+        // ______________________________________________________________________________________
+
+        $data = array();
+        $row = array();
+        $imgdata = array();
+        $no = 0;
+        $noa = 0;
+        // $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
+
+        foreach ($query->getResult() as $i) {
+            $item_data = $this->getSalesdetailModel($i->no_sales);
+            $item_data_count = $item_data['count'];
+            $item_data_detail = $item_data['detail_item'];
+
+            if ($i->name == "Reseller") {
+                $shop_detail = $i->name . " (" . $i->name_shop . " " . $i->marketplace . ")";
+            } else {
+                $shop_detail = $i->name_shop . " " . $i->marketplace;
+            };
+
+            if ($i->status == "Process") {
+                $next_status = "Packaging";
+            } else if ($i->status == "Packaging") {
+                $next_status = "Ready";
+            } else if ($i->status == "Ready") {
+                $next_status = "Delivery";
+            } else if ($i->status == "Delivery") {
+                $next_status = "Received";
+            } else if ($i->status == "Received") {
+                $next_status = "Completed";
+            } else if ($i->status == "Completed") {
+                $next_status = null;
+            } else if ($i->status == "Cancel") {
+                $next_status = null;
+            } else if ($i->status == "Return") {
+                $next_status = null;
+            }
+
+
+            $row = [
+                "no" => $no++,
+                "shop_detail"       => $shop_detail,
+                "item_detail"       => $item_data_detail,
+                "item_count"        => $item_data_count,
+                "id_sales"          => $i->id_sales,
+                "id_sales_noslash"  => str_replace('/', '', $i->id_sales),
+                "no_sales"          => $i->no_sales,
+                "date_sales"        => $i->date_sales,
+                "delivery_services" => $i->image_services,
+                "no_resi"           => $i->resi,
+                "packaging"         => $i->packaging,
+                "bill"              => "Rp " . number_format($i->bill, 0, ',', '.'),
+                "payment"           => "Rp " . number_format($i->payment, 0, ',', '.'),
+                "paymethode"        => $i->paymethod,
+                "statussales"       => ucwords($i->status),
+                "nextstatus"        => $next_status,
+                "editable"          => $editable,
+                "deletable"         => $deletable,
+            ];
+            $data[] = $row;
+        }
+
+
+        $data_tab = array(
+            // 'All'           => $this->getTabNotif(null, $groups),
+            'Process'       => $this->getTabNotif('Process', $groups, $shpid),
+            'Packaging'     => $this->getTabNotif('Packaging', $groups, $shpid),
+            'Ready'         => $this->getTabNotif('Ready', $groups, $shpid),
+            'Delivery'      => $this->getTabNotif('Delivery', $groups, $shpid),
+            'Received'      => $this->getTabNotif('Received', $groups, $shpid),
+            'Completed'     => $this->getTabNotif('Completed', $groups, $shpid),
+            'Cancel'        => $this->getTabNotif('Cancel', $groups, $shpid),
+            'Return'        => $this->getTabNotif('Return', $groups, $shpid),
+        );
+
+        return $this->response->setJSON([
+            'status' => true,
+            'response' => 'Success show data',
+            'tabbadge' => $data_tab,
+            'results' => $data,
+            // 'shop_group' => $shop_group,
+            'shop_group_new' => $this->shopgroup($shop),
+            // 'results' => $query->getResult(),
+        ]);
+    }
+
+    public function getSalesdetailModel($no_sales)
+    {
+        $builder = $this->db->table('sales_detail');
+        $builder->select("sales_detail.pro_id");
+        $builder->select("CONCAT(pro_name, ' ', pro_model) AS pro_name");
+        $builder->select("pro_part_no AS pro_sku");
+        $builder->select("pro_img");
+        $builder->select("pro_price");
+        $builder->select("pro_qty");
+        $builder->join('products', 'products.pro_id= sales_detail.pro_id');
+        $builder->where('no_sales', $no_sales);
+        $query = $builder->get();
+
+        $data_getSalesdetailModel = array(
+            // 'title'             => $title,
+            'count'         => $query->getNumRows(),
+            'detail_item'     => $query->getResult(),
+            // 'totalcompleted'     => $totalcompleted,
+        );
+
+        return $data_getSalesdetailModel;
+    }
+
+    public function showold($tab = null, $date = null, $shop = null)
+    {
         $shop_group = array();
         if (base64_decode(base64_decode($shop)) != "reseller") {
             $shop_group = [base64_decode(base64_decode($shop))];
@@ -656,7 +840,8 @@ class Sales extends BaseController
 
 
         if ($shop != '1') {
-            $this->builder->whereIn('sales.id_shop', $shop_group);
+            // $this->builder->whereIn('sales.id_shop', $shop_group);
+            $this->builder->whereIn('sales.id_shop', $this->shopgroup($shop));
         };
         $this->builder->join('shop', 'shop.id_shop= sales.id_shop');
         $this->builder->join('list_delivery_services', 'list_delivery_services.id = sales.deliveryservices');
@@ -676,7 +861,7 @@ class Sales extends BaseController
         };
         $this->builder->orderBy('date_sales', 'DESC');
         $this->builder->orderBy('id_sales', 'DESC');
-        $this->builder->limit(100);
+        // $this->builder->limit(100);
         $query = $this->builder->get();
 
         // dd($query->getResult());
@@ -691,6 +876,7 @@ class Sales extends BaseController
         } else {
             $editable = true;
         }
+
         if (in_groups('4') == true) {
             $deletable = false;
         } else {
@@ -753,6 +939,7 @@ class Sales extends BaseController
 
             $row = [
                 "no" => $no++,
+                // "test_a"       => $id_owner,
                 "shop_detail"       => $shop_detail,
                 "item_detail"       => $dataProductDetail,
                 "item_count"        => count($this->salesdetailModel->where('no_sales', $i->no_sales)->findAll()),
@@ -819,9 +1006,9 @@ class Sales extends BaseController
         return $this->response->setJSON([
             'status' => true,
             'response' => 'Success show data',
-            // 'results1' => $sds,
             'tabbadge' => $data_tab,
             'results' => $data,
+            'shop_group' => $shop_group,
         ]);
     }
 
@@ -2350,9 +2537,9 @@ class Sales extends BaseController
             $startdateBefore = date("Y-m-d", strtotime("-1 week -2 day"));
             $enddateBefore = date("Y-m-d", strtotime("-1 week +4 day"));
         }
-        if ($labelrange == "Last Week") {
-            $startdateBefore = date("Y-m-d", strtotime("-1 week -2 day"));
-            $enddateBefore = date("Y-m-d", strtotime("-1 week +4 day"));
+        if ($labelrange == "Last 3 Month") {
+            $startdateBefore = date("Y-m-d", strtotime("-6 month"));
+            $enddateBefore = date("Y-m-d", strtotime("-3 month"));
         }
         if ($labelrange == "This Month") {
             $startdateBefore = date("Y-m-01", strtotime("-1 month"));
@@ -2361,10 +2548,6 @@ class Sales extends BaseController
         if ($labelrange == "Last Month") {
             $startdateBefore = date("Y-m-01", strtotime("-2 month"));
             $enddateBefore = date("Y-m-t", strtotime("-2 month"));
-        }
-        if ($labelrange == "Last 3 Month") {
-            $startdateBefore = date("Y-m-d", strtotime("-6 month"));
-            $enddateBefore = date("Y-m-d", strtotime("-3 month"));
         }
         if ($labelrange == "This Year") {
             $startdateBefore = date("Y-01-01", strtotime("-1 year"));
@@ -2432,22 +2615,21 @@ class Sales extends BaseController
             'data_series'               => $this->dataseries($startdate, $enddate, $labelrange, $this->shopgroup($shop), $startdateBefore, $enddateBefore)['data_series'],
             'data_series_completed'     => $this->dataseries($startdate, $enddate, $labelrange, $this->shopgroup($shop), $startdateBefore, $enddateBefore)['data_series_completed'],
             'data_report'       => $this->datareport($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
-            // 'data_sort'#         => $title,
-            // 'tesdate'#           => $startdate,
-            // 'teddate'#           => $enddate,
-            // 'lesdate'#           => $startdateBefore,
-            // 'leddate'#           => $enddateBefore,
+            // 'data_sort'         => $title,
+            // 'tesdate'           => $startdate,
+            // 'teddate'           => $enddate,
+            // 'lesdate'           => $startdateBefore,
+            // 'leddate'           => $enddateBefore,
             'total_sales'       => $this->totalsales($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_order'       => $this->totalorder($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_consum'      => $this->totalconsum($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_ads'         => $this->totalads($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_expense'     => $this->totalexpense($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
             'total_profit'      => $this->totalprofit($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
-            'top_seller'        => $this->getTopSeller($startdate, $enddate, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
-            // 'test'#              => $this->dataseries($startdate, $enddate, $labelrange, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
-            // 'test1'#        => $id_shop,
-            // 'test2'#        => $shop_group,
-            // 'sd'#    => $sd,
+            // 'test'              => $this->dataseries($startdate, $enddate, $labelrange, $this->shopgroup($shop), $startdateBefore, $enddateBefore),
+            // 'test1'        => $id_shop,
+            // 'test2'        => $shop_group,
+            // 'sd'    => $sd,
             // 'arraydate' => $arraydate,
             // 'arraydate' => getAllDates($startdate, $enddate, $labelrange),
             // 'arraydatebefore' => getAllDatesBefore($startdateBefore, $enddateBefore, $labelrange),
@@ -2495,10 +2677,6 @@ class Sales extends BaseController
         $rowCompleted = array();
         // $series = array();
         // $test = array();
-        // $countmonth = 3;
-        // for ($a = 0; $a < $countmonth; $a++) {
-        //     $monthinyear = date("m", strtotime("+" . $a . " month", strtotime($startdate)));
-
 
         if ($labelrange == "This Year" || $labelrange == "Last Year") {
             $listmonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -2509,20 +2687,6 @@ class Sales extends BaseController
                 $monthinyear = date("Y-m", strtotime("+" . $a . " month", strtotime($startdate)));
                 $row[] = [
                     "x"    => $listmonth[$a],
-                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $monthinyear)->havingNotIn('status', $this->groups)->findAll()),
-                ];
-                $rowCompleted[] = [
-                    "x"    => $listmonth[$a],
-                    "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $monthinyear)->havingIn('status', ['Completed'])->findAll()),
-                ];
-            }
-        } else if ($labelrange == "Last 3 Month") {
-            $countmonth = 3;
-            for ($a = 0; $a < $countmonth; $a++) {
-                $monthinyear = date("Y-m", strtotime("+" . $a . " month", strtotime($startdate)));
-                $listmonth = date("M", strtotime("+" . $a . " month", strtotime($startdate)));
-                $row[] = [
-                    "x"    => $listmonth,
                     "y"    => count($this->salesModel->whereIn('id_shop', $shop_group)->like('date_sales', $monthinyear)->havingNotIn('status', $this->groups)->findAll()),
                 ];
                 $rowCompleted[] = [
@@ -2886,33 +3050,57 @@ class Sales extends BaseController
     public function totalprofit($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)
     {
 
-        $tbuilder = $this->db->table('sales_detail');
-        $tbuilder->select('sum(pro_price_basic * pro_qty) as ttotal');
-        $tbuilder->join('sales', 'sales.no_sales=sales_detail.no_sales', 'left');
-        $tbuilder->where('sales.date_sales >=', $startdate);
-        $tbuilder->where('sales.date_sales <=', $enddate);
-        $tbuilder->wherein('id_shop', $shop_group);
-        $tbuilder->whereIn('sales.status', $this->groups1);
-        $tallpriceBasicArray = intval($tbuilder->get()->getFirstRow()->ttotal);
+        $tallpaymentArray = array();
+        $tallpriceBasicArray = array();
+        for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->whereIn('status', $this->groups1)->findAll()); $a++) {
+            $tallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->whereIn('status', $this->groups1)->findAll()[$a]['payment'];
+            $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->whereIn('status', $this->groups1)->findAll()[$a]['no_sales'];
+            $rowbasic = array();
+            for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                $rowbasic[] = $rowbasicdata;
+            }
+            $tallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->whereIn('status', $this->groups1)->findAll()[$a]['packaging_charge'];
+        }
 
-        $lbuilder = $this->db->table('sales_detail');
-        $lbuilder->select('sum(pro_price_basic * pro_qty) as ltotal');
-        $lbuilder->join('sales', 'sales.no_sales=sales_detail.no_sales', 'left');
-        $lbuilder->where('sales.date_sales >=', $startdateBefore);
-        $lbuilder->where('sales.date_sales <=', $enddateBefore);
-        $lbuilder->wherein('id_shop', $shop_group);
-        $lbuilder->whereIn('sales.status', $this->groups1);
-        $lallpriceBasicArray = intval($lbuilder->get()->getFirstRow()->ltotal);
+        // $this->builder = $this->db->table('users');
+        // $this->builder->join('auth_groups_users', 'auth_groups_users.user_id= users.id');
+        // $this->builder->join('shop', 'shop.member_id= users.member_id');
+        // if ($id_shop != "dashboards") {
+        //     $this->builder->where('group_id', '3');
+        // }
+        // $query = $this->builder->get();
+
+
+        // if ($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->havingNotIn('status', $this->groups)->selectSum('payment', 'status')->first() == null) {
+        //     $thisValuePayment = 0;
+        //     $thisValueBasic = 0;
+        // } else {
+        //     $thisValuePayment = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->havingNotIn('status', $this->groups)->selectSum('payment', 'status')->first()['status'];
+        //     $thisValueBasic = 0;
+        // };
+
+
+        $lallpaymentArray = array();
+        $lallpriceBasicArray = array();
+        for ($a = 0; $a < count($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdateBefore)->where('date_sales <=', $enddateBefore)->whereIn('status', $this->groups1)->findAll()); $a++) {
+            $lallpaymentArray[] = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdateBefore)->where('date_sales <=', $enddateBefore)->whereIn('status', $this->groups1)->findAll()[$a]['payment'];
+            $no_sales = $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdateBefore)->where('date_sales <=', $enddateBefore)->whereIn('status', $this->groups1)->findAll()[$a]['no_sales'];
+            $rowbasic = array();
+            for ($b = 0; $b < count($this->salesdetailModel->where('no_sales', $no_sales)->findAll()); $b++) {
+                $rowbasicdata = $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_qty'] * $this->salesdetailModel->where('no_sales', $no_sales)->findAll()[$b]['pro_price_basic'];
+                $rowbasic[] = $rowbasicdata;
+            }
+            $lallpriceBasicArray[] = array_sum($rowbasic) + $this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdateBefore)->where('date_sales <=', $enddateBefore)->whereIn('status', $this->groups1)->findAll()[$a]['packaging_charge'];
+        }
 
         $profitpcg = 0;
-        $tallpaymentArray = intval($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdate)->where('date_sales <=', $enddate)->whereIn('status', $this->groups1)->selectSum('payment')->first()['payment']);
-        $lallpaymentArray = intval($this->salesModel->whereIn('id_shop', $shop_group)->where('date_sales >=', $startdateBefore)->where('date_sales <=', $enddateBefore)->whereIn('status', $this->groups1)->selectSum('payment')->first()['payment']);
         $consum_this = $this->totalconsum($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)['tvalue'];
         $consum_last = $this->totalconsum($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)['lvalue'];
         $ads_this = $this->totalads($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)['tvalue'];
         $ads_last = $this->totalads($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)['lvalue'];
-        $profitval_this = $tallpaymentArray - $tallpriceBasicArray - $consum_this - $ads_this;
-        $profitval_last = $lallpaymentArray - $lallpriceBasicArray - $consum_last - $ads_last;
+        $profitval_this = array_sum($tallpaymentArray) - array_sum($tallpriceBasicArray) - $consum_this - $ads_this;
+        $profitval_last = array_sum($lallpaymentArray) - array_sum($lallpriceBasicArray) - $consum_last - $ads_last;
         if ($profitval_this >= $profitval_last) {  // PROFIT
             $profitval  = $profitval_this;
             $profitvallast  = $profitval_last;
@@ -2931,43 +3119,57 @@ class Sales extends BaseController
             }
         }
 
+        // $this->db->select("products.id as productid, products.code, products.name, products.unit, products.cost, products.price,   sum(whs_products.quantity) as 'totalQuantity'")
+        //     ->from('products')
+        //     ->join('whs_products', 'whs_products.product_id=products.id', 'left')
+        //     ->group_by("products.id");
+        // $this->db->get();
+
+        // $builder->select("sales.sales_date as salesdate, sales.no_sales as nosales");
+        // $this->db->from('sales');
+        // $this->db->join('sales_detail', 'sales_detail.no_sales=sales.nosales', 'left');
+        // $this->db->get();
+
+        // $builder = $this->db->table('sales');
+        // $builder->select("sales.date_sales as datesales, sales.no_sales as nosales");
+        // $builder->join('sales_detail', 'sales_detail.no_sales=sales.no_sales', 'left');
+        // $query = $builder->get();
+
+        $builder = $this->db->table('sales_detail');
+        // $builder->select("sales.sales_date as salesdate, sales.no_sales as nosales");
+        $builder->select("sales.date_sales as datesales, sales.no_sales as nosales,pro_price_basic");
+        $builder->join('sales', 'sales.no_sales=sales_detail.no_sales', 'left');
+        $builder->where('sales.date_sales >=', $startdate);
+        $builder->where('sales.date_sales <=', $enddate);
+        $builder->wherein('id_shop', $shop_group);
+        $query = $builder->get();
+
+
         $total_profit = array(
             'tkey'       => $profitkey,
             'tsym'       => $profitsym,
             'tvalue'     => $profitval,
             'lvalue'     => $profitvallast,
             'tpcg'       => number_format($profitpcg, 0),
-            // 'thisvalue'  => $profitval_this,
-            // 'lastvalue'  => $profitval_last,
-            // '0SD' => $startdate,
-            // '1ED' => $enddate,
-            // '2SDB' => $startdateBefore,
-            // '3EDB' => $enddateBefore,
-            // '4test'  => $ttsr,
-            // '4current'  => array_sum($tallpaymentArray),
+            'thisvalue'  => $profitval_this,
+            'lastvalue'  => $profitval_last,
+            '0SD' => $startdate,
+            '1ED' => $enddate,
+            '2SDB' => $startdateBefore,
+            '3EDB' => $enddateBefore,
+            '4test'  => $query->getResult(),
         );
 
         return $total_profit;
     }
 
-    public function getTopSeller($startdate, $enddate, $shop_group, $startdateBefore, $enddateBefore)
-    {
-        $tbuilder = $this->db->table('sales_detail');
-        $tbuilder->select('sales_detail.pro_id AS salesproid,pro_name,pro_model,pro_part_no,pro_image_name,pro_price_seller, sum(pro_qty) as total_qty');
-        $tbuilder->join('products', 'products.pro_id=sales_detail.pro_id', 'left');
-        $tbuilder->join('products_price', 'products_price.pro_id=sales_detail.pro_id', 'left');
-        $tbuilder->join('products_image', 'products_image.pro_id=sales_detail.pro_id', 'left');
-        $tbuilder->join('sales', 'sales.no_sales=sales_detail.no_sales', 'left');
-        $tbuilder->where('sales.date_sales >=', $startdate);
-        $tbuilder->where('sales.date_sales <=', $enddate);
-        $tbuilder->wherein('id_shop', $shop_group);
-        $tbuilder->wherenotin('sales.status', $this->groups);
-        $tbuilder->groupBy('salesproid');
-        $tbuilder->orderBy('total_qty', 'DESC');
-        $tbuilder->limit(10);
-        $data = $tbuilder->get()->getResult();
 
-        return $data;
+
+
+    public function updatedate()
+    {
+
+        // return $Query->getNumRows();
     }
 
 
