@@ -697,11 +697,12 @@ function vito(s_id , s_name) {
     $('#viewSales').modal('show');
     console.log(s_name)
     let paymentinput = ''
+    let profitval = ''
     if(s_name != null){
         paymentinput +=
         '<tr>'+
-            '<td colspan="3" class="font-size-18 m-0 fw-bold border-bottom-0">'+
-                '<div class="form-floating mb-3">'+
+            '<td colspan="3" class="font-size-18 pb-0 m-0 fw-bold border-bottom-0">'+
+                '<div class="form-floating mb-1">'+
                     '<input type="text" min="4" class="form-control is-invalid font-size-18 fw-bold" id="payment" name="payment" placeholder="Input Payment">'+
                     '<label for="payment">Payment</label>'+
                     '<div class="invalid-feedback">'+
@@ -728,9 +729,11 @@ function vito(s_id , s_name) {
             $("#ids").html(data.detail.ifs.id_sales);
             let itemrow = '';
             let subtotal = 0;
+            let subtotalbasic = 0;
             for (l = 0; l < data.detail.dsl.length; l++) {
                 // var a = data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty
                 subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
+                subtotalbasic += data.detail.dsl[l].pro_price_basic * data.detail.dsl[l].pro_qty;
                 itemrow += 
                     '<tr>'+
                         '<th scope="row">'+
@@ -749,10 +752,20 @@ function vito(s_id , s_name) {
                 ;
             }
             let tax = ((10/100)*subtotal).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            let provitcalculate = ((subtotal-((10/100)*subtotal))+parseInt(data.detail.ifs.packaging_charge)-subtotalbasic).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
             let pckgdesc = '';
             if(data.detail.ifs.packaging == 0){pckgdesc = "No Packaging"}
             if(data.detail.ifs.packaging == 1){pckgdesc = "Small 17x9x6cm"}
             if(data.detail.ifs.packaging == 2){pckgdesc = "Long 8x8x30cm"}
+            profitval += 
+                        '<tr >'+
+                            ' <td colspan="3" class="border-bottom-0 py-0 m-0">'+
+                                '<div class="alert alert-success font-size-18 text-center" id="td_profit_val" role="alert">'+
+                                    'Rp '+provitcalculate+''+
+                                '</div>'+
+                            '</td>'+
+                        '</tr>'
+                        ;
             $("#tabel_viewsales").html(
                 '<table class="table align-middle table-nowrap" id="trfsi">'+
                     '<thead>'+
@@ -818,6 +831,7 @@ function vito(s_id , s_name) {
                             '</td>'+
                         '</tr>'+
                         paymentinput+
+                        profitval+
                     '</tbody>'+
                 '</table>'
             )
@@ -876,13 +890,24 @@ function vito(s_id , s_name) {
                     $('#payment').addClass("is-valid");
                     $('#paymentval').val(masked.unmaskedValue)
                     let subtotal = 0;
+                    let subtotalbasic = 0;
                     for (l = 0; l < data.detail.dsl.length; l++) {
                         subtotal += data.detail.dsl[l].pro_price * data.detail.dsl[l].pro_qty;
+                        subtotalbasic += data.detail.dsl[l].pro_price_basic * data.detail.dsl[l].pro_qty;
                     }
                     let pi = masked.unmaskedValue;
                     let a = (parseInt(subtotal)-parseInt(pi-data.detail.ifs.packaging_charge));
                     let b = (parseInt(a) / parseInt(subtotal))*100
-                    console.log(b)
+                    let c = (parseInt(pi)- parseInt(subtotalbasic))
+                    $("#td_profit_val").html("Rp "+c.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."))
+                    // console.log(b)
+                    if(c <= 0) {
+                        $('#td_profit_val').removeClass("alert-success");
+                        $('#td_profit_val').addClass("alert-danger");
+                    }else{
+                        $('#td_profit_val').removeClass("alert-danger");
+                        $('#td_profit_val').addClass("alert-success");
+                    }
                     if(b >= -200 && b <= 200 ) {
                         $('#profitstring').html("Rp. "+parseInt(a))
                         $('#payment').removeClass("is-invalid");
